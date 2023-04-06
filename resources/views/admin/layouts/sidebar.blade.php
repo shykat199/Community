@@ -46,18 +46,15 @@
 
                 </li>
 
-
-
-                {{--                BLOG AREA--}}
-
+                {{--Community AREA--}}
 
                 <li class="side-nav-item">
-                    <a data-bs-toggle="collapse" href="#adminBlog" aria-expanded="false" aria-controls="adminBlog" class="side-nav-link">
+                    <a data-bs-toggle="collapse" href="#community" aria-expanded="false" aria-controls="adminBlog" class="side-nav-link">
                         <i class="uil-store"></i>
-                        <span> Blog Section </span>
+                        <span> Community Section </span>
                         <span class="menu-arrow"></span>
                     </a>
-                    <div class="collapse" id="adminBlog">
+                    <div class="collapse" id="community">
                         <ul class="side-nav-second-level">
                             <li>
                                 <a href="">All Blogs</a>
