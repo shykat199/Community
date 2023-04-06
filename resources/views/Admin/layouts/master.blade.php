@@ -23,7 +23,7 @@
 
 </head>
 
-<div class="container-fluid">
+
 
     @include('admin.layouts.topbar')
     @include('admin.layouts.sidebar')
@@ -34,7 +34,6 @@
 
     <!-- end row -->
 
-</div>
 
 
 <!-- Footer Start -->
