@@ -2,6 +2,8 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AdminDashboardController;
+use App\Http\Controllers\AuthController;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -13,7 +15,14 @@ use App\Http\Controllers\AdminDashboardController;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
+
+Route::prefix('dashboard')->group(function () {
+
+    Route::get('/login/page', [AuthController::class, 'loginPage'])->name('admin.login_page');
+    Route::post('/login', [AuthController::class, 'login'])->name('admin.login');
+    Route::get('/logout', [AuthController::class, 'logout'])->name('admin.logout');
+    Route::get('/register/page', [AuthController::class, 'registerPage'])->name('admin.register_page');
+    Route::post('/register', [AuthController::class, 'register'])->name('admin.register');
+
 });
 Route::get('/admin/dashboard',[AdminDashboardController::class,'dashboard'])->name('admin.dashboard');
