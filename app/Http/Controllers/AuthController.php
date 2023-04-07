@@ -68,6 +68,8 @@ class AuthController extends Controller
                 return "Admin Dashboard";
             } elseif (Auth::user()->role === USER_ROLE) {
                 return "User Dashboard";
+            } elseif (Auth::user()->role === SERVICE_PROVIDER_ROLE) {
+                return to_route('admin.dashboard');
             } else {
                 return "Invalid User";
             }
