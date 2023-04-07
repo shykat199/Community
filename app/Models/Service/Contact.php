@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Models\Service-section;
+namespace App\Models\Service;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class EssentialPackage extends Model
+class Contact extends Model
 {
     use HasFactory;
 }

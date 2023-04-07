@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Models\Service-section;
+namespace App\Models\Service;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Booking extends Model
+class CertificateAward extends Model
 {
     use HasFactory;
 }

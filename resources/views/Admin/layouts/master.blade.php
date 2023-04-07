@@ -28,11 +28,9 @@
 
 
 
-    @include('admin.layouts.topbar')
-    @include('admin.layouts.sidebar')
+    @include('Admin.layouts.topbar')
+    @include('Admin.layouts.sidebar')
     @yield('admin.content')
-
-
 
 
 

@@ -5,20 +5,20 @@
     <!-- LOGO -->
     <a href="index-2.html" class="logo text-center logo-light">
                     <span class="logo-lg">
-                        <img src="assets/images/logo.png" alt="" height="16">
+                        <img src="{{asset('assets/images/logo.png')}}" alt="" height="16">
                     </span>
         <span class="logo-sm">
-                        <img src="assets/images/logo_sm.png" alt="" height="16">
+                        <img src="{{asset('assets/images/logo_sm.png')}}" alt="" height="16">
                     </span>
     </a>
 
     <!-- LOGO -->
     <a href="index-2.html" class="logo text-center logo-dark">
                     <span class="logo-lg">
-                        <img src="assets/images/logo-dark.png" alt="" height="16">
+                        <img src="{{asset('assets/images/logo-dark.png')}}" alt="" height="16">
                     </span>
         <span class="logo-sm">
-                        <img src="assets/images/logo_sm_dark.png" alt="" height="16">
+                        <img src="{{asset('assets/images/logo_sm_dark.png')}}" alt="" height="16">
                     </span>
     </a>
 
@@ -40,19 +40,19 @@
 
 
             <li class="side-nav-item">
-                <a data-bs-toggle="collapse" href="#adminBlog" aria-expanded="false" aria-controls="adminBlog" class="side-nav-link">
+                <a data-bs-toggle="collapse" href="#serviceCategory" aria-expanded="false" aria-controls="serviceCategory" class="side-nav-link">
                     <i class="uil-store"></i>
-                    <span> Blog Section </span>
+                    <span> Service Category </span>
                     <span class="menu-arrow"></span>
                 </a>
-                <div class="collapse" id="adminBlog">
+                <div class="collapse" id="serviceCategory">
                     <ul class="side-nav-second-level">
                         <li>
-                            <a href="">All Blogs</a>
+                            <a href="{{route('category.list')}}">All Categories</a>
                         </li>
 
                         <li>
-                            <a href="">Add New Blog</a>
+                            <a href="{{route('category.view')}}">Add New Category</a>
                         </li>
                     </ul>
                 </div>

@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AdminDashboardController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\Service\CategoryController;
 
 /*
 |--------------------------------------------------------------------------
@@ -26,3 +27,7 @@ Route::prefix('dashboard')->group(function () {
 
 });
 Route::get('/admin/dashboard',[AdminDashboardController::class,'dashboard'])->name('admin.dashboard');
+//category
+Route::get('/category/details',[CategoryController::class,'Category'])->name('category.view');
+Route::post('/category/details/form',[CategoryController::class,'PostCategory'])->name('category.post');
+Route::get('/category/list',[CategoryController::class,'CategoryList'])->name('category.list');
