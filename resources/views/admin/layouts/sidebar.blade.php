@@ -57,12 +57,20 @@
                     <div class="collapse" id="community">
                         <ul class="side-nav-second-level">
                             <li>
-                                <a href="">All Blogs</a>
+                                <a href="">Pages Dashboard</a>
                             </li>
 
                             <li>
-                                <a href="">Add New Blog</a>
+                                <a href="">Group Dashboard</a>
                             </li>
+                           
+                            <li>
+                                <a href="">User Dashboard</a>
+                            </li>
+                            <li>
+                                <a href="">User Posts</a>
+                            </li>
+
                         </ul>
                     </div>
                 </li>
