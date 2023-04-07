@@ -22,7 +22,7 @@ class AuthController extends Controller
         if (Auth::check() && Auth::user()) {
 
             if (Auth::user()->role === ADMIN_ROLE) {
-                //return view();
+                return to_route('admin.dashboard')->with('success','Admin Login Successfully.');
             } elseif (Auth::user()->role === USER_ROLE) {
                 //return view();
             } else {
@@ -40,7 +40,8 @@ class AuthController extends Controller
 
         if (Auth::check() && Auth::user()) {
             if (Auth::user()->role === ADMIN_ROLE) {
-                return "Admin Dashboard";
+                return to_route('admin.dashboard')->with('success','Admin Login Successfully.');
+
             }
             if (Auth::user()->role === USER_ROLE) {
                 return "User Dashboard";
@@ -65,7 +66,7 @@ class AuthController extends Controller
         ])) {
 
             if (Auth::user()->role === ADMIN_ROLE) {
-                return "Admin Dashboard";
+                return to_route('admin.dashboard')->with('success','Admin Login Successfully.');
             } elseif (Auth::user()->role === USER_ROLE) {
                 return "User Dashboard";
             } else {
@@ -101,7 +102,6 @@ class AuthController extends Controller
     {
 
         Auth::logout();
-
 
         return to_route('admin.login_page')->with('success', 'Logout Successfully...');
 
