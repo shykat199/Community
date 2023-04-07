@@ -1,11 +1,12 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Community\Profile;
 
-use App\Models\Community\Group\CommunityUserGroupPivot;
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Profile\CommunityUserProfileCover;
 
-class CommunityUserGroupPivotController extends Controller
+class CommunityUserProfileCoverController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -34,7 +35,7 @@ class CommunityUserGroupPivotController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(CommunityUserGroupPivot $communityUserGroupPivot)
+    public function show(CommunityUserProfileCover $communityUserProfileCover)
     {
         //
     }
@@ -42,7 +43,7 @@ class CommunityUserGroupPivotController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(CommunityUserGroupPivot $communityUserGroupPivot)
+    public function edit(CommunityUserProfileCover $communityUserProfileCover)
     {
         //
     }
@@ -50,7 +51,7 @@ class CommunityUserGroupPivotController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, CommunityUserGroupPivot $communityUserGroupPivot)
+    public function update(Request $request, CommunityUserProfileCover $communityUserProfileCover)
     {
         //
     }
@@ -58,7 +59,7 @@ class CommunityUserGroupPivotController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(CommunityUserGroupPivot $communityUserGroupPivot)
+    public function destroy(CommunityUserProfileCover $communityUserProfileCover)
     {
         //
     }

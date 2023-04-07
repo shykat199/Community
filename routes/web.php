@@ -27,14 +27,5 @@ Route::prefix('dashboard')->group(function () {
 
 });
 Route::get('/admin/dashboard',[AdminDashboardController::class,'dashboard'])->name('admin.dashboard');
-<<<<<<< HEAD
 
-require  base_path('routes/community.php');
-
-
-=======
-//category
-Route::get('/category/details',[CategoryController::class,'Category'])->name('category.view');
-Route::post('/category/details/form',[CategoryController::class,'PostCategory'])->name('category.post');
-Route::get('/category/list',[CategoryController::class,'CategoryList'])->name('category.list');
->>>>>>> f556bb0ae26a7b3d22ce02517423bacf4c67fdd1
+require base_path('routes/community.php');

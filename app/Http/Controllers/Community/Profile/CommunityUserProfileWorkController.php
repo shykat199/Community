@@ -1,11 +1,12 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Community\Profile;
 
-use App\Models\Community\User\CommunityUserFollowing;
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Profile\CommunityUserProfileWork;
 
-class CommunityUserFollowingController extends Controller
+class CommunityUserProfileWorkController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -34,7 +35,7 @@ class CommunityUserFollowingController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(CommunityUserFollowing $communityUserFollowing)
+    public function show(CommunityUserProfileWork $communityUserProfileWork)
     {
         //
     }
@@ -42,7 +43,7 @@ class CommunityUserFollowingController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(CommunityUserFollowing $communityUserFollowing)
+    public function edit(CommunityUserProfileWork $communityUserProfileWork)
     {
         //
     }
@@ -50,7 +51,7 @@ class CommunityUserFollowingController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, CommunityUserFollowing $communityUserFollowing)
+    public function update(Request $request, CommunityUserProfileWork $communityUserProfileWork)
     {
         //
     }
@@ -58,7 +59,7 @@ class CommunityUserFollowingController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(CommunityUserFollowing $communityUserFollowing)
+    public function destroy(CommunityUserProfileWork $communityUserProfileWork)
     {
         //
     }

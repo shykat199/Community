@@ -1,11 +1,12 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Community\Profile;
 
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use Profile\CommunityUserProfileCover;
+use Profile\CommunityUserProfileSocialink;
 
-class CommunityUserProfileCoverController extends Controller
+class CommunityUserProfileSocialinkController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -34,7 +35,7 @@ class CommunityUserProfileCoverController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(CommunityUserProfileCover $communityUserProfileCover)
+    public function show(CommunityUserProfileSocialink $communityUserProfileSocialink)
     {
         //
     }
@@ -42,7 +43,7 @@ class CommunityUserProfileCoverController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(CommunityUserProfileCover $communityUserProfileCover)
+    public function edit(CommunityUserProfileSocialink $communityUserProfileSocialink)
     {
         //
     }
@@ -50,7 +51,7 @@ class CommunityUserProfileCoverController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, CommunityUserProfileCover $communityUserProfileCover)
+    public function update(Request $request, CommunityUserProfileSocialink $communityUserProfileSocialink)
     {
         //
     }
@@ -58,7 +59,7 @@ class CommunityUserProfileCoverController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(CommunityUserProfileCover $communityUserProfileCover)
+    public function destroy(CommunityUserProfileSocialink $communityUserProfileSocialink)
     {
         //
     }

@@ -1,11 +1,12 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Community\Profile;
 
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use Profile\CommunityUserProfileEducation;
+use Profile\CommunityUserProfileInterest;
 
-class CommunityUserProfileEducationController extends Controller
+class CommunityUserProfileInterestController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -34,7 +35,7 @@ class CommunityUserProfileEducationController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(CommunityUserProfileEducation $communityUserProfileEducation)
+    public function show(CommunityUserProfileInterest $communityUserProfileInterest)
     {
         //
     }
@@ -42,7 +43,7 @@ class CommunityUserProfileEducationController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(CommunityUserProfileEducation $communityUserProfileEducation)
+    public function edit(CommunityUserProfileInterest $communityUserProfileInterest)
     {
         //
     }
@@ -50,7 +51,7 @@ class CommunityUserProfileEducationController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, CommunityUserProfileEducation $communityUserProfileEducation)
+    public function update(Request $request, CommunityUserProfileInterest $communityUserProfileInterest)
     {
         //
     }
@@ -58,7 +59,7 @@ class CommunityUserProfileEducationController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(CommunityUserProfileEducation $communityUserProfileEducation)
+    public function destroy(CommunityUserProfileInterest $communityUserProfileInterest)
     {
         //
     }

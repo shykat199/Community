@@ -1,11 +1,12 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Community\Group;
 
-use App\Models\Community\User\CommunityUserDetails;
+use App\Http\Controllers\Controller;
+use App\Models\Community\Group\CommunityUserGroupPivot;
 use Illuminate\Http\Request;
 
-class CommunityUserDetailsController extends Controller
+class CommunityUserGroupPivotController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -34,7 +35,7 @@ class CommunityUserDetailsController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(CommunityUserDetails $communityUserDetails)
+    public function show(CommunityUserGroupPivot $communityUserGroupPivot)
     {
         //
     }
@@ -42,7 +43,7 @@ class CommunityUserDetailsController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(CommunityUserDetails $communityUserDetails)
+    public function edit(CommunityUserGroupPivot $communityUserGroupPivot)
     {
         //
     }
@@ -50,7 +51,7 @@ class CommunityUserDetailsController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, CommunityUserDetails $communityUserDetails)
+    public function update(Request $request, CommunityUserGroupPivot $communityUserGroupPivot)
     {
         //
     }
@@ -58,7 +59,7 @@ class CommunityUserDetailsController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(CommunityUserDetails $communityUserDetails)
+    public function destroy(CommunityUserGroupPivot $communityUserGroupPivot)
     {
         //
     }

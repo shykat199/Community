@@ -1,11 +1,12 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Community\Profile;
 
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use Post\CommunityUserPostTag;
+use Profile\CommunityUserProfilePhoto;
 
-class CommunityUserPostTagController extends Controller
+class CommunityUserProfilePhotoController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -34,7 +35,7 @@ class CommunityUserPostTagController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(CommunityUserPostTag $communityUserPostTag)
+    public function show(CommunityUserProfilePhoto $communityUserProfilePhoto)
     {
         //
     }
@@ -42,7 +43,7 @@ class CommunityUserPostTagController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(CommunityUserPostTag $communityUserPostTag)
+    public function edit(CommunityUserProfilePhoto $communityUserProfilePhoto)
     {
         //
     }
@@ -50,7 +51,7 @@ class CommunityUserPostTagController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, CommunityUserPostTag $communityUserPostTag)
+    public function update(Request $request, CommunityUserProfilePhoto $communityUserProfilePhoto)
     {
         //
     }
@@ -58,7 +59,7 @@ class CommunityUserPostTagController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(CommunityUserPostTag $communityUserPostTag)
+    public function destroy(CommunityUserProfilePhoto $communityUserProfilePhoto)
     {
         //
     }

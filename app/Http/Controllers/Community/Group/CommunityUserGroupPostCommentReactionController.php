@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Community\Group;
 
+use App\Http\Controllers\Controller;
 use App\Models\Community\Group\CommunityUserGroupPostCommentReaction;
 use Illuminate\Http\Request;
 

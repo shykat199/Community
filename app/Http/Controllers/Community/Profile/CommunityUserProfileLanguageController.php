@@ -1,11 +1,12 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Community\Profile;
 
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use Profile\CommunityUserProfilePhoto;
+use Profile\CommunityUserProfileLanguage;
 
-class CommunityUserProfilePhotoController extends Controller
+class CommunityUserProfileLanguageController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -34,7 +35,7 @@ class CommunityUserProfilePhotoController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(CommunityUserProfilePhoto $communityUserProfilePhoto)
+    public function show(CommunityUserProfileLanguage $communityUserProfileLanguage)
     {
         //
     }
@@ -42,7 +43,7 @@ class CommunityUserProfilePhotoController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(CommunityUserProfilePhoto $communityUserProfilePhoto)
+    public function edit(CommunityUserProfileLanguage $communityUserProfileLanguage)
     {
         //
     }
@@ -50,7 +51,7 @@ class CommunityUserProfilePhotoController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, CommunityUserProfilePhoto $communityUserProfilePhoto)
+    public function update(Request $request, CommunityUserProfileLanguage $communityUserProfileLanguage)
     {
         //
     }
@@ -58,7 +59,7 @@ class CommunityUserProfilePhotoController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(CommunityUserProfilePhoto $communityUserProfilePhoto)
+    public function destroy(CommunityUserProfileLanguage $communityUserProfileLanguage)
     {
         //
     }

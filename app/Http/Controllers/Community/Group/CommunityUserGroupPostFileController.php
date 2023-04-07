@@ -1,11 +1,12 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Community\Group;
 
-use App\Models\Community\Group\CommunityUserGroup;
+use App\Http\Controllers\Controller;
+use App\Models\Community\Group\CommunityUserGroupPostFile;
 use Illuminate\Http\Request;
 
-class CommunityUserGroupController extends Controller
+class CommunityUserGroupPostFileController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -34,7 +35,7 @@ class CommunityUserGroupController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(CommunityUserGroup $communityUserGroup)
+    public function show(CommunityUserGroupPostFile $communityUserGroupPostFile)
     {
         //
     }
@@ -42,7 +43,7 @@ class CommunityUserGroupController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(CommunityUserGroup $communityUserGroup)
+    public function edit(CommunityUserGroupPostFile $communityUserGroupPostFile)
     {
         //
     }
@@ -50,7 +51,7 @@ class CommunityUserGroupController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, CommunityUserGroup $communityUserGroup)
+    public function update(Request $request, CommunityUserGroupPostFile $communityUserGroupPostFile)
     {
         //
     }
@@ -58,7 +59,7 @@ class CommunityUserGroupController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(CommunityUserGroup $communityUserGroup)
+    public function destroy(CommunityUserGroupPostFile $communityUserGroupPostFile)
     {
         //
     }

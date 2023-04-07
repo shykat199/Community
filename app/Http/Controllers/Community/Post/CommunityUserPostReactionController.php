@@ -1,11 +1,12 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Community\Post;
 
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use Profile\CommunityUserProfileSocialink;
+use Post\CommunityUserPostReaction;
 
-class CommunityUserProfileSocialinkController extends Controller
+class CommunityUserPostReactionController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -34,7 +35,7 @@ class CommunityUserProfileSocialinkController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(CommunityUserProfileSocialink $communityUserProfileSocialink)
+    public function show(CommunityUserPostReaction $communityUserPostReaction)
     {
         //
     }
@@ -42,7 +43,7 @@ class CommunityUserProfileSocialinkController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(CommunityUserProfileSocialink $communityUserProfileSocialink)
+    public function edit(CommunityUserPostReaction $communityUserPostReaction)
     {
         //
     }
@@ -50,7 +51,7 @@ class CommunityUserProfileSocialinkController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, CommunityUserProfileSocialink $communityUserProfileSocialink)
+    public function update(Request $request, CommunityUserPostReaction $communityUserPostReaction)
     {
         //
     }
@@ -58,7 +59,7 @@ class CommunityUserProfileSocialinkController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(CommunityUserProfileSocialink $communityUserProfileSocialink)
+    public function destroy(CommunityUserPostReaction $communityUserPostReaction)
     {
         //
     }

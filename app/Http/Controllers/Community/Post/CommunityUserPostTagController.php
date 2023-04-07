@@ -1,11 +1,12 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Community\Post;
 
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use Profile\CommunityUserProfileLanguage;
+use Post\CommunityUserPostTag;
 
-class CommunityUserProfileLanguageController extends Controller
+class CommunityUserPostTagController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -34,7 +35,7 @@ class CommunityUserProfileLanguageController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(CommunityUserProfileLanguage $communityUserProfileLanguage)
+    public function show(CommunityUserPostTag $communityUserPostTag)
     {
         //
     }
@@ -42,7 +43,7 @@ class CommunityUserProfileLanguageController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(CommunityUserProfileLanguage $communityUserProfileLanguage)
+    public function edit(CommunityUserPostTag $communityUserPostTag)
     {
         //
     }
@@ -50,7 +51,7 @@ class CommunityUserProfileLanguageController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, CommunityUserProfileLanguage $communityUserProfileLanguage)
+    public function update(Request $request, CommunityUserPostTag $communityUserPostTag)
     {
         //
     }
@@ -58,7 +59,7 @@ class CommunityUserProfileLanguageController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(CommunityUserProfileLanguage $communityUserProfileLanguage)
+    public function destroy(CommunityUserPostTag $communityUserPostTag)
     {
         //
     }

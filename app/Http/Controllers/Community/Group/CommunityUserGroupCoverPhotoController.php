@@ -1,11 +1,12 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Community\Group;
 
+use App\Http\Controllers\Controller;
+use App\Models\Community\Group\CommunityUserGroupCoverPhoto;
 use Illuminate\Http\Request;
-use Post\CommunityUserPostCommentReaction;
 
-class CommunityUserPostCommentReactionController extends Controller
+class CommunityUserGroupCoverPhotoController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -34,7 +35,7 @@ class CommunityUserPostCommentReactionController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(CommunityUserPostCommentReaction $communityUserPostCommentReaction)
+    public function show(CommunityUserGroupCoverPhoto $communityUserGroupCoverPhoto)
     {
         //
     }
@@ -42,7 +43,7 @@ class CommunityUserPostCommentReactionController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(CommunityUserPostCommentReaction $communityUserPostCommentReaction)
+    public function edit(CommunityUserGroupCoverPhoto $communityUserGroupCoverPhoto)
     {
         //
     }
@@ -50,7 +51,7 @@ class CommunityUserPostCommentReactionController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, CommunityUserPostCommentReaction $communityUserPostCommentReaction)
+    public function update(Request $request, CommunityUserGroupCoverPhoto $communityUserGroupCoverPhoto)
     {
         //
     }
@@ -58,7 +59,7 @@ class CommunityUserPostCommentReactionController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(CommunityUserPostCommentReaction $communityUserPostCommentReaction)
+    public function destroy(CommunityUserGroupCoverPhoto $communityUserGroupCoverPhoto)
     {
         //
     }

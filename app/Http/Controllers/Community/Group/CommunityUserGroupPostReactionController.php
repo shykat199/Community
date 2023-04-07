@@ -1,11 +1,12 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Community\Group;
 
-use App\Models\Community\Group\CommunityUserGroupPost;
+use App\Http\Controllers\Controller;
+use App\Models\Community\Group\CommunityUserGroupPostReaction;
 use Illuminate\Http\Request;
 
-class CommunityUserGroupPostController extends Controller
+class CommunityUserGroupPostReactionController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -34,7 +35,7 @@ class CommunityUserGroupPostController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(CommunityUserGroupPost $communityUserGroupPost)
+    public function show(CommunityUserGroupPostReaction $communityUserGroupPostReaction)
     {
         //
     }
@@ -42,7 +43,7 @@ class CommunityUserGroupPostController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(CommunityUserGroupPost $communityUserGroupPost)
+    public function edit(CommunityUserGroupPostReaction $communityUserGroupPostReaction)
     {
         //
     }
@@ -50,7 +51,7 @@ class CommunityUserGroupPostController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, CommunityUserGroupPost $communityUserGroupPost)
+    public function update(Request $request, CommunityUserGroupPostReaction $communityUserGroupPostReaction)
     {
         //
     }
@@ -58,7 +59,7 @@ class CommunityUserGroupPostController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(CommunityUserGroupPost $communityUserGroupPost)
+    public function destroy(CommunityUserGroupPostReaction $communityUserGroupPostReaction)
     {
         //
     }

@@ -1,11 +1,12 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Community\Post;
 
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use Post\CommunityUserPostReaction;
+use Post\CommunityUserPostCommentReaction;
 
-class CommunityUserPostReactionController extends Controller
+class CommunityUserPostCommentReactionController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -34,7 +35,7 @@ class CommunityUserPostReactionController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(CommunityUserPostReaction $communityUserPostReaction)
+    public function show(CommunityUserPostCommentReaction $communityUserPostCommentReaction)
     {
         //
     }
@@ -42,7 +43,7 @@ class CommunityUserPostReactionController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(CommunityUserPostReaction $communityUserPostReaction)
+    public function edit(CommunityUserPostCommentReaction $communityUserPostCommentReaction)
     {
         //
     }
@@ -50,7 +51,7 @@ class CommunityUserPostReactionController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, CommunityUserPostReaction $communityUserPostReaction)
+    public function update(Request $request, CommunityUserPostCommentReaction $communityUserPostCommentReaction)
     {
         //
     }
@@ -58,7 +59,7 @@ class CommunityUserPostReactionController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(CommunityUserPostReaction $communityUserPostReaction)
+    public function destroy(CommunityUserPostCommentReaction $communityUserPostCommentReaction)
     {
         //
     }

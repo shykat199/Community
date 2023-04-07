@@ -1,11 +1,12 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Community\Group;
 
+use App\Http\Controllers\Controller;
+use App\Models\Community\Group\CommunityUserGroup;
 use Illuminate\Http\Request;
-use Profile\CommunityUserProfileWork;
 
-class CommunityUserProfileWorkController extends Controller
+class CommunityUserGroupController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -34,7 +35,7 @@ class CommunityUserProfileWorkController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(CommunityUserProfileWork $communityUserProfileWork)
+    public function show(CommunityUserGroup $communityUserGroup)
     {
         //
     }
@@ -42,7 +43,7 @@ class CommunityUserProfileWorkController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(CommunityUserProfileWork $communityUserProfileWork)
+    public function edit(CommunityUserGroup $communityUserGroup)
     {
         //
     }
@@ -50,7 +51,7 @@ class CommunityUserProfileWorkController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, CommunityUserProfileWork $communityUserProfileWork)
+    public function update(Request $request, CommunityUserGroup $communityUserGroup)
     {
         //
     }
@@ -58,7 +59,7 @@ class CommunityUserProfileWorkController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(CommunityUserProfileWork $communityUserProfileWork)
+    public function destroy(CommunityUserGroup $communityUserGroup)
     {
         //
     }

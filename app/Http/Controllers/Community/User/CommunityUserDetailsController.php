@@ -1,11 +1,12 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Community\User;
 
+use App\Http\Controllers\Controller;
+use App\Models\Community\User\CommunityUserDetails;
 use Illuminate\Http\Request;
-use Profile\CommunityUserProfileInterest;
 
-class CommunityUserProfileInterestController extends Controller
+class CommunityUserDetailsController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -34,7 +35,7 @@ class CommunityUserProfileInterestController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(CommunityUserProfileInterest $communityUserProfileInterest)
+    public function show(CommunityUserDetails $communityUserDetails)
     {
         //
     }
@@ -42,7 +43,7 @@ class CommunityUserProfileInterestController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(CommunityUserProfileInterest $communityUserProfileInterest)
+    public function edit(CommunityUserDetails $communityUserDetails)
     {
         //
     }
@@ -50,7 +51,7 @@ class CommunityUserProfileInterestController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, CommunityUserProfileInterest $communityUserProfileInterest)
+    public function update(Request $request, CommunityUserDetails $communityUserDetails)
     {
         //
     }
@@ -58,7 +59,7 @@ class CommunityUserProfileInterestController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(CommunityUserProfileInterest $communityUserProfileInterest)
+    public function destroy(CommunityUserDetails $communityUserDetails)
     {
         //
     }
