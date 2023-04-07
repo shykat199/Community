@@ -69,6 +69,11 @@
 
 <!-- Right Sidebar -->
 
+<div class="end-bar">
+
+</div>
+
+
 <div class="rightbar-overlay"></div>
 <!-- /End-bar -->
 

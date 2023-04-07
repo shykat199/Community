@@ -22,7 +22,9 @@ class AuthController extends Controller
         if (Auth::check() && Auth::user()) {
 
             if (Auth::user()->role === ADMIN_ROLE) {
+
                 return to_route('admin.dashboard')->with('success','Admin Login Successfully.');
+
             } elseif (Auth::user()->role === USER_ROLE) {
                 //return view();
             } else {
@@ -40,6 +42,7 @@ class AuthController extends Controller
 
         if (Auth::check() && Auth::user()) {
             if (Auth::user()->role === ADMIN_ROLE) {
+
                 return to_route('admin.dashboard')->with('success','Admin Login Successfully.');
 
             }
@@ -66,9 +69,13 @@ class AuthController extends Controller
         ])) {
 
             if (Auth::user()->role === ADMIN_ROLE) {
+
                 return to_route('admin.dashboard')->with('success','Admin Login Successfully.');
+
             } elseif (Auth::user()->role === USER_ROLE) {
                 return "User Dashboard";
+            } elseif (Auth::user()->role === SERVICE_PROVIDER_ROLE) {
+                return to_route('admin.dashboard');
             } else {
                 return "Invalid User";
             }
