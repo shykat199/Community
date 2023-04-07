@@ -22,12 +22,17 @@
     <link href="{{ asset('assets/css/app.min.css') }}" rel="stylesheet" type="text/css" id="app-style" />
 
 </head>
+<body class="loading" data-layout-color="light" data-leftbar-theme="dark" data-layout-mode="fluid" data-rightbar-onstart="true">
+<!-- Begin page -->
+<div class="wrapper">
 
 
 
     @include('admin.layouts.topbar')
     @include('admin.layouts.sidebar')
     @yield('admin.content')
+
+
 
 
 
@@ -56,8 +61,9 @@
     </div>
 </footer>
 <!-- end Footer -->
-
 </div>
+
+
 
 <!-- ============================================================== -->
 <!-- End Page content -->
@@ -182,7 +188,7 @@
 <!-- demo app -->
 <script src="{{ asset('assets/js/pages/demo.dashboard.js') }}"></script>
 <!-- end demo js-->
-
+</body>
 
 <!-- Mirrored from coderthemes.com/hyper/saas/ by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 13 May 2022 20:22:16 GMT -->
 
