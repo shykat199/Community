@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Models\Community;
+namespace App\Models\Community\Page;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Group extends Model
+class CommunityPagePostFileType extends Model
 {
     use HasFactory;
 }

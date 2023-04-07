@@ -57,13 +57,13 @@
                     <div class="collapse" id="community">
                         <ul class="side-nav-second-level">
                             <li>
-                                <a href="">Pages Dashboard</a>
+                                <a href="{{route('community.page')}}">Pages Dashboard</a>
                             </li>
 
                             <li>
                                 <a href="">Group Dashboard</a>
                             </li>
-                           
+
                             <li>
                                 <a href="">User Dashboard</a>
                             </li>
