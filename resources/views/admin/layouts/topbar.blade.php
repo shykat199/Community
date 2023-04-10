@@ -11,7 +11,10 @@
                                              class="rounded-circle">
                                     </span>
                 <span>
-                                        <span class="account-user-name">{{Auth::user()->name}}</span>
+
+{{--                    @dd(Auth::user())--}}
+
+                                        <span class="account-user-name">{{  Auth::user()->name}}</span>
                     @if(Auth::user()->role===1)
                         <span class="account-position">
                             Admin

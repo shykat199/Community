@@ -13,52 +13,17 @@ class CommunityPagePostController extends Controller
      */
     public function index()
     {
-        //
+        $allPagePosts=CommunityPagePost::join('users','users.id','community_page_posts.user_id')
+            ->join('community_pages','community_pages.id','community_page_posts.page_id')
+            ->selectRaw('users.id as uId,users.name,community_pages.id as pageId,community_pages.page_name,community_page_posts.*')
+            ->get();
+        //return $allGroupPosts;
+
+        return view('admin.community-page.allPagePosts',compact('allPagePosts'));
+
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(CommunityPagePost $communityPagePost)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(CommunityPagePost $communityPagePost)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, CommunityPagePost $communityPagePost)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy(CommunityPagePost $communityPagePost)
     {
         //

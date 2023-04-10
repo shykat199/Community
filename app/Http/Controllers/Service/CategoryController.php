@@ -15,26 +15,26 @@ class CategoryController extends Controller
     public function PostCategory(Request $request){
         //dd($request->all());
 
-        $categories = ServiceCategory::create([
-            'name'=>$request->get('name')
-        ]);
+//        $categories = ServiceCategory::create([
+//            'name'=>$request->get('name')
+//        ]);
 
         //$blogs->user()->associate(Auth::user());
         // $categories->save();
 
 
-        if($categories){
-            return to_route('category.list')->with('posted','Data Entry Successfull');
-
-        }else{
-            return Redirect::back();
-        }
+//        if($categories){
+//            return to_route('category.list')->with('posted','Data Entry Successfull');
+//
+//        }else{
+//            return Redirect::back();
+//        }
 
     }
 
     public function CategoryList(){
-        $categories= DB::table('ServiceCategories')->latest()->get();
-        //dd($categories);
-        return view('Service.service-category.list',compact('categories'));
+//        $categories= DB::table('ServiceCategories')->latest()->get();
+//        //dd($categories);
+        return view('Service.service-category.list');
     }
 }

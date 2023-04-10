@@ -1,94 +1,129 @@
-
-<body class="loading" data-layout-color="light" data-leftbar-theme="dark" data-layout-mode="fluid"
-      data-rightbar-onstart="true">
-<!-- Begin page -->
-<div class="wrapper">
 <!-- ========== Left Sidebar Start ========== -->
+<div class="leftside-menu">
 
-
-<ul class="side-nav">
-
-
-    <div class="leftside-menu">
-
-
-        <!-- LOGO -->
-
-
-        <a href="index-2.html" class="logo text-center logo-light">
+    <!-- LOGO -->
+    <a href="index-2.html" class="logo text-center logo-light">
                     <span class="logo-lg">
-                        <img src="{{asset('assets')}}/images/logo.png" alt="" height="16">
+                        <img src="{{asset('assets/images/logo.png')}}" alt="" height="16">
                     </span>
-            <span class="logo-sm">
-                        <img src="{{asset('assets')}}images/logo_sm.png" alt="" height="16">
+        <span class="logo-sm">
+                        <img src="{{asset('assets/images/logo_sm.png')}}" alt="" height="16">
                     </span>
-        </a>
+    </a>
 
-        <!-- LOGO -->
-        <a href="index-2.html" class="logo text-center logo-dark">
+    <!-- LOGO -->
+    <a href="index-2.html" class="logo text-center logo-dark">
                     <span class="logo-lg">
-                        <img src="{{asset('assets')}}/images/logo-dark.png" alt="" height="16">
+                        <img src="{{asset('assets/images/logo-dark.png')}}" alt="" height="16">
                     </span>
-            <span class="logo-sm">
-                        <img src="{{asset('assets')}}/images/logo_sm_dark.png" alt="" height="16">
+        <span class="logo-sm">
+                        <img src="{{asset('assets/images/logo_sm_dark.png')}}" alt="" height="16">
                     </span>
-        </a>
+    </a>
 
-        <div class="h-100" id="leftside-menu-container" data-simplebar>
+    <div class="h-100" id="leftside-menu-container" data-simplebar>
 
-            <!--- Sidemenu -->
-            <ul class="side-nav">
+        <!--- Sidemenu -->
+        <ul class="side-nav">
 
+            <li class="side-nav-title side-nav-item">Navigation</li>
 
-                {{--                        <li class="side-nav-title side-nav-item"></li>--}}
+            <li class="side-nav-item">
+                <a data-bs-toggle="collapse" href="#sidebarDashboards" aria-expanded="false" aria-controls="sidebarDashboards" class="side-nav-link">
+                    <i class="uil-home-alt"></i>
+                    <span class="badge bg-success float-end">4</span>
+                    <span> Dashboards </span>
+                </a>
 
-                <li class="side-nav-item">
-                {{--                            <a href="{{ route('admin.dashboard') }}" class="nav-link">Dashboard</a>--}}
-                <li class="side-nav-title side-nav-item">DASHBOARD</li>
-
-                </li>
-
-                {{--Community AREA--}}
-
-                <li class="side-nav-item">
-                    <a data-bs-toggle="collapse" href="#community" aria-expanded="false" aria-controls="adminBlog" class="side-nav-link">
-                        <i class="uil-store"></i>
-                        <span> Community Section </span>
-                        <span class="menu-arrow"></span>
-                    </a>
-                    <div class="collapse" id="community">
-                        <ul class="side-nav-second-level">
-                            <li>
-                                <a href="{{route('community.page')}}">Pages Dashboard</a>
-                            </li>
-
-                            <li>
-                                <a href="">Group Dashboard</a>
-                            </li>
-
-                            <li>
-                                <a href="">User Dashboard</a>
-                            </li>
-                            <li>
-                                <a href="">User Posts</a>
-                            </li>
-
-                        </ul>
-                    </div>
-                </li>
+            </li>
 
 
-                <!-- end Help Box -->
-                <!-- End Sidebar -->
+            <li class="side-nav-item">
+                <a data-bs-toggle="collapse" href="#communityPages" aria-expanded="false" aria-controls="communityPages" class="side-nav-link">
+                    <i class="uil-store"></i>
+                    <span> Community Page </span>
+                    <span class="menu-arrow"></span>
+                </a>
+                <div class="collapse" id="communityPages">
+                    <ul class="side-nav-second-level">
+                        <li >
+                            <a href="{{route('community.page.dashboard')}}">Pages Dashboard</a>
+                        </li>
 
-                <div class="clearfix"></div>
-            </ul>
+                        <li>
+                            <a href="{{route('community.page')}}">All Pages</a>
+                        </li>
 
-        </div>
-        <!-- Sidebar -left -->
+                        <li>
+                            <a href="{{route('community.page')}}">Page Owners</a>
+                        </li>
+
+                        <li>
+                            <a href="{{route('community.page.posts')}}">Pages Posts</a>
+                        </li>
+
+                    </ul>
+                </div>
+            </li>
+
+            <li class="side-nav-item">
+                <a data-bs-toggle="collapse" href="#communityUser" aria-expanded="false" aria-controls="serviceCategory" class="side-nav-link">
+                    <i class="uil-store"></i>
+                    <span> Community All Users </span>
+                    <span class="menu-arrow"></span>
+                </a>
+                <div class="collapse" id="communityUser">
+                    <ul class="side-nav-second-level">
+
+
+                        <li>
+                            <a href="{{route('community.user')}}">All Users</a>
+                        </li>
+
+
+                    </ul>
+                </div>
+            </li>
+
+            <li class="side-nav-item">
+                <a data-bs-toggle="collapse" href="#communityGroups" aria-expanded="false" aria-controls="communityGroups" class="side-nav-link">
+                    <i class="uil-store"></i>
+                    <span> Community All Groups </span>
+                    <span class="menu-arrow"></span>
+                </a>
+                <div class="collapse" id="communityGroups">
+                    <ul class="side-nav-second-level">
+
+
+                        <li>
+                            <a href="">All Groups</a>
+                        </li>
+                        <li>
+                            <a href="">All Groups Owners</a>
+                        </li>
+                        <li>
+                            <a href="">All Groups User</a>
+                        </li>
+                        <li>
+                            <a href="">All Groups Posts</a>
+                        </li>
+
+
+                    </ul>
+                </div>
+            </li>
+
+
+
+        </ul>
+
+
+        <!-- End Sidebar -->
+
+        <div class="clearfix"></div>
 
     </div>
+    <!-- Sidebar -left -->
 
-</ul>
 </div>
-</body>
+<!-- Left Sidebar End -->
