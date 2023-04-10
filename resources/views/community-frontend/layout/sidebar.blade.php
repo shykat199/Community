@@ -155,22 +155,37 @@
                     <span class="side-title">Marketplace</span>
                 </a>
             </li>
-            <li class="single-side">
-                <a href="#">
+
+
+            @if(Auth::check() && !Auth::guest())
+                <li class="single-side">
+                    <a href="{{route('admin.logout')}}">
                             <span class="side-icon">
                                 <i class="fa fa-user-o" aria-hidden="true"></i>
                             </span>
-                    <span class="side-title">Login</span>
-                </a>
-            </li>
-            <li class="single-side">
-                <a href="#">
+                        <span class="side-title">LogOut</span>
+                    </a>
+                </li>
+            @else
+                <li class="single-side">
+                    <a href="{{route('admin.login')}}">
+                            <span class="side-icon">
+                                <i class="fa fa-user-o" aria-hidden="true"></i>
+                            </span>
+                        <span class="side-title">Login</span>
+                    </a>
+                </li>
+                <li class="single-side">
+                    <a href="{{route('admin.register_page')}}">
                             <span class="side-icon">
                                 <i class="fa fa-question-circle-o" aria-hidden="true"></i>
                             </span>
-                    <span class="side-title">Register</span>
-                </a>
-            </li>
+                        <span class="side-title">Register</span>
+                    </a>
+                </li>
+            @endif
+
+
         </ul>
     </div>
 </div>

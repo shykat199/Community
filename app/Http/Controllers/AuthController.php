@@ -26,7 +26,7 @@ class AuthController extends Controller
                 return to_route('admin.dashboard')->with('success','Admin Login Successfully.');
 
             } elseif (Auth::user()->role === USER_ROLE) {
-                //return view();
+                return to_route('community.index');
             } else {
                 return "Unauthorized User";
             }
@@ -47,7 +47,7 @@ class AuthController extends Controller
 
             }
             if (Auth::user()->role === USER_ROLE) {
-                return "User Dashboard";
+                return to_route('community.index');
             }
         }
         return view('admin.auth.register');
@@ -73,9 +73,7 @@ class AuthController extends Controller
                 return to_route('admin.dashboard')->with('success','Admin Login Successfully.');
 
             } elseif (Auth::user()->role === USER_ROLE) {
-                return "User Dashboard";
-            } elseif (Auth::user()->role === SERVICE_PROVIDER_ROLE) {
-                return to_route('admin.dashboard');
+                return to_route('community.index')->with('success','LogIn Successfully');
             } else {
                 return "Invalid User";
             }
