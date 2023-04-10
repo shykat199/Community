@@ -26,8 +26,10 @@ Route::prefix('dashboard')->group(function () {
     Route::post('/register', [AuthController::class, 'register'])->name('admin.register');
 
 });
+Route::middleware(['auth'])->group(function(){
 Route::get('/admin/dashboard',[AdminDashboardController::class,'dashboard'])->name('admin.dashboard');
 //category
 Route::get('/category/details',[CategoryController::class,'Category'])->name('category.view');
 Route::post('/category/details/form',[CategoryController::class,'PostCategory'])->name('category.post');
 Route::get('/category/list',[CategoryController::class,'CategoryList'])->name('category.list');
+});
