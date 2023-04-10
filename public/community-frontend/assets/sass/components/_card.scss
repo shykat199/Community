@@ -1,0 +1,118 @@
+
+
+// first card 
+
+.single-card {
+    padding: 15px;
+    border: 1px solid;
+    max-width: 190px;
+    width: 100%;
+    position: relative;
+    margin-bottom: 30px;
+    img {
+        max-height: 160px;
+        max-width: 100%;
+        object-fit: contain;
+    }
+    .card-title {
+        a {
+            font-size: 13px;
+            font-weight: 600;
+            color: $theme-font;
+            transition: all .3s ease;
+            &:hover{
+                color: $theme-color;
+            }
+        }
+    }
+    .card-sub-title {
+        a {
+            font-size: 14px;
+            line-height: 22px;
+            color: $theme-font;
+            transition: all .3s ease;
+            &:hover{
+                color: $theme-color;
+            }
+        }
+    }
+    .card-rating {
+        display: flex;
+    }
+    .price-tag {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        span {
+            font-size: 16px;
+            color: $theme-color;
+            font-weight: 600;
+        }
+        .back-price {
+            color: #515356;
+        }
+        .cart-btn {
+            font-size: 22px;
+            color: $theme-font;
+            transition: all .3s ease;
+            &:hover{
+                color: $theme-color;
+            }
+        }
+    }
+    .hover-list {
+        display: flex;
+        flex-direction: column;
+        position: absolute;
+        top: 25px;
+        right: 25px;
+        visibility: hidden;
+        opacity: 0;
+        transition: all .3s ease;
+        li {
+            height: 30px;
+            width: 30px;
+            line-height: 30px;
+            text-align: center;
+            border-radius: 50%;
+            box-shadow: inset 0 0 0 1px #ebebeb;
+            margin: 5px 0;
+            transition: all .3s ease;
+            &:hover{
+                box-shadow: inset 0 0 0 1px $theme-font;
+            }
+            a {
+                color: $theme-font;
+            }
+        }
+    }
+    &:hover{
+        .hover-list{
+            visibility: visible;
+            opacity: 1;
+        }
+    }
+    .product-sticker {
+        display: flex;
+        position: absolute;
+        top: 15px;
+        left: 10px;
+        li {
+            height: 40px;
+            width: 40px;
+            line-height: 40px;
+            background: $theme-color;
+            border-radius: 50%;
+            margin: 0 5px;
+            text-align: center;
+            a{
+                font-size: 14px;
+                color: $white;
+            }
+        }
+        .new-sticker {
+            background: #05894d;
+        }
+    }
+}
+

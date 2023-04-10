@@ -28,4 +28,5 @@ Route::prefix('dashboard')->group(function () {
 });
 Route::get('/admin/dashboard',[AdminDashboardController::class,'dashboard'])->name('admin.dashboard');
 
-require base_path('routes/community.php');
+require base_path('routes/community/community.php');
+require base_path('routes/community/community_frontend.php');

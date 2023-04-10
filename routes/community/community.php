@@ -18,3 +18,6 @@ Route::prefix('/community')->group(function (){
     Route::get('/users/{id}',[CommunityUserDetailsController::class,'show'])->name('community.user.show');
 
 });
+
+
+

@@ -1,0 +1,32 @@
+.custome-pagination {
+    .custome-pagination-list {
+  
+      li {
+        margin-right: 16px;
+  
+        @media (max-width: 576px) {
+          margin-right: 10px;
+        }
+  
+        .pagination-item {
+          background: $theme-color;
+          color: #FFFFFF;
+          width: 38px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+  
+  
+          @media (max-width: 576px) {
+            font-size: 13px;
+            width: 32px;
+          }
+  
+          &:hover {
+            color: $theme-font;
+            background: $primary-bg;
+          }
+        }
+      }
+    }
+  }

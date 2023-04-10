@@ -1,0 +1,23 @@
+.form-check{
+    display: flex;
+    align-items: center;
+   line-height: 25px;
+}
+.form-check-input {
+    width: 18px;
+    height: 18px;
+
+    &:hover {
+        cursor: pointer;
+    }
+}
+
+.form-check-input:checked {
+    background-color: $theme-color;
+
+}
+
+.form-check-input:focus {
+    outline: none;
+    box-shadow: none;
+}

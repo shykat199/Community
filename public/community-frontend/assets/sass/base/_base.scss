@@ -1,0 +1,147 @@
+
+*{
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+    list-style: none;
+}
+
+
+html {
+    font-size: $base-font-size;
+}
+:root {
+    scroll-behavior: unset;
+}
+body {
+    font-family: $base-font;
+    font-size: 16px;
+    overflow-x: hidden;
+    font-family: 'Poppins', sans-serif;
+}
+
+p {
+    font-size: 16px;
+    color: $theme-font;
+    margin: 0;
+    font-family: $base-font;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    font-family: $heading-font;
+    font-weight: 500;
+    margin: 0;
+    padding: 0;
+}
+
+ul {
+    padding: 0;
+    margin: 0;
+    list-style-type: none;
+}
+
+a {
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: none;
+}
+
+img{
+    max-width: 100%;
+}
+
+
+.d-flex {
+    display: flex;
+}
+
+.ptop-10{
+    padding-top: 10px;
+}
+.ptop-15{
+    padding-top: 15px;
+}
+.ptop-20{
+    padding-top: 20px;
+}
+.ptop-25{
+    padding-top: 25px;
+}
+.ptop-40{
+    padding-top: 40px;
+}
+.p-left-14{
+    padding-left: 14px;
+}
+.p-left-20{
+    padding-left: 20px;
+}
+.theme-color{
+    color: $theme-color;
+}
+.primary-bg{
+    background-color: $primary-bg;
+}
+.common-a{
+    color: $theme-font;
+    transition: all 0.3s ease-in-out;
+    &:hover{
+        color: $theme-color;
+        
+    }
+}
+.text-under{
+    text-decoration: underline;
+}
+.tooltiptext-a {
+    // color: $white;
+    transition: all 0.2s ease-in-out;
+    position: relative;
+
+    &:hover {
+        color: rgba(255, 255, 255, 0.5);
+    }
+
+    .tooltiptext {
+        visibility: hidden;
+        background-color: $white;
+        color: $black;
+        text-align: center;
+        padding: 5px 10px;
+        font-size: 12px;
+        width: max-content;
+        border: 1px solid #000;
+
+        /* Position the tooltip */
+        position: absolute;
+        z-index: 1;
+        top: 120%;
+        left: 50%;
+
+        @media (max-width: 991px) {
+            padding: 5px 4px;
+            font-size: 10px;
+            left: 10%;
+        }
+
+        // transition: all 0.8s ease-in;
+        // margin-left: -60px;
+    }
+
+
+    &:hover .tooltiptext {
+        transition-delay: 1s;
+        visibility: visible;
+    }
+}
+
+.custom-border-bottom{
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}

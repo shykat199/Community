@@ -1,0 +1,170 @@
+.main-profile {
+    padding-top: 15px;
+}
+.full-profile-box {
+    background: $white;
+    margin: 10px;
+}
+.full-profile-cover {
+    img {
+        max-height: 230px;
+        width: 100%;
+        object-fit: cover;
+        border-radius: 5px;
+    }
+}
+.full-profile-info {
+    display: flex;
+    justify-content: space-between;
+    padding: 0 50px;
+    // background: $white;
+}
+.full-profile-left {
+    display: flex;
+    align-items: center;
+    a {
+        margin-top: -100px;
+        img {
+            max-height: 250px;
+            max-width: 250px;
+            width: 100%;
+            border-radius: 5px;
+        }
+    }
+    .profile-name {
+        margin-left: 50px;
+        h6 {
+            a {
+                font-size: 16px;
+                color: $theme-font;
+                transition: all .3s ease;
+                &:hover{
+                    color: $theme-color;
+                }
+            }
+        }
+        .locaiton {
+            font-size: 13px;
+            
+        }
+    }
+}
+.profile-down-part {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 45px 50px;
+    .profile-social {
+        display: flex;
+        align-items: center;
+        column-gap: 10px;
+        li {
+            a {
+                img {
+                    max-width: 35px;
+                }
+            }
+        }
+    }
+}
+
+// about content style
+
+.profile-about-left {
+    .about-left-title {
+        font-size: 17px;
+        color: $theme-font;
+        font-weight: 600;
+    }    
+}
+.profile-personal-information {
+    li {
+        font-size: 16px;
+        color: #6B7C8F;
+        margin: 10px 0;
+        line-height: 26px;
+        span {
+            color: $theme-color;
+            margin-right: 5px;
+        }
+        a {
+            color: #6B7C8F;
+        }
+    }
+}
+.community-aboutMe-content {
+    p {
+        font-size: 16px;
+        line-height: 26px;
+        color: #6B7C8F;
+        margin-bottom: 10px;
+        &:last-child{
+            margin-bottom: 0;
+        }
+    }
+}
+.education-work-list {
+    .single-education {
+        .education-title {
+            font-size: 15px;
+            color: $theme-font;
+            font-weight: 600;
+            margin-bottom: 15px;
+            span {
+                color: #6B7C8F;
+            }
+        }
+        .education-sub-title {
+            font-size: 15px;
+            color: #6B7C8F;
+            margin-bottom: 15px;
+        }
+        .details {
+            font-size: 15px;
+            color: #6B7C8F;
+        }
+        margin-bottom: 20px;
+    }
+}
+
+
+// friends tab content 
+.friends-tab-wrap {
+    .friends-title {
+        display: flex;
+        justify-content: space-between;
+        padding: 30px 20px;
+        background: $white;
+        border-radius: 5px;
+        .friends-count {
+            p {
+                font-size: 17px;
+                color: $theme-font;
+                display: block;
+            }
+            span {
+                font-size: 16px;
+                display: block;
+                color: $theme-color;
+            }
+        }
+        .status-tab {
+            border: none;
+            .nav-item {
+                border: none;
+            }
+            .nav-link {
+                font-size: 17px;
+                color: $theme-font;
+                padding: 10px;
+                text-align: center;
+                margin: 0 5px;
+                border: none;
+            }
+            .nav-link.active {
+                color: $theme-color;
+                border-bottom: 1px solid $theme-color;
+            }
+        }
+    }
+}

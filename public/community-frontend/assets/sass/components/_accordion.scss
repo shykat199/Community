@@ -1,0 +1,70 @@
+.custom-accordion {
+    margin-top: 40px;
+    --bs-accordion-btn-focus-border-color: #ecfe86;
+    --bs-accordion-btn-focus-box-shadow: 0 0 0 0.25rem rgba(242, 231, 11, 0.8);
+
+    .accordion-item {
+        .accordion-button:not(.collapsed) {
+            color: $theme-font;
+            background-color: $theme-color;
+        }
+
+        .accordion-button::after {
+            content: "\f067";
+            background-image: none;
+            font-family: fontawesome;
+        }
+
+        .accordion-button:not(.collapsed)::after {
+            content: "\f068";
+            background-image: none;
+            font-family: fontawesome;
+            transform: rotate(0deg);
+        }
+
+    }
+
+    .accordion-button:focus {
+        box-shadow: 0 0 0 0.25rem rgba($theme-color, .5);
+    }
+}
+
+.custom-accordion-open {
+    margin-top: 40px;
+    --bs-accordion-btn-focus-border-color: white;
+    --bs-accordion-btn-focus-box-shadow: 0 0 0 0.25rem rgba(255, 255, 255, 1.0);
+   
+    .accordion-item {
+        border: none;
+       
+        .accordion-button{
+            padding: 0px 0 10px;
+        }
+        .accordion-button:not(.collapsed) {
+            color: $theme-font;
+            background-color: white;
+            box-shadow: none;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+        }
+
+        .accordion-button::after {
+            content: "\f067";
+            background-image: none;
+            font-family: fontawesome;
+        }
+
+        .accordion-button:not(.collapsed)::after {
+            content: "\f068";
+            background-image: none;
+            font-family: fontawesome;
+            transform: rotate(0deg);
+        }
+        .accordion-body{
+            padding: 20px 0;
+        }
+    }
+
+    .accordion-button:focus {
+        box-shadow: 0 0 0 0.25rem rgba(white, 1);
+    }
+}

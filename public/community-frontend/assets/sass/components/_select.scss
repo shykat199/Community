@@ -1,0 +1,13 @@
+.form-select.ecom-custom-select {
+    font-size: 14px;
+    background-color: #FFFAF5;
+    outline: none;
+    box-shadow: none;
+    padding: 10px 15px;
+    border: none;
+    width: auto;
+}
+.rating-custom-select:focus{
+    border-color: $theme-font;
+    box-shadow: none;
+}
