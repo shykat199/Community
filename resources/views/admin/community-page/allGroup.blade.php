@@ -5,7 +5,7 @@
 
     <div class="content-page">
         <div class="content">
-            <h4 class="page-title">Pages</h4>
+            <h4 class="page-title">Groups</h4>
             <div class="">
                 <div class="card mt-2">
 
@@ -32,12 +32,12 @@
                             <thead>
                             <tr>
                                 <th>#ID</th>
-                                <th>Page Name</th>
-                                <th>Page Owner</th>
-                                <th>Page Image</th>
-                                <th>Page Description</th>
-                                <th>Page Like</th>
-                                <th>Page Follow</th>
+                                <th>Group Name</th>
+                                <th>Group Owner</th>
+                                <th>Group Image</th>
+                                <th>Group Description</th>
+                                <th>Group Like</th>
+                                <th>Group Follow</th>
                                 <th>Action</th>
                             </tr>
                             </thead>

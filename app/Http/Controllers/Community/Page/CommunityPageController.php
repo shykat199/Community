@@ -70,7 +70,7 @@ class CommunityPageController extends Controller
             ->groupBy('community_pages.id')
             ->get();
 
-        return view('admin.community-page.allPage', $data);
+        return view('admin.community-page.allGroup', $data);
     }
 
     /**

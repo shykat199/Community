@@ -24,7 +24,7 @@ Route::get('/register/page', [AuthController::class, 'registerPage'])->name('adm
 Route::post('/register', [AuthController::class, 'register'])->name('admin.register');
 
 
-Route::get('/admin/dashboard', [AdminDashboardController::class, 'dashboard'])->name('admin.dashboard');
+Route::get('/admin/dashboard', [AdminDashboardController::class, 'dashboard'])->name('admin.dashboard')->middleware('');
 
 require base_path('routes/community/community.php');
 require base_path('routes/community/community_frontend.php');
