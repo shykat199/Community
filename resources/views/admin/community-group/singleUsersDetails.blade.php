@@ -6,11 +6,17 @@
 
     <div class="content-page">
         <div class="content">
-            <h4 class="page-title">Single User Details</h4>
+            <div class="d-flex">
+
+                <h4 class="page-title">{{!empty($singleUser) && isset($singleUser)?$singleUser[0]['name']:''}} Details</h4>
+                <a href="{{route('community.groups.singleUser.profile',!empty($singleUser) && isset($singleUser)?$singleUser[0]['uId']:'')}}" class="btn btn-success mb-1 mt-1" style="margin-left: 5px;">GoTo Profile</a>
+            </div>
+
             <div class="card border-success border">
                 <div class="card-body">
                     <div class="row">
                         <div class="col">
+
 
                             <div class="mb-3">
                                 <label for="exampleInputEmail1" class="form-label">User Name</label>

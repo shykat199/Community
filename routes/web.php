@@ -15,7 +15,8 @@ use App\Http\Controllers\Service\CategoryController;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
-
+require base_path('routes/community/community.php');
+require base_path('routes/community/community_frontend.php');
 
 Route::get('/login', [AuthController::class, 'loginPage'])->name('admin.login_page');
 Route::post('/login', [AuthController::class, 'login'])->name('admin.login');
@@ -23,8 +24,6 @@ Route::get('/logout', [AuthController::class, 'logout'])->name('admin.logout');
 Route::get('/register/page', [AuthController::class, 'registerPage'])->name('admin.register_page');
 Route::post('/register', [AuthController::class, 'register'])->name('admin.register');
 
-
-Route::get('/admin/dashboard', [AdminDashboardController::class, 'dashboard'])->name('admin.dashboard')->middleware('');
-
-require base_path('routes/community/community.php');
-require base_path('routes/community/community_frontend.php');
+Route::middleware(['auth'])->group(function(){
+    Route::get('/admin/dashboard',[AdminDashboardController::class,'dashboard'])->name('admin.dashboard');
+});

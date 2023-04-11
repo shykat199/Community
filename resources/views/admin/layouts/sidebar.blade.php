@@ -96,13 +96,13 @@
 
 
                         <li>
-                            <a href="">All Groups</a>
+                            <a href="{{route('community.user.group.dashboard')}}">Groups Dashboard</a>
                         </li>
                         <li>
-                            <a href="">All Groups Owners</a>
+                            <a href="{{route('community.user.groups')}}">All Groups Owners</a>
                         </li>
                         <li>
-                            <a href="">All Groups User</a>
+                            <a href="{{route('community.allUser.groups')}}">All Groups User</a>
                         </li>
                         <li>
                             <a href="">All Groups Posts</a>

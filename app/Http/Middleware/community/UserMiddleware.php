@@ -4,6 +4,7 @@ namespace App\Http\Middleware\community;
 
 use Closure;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Symfony\Component\HttpFoundation\Response;
 
 class UserMiddleware
@@ -11,10 +12,17 @@ class UserMiddleware
     /**
      * Handle an incoming request.
      *
-     * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
+     * @param \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response) $next
      */
     public function handle(Request $request, Closure $next): Response
     {
-        return $next($request);
+        if (\Auth::user()->role === USER_ROLE) {
+            return $next($request);
+        }
+
+        Auth::logout();
+        return redirect()->route('admin.login')->with('error', 'Please Login First');
+
+
     }
 }

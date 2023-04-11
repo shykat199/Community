@@ -29,8 +29,8 @@
                                             <div class="float-end">
                                                 <i class="mdi mdi-account-multiple widget-icon"></i>
                                             </div>
-                                            <h5 class="text-muted fw-normal mt-0" title="Number of Customers">All Page Count</h5>
-                                            <h3 class="mt-3 mb-3">{{$allPageCount}}</h3>
+                                            <h5 class="text-muted fw-normal mt-0" title="Number of Customers">All Group Count</h5>
+                                            <h3 class="mt-3 mb-3"></h3>
                                             <p class="mb-0 text-muted">
                                                 <span class="text-nowrap">Since last month</span>
                                             </p>
@@ -45,8 +45,8 @@
                                             <div class="float-end">
                                                 <i class="mdi mdi-cart-plus widget-icon"></i>
                                             </div>
-                                            <h5 class="text-muted fw-normal mt-0" title="Number of Orders">Page Post Count</h5>
-                                            <h3 class="mt-3 mb-3">{{$allPagePostCount}}</h3>
+                                            <h5 class="text-muted fw-normal mt-0" title="Number of Orders">Group Post Count</h5>
+                                            <h3 class="mt-3 mb-3"></h3>
                                             <p class="mb-0 text-muted">
                                                 <span class="text-nowrap">Since last month</span>
                                             </p>
@@ -63,7 +63,7 @@
                                                 <i class="mdi mdi-account-multiple widget-icon"></i>
                                             </div>
                                             <h5 class="text-muted fw-normal mt-0" title="Number of Customers">All Comment Count</h5>
-                                            <h3 class="mt-3 mb-3">{{$allPageCommentCount}}</h3>
+                                            <h3 class="mt-3 mb-3"></h3>
                                             <p class="mb-0 text-muted">
                                                 <span class="text-nowrap">Since last month</span>
                                             </p>

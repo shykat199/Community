@@ -1,6 +1,5 @@
 @extends('admin.layouts.master')
 
-
 @section('admin.content')
 
     <div class="content-page">
@@ -32,13 +31,11 @@
                             <thead>
                             <tr>
                                 <th>#ID</th>
-                                <th>Page Name</th>
-                                <th>Page Owner</th>
-                                <th>Page Image</th>
-                                <th>Page Description</th>
-                                <th>Page User Count</th>
-                                <th>Page Like</th>
-                                <th>Page Follow</th>
+                                <th>Group Name</th>
+                                <th>Group Owner</th>
+                                <th>Group Image</th>
+                                <th>Group Description</th>
+                                <th>Group User Count</th>
                                 <th>Action</th>
                             </tr>
                             </thead>
@@ -46,16 +43,14 @@
 
                             <tbody>
 
-                            @foreach($pageOwners as $page)
+                            @foreach($allGroups as $group)
                                 <tr>
                                     <td>{{$idx++}}</td>
-                                    <td>{{$page->page_name}}</td>
-                                    <td>{{$page->name}}</td>
-                                    <td>{{$page->page_profile_photo}}</td>
-                                    <td>{{Str::limit($page->page_details,40,'....')}}</td>
-                                    <td>$320,800</td>
-                                    <td>$320,800</td>
-                                    <td>{{$page->followCount}}</td>
+                                    <td>{{$group->group_name}}</td>
+                                    <td>{{$group->ownerName}}</td>
+                                    <td>{{$group->cover_photo}}</td>
+                                    <td>{{Str::limit($group->group_details,40,'....')}}</td>
+                                    <td>{{$group->userCount}}</td>
                                     <td>
                                         <a href="" class="btn btn-warning">Click !</a>
                                     </td>

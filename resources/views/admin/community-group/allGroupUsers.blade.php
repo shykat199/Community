@@ -5,7 +5,9 @@
 
     <div class="content-page">
         <div class="content">
-            <h4 class="page-title">All Users</h4>
+            <h4 class="page-title">All Group Users</h4>
+            <h4 class="page-title">Group Name: {{$allGroupUser[0]['group_name']}}</h4>
+{{--            @dd($allGroupUser[0]['group_name'])--}}
             <div class="">
                 <div class="card mt-2">
 
@@ -32,10 +34,8 @@
                             <thead>
                             <tr>
                                 <th>#ID</th>
-                                <th>Group Name</th>
-                                <th>Group Admin</th>
-                                <th>Group Image</th>
-                                <th>Group Description</th>
+                                <th>User Name</th>
+                                <th>User Email</th>
                                 <th>Action</th>
 
                             </tr>
@@ -44,17 +44,15 @@
 
                             <tbody>
 
-                            @foreach($allGroups as $group)
+
+                            @foreach($allGroupUser as $group)
                                 <tr>
                                     <td>{{$idx++}}</td>
-                                    <td>{{$group->group_name}}</td>
-                                    <td>{{$group->ownerName}}</td>
-                                    <td>Image</td>
-                                    <td>{{Str::limit($group->group_details,30,'....')}}</td>
-
+                                    <td>{{$group->name}}</td>
+                                    <td>{{$group->email}}</td>
                                     <td>
-                                        <a href="{{route('community.allUser.details.groups',$group->cGroupId)}}" class="btn btn-warning">
-                                            Check Users !</a>
+                                        <a href="{{route('community.groups.singleUser.details',$group->uId)}}" class="btn btn-warning">
+                                            User Profile !</a>
                                     </td>
                                 </tr>
                             @endforeach

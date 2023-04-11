@@ -24,7 +24,6 @@
     <link href="{{asset("assets/css/vendor/responsive.bootstrap5.css")}}" rel="stylesheet" type="text/css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 </head>
-{{--<body >--}}
 <body class="loading" data-layout-color="light" data-leftbar-theme="dark" data-layout-mode="fluid" data-rightbar-onstart="true">
 <!-- Begin page -->
 <div class="wrapper">
@@ -57,7 +56,7 @@
     </footer>
     <!-- end Footer -->
 
-</div>
+
 
 <!-- ============================================================== -->
 <!-- End Page content -->
@@ -89,6 +88,7 @@
 <!-- demo app -->
 <script src="{{ asset('assets/js/pages/demo.dashboard.js') }}"></script>
 <!-- end demo js-->
+</body>
 
 <!-- Datatables js -->
 <script src="{{asset("assets/js/vendor/jquery.dataTables.min.js")}}"></script>
