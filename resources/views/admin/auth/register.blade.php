@@ -47,11 +47,11 @@
 
             <article class="regular">
                 <h5>User Role</h5>
-                <input type="radio" name="user" id="rad1" value="provider">
+                <input type="radio" name="role" id="rad1" value="{{SERVICE_PROVIDER_ROLE}}">
                 <label for="rad1">Service Provider</label>
-                <input type="radio" name="user" id="rad2" value="vendor">
+                <input type="radio" name="role" id="rad2" value="{{VENDOR_ROLE}}">
                 <label for="rad2">Vendor</label>
-                <input type="radio" name="user" id="rad3" value="user">
+                <input type="radio" name="role" id="rad3" value="{{USER_ROLE}}]">
                 <label for="rad3">User</label>
             </article>
 
