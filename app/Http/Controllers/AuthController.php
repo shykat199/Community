@@ -87,7 +87,7 @@ class AuthController extends Controller
         $createUser = User::create([
             'name' => $request->get('name'),
             'email' => $request->get('email'),
-            'role' => USER_ROLE,
+            'role' => $request->get('role'),
             'email_verified_at' => Carbon::now(),
             'password' => Hash::make($request->get('password')),
 
