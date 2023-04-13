@@ -6,6 +6,7 @@ use App\Http\Controllers\Community\Page\CommunityPagePostController;
 use App\Http\Controllers\Community\Page\CommunityPagePostCommentController;
 use App\Http\Controllers\Community\User\CommunityUserDetailsController;
 use App\Http\Controllers\Community\Group\CommunityUserGroupController;
+use App\Http\Controllers\Community\User\CommunityUserFriendRequestController;
 
 
 Route::middleware(['auth','admin'])->prefix('/community')->group(function (){
@@ -27,6 +28,8 @@ Route::middleware(['auth','admin'])->prefix('/community')->group(function (){
     Route::get('/group/users/{id}',[CommunityUserGroupController::class,'allGroupsUsersDetails'])->name('community.allUser.details.groups');
     Route::get('/group/users/profile/{id}',[CommunityUserGroupController::class,'singleUserProfile'])->name('community.groups.singleUser.details');
     Route::get('/group/single/users/profile/{id}',[CommunityUserGroupController::class,'viewSingleUserProfile'])->name('community.groups.singleUser.profile');
+
+
 
 });
 

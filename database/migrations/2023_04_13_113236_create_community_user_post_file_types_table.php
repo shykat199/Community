@@ -11,10 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('community_user_posts', function (Blueprint $table) {
+        Schema::create('community_user_post_file_types', function (Blueprint $table) {
             $table->id();
-            $table->bigInteger('user_id');
-            $table->text('post_description')->nullable();
+            $table->bigInteger('post_id');
+            $table->string('post_image_video')->nullable();
+            $table->text('caption')->nullable();
             $table->timestamps();
         });
     }
@@ -24,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('community_user_posts');
+        Schema::dropIfExists('community_user_post_file_types');
     }
 };

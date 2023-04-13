@@ -3,6 +3,8 @@
         <img src="{{asset('community-frontend/assets/images/community/home/smallCover.jpg')}}" alt="cover">
     </div>
 
+
+
     <div class="profile-title d-flex align-items-center">
         <a href="#"><img src="{{asset("community-frontend/assets/images/community/home/user-0.jpg")}}" alt=""></a>
         <div class="profile-name">
@@ -16,14 +18,15 @@
                 <p class="statics-name">Likes</p>
             </a></li>
         <li><a href="#">
-                <p class="statics-count">8591</p>
+                <p class="statics-count">{{!empty(countFollowing()[0]) && isset(countFollowing()[0])?countFollowing()[0]['userFollowings']:'0'}}</p>
                 <p class="statics-name">Following</p>
             </a></li>
         <li><a href="#">
-                <p class="statics-count">784514</p>
+                <p class="statics-count">{{!empty(countFollowers()[0]) && isset(countFollowers()[0])?countFollowers()[0]['userFollowers']:'0'}}</p>
                 <p class="statics-name">Followers</p>
             </a></li>
     </ul>
+
 
     <div class="profile-likes">
         <p><i class="fa fa-heart-o" aria-hidden="true"></i> New Likes This Weeks</p>

@@ -14,18 +14,17 @@
     <link rel="stylesheet" href="{{asset("community-frontend/assets/sass/style.css")}}">
 
     <script src="{{asset("community-frontend/assets/js/jquery.min.js")}}"></script>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css"/>
+    <link rel="stylesheet" href="http://demo.itsolutionstuff.com/plugin/bootstrap-3.min.css">
+
+
 </head>
 
 <body>
 <!-- community header area start  -->
-@if(\Illuminate\Support\Facades\Session::has('success'))
-    <div class="alert alert-success m-2" role="alert">
-        <i class="dripicons-checkmark me-2"></i>
-        <strong>{{\Illuminate\Support\Facades\Session::get('success')}}</strong>
-        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="alert" aria-label="Close"
-                style="float: right"></button>
-    </div>
-@endif
+
+
 <header class="community-header-area">
     <div class="main-header">
         <div class="community-logo">
@@ -44,13 +43,14 @@
                     <button type="submit" id="inputSearchBtn"><i class="fa fa-search" aria-hidden="true"></i></button>
                 </form>
             </div>
+            {{--            @dd(allRequestedFriend())--}}
             <ul class="menu_list">
                 <li class="list_option">
                     <a href="#"><i class="fa fa-home" aria-hidden="true"></i></a></li>
                 <li class="list_option">
                     <a href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false"><i
                             class="fa fa-user" aria-hidden="true"></i> <span
-                            class="counting frind-request-counting">5</span></a>
+                            class="counting frind-request-counting">{{ !empty(countRequest()[0]) && isset(countRequest()[0])?countRequest()[0]['total']:'0'}}</span></a>
                     <div class="dropdown-option dropdown-menu" aria-labelledby="dropdownMenuLink">
                         <div class="dropdown-title d-flex align-items-center">
                             <h4>Friend Requests</h4>
@@ -58,85 +58,36 @@
                                                                           aria-hidden="true"></i></button>
                         </div>
                         <ul class="dropdown-content">
-                            <li class="dropdown-content-list">
-                                <div class="figure">
-                                    <a href="#"><img src="/assets/images/community/header/user-1.jpg" alt=""></a>
-                                </div>
-                                <div class="text">
-                                    <h6><a href="#">James Vanwin</a></h6>
-                                    <p>26 friends</p>
-                                </div>
-                                <div class="add-dlt-btn">
-                                    <button id="dltBtn" type="button"><i class="fa fa-times" aria-hidden="true"></i>
-                                    </button>
-                                    <button id="addBtn" type="button"><i class="fa fa-check" aria-hidden="true"></i>
-                                    </button>
-                                </div>
-                            </li>
-                            <li class="dropdown-content-list">
-                                <div class="figure">
-                                    <a href="#"><img src="/assets/images/community/header/user-2.jpg" alt=""></a>
-                                </div>
-                                <div class="text">
-                                    <h6><a href="#">James Vanwin</a></h6>
-                                    <p>26 friends</p>
-                                </div>
-                                <div class="add-dlt-btn">
-                                    <button id="dltBtn" type="button"><i class="fa fa-times" aria-hidden="true"></i>
-                                    </button>
-                                    <button id="addBtn" type="button"><i class="fa fa-check" aria-hidden="true"></i>
-                                    </button>
-                                </div>
-                            </li>
-                            <li class="dropdown-content-list">
-                                <div class="figure">
-                                    <a href="#"><img src="/assets/images/community/header/user-3.jpg" alt=""></a>
-                                </div>
-                                <div class="text">
-                                    <h6><a href="#">James Vanwin</a></h6>
-                                    <p>26 friends</p>
-                                </div>
-                                <div class="add-dlt-btn">
-                                    <button id="dltBtn" type="button"><i class="fa fa-times" aria-hidden="true"></i>
-                                    </button>
-                                    <button id="addBtn" type="button"><i class="fa fa-check" aria-hidden="true"></i>
-                                    </button>
-                                </div>
-                            </li>
-                            <li class="dropdown-content-list">
-                                <div class="figure">
-                                    <a href="#"><img src="/assets/images/community/header/user-4.jpg" alt=""></a>
-                                </div>
-                                <div class="text">
-                                    <h6><a href="#">James Vanwin</a></h6>
-                                    <p>26 friends</p>
-                                </div>
-                                <div class="add-dlt-btn">
-                                    <button id="dltBtn" type="button"><i class="fa fa-times" aria-hidden="true"></i>
-                                    </button>
-                                    <button id="addBtn" type="button"><i class="fa fa-check" aria-hidden="true"></i>
-                                    </button>
-                                </div>
-                            </li>
-                            <li class="dropdown-content-list">
-                                <div class="figure">
-                                    <a href="#"><img src="/assets/images/community/header/user-5.jpg" alt=""></a>
-                                </div>
-                                <div class="text">
-                                    <h6><a href="#">James Vanwin</a></h6>
-                                    <p>26 friends</p>
-                                </div>
-                                <div class="add-dlt-btn">
-                                    <button id="dltBtn" type="button"><i class="fa fa-times" aria-hidden="true"></i>
-                                    </button>
-                                    <button id="addBtn" type="button"><i class="fa fa-check" aria-hidden="true"></i>
-                                    </button>
-                                </div>
-                            </li>
+
+
+                            @foreach(allRequestedFriend() as $friendRequest)
+
+                                <li class="dropdown-content-list">
+                                    <div class="figure">
+                                        <a href="#"><img
+                                                src="{{asset("community-frontend/assets/images/community/header/user-1.jpg")}}"
+                                                alt=""></a>
+                                    </div>
+                                    <div class="text">
+                                        <h6><a href="#" class="userName" data-idd="{{$friendRequest->reqId}}"
+                                               data-id="{{$friendRequest->uId}}">{{$friendRequest->userName}}</a></h6>
+                                        <p>26 friends</p>
+                                    </div>
+                                    <div class="add-dlt-btn">
+                                        <a class="dltBtn" type="button"><i class="fa fa-times" aria-hidden="true"></i>
+                                        </a>
+                                        <a class="addBtn" type="button"><i class="fa fa-check" aria-hidden="true"></i>
+                                        </a>
+                                    </div>
+                                </li>
+                            @endforeach
+
+
                         </ul>
                         <a href="#" class="vew-all-btn">View All Requests</a>
                     </div>
                 </li>
+
                 <li class="list_option">
                     <a href="#" role="button" id="smsDropdown" data-bs-toggle="dropdown" aria-expanded="false"><i
                             class="fa fa-envelope-o" aria-hidden="true"></i> <span
@@ -153,51 +104,19 @@
                             </button>
                         </form>
                         <ul class="dropdown-content dropdown-sms-content">
+
                             <li class="dropdown-content-list">
                                 <div class="figure">
-                                    <a href="#"><img src="/assets/images/community/header/user-1.jpg" alt=""></a>
-                                </div>
-                                <div class="text">
-                                    <h6><a href="#">James Vanwin</a></h6>
-                                    <p>Hello Dear I Want Talk To You</p>
-                                </div>
-                            </li>
-                            <li class="dropdown-content-list">
-                                <div class="figure">
-                                    <a href="#"><img src="/assets/images/community/header/user-2.jpg" alt=""></a>
-                                </div>
-                                <div class="text">
-                                    <h6><a href="#">Harry Lopez</a></h6>
-                                    <p>Hello Dear I Want Talk To You</p>
-                                </div>
-                            </li>
-                            <li class="dropdown-content-list">
-                                <div class="figure">
-                                    <a href="#"><img src="{{asset("community-frontend/assets/images/community/header/user-3.jpg")}}" alt=""></a>
+                                    <a href="#"><img
+                                            src="{{asset("community-frontend/assets/images/community/header/user-3.jpg")}}"
+                                            alt=""></a>
                                 </div>
                                 <div class="text">
                                     <h6><a href="#">Matthew Smith </a></h6>
                                     <p>Hello Dear I Want Talk To You</p>
                                 </div>
                             </li>
-                            <li class="dropdown-content-list">
-                                <div class="figure">
-                                    <a href="#"><img src="/assets/images/community/header/user-4.jpg" alt=""></a>
-                                </div>
-                                <div class="text">
-                                    <h6><a href="#">James Vanwin</a></h6>
-                                    <p>Hi. I Am looking For UI Designer</p>
-                                </div>
-                            </li>
-                            <li class="dropdown-content-list">
-                                <div class="figure">
-                                    <a href="#"><img src="/assets/images/community/header/user-5.jpg" alt=""></a>
-                                </div>
-                                <div class="text">
-                                    <h6><a href="#">Harry Lopez</a></h6>
-                                    <p>Thanks For Connecting!</p>
-                                </div>
-                            </li>
+
                         </ul>
                         <a href="#" class="vew-all-btn">View All Message</a>
                     </div>
@@ -213,9 +132,12 @@
                                                                           aria-hidden="true"></i></button>
                         </div>
                         <ul class="dropdown-content">
+
                             <li class="dropdown-content-list">
                                 <div class="figure">
-                                    <a href="#"><img src="/assets/images/community/header/user-1.jpg" alt=""></a>
+                                    <a href="#"><img
+                                            src="{{asset("community-frontend/assets/images/community/header/user-4.jpg")}}"
+                                            alt=""></a>
                                 </div>
                                 <div class="text">
                                     <h6><a href="#">James Vanwin</a></h6>
@@ -223,46 +145,7 @@
                                     <p class="notify-time">20 minutes ago</p>
                                 </div>
                             </li>
-                            <li class="dropdown-content-list">
-                                <div class="figure">
-                                    <a href="#"><img src="/assets/images/community/header/user-2.jpg" alt=""></a>
-                                </div>
-                                <div class="text">
-                                    <h6><a href="#">Harry Lopez</a></h6>
-                                    <p>Sent Your a Friend Request</p>
-                                    <p class="notify-time">2 Days ago</p>
-                                </div>
-                            </li>
-                            <li class="dropdown-content-list">
-                                <div class="figure">
-                                    <a href="#"><img src="/assets/images/community/header/user-3.jpg" alt=""></a>
-                                </div>
-                                <div class="text">
-                                    <h6><a href="#">Matthew Smith </a></h6>
-                                    <p>Posted a comment on your status</p>
-                                    <p class="notify-time">3 Days ago</p>
-                                </div>
-                            </li>
-                            <li class="dropdown-content-list">
-                                <div class="figure">
-                                    <a href="#"><img src="/assets/images/community/header/user-4.jpg" alt=""></a>
-                                </div>
-                                <div class="text">
-                                    <h6><a href="#">James Vanwin</a></h6>
-                                    <p>Posted a comment on your status</p>
-                                    <p class="notify-time">20 minutes ago</p>
-                                </div>
-                            </li>
-                            <li class="dropdown-content-list">
-                                <div class="figure">
-                                    <a href="#"><img src="/assets/images/community/header/user-5.jpg" alt=""></a>
-                                </div>
-                                <div class="text">
-                                    <h6><a href="#">Harry Lopez</a></h6>
-                                    <p>Sent Your a Friend Request</p>
-                                    <p class="notify-time">2 Days ago</p>
-                                </div>
-                            </li>
+
                         </ul>
                         <a href="#" class="vew-all-btn">View All Notifications</a>
                     </div>
@@ -323,7 +206,6 @@
                 <div class="news-feed-left">
 
                     @include('community-frontend.layout.userProfile')
-
                     @include('community-frontend.layout.pageLike')
                     @include('community-frontend.layout.suggestedGroup')
 
@@ -337,14 +219,16 @@
                 <div class="news-feed-right">
                     <div class="weather-img">
                         <a href="#">
-                            <img src="{{asset("community-frontend/assets/images/community/home/right/weather.jpg")}}" alt="image">
+                            <img src="{{asset("community-frontend/assets/images/community/home/right/weather.jpg")}}"
+                                 alt="image">
                         </a>
                     </div>
 
 
                     @include('community-frontend.layout.birthday')
 
-                    @include('community-frontend.layout.following')
+                    @include('community-frontend.layout.followers')
+
 
                 </div>
             </div>
@@ -362,11 +246,92 @@
 
 @include('community-frontend.layout.footer')
 
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.4/jquery.min.js"
+        integrity="sha512-pumBsjNRGGqkPzKHndZMaAG+bir374sORyzM3uulLV14lN5LyykqNk8eEeUlUkB3U0M4FApyaHraT65ihJhDpQ=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script src="{{asset("community-frontend/assets/js/bootstrap.bundle.min.js")}}"></script>
 <script src="{{asset("community-frontend/assets/js/odometer.js")}}"></script>
 <script src="{{asset("community-frontend/assets/js/slick-slider.js")}}"></script>
 <script src="{{asset("community-frontend/assets/js/community/script.js")}}"></script>
+
+<script>
+    $(document).ready(function (e) {
+        $('.addBtn').on('click', function () {
+            let userName = $(this).parents('.dropdown-content-list').find('.userName').text();
+            let userId = $(this).parents('.dropdown-content-list').find('.userName').data('id');
+            let tldId = $(this).parents('.dropdown-content-list').find('.userName').data('idd');
+            console.log(userName, 'name');
+            console.log(tldId, 'id');
+
+            if (userName !== '' && userId !== '') {
+                $.ajax({
+                    url: '{{route('community.user.acceptRequest')}}',
+                    type: 'POST',
+                    data: {
+                        userId: userId,
+                        userName: userName,
+                        tldId: tldId,
+                        '_token': '{{csrf_token()}}'
+                    },
+                    success: function (response) {
+                        console.log(response);
+                        let msg = "";
+                        if (response.status) {
+
+                            console.log(msg);
+                        }
+
+                    }
+                })
+            }
+        });
+    })
+</script>
+
+<script>
+    import toastr from "../../../../public/community-frontend/assets/js/odometer";
+
+    @if(Session::has('message'))
+        toastr.options =
+        {
+            "closeButton": true,
+            "progressBar": true
+        }
+    toastr.success("{{ session('message') }}");
+    @endif
+
+        @if(Session::has('error'))
+        toastr.options =
+        {
+            "closeButton": true,
+            "progressBar": true
+        }
+    toastr.error("{{ session('error') }}");
+    @endif
+
+        @if(Session::has('info'))
+        toastr.options =
+        {
+            "closeButton": true,
+            "progressBar": true
+        }
+    toastr.info("{{ session('info') }}");
+    @endif
+
+        @if(Session::has('warning'))
+        toastr.options =
+        {
+            "closeButton": true,
+            "progressBar": true
+        }
+    toastr.warning("{{ session('warning') }}");
+    @endif
+</script>
+
 </body>
 
 </html>

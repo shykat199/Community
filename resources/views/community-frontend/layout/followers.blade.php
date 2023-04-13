@@ -1,12 +1,10 @@
 <div class="left-widget right-widget">
 
     <div class="widget-title">
-        <h5>Your's Following</h5>
+        <h5>Who's Following</h5>
     </div>
 
     <ul class="like-items">
-
-
 
         @foreach(allUserFollowers() as $follower)
 
@@ -20,10 +18,14 @@
                        data-id="{{$follower->uId}}">{{$follower->userName}}
                     </a>
 
-                    <a class="following-add btnFollow">Unfollow</a>
-
+                    @if(!empty($follower->is_followed))
+                        <a href="#" class="following-add btnFollow">Followed</a>
+                    @else
+                        <a href="#" class="following-add btnFollow">Follow</a>
+                    @endif
                 </div>
             </li>
+
         @endforeach
 
 
@@ -36,7 +38,8 @@
             e.preventDefault();
             let userName = $(this).siblings('.userName').text();
             let userId = $(this).siblings('.userName').data('id');
-
+            // let abc=$(this).text();
+            // console.log(abc)
             if (userName !== '' && userId !== '') {
 
                 $.ajax({
@@ -51,6 +54,8 @@
                         console.log(response);
                         let msg = "";
                         if(response.status){
+                            // let abc=$(this).val();
+
                             console.log(msg);
                         }
 
@@ -58,8 +63,6 @@
                 })
 
             }
-
-
         })
     })
 </script>

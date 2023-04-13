@@ -8,4 +8,5 @@ use Illuminate\Database\Eloquent\Model;
 class CommunityPagePostFileType extends Model
 {
     use HasFactory;
+    protected $fillable=['post_id','post_image_video','caption'];
 }

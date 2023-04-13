@@ -24,7 +24,7 @@
     border-radius: 5px;
 }
 .news-feed-content {
-    padding: 10px 10px;
+    padding: 10px 15px;
 }
 
 .view-profile {
@@ -304,6 +304,197 @@
                     font-size: 10px;
                 }
             }
+        }
+    }
+}
+.post-modal-content {
+    .post-modal-title {
+        font-size: 18px;
+        color: $theme-font;
+        font-weight: 600;
+        text-align: center;
+        display: flex;
+        width: 100%;
+        justify-content: center;
+    }
+    .post-close {
+        width: 30px;
+        height: 30px;
+        line-height: 27px;
+        border-radius: 50%;
+        text-align: center;
+        font-size: 18px;
+        background: #ccc;
+        color: $theme-font;
+        border: none;
+        outline: none;
+        transition: all .3s ease;
+        &:hover{
+            color: $white;
+            background: $theme-color;
+        }
+    }
+    .post-modal-body {
+        padding: 15px;
+        .my-profile {
+            display: flex;
+            align-items: center;
+            column-gap: 10px;
+            margin-bottom: 20px;
+            .my-profile-img {
+                a {
+                    img {
+                        max-width: 50px;
+                        max-height: 50px;
+                        border-radius: 50%;
+                    }
+                }
+            }
+            .my-profile-name{
+                font-size: 14px;
+                color: $theme-font;
+                font-weight: 500;
+            }
+        }
+        .post-text{
+            #postArea {
+                width: 100%;
+                min-height: 30px;
+                padding: 15px;
+                border: none;
+                outline: none;
+                background: #f4f7fc;
+            }
+        }
+        .upload-media {
+            position: relative;
+            padding: 50px 0;
+            background: #EBEDF0;
+            transition: all .3s ease;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            &:hover{
+                background: #BEC3C9;
+            }
+            .photo-place {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                .icon {
+                    width: 40px;
+                    height: 40px;
+                    line-height: 40px;
+                    text-align: center;
+                    background: #ccc;
+                    border-radius: 50%;
+                    display: block;
+                    svg {
+                        max-width: 30px;
+                        path {
+                            fill: $theme-font;
+                        }
+                    }
+                }
+                .title {
+                    font-size: 18px;
+                    color: $theme-font;
+                    margin-top: 10px;
+                }
+                .small-text {
+                    font-size: 13px;
+                    color: $theme-font;
+                    font-weight: 300;
+                }
+            }
+            .preview-file {
+                position: absolute;
+                top: 0;
+                width: 100%;
+                img {
+                    width: 100%;
+                    border-radius: 5px;
+                }
+                #imgClose {
+                    position: absolute;
+                    top: 20px;
+                    right: 20px;
+                    font-size: 16px;
+                    font-weight: 400;
+                    color: $theme-font;
+                    height: 25px;
+                    width: 25px;
+                    line-height: 20px;
+                    text-align: center;
+                    outline: none;
+                    border: 1px solid $theme-font;
+                    border-radius: 50%;
+                    display: none;
+                    z-index: 111;
+                }
+            }
+            .media-input {
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                cursor: pointer;
+                height: 100%;
+                input {
+                    width: 100%;
+                    opacity: 0;
+                    height: 100%;
+                    cursor: pointer;
+                }
+            }
+        }
+        .search_box {
+            width: 100%;
+            margin-bottom: 20px;            
+        }      
+        .small-title {
+            font-size: 14px;
+            color: #65676B;
+            margin-bottom: 10px;
+        }
+        .suggestion-list {
+            overflow-y: auto;
+            height: 169px;
+            .suggestion-option {
+                display: flex;
+                align-items: center;
+                column-gap: 10px;
+                width: 100%;
+                padding: 10px;
+                border-radius: 10px;
+                transition: all .3s ease;
+                &:hover{
+                    background: #ccc;
+                }
+                .my-profile-img {
+                    img {
+                        max-width: 50px;
+                        max-height: 50px;
+                        border-radius: 50%;
+                    }
+                }
+                .my-profile-name{
+                    font-size: 14px;
+                    color: $theme-font;
+                    font-weight: 500;
+                }               
+            }
+        }
+    }
+    .tag-modal-body {
+        height: 100%;
+    }
+    .modal-footer {
+        display: block;
+        padding: 10px 15px;
+        margin-right: 10px;
+        .post-btn {
+            width: 100%;
+            
         }
     }
 }
@@ -683,8 +874,9 @@
     .follower-title {
         display: flex;
         align-items: center;
+        width: 100%;
+        justify-content: space-between;
         a {
-            width: 120px;
             display: block;
         }
         .following-add {
