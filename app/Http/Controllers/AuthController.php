@@ -6,13 +6,9 @@ use App\Http\Requests\AdminLogin;
 use App\Http\Requests\AdminRequest;
 use App\Models\User;
 use Carbon\Carbon;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Redirect;
-use JetBrains\PhpStorm\NoReturn;
-use function MongoDB\BSON\toRelaxedExtendedJSON;
-use const http\Client\Curl\AUTH_ANY;
 
 class AuthController extends Controller
 {

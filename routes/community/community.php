@@ -1,12 +1,11 @@
 <?php
 
+use App\Http\Controllers\Community\Admin\Group\CommunityUserGroupController;
+use App\Http\Controllers\Community\Admin\Page\CommunityPageController;
+use App\Http\Controllers\Community\Admin\Page\CommunityPagePostCommentController;
+use App\Http\Controllers\Community\Admin\Page\CommunityPagePostController;
+use App\Http\Controllers\Community\Frontend\Profile\CommunityUserDetailsController;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Community\Page\CommunityPageController;
-use App\Http\Controllers\Community\Page\CommunityPagePostController;
-use App\Http\Controllers\Community\Page\CommunityPagePostCommentController;
-use App\Http\Controllers\Community\User\CommunityUserDetailsController;
-use App\Http\Controllers\Community\Group\CommunityUserGroupController;
-use App\Http\Controllers\Community\User\CommunityUserFriendRequestController;
 
 
 Route::middleware(['auth','admin'])->prefix('/community')->group(function (){

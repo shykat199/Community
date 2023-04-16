@@ -5,6 +5,7 @@ namespace App\Models;
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use App\Models\Community\Page\CommunityPage;
 use App\Models\Community\Page\UsersPage;
+use App\Models\Community\User_Profile\CommunityUserProfileLanguage;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -51,4 +52,8 @@ class User extends Authenticatable
         return $this->belongsToMany(CommunityPage::class,'users_pages','user_id','page_id');
     }
 
+    public function languages(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(CommunityUserProfileLanguage::class);
+    }
 }

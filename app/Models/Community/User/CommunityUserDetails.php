@@ -9,6 +9,6 @@ class CommunityUserDetails extends Model
 {
     use HasFactory;
 
-    protected $fillable=['user_id','dob','birthplace','phone','gender','relationship','blood','website','about_me'];
+    protected $fillable=['user_id','dob','birthplace','phone','gender','relationship','blood','website','about_me','fname','lname','occupation','email','city','state','country'];
     protected $table='community_user_details';
 }
