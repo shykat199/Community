@@ -16,7 +16,6 @@
                         </div>
                     </div>
                 </div>
-                gijafoby@mailinator.com
             </div>
         </div>
     </div>
@@ -36,7 +35,7 @@
                 </li>
                 <li class="nav-item" role="presentation">
                     <button class="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile-tab-pane"
-                            type="button" role="tab" aria-controls="profile-tab-pane" aria-selected="false">Account
+                            type="button" role="tab" aria-controls="profile-tab-pane" aria-selected="false">Security
                     </button>
                 </li>
                 <li class="nav-item" role="presentation">
@@ -44,17 +43,17 @@
                             type="button" role="tab" aria-controls="contact-tab-pane" aria-selected="false">Privacy
                     </button>
                 </li>
-                <li class="nav-item" role="presentation">
-                    <button class="nav-link" id="notificaiton-tab" data-bs-toggle="tab"
-                            data-bs-target="#notification-tab-pane" type="button" role="tab"
-                            aria-controls="contact-tab-pane" aria-selected="false">Notification
-                    </button>
-                </li>
-                <li class="nav-item" role="presentation">
-                    <button class="nav-link" id="message-tab" data-bs-toggle="tab" data-bs-target="#message-tab-pane"
-                            type="button" role="tab" aria-controls="message-tab-pane" aria-selected="false">Message
-                    </button>
-                </li>
+{{--                <li class="nav-item" role="presentation">--}}
+{{--                    <button class="nav-link" id="notificaiton-tab" data-bs-toggle="tab"--}}
+{{--                            data-bs-target="#notification-tab-pane" type="button" role="tab"--}}
+{{--                            aria-controls="contact-tab-pane" aria-selected="false">Notification--}}
+{{--                    </button>--}}
+{{--                </li>--}}
+{{--                <li class="nav-item" role="presentation">--}}
+{{--                    <button class="nav-link" id="message-tab" data-bs-toggle="tab" data-bs-target="#message-tab-pane"--}}
+{{--                            type="button" role="tab" aria-controls="message-tab-pane" aria-selected="false">Message--}}
+{{--                    </button>--}}
+{{--                </li>--}}
                 <li class="nav-item" role="presentation">
                     <button class="nav-link" id="closeAccount-tab" data-bs-toggle="tab"
                             data-bs-target="#closeAccount-tab-pane" type="button" role="tab"
@@ -89,13 +88,13 @@
                                 </div>
                                 <div class="col-lg-6">
                                     <label for="forBackupMail">Backup Email</label>
-{{--                                    <input type="email" value="{{(isset( $userInfo[0]))?$userInfo[0]['bmail']:''}}" id="forBackupMail" name="bmail" placeholder="Backup Email">--}}
+                                    <input type="email" value="" id="forBackupMail" name="bmail" placeholder="Backup Email">
                                 </div>
                                 <div class="col-lg-6">
                                     <label for="birthDay">Date of Birth</label>
                                     <input type="text" name="dob" class="form-control"
                                            id="datepicker"
-                                           value="{{isset($userInfo[0])?$userInfo[0]['dob']:''}}"
+                                           value="{{isset($userInfo[0])? \Carbon\Carbon::parse($userInfo[0]['dob'])->format('d-m-Y'):''}}"
                                            placeholder="">
 
                                 </div>
@@ -148,12 +147,17 @@
                                 </div>
                                 <div class="col-lg-6">
                                     <label for="language">Language</label>
-{{--                                    @dd($userLanguage[0]->languages[0]['language_name'])--}}
+                                    @php
+                                    $languges=[];
+                                    foreach ($userLanguage->languages as $key=> $value){
+                                        $languges[]=$value->language_name;
+                                    }
+                                    @endphp
                                     <select class="js-example-basic-multiple" name="language[]" multiple="multiple">
                                         <option selected value="">Select language</option>
-                                        @foreach(allLanguages() as $language)
-                                              <option value="{{$language}}" {{isset($userLanguage[0])&&$userLanguage[0]->languages[0]['language_name']===$language?'selected':''}}>{{$language}}</option>
-                                         @endforeach
+                                            @foreach(allLanguages() as $language)
+                                                <option value="{{$language}}" {{in_array($language, $languges)?'selected':''}}>{{$language}}</option>
+                                            @endforeach
                                         </select>
                                     </div>
 {{--                                @dd($userInfo)--}}
@@ -206,40 +210,6 @@
                         <div class="tab-pane fade" id="profile-tab-pane" role="tabpanel" aria-labelledby="profile-tab"
                              tabindex="0">
                             <form class="setting-form-wrapper profile-information">
-                                <h5 class="setting-title">Account Information</h5>
-                                <div class="row">
-                                    <div class="col-lg-6">
-                                        <label for="firstName">Full Name</label>
-                                        <input type="text" id="firstName" name="fname" placeholder="Full Name">
-                                    </div>
-                                    <div class="col-lg-6">
-                                        <label for="lastName">User Name</label>
-                                        <input type="text" id="lastName" name="fname" placeholder="User Name">
-                                    </div>
-                                    <div class="col-lg-6">
-                                        <label for="forMail">Account Email</label>
-                                        <input type="email" id="forMail" name="fname" placeholder="Account email">
-                                    </div>
-                                    <div class="col-lg-6">
-                                        <label for="poneNumber">Phone Number</label>
-                                        <input type="number" id="poneNumber" name="fname" placeholder="Phone Number">
-                                    </div>
-                                    <div class="col-lg-6">
-                                        <label for="country">Country</label>
-                                        <select name="" id="country">
-                                            <option selected>Country</option>
-                                            <option>Bangladesh</option>
-                                            <option>Canada</option>
-                                            <option>Germany</option>
-                                            <option>Switzerland</option>
-                                        </select>
-                                    </div>
-                                    <div class="col-12">
-                                        <button type="submit" class="social-theme-btn save-btn">Save</button>
-                                    </div>
-                                </div>
-                            </form>
-                            <form class="setting-form-wrapper profile-information">
                                 <h5 class="setting-title">Security Information</h5>
                                 <div class="row">
                                     <div class="col-lg-6">
@@ -270,23 +240,33 @@
                                     </div>
                                 </div>
                             </form>
-                            <form class="setting-form-wrapper profile-information">
+                            <form class="setting-form-wrapper profile-information" action="{{route('user.my-profile.update-password')}}" method="post">
+                                @csrf
                                 <h5 class="setting-title">Change Password</h5>
                                 <div class="row">
                                     <div class="col-lg-6">
                                         <label for="password1">Current Password
                                         </label>
-                                        <input type="password" id="password1" name="fname" placeholder="Current Password">
+                                        <input type="password" id="password1" name="current_password" placeholder="Current Password">
+                                        @error('current_password')
+                                        <span class="text-danger">{{$message}}</span>
+                                        @enderror
                                     </div>
                                     <div class="col-lg-6">
                                         <label for="password2">New Password
                                         </label>
-                                        <input type="password" id="password2" name="fname" placeholder="New Password">
+                                        <input type="password" id="password2" name="new_password" placeholder="New Password">
+                                        @error('new_password')
+                                        <span class="text-danger">{{$message}}</span>
+                                        @enderror
                                     </div>
                                     <div class="col-lg-6">
-                                        <label for="password3">Change Password
+                                        <label for="password3">Confirm Password
                                         </label>
-                                        <input type="password" id="password3" name="fname" placeholder="Change Password">
+                                        <input type="password" id="password3" name="new_password_confirmation" placeholder="Confirm New Password">
+                                        @error('new_password_confirmation')
+                                        <span class="text-danger">{{$message}}</span>
+                                        @enderror
                                     </div>
                                     <div class="col-12">
                                         <button type="submit" class="social-theme-btn save-btn">Save Change</button>
@@ -329,170 +309,170 @@
                                 </div>
                             </form>
                         </div>
-                        <div class="tab-pane fade" id="notification-tab-pane" role="tabpanel"
-                             aria-labelledby="notification-tab" tabindex="0">
-                            <div class="setting-form-wrapper profile-information">
-                                <h5 class="setting-title">Notification</h5>
-                                <div class="row">
-                                    <div class="col-lg-6">
-                                        <ul class="notification-check-list">
-                                            <li>Where You Receive Comment Notification?</li>
-                                            <li class="chek-inputs">
-                                                <input type="checkbox" class="notificatoin-chekbox" id="email">
-                                                <label for="email">Email</label>
-                                            </li>
-                                            <li class="chek-inputs">
-                                                <input type="checkbox" class="notificatoin-chekbox" id="sms">
-                                                <label for="sms">SMS</label>
-                                            </li>
-                                        </ul>
-                                        <ul class="notification-check-list">
-                                            <li>Get Notifications When You're Tagged By</li>
-                                            <li class="chek-inputs">
-                                                <input type="checkbox" class="notificatoin-chekbox" id="anyone">
-                                                <label for="anyone">Anyone</label>
-                                            </li>
-                                            <li class="chek-inputs">
-                                                <input type="checkbox" class="notificatoin-chekbox" id="friends">
-                                                <label for="friends">Friends</label>
-                                            </li>
-                                        </ul>
-                                        <ul class="notification-check-list">
-                                            <li>Get Notifications When Updates From Friends</li>
-                                            <li class="chek-inputs">
-                                                <input type="checkbox" class="notificatoin-chekbox" id="email2">
-                                                <label for="email2">Email</label>
-                                            </li>
-                                            <li class="chek-inputs">
-                                                <input type="checkbox" class="notificatoin-chekbox" id="sms2">
-                                                <label for="sms2">SMS</label>
-                                            </li>
-                                        </ul>
-                                        <h6 class="notification-title">Other Notifications</h6>
-                                        <ul class="notification-check-list">
-                                            <li class="chek-inputs">
-                                                <input type="checkbox" class="notificatoin-chekbox" id="videos">
-                                                <label for="videos">Recommended Videos</label>
-                                            </li>
-                                            <li class="chek-inputs">
-                                                <input type="checkbox" class="notificatoin-chekbox" id="games">
-                                                <label for="games">Games</label>
-                                            </li>
-                                            <li class="chek-inputs">
-                                                <input type="checkbox" class="notificatoin-chekbox" id="news">
-                                                <label for="news">Breaking News</label>
-                                            </li>
-                                            <li class="chek-inputs">
-                                                <input type="checkbox" class="notificatoin-chekbox" id="pageFollow">
-                                                <label for="pageFollow">Pages Follow Notification</label>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                    <div class="col-lg-6">
-                                        <ul class="notification-check-list">
-                                            <li>Where You Receive Friend Request Notification?</li>
-                                            <li class="chek-inputs">
-                                                <input type="checkbox" class="notificatoin-chekbox" id="email3">
-                                                <label for="email3">Email</label>
-                                            </li>
-                                            <li class="chek-inputs">
-                                                <input type="checkbox" class="notificatoin-chekbox" id="sms3">
-                                                <label for="sms3">SMS</label>
-                                            </li>
-                                        </ul>
-                                        <ul class="notification-check-list">
-                                            <li>Where You Receive Birthday Notification?</li>
-                                            <li class="chek-inputs">
-                                                <input type="checkbox" class="notificatoin-chekbox" id="email4">
-                                                <label for="email4">Email</label>
-                                            </li>
-                                            <li class="chek-inputs">
-                                                <input type="checkbox" class="notificatoin-chekbox" id="sms4">
-                                                <label for="sms4">SMS</label>
-                                            </li>
-                                        </ul>
-                                        <ul class="notification-check-list">
-                                            <li>Where You Receive Groups Notification?</li>
-                                            <li class="chek-inputs">
-                                                <input type="checkbox" class="notificatoin-chekbox" id="email5">
-                                                <label for="email5">Email</label>
-                                            </li>
-                                            <li class="chek-inputs">
-                                                <input type="checkbox" class="notificatoin-chekbox" id="sms5">
-                                                <label for="sms5">SMS</label>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="tab-pane fade" id="message-tab-pane" role="tabpanel" aria-labelledby="message-tab"
-                             tabindex="0">
-                            <div class="setting-form-wrapper profile-information">
-                                <h5 class="setting-title">Messages Setting</h5>
-                                <div class="row">
-                                    <div class="col-lg-6">
-                                        <ul class="notification-check-list">
-                                            <li>Send Me Messages To My Cell Phone</li>
-                                            <li class="chek-inputs">
-                                                <input type="checkbox" class="notificatoin-chekbox" id="on">
-                                                <label for="on">ON</label>
-                                            </li>
-                                            <li class="chek-inputs">
-                                                <input type="checkbox" class="notificatoin-chekbox" id="off">
-                                                <label for="sms">OFF</label>
-                                            </li>
-                                        </ul>
-                                        <ul class="notification-check-list">
-                                            <li>General Announcement, Updates, Posts, And Videos</li>
-                                            <li class="chek-inputs">
-                                                <input type="checkbox" class="notificatoin-chekbox" id="on1">
-                                                <label for="on1">ON</label>
-                                            </li>
-                                            <li class="chek-inputs">
-                                                <input type="checkbox" class="notificatoin-chekbox" id="off1">
-                                                <label for="sms1">OFF</label>
-                                            </li>
-                                        </ul>
-                                        <ul class="notification-check-list">
-                                            <li>Messages From Activity On My Page</li>
-                                            <li class="chek-inputs">
-                                                <input type="checkbox" class="notificatoin-chekbox" id="on2">
-                                                <label for="on2">ON</label>
-                                            </li>
-                                            <li class="chek-inputs">
-                                                <input type="checkbox" class="notificatoin-chekbox" id="off2">
-                                                <label for="sms2">OFF</label>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                    <div class="col-lg-6">
-                                        <ul class="notification-check-list">
-                                            <li>Page Follow Notification</li>
-                                            <li class="chek-inputs">
-                                                <input type="checkbox" class="notificatoin-chekbox" id="on3">
-                                                <label for="on3">ON</label>
-                                            </li>
-                                            <li class="chek-inputs">
-                                                <input type="checkbox" class="notificatoin-chekbox" id="off3">
-                                                <label for="sms3">OFF</label>
-                                            </li>
-                                        </ul>
-                                        <ul class="notification-check-list">
-                                            <li>Breaking News</li>
-                                            <li class="chek-inputs">
-                                                <input type="checkbox" class="notificatoin-chekbox" id="on4">
-                                                <label for="on4">ON</label>
-                                            </li>
-                                            <li class="chek-inputs">
-                                                <input type="checkbox" class="notificatoin-chekbox" id="off4">
-                                                <label for="sms4">OFF</label>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+{{--                        <div class="tab-pane fade" id="notification-tab-pane" role="tabpanel"--}}
+{{--                             aria-labelledby="notification-tab" tabindex="0">--}}
+{{--                            <div class="setting-form-wrapper profile-information">--}}
+{{--                                <h5 class="setting-title">Notification</h5>--}}
+{{--                                <div class="row">--}}
+{{--                                    <div class="col-lg-6">--}}
+{{--                                        <ul class="notification-check-list">--}}
+{{--                                            <li>Where You Receive Comment Notification?</li>--}}
+{{--                                            <li class="chek-inputs">--}}
+{{--                                                <input type="checkbox" class="notificatoin-chekbox" id="email">--}}
+{{--                                                <label for="email">Email</label>--}}
+{{--                                            </li>--}}
+{{--                                            <li class="chek-inputs">--}}
+{{--                                                <input type="checkbox" class="notificatoin-chekbox" id="sms">--}}
+{{--                                                <label for="sms">SMS</label>--}}
+{{--                                            </li>--}}
+{{--                                        </ul>--}}
+{{--                                        <ul class="notification-check-list">--}}
+{{--                                            <li>Get Notifications When You're Tagged By</li>--}}
+{{--                                            <li class="chek-inputs">--}}
+{{--                                                <input type="checkbox" class="notificatoin-chekbox" id="anyone">--}}
+{{--                                                <label for="anyone">Anyone</label>--}}
+{{--                                            </li>--}}
+{{--                                            <li class="chek-inputs">--}}
+{{--                                                <input type="checkbox" class="notificatoin-chekbox" id="friends">--}}
+{{--                                                <label for="friends">Friends</label>--}}
+{{--                                            </li>--}}
+{{--                                        </ul>--}}
+{{--                                        <ul class="notification-check-list">--}}
+{{--                                            <li>Get Notifications When Updates From Friends</li>--}}
+{{--                                            <li class="chek-inputs">--}}
+{{--                                                <input type="checkbox" class="notificatoin-chekbox" id="email2">--}}
+{{--                                                <label for="email2">Email</label>--}}
+{{--                                            </li>--}}
+{{--                                            <li class="chek-inputs">--}}
+{{--                                                <input type="checkbox" class="notificatoin-chekbox" id="sms2">--}}
+{{--                                                <label for="sms2">SMS</label>--}}
+{{--                                            </li>--}}
+{{--                                        </ul>--}}
+{{--                                        <h6 class="notification-title">Other Notifications</h6>--}}
+{{--                                        <ul class="notification-check-list">--}}
+{{--                                            <li class="chek-inputs">--}}
+{{--                                                <input type="checkbox" class="notificatoin-chekbox" id="videos">--}}
+{{--                                                <label for="videos">Recommended Videos</label>--}}
+{{--                                            </li>--}}
+{{--                                            <li class="chek-inputs">--}}
+{{--                                                <input type="checkbox" class="notificatoin-chekbox" id="games">--}}
+{{--                                                <label for="games">Games</label>--}}
+{{--                                            </li>--}}
+{{--                                            <li class="chek-inputs">--}}
+{{--                                                <input type="checkbox" class="notificatoin-chekbox" id="news">--}}
+{{--                                                <label for="news">Breaking News</label>--}}
+{{--                                            </li>--}}
+{{--                                            <li class="chek-inputs">--}}
+{{--                                                <input type="checkbox" class="notificatoin-chekbox" id="pageFollow">--}}
+{{--                                                <label for="pageFollow">Pages Follow Notification</label>--}}
+{{--                                            </li>--}}
+{{--                                        </ul>--}}
+{{--                                    </div>--}}
+{{--                                    <div class="col-lg-6">--}}
+{{--                                        <ul class="notification-check-list">--}}
+{{--                                            <li>Where You Receive Friend Request Notification?</li>--}}
+{{--                                            <li class="chek-inputs">--}}
+{{--                                                <input type="checkbox" class="notificatoin-chekbox" id="email3">--}}
+{{--                                                <label for="email3">Email</label>--}}
+{{--                                            </li>--}}
+{{--                                            <li class="chek-inputs">--}}
+{{--                                                <input type="checkbox" class="notificatoin-chekbox" id="sms3">--}}
+{{--                                                <label for="sms3">SMS</label>--}}
+{{--                                            </li>--}}
+{{--                                        </ul>--}}
+{{--                                        <ul class="notification-check-list">--}}
+{{--                                            <li>Where You Receive Birthday Notification?</li>--}}
+{{--                                            <li class="chek-inputs">--}}
+{{--                                                <input type="checkbox" class="notificatoin-chekbox" id="email4">--}}
+{{--                                                <label for="email4">Email</label>--}}
+{{--                                            </li>--}}
+{{--                                            <li class="chek-inputs">--}}
+{{--                                                <input type="checkbox" class="notificatoin-chekbox" id="sms4">--}}
+{{--                                                <label for="sms4">SMS</label>--}}
+{{--                                            </li>--}}
+{{--                                        </ul>--}}
+{{--                                        <ul class="notification-check-list">--}}
+{{--                                            <li>Where You Receive Groups Notification?</li>--}}
+{{--                                            <li class="chek-inputs">--}}
+{{--                                                <input type="checkbox" class="notificatoin-chekbox" id="email5">--}}
+{{--                                                <label for="email5">Email</label>--}}
+{{--                                            </li>--}}
+{{--                                            <li class="chek-inputs">--}}
+{{--                                                <input type="checkbox" class="notificatoin-chekbox" id="sms5">--}}
+{{--                                                <label for="sms5">SMS</label>--}}
+{{--                                            </li>--}}
+{{--                                        </ul>--}}
+{{--                                    </div>--}}
+{{--                                </div>--}}
+{{--                            </div>--}}
+{{--                        </div>--}}
+{{--                        <div class="tab-pane fade" id="message-tab-pane" role="tabpanel" aria-labelledby="message-tab"--}}
+{{--                             tabindex="0">--}}
+{{--                            <div class="setting-form-wrapper profile-information">--}}
+{{--                                <h5 class="setting-title">Messages Setting</h5>--}}
+{{--                                <div class="row">--}}
+{{--                                    <div class="col-lg-6">--}}
+{{--                                        <ul class="notification-check-list">--}}
+{{--                                            <li>Send Me Messages To My Cell Phone</li>--}}
+{{--                                            <li class="chek-inputs">--}}
+{{--                                                <input type="checkbox" class="notificatoin-chekbox" id="on">--}}
+{{--                                                <label for="on">ON</label>--}}
+{{--                                            </li>--}}
+{{--                                            <li class="chek-inputs">--}}
+{{--                                                <input type="checkbox" class="notificatoin-chekbox" id="off">--}}
+{{--                                                <label for="sms">OFF</label>--}}
+{{--                                            </li>--}}
+{{--                                        </ul>--}}
+{{--                                        <ul class="notification-check-list">--}}
+{{--                                            <li>General Announcement, Updates, Posts, And Videos</li>--}}
+{{--                                            <li class="chek-inputs">--}}
+{{--                                                <input type="checkbox" class="notificatoin-chekbox" id="on1">--}}
+{{--                                                <label for="on1">ON</label>--}}
+{{--                                            </li>--}}
+{{--                                            <li class="chek-inputs">--}}
+{{--                                                <input type="checkbox" class="notificatoin-chekbox" id="off1">--}}
+{{--                                                <label for="sms1">OFF</label>--}}
+{{--                                            </li>--}}
+{{--                                        </ul>--}}
+{{--                                        <ul class="notification-check-list">--}}
+{{--                                            <li>Messages From Activity On My Page</li>--}}
+{{--                                            <li class="chek-inputs">--}}
+{{--                                                <input type="checkbox" class="notificatoin-chekbox" id="on2">--}}
+{{--                                                <label for="on2">ON</label>--}}
+{{--                                            </li>--}}
+{{--                                            <li class="chek-inputs">--}}
+{{--                                                <input type="checkbox" class="notificatoin-chekbox" id="off2">--}}
+{{--                                                <label for="sms2">OFF</label>--}}
+{{--                                            </li>--}}
+{{--                                        </ul>--}}
+{{--                                    </div>--}}
+{{--                                    <div class="col-lg-6">--}}
+{{--                                        <ul class="notification-check-list">--}}
+{{--                                            <li>Page Follow Notification</li>--}}
+{{--                                            <li class="chek-inputs">--}}
+{{--                                                <input type="checkbox" class="notificatoin-chekbox" id="on3">--}}
+{{--                                                <label for="on3">ON</label>--}}
+{{--                                            </li>--}}
+{{--                                            <li class="chek-inputs">--}}
+{{--                                                <input type="checkbox" class="notificatoin-chekbox" id="off3">--}}
+{{--                                                <label for="sms3">OFF</label>--}}
+{{--                                            </li>--}}
+{{--                                        </ul>--}}
+{{--                                        <ul class="notification-check-list">--}}
+{{--                                            <li>Breaking News</li>--}}
+{{--                                            <li class="chek-inputs">--}}
+{{--                                                <input type="checkbox" class="notificatoin-chekbox" id="on4">--}}
+{{--                                                <label for="on4">ON</label>--}}
+{{--                                            </li>--}}
+{{--                                            <li class="chek-inputs">--}}
+{{--                                                <input type="checkbox" class="notificatoin-chekbox" id="off4">--}}
+{{--                                                <label for="sms4">OFF</label>--}}
+{{--                                            </li>--}}
+{{--                                        </ul>--}}
+{{--                                    </div>--}}
+{{--                                </div>--}}
+{{--                            </div>--}}
+{{--                        </div>--}}
                         <div class="tab-pane fade" id="closeAccount-tab-pane" role="tabpanel"
                              aria-labelledby="closeAccount-tab" tabindex="0">
                             <div class="setting-form-wrapper profile-information">
@@ -501,16 +481,18 @@
                                     <p class="acount-subtitle"><span>Warning:</span> If you close your account, all your
                                         followers and friends will be unsubscribed and you will lose access forever.</p>
                                 </div>
+                                <form  action="{{route('user.my-profile.deactivate-account')}}" method="post" >
+                                    @csrf
                                 <div class="row">
                                     <div class="col-lg-6">
-                                        <label for="emailAddress">Your Email Address</label>
-                                        <input type="text" id="emailAddress">
-                                    </div>
-                                    <div class="col-lg-6">
                                         <label for="yourPassword">Your Password</label>
-                                        <input type="text" id="yourPassword">
+                                        <input type="password" name="current_password" id="yourPassword">
                                     </div>
                                 </div>
+                                    <div class="col-12">
+                                        <button type="submit" class="social-theme-btn save-btn">Deactivate Account</button>
+                                    </div>
+                                </form>
                             </div>
                         </div>
                     </div>

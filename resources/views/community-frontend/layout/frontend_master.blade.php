@@ -26,7 +26,7 @@
 <header class="community-header-area">
     <div class="main-header">
         <div class="community-logo">
-            <a href="#"><img src="{{asset("community-frontend/assets/images/community/logo.png")}}" alt="Logo"></a>
+            <a href="{{route('community.index')}}"><img src="{{asset("community-frontend/assets/images/community/logo.png")}}" alt="Logo"></a>
         </div>
         <div class="community-header-content">
             <div class="menu-show">
@@ -44,7 +44,7 @@
             {{--            @dd(allRequestedFriend())--}}
             <ul class="menu_list">
                 <li class="list_option">
-                    <a href="#"><i class="fa fa-home" aria-hidden="true"></i></a></li>
+                    <a href="{{route('community.index')}}"><i class="fa fa-home" aria-hidden="true"></i></a></li>
                 <li class="list_option">
                     <a href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false"><i
                             class="fa fa-user" aria-hidden="true"></i> <span

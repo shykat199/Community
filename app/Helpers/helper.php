@@ -7,8 +7,9 @@ use App\Models\Community\User\CommunityUserFollowing;
 use Illuminate\Support\Facades\DB;
 
 
-function bloodGroups(){
-    $bloodGropes=[
+function bloodGroups()
+{
+    $bloodGropes = [
         "A+",
         "A-",
         "B+",
@@ -49,7 +50,8 @@ function allLanguages()
     return $allLanguages;
 }
 
-function allCountries(){
+function allCountries()
+{
     $countries = array(
         'Afghan',
         'Albanian',
@@ -370,13 +372,162 @@ function myFriends()
         $q->where('users.id', '!=', ADMIN_ROLE);
         $q->where('community_user_friends.user_id', '=', Auth::id());
     })
-//        ->join('community_user_friends as uFriend',function ($q){
-//            $q->on('uFriend.requested_user_id','=','users.id');
-//            $q->where('userFrd.user_id','=',Auth::id());
-//        })
-        ->selectRaw('users.id as uId,users.name as userName')
-//        ->groupBy('user.id')
+        ->leftJoin('community_user_profile_photos as profilePhoto', function ($q) {
+            $q->on('profilePhoto.user_id', '=', 'community_user_friends.requested_user_id');
+            $q->where('users.id', '!=', ADMIN_ROLE);
+        })
+        ->leftJoin('community_user_profile_covers as profileCover', function ($q) {
+            $q->on('profileCover.user_id', '=', 'community_user_friends.requested_user_id');
+            $q->where('users.id', '!=', ADMIN_ROLE);
+
+        })
+        ->leftJoin('community_user_followings as userFollowers', function ($q) {
+            $q->on('userFollowers.user_id', '=', 'community_user_friends.requested_user_id');
+        })
+        ->leftJoin('community_user_followings as userFollowings', function ($q) {
+            $q->on('userFollowings.user_following_id', '=', 'community_user_friends.requested_user_id');
+        })
+        ->leftJoin('community_user_details as userDetails', function ($q) {
+            $q->on('userDetails.user_id', '=', 'users.id');
+        })
+        ->selectRaw('users.id as uId,users.name as userName,profilePhoto.user_id as profileUserId,profilePhoto.user_profile,
+        profileCover.user_cover,COUNT(userFollowers.id) as userFollowers,COUNT(userFollowings.id) as userFollowings,userDetails.birthplace')
+        ->groupBy('users.id')
+        ->orderBy('users.name')
         ->get();
     return $myFriends;
 }
+
+function recentlyAddedFriends()
+{
+
+    $myFriends = User::join('community_user_friends', function ($q) {
+        $q->on('community_user_friends.requested_user_id', '=', 'users.id');
+        $q->where('users.id', '!=', ADMIN_ROLE);
+        $q->where('community_user_friends.user_id', '=', Auth::id());
+    })
+        ->leftJoin('community_user_profile_photos as profilePhoto', function ($q) {
+            $q->on('profilePhoto.user_id', '=', 'community_user_friends.requested_user_id');
+            $q->where('users.id', '!=', ADMIN_ROLE);
+        })
+        ->leftJoin('community_user_profile_covers as profileCover', function ($q) {
+            $q->on('profileCover.user_id', '=', 'community_user_friends.requested_user_id');
+            $q->where('users.id', '!=', ADMIN_ROLE);
+
+        })
+        ->leftJoin('community_user_followings as userFollowers', function ($q) {
+            $q->on('userFollowers.user_id', '=', 'community_user_friends.requested_user_id');
+        })
+        ->leftJoin('community_user_followings as userFollowings', function ($q) {
+            $q->on('userFollowings.user_following_id', '=', 'community_user_friends.requested_user_id');
+        })
+        ->leftJoin('community_user_details as userDetails', function ($q) {
+            $q->on('userDetails.user_id', '=', 'users.id');
+        })
+        ->selectRaw('users.id as uId,users.name as userName,profilePhoto.user_id as profileUserId,profilePhoto.user_profile,
+        profileCover.user_cover,COUNT(userFollowers.id) as userFollowers,COUNT(userFollowings.id) as userFollowings,userDetails.birthplace')
+        ->groupBy('users.id')
+        ->orderBy('community_user_friends.created_at', 'DESC')
+        ->get();
+    return $myFriends;
+
+}
+
+function countFriends()
+{
+    $countFriends = User::join('community_user_friends', 'community_user_friends.requested_user_id', 'users.id')
+        ->where('users.id', '!=', ADMIN_ROLE)
+        ->where('community_user_friends.user_id', '=', Auth::id())
+        ->groupBy('community_user_friends.user_id')
+        ->count();
+    return $countFriends;
+}
+
+function userAllPhoto()
+{
+
+    $allPhotos = User::join('community_user_posts as userPost', 'userPost.user_id', '=', 'users.id')
+        ->where('userPost.user_id', '!=', ADMIN_ROLE)
+        ->where('userPost.user_id', '=', Auth::id())
+        ->join('community_user_post_file_types as postFile', 'postFile.post_id', '=', 'userPost.id')
+        ->selectRaw('users.id as Uid ,users.name as Uname,userPost.id as postId,
+        userPost.post_description,postFile.post_image_video as postMedia,postFile.caption')
+        ->get();
+
+    return $allPhotos;
+
+}
+
+function getUpComingBirthday()
+{
+
+    $currentDate = \Carbon\Carbon::now();
+    $allBirthdays = User::join('community_user_friends as userFriend', function ($q) {
+        $q->on('userFriend.requested_user_id', '=', 'users.id');
+        $q->where('userFriend.user_id', '=', Auth::id());
+        $q->where('userFriend.user_id', '!=', ADMIN_ROLE);
+    })
+        ->join('community_user_details as userDetails', function ($q) use ($currentDate) {
+            $q->on('userDetails.user_id', '=', 'userFriend.requested_user_id');
+            $q->whereRaw("DATE_FORMAT(userDetails.dob,'%m-%d') > DATE_FORMAT(now(), '%m-%d')");
+        })
+        ->selectRaw('users.id as Uid, users.name as userName,userDetails.dob')
+        ->orderBy('userDetails.dob','ASC')
+        ->get();
+    return $allBirthdays;
+}
+
+function getMyPostTimeLine(){
+    $allMyPosts=User::join('community_user_posts as userPosts',function ($q){
+        $q->on('userPosts.user_id','=','users.id');
+        $q->where('users.id','!=',ADMIN_ROLE);
+        $q->where('users.id','=',Auth::id());
+    })
+        ->leftJoin('community_user_post_file_types as postMedia',function ($q){
+            $q->on('postMedia.post_id','=','userPosts.id');
+        })
+        ->leftJoin('community_user_post_tags as userTag',function ($q){
+            $q->on('userTag.user_post_id','=','userPosts.id');
+        })
+        ->leftJoin('users as taggedUser',function ($q){
+            $q->on('taggedUser.id','=','userTag.tag_user_id');
+        })
+
+        ->selectRaw('users.id as uId,users.name as userName,userPosts.id as postId,userPosts.post_description as postDescription,userPosts.created_at,
+        postMedia.post_image_video as postMediaFile, postMedia.caption as postMediaFileCaption,userTag.tag_user_id as taggedUser,
+        taggedUser.name as taggedUserName')
+        ->get();
+
+    return $allMyPosts;
+}
+
+function myPostReactionCount($id){
+    $reactionCount=\App\Models\Community\User\CommunityUserPost::join('community_user_post_reactions as postReaction','postReaction.user_post_id','=','community_user_posts.id')
+        ->where('postReaction.user_post_id','=',$id)
+        ->groupBy('community_user_posts.id')
+        ->count();
+
+    return $reactionCount;
+}
+function myPostCommentCount($id){
+    $reactionCount=\App\Models\Community\User\CommunityUserPost::join('community_user_post_comments as postComment','postComment.user_post_id','=','community_user_posts.id')
+        ->where('postComment.user_post_id','=',$id)
+        ->groupBy('community_user_posts.id')
+        ->count();
+
+    return $reactionCount;
+}
+
+//select COUNT(postReaction.id) as reaction_count from `community_user_posts`
+//
+//left join `community_user_post_reactions` as `postReaction` on `postReaction`.`user_post_id` = `community_user_posts`.`id`
+//    group by community_user_posts.id;
+//
+//SELECT COUNT(id) FROM community_user_post_reactions GROUP BY community_user_post_reactions.user_post_id;
+//
+//SELECT test.countRow FROM
+//
+//(SELECT COUNT(id) as countRow FROM community_user_post_reactions GROUP BY community_user_post_reactions.user_post_id
+//    UNION ALL
+//SELECT COUNT(id) as countRow FROM community_user_post_comments GROUP BY community_user_post_comments.user_post_id) as test;
 

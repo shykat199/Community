@@ -63,6 +63,13 @@ class AuthController extends Controller
             'email' => $check['email'],
             'password' => $check['password']
         ])) {
+//            $userAccountStatus=User::where('email','=',$request->get('email'))
+//                ->where('password','=',$request->get('password'))->first();
+//            $userAccountStatus=$userAccountStatus->update([
+//                'account_status'=>1,
+//            ]);
+//            $userAccountStatus=$userAccountStatus->toSql;
+//            dd($userAccountStatus);
 
             if (Auth::user()->role === ADMIN_ROLE) {
 

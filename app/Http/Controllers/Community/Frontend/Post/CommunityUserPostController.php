@@ -29,7 +29,7 @@ class CommunityUserPostController extends Controller
         if ($userPost){
             if ($request->hasFile('postFile')){
                 $fileName = Uuid::uuid() . '.' . $request->file('postFile')->getClientOriginalExtension();
-                $file = Storage::put('/public/community/post' . $fileName, file_get_contents($request->file('postFile')));
+                $file = Storage::put('/public/community/post/' . $fileName, file_get_contents($request->file('postFile')));
             }
 
             $postImageCaption=CommunityUserPostFileType::create([

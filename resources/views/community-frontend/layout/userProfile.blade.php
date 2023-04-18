@@ -44,7 +44,7 @@
             <li><a href="#"><img src="{{asset("community-frontend/assets/images/community/home/profileLikes/06.jpg")}}" alt="img"></a>
             </li>
         </ul>
-        <a href="my-profile.html" class="social-theme-btn">View Profile</a>
+        <a href="{{route('user.my-profile')}}" class="social-theme-btn">View Profile</a>
     </div>
 
 </div>
