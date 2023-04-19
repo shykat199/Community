@@ -47,4 +47,8 @@ class CommunityUserFriendRequestController extends Controller
             }
         }
     }
+
+    public function allFriendRequest(){
+        return view('community-frontend.friendSection');
+    }
 }

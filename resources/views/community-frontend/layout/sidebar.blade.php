@@ -29,7 +29,7 @@
                 </a>
             </li>
             <li class="single-side">
-                <a href="#">
+                <a href="{{route('all.requested.friend.users')}}">
                             <span class="side-icon">
                                 <svg xmlns="http://www.w3.org/2000/svg" version="1.1" x="0" y="0"
                                      viewBox="0 0 682.667 682.667" style="enable-background:new 0 0 512 512"
@@ -111,7 +111,7 @@
                 </a>
             </li>
             <li class="single-side">
-                <a href="#">
+                <a href="{{route('user.friend.birthday.wish')}}">
                             <span class="side-icon">
                                 <i class="fa fa-birthday-cake" aria-hidden="true"></i>
                             </span>

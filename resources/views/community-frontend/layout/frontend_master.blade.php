@@ -203,6 +203,8 @@
 <section class="all-content">
     <!-- news feed content start  -->
     @yield('frontend.user_setting')
+    @yield('frontend.others.birthday')
+
     <div class="news-feed-content">
 
         @yield('frontend.others')

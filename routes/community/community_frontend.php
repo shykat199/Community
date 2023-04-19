@@ -6,6 +6,7 @@ use App\Http\Controllers\Community\Frontend\User\CommunityUserFriendRequestContr
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Community\Frontend\Profile\UserProfileDetailsController;
 use App\Http\Controllers\Community\Frontend\Profile\UserProfileSettingController;
+use App\Http\Controllers\Community\Frontend\User\CommunityUserFriendBirthday;
 
 Route::middleware(['user'])->group(function (){
 
@@ -37,5 +38,13 @@ Route::middleware(['user'])->group(function (){
         return view('community-frontend.help&support');
     })->name('sight.help_support');
 
+
+    //Birthday Routes
+    Route::get('/user/friends-birthday',[CommunityUserFriendBirthday::class,'index'])->name('user.friend.birthday.wish');
+    Route::post('/user/friends-birthday/wish',[CommunityUserFriendBirthday::class,'storeMessage'])->name('user.friend.birthday.wishMessage');
+
+
+    //Friend Section
+    Route::get('/user/friends',[CommunityUserFriendRequestController::class,'allFriendRequest'])->name('all.requested.friend.users');
 });
 
