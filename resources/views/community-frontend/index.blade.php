@@ -183,199 +183,175 @@
             </form>
 
         </div>
-
-        <div class="main-content posted-content">
-            <div class="post-autore d-flex justify-content-between align-items-center">
-                <div class="authore-title d-flex align-items-center">
-                    <a href="#"><img
-                            src="{{asset("community-frontend/assets/images/community/home/news-post/Athore01.jpg")}}"
-                            alt="image"></a>
-                    <div class="athore-info">
-                        <p class="athore-name"><a href="#">Julie R. Morleyv</a></p>
-                        <p class="posted-time"><a href="#">10 Mins Ago</a></p>
-                    </div>
-                </div>
-                <div class="post-option">
-                    <button type="button" class="dropdown-toggle" id="dropdownMenuButton1"
-                            data-bs-toggle="dropdown" aria-expanded="false"><i class="fa fa-ellipsis-h"
-                                                                               aria-hidden="true"></i></button>
-                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                        <li><a href="#" class="post-option-item"><i class="fa fa-pencil-square-o"
-                                                                    aria-hidden="true"></i> Edit Post</a></li>
-                        <li><a href="#" class="post-option-item"><i class="fa fa-eye-slash"
-                                                                    aria-hidden="true"></i> Hide Post</a></li>
-                        <li><a href="#" class="post-option-item"><i class="fa fa-trash-o"
-                                                                    aria-hidden="true"></i> Delete Post</a></li>
-                    </ul>
-                </div>
-            </div>
-            <div class="post-body">
-                <p class="post-status">Donec rutrum congue leo eget malesuada. Nulla quis lorem ut libero
-                    malesuada feugiat. Donec rutrum congue leo eget malesuada. Donec rutrum congue leo eget
-                    malesuada. Praesent sapien massa convallis a pellentesque nec egestas non nisi. Curabitur
-                    non nulla sit amet nisl tempus convallis quis.</p>
-                <div class="post-img">
-                    <img src="{{asset("community-frontend/assets/images/community/home/news-post/post-1.jpg")}}" alt="">
-                </div>
-                <ul class="post-react-widget">
-                    <li class="post-react like-react">
+{{--@dd($allUserPosts)--}}
+        @foreach($allUserPosts as $post)
+            <div class="main-content posted-content">
+                <div class="post-autore d-flex justify-content-between align-items-center">
+                    <div class="authore-title d-flex align-items-center">
                         <a href="#">
-                            <div class="react-icon">
-                                <svg xmlns="http://www.w3.org/2000/svg" version="1.1"
-                                     xmlns:xlink="http://www.w3.org/1999/xlink" x="0" y="0"
-                                     viewBox="0 0 478.2 478.2" style="enable-background:new 0 0 512 512"
-                                     xml:space="preserve" class=""><g>
-                                        <path
-                                            d="M457.575 325.1c9.8-12.5 14.5-25.9 13.9-39.7-.6-15.2-7.4-27.1-13-34.4 6.5-16.2 9-41.7-12.7-61.5-15.9-14.5-42.9-21-80.3-19.2-26.3 1.2-48.3 6.1-49.2 6.3h-.1c-5 .9-10.3 2-15.7 3.2-.4-6.4.7-22.3 12.5-58.1 14-42.6 13.2-75.2-2.6-97-16.6-22.9-43.1-24.7-50.9-24.7-7.5 0-14.4 3.1-19.3 8.8-11.1 12.9-9.8 36.7-8.4 47.7-13.2 35.4-50.2 122.2-81.5 146.3-.6.4-1.1.9-1.6 1.4-9.2 9.7-15.4 20.2-19.6 29.4-5.9-3.2-12.6-5-19.8-5h-61c-23 0-41.6 18.7-41.6 41.6v162.5c0 23 18.7 41.6 41.6 41.6h61c8.9 0 17.2-2.8 24-7.6l23.5 2.8c3.6.5 67.6 8.6 133.3 7.3 11.9.9 23.1 1.4 33.5 1.4 17.9 0 33.5-1.4 46.5-4.2 30.6-6.5 51.5-19.5 62.1-38.6 8.1-14.6 8.1-29.1 6.8-38.3 19.9-18 23.4-37.9 22.7-51.9-.4-8.1-2.2-15-4.1-20.1zm-409.3 122.2c-8.1 0-14.6-6.6-14.6-14.6V270.1c0-8.1 6.6-14.6 14.6-14.6h61c8.1 0 14.6 6.6 14.6 14.6v162.5c0 8.1-6.6 14.6-14.6 14.6h-61v.1zm383.7-133.9c-4.2 4.4-5 11.1-1.8 16.3 0 .1 4.1 7.1 4.6 16.7.7 13.1-5.6 24.7-18.8 34.6-4.7 3.6-6.6 9.8-4.6 15.4 0 .1 4.3 13.3-2.7 25.8-6.7 12-21.6 20.6-44.2 25.4-18.1 3.9-42.7 4.6-72.9 2.2h-1.4c-64.3 1.4-129.3-7-130-7.1h-.1l-10.1-1.2c.6-2.8.9-5.8.9-8.8V270.1c0-4.3-.7-8.5-1.9-12.4 1.8-6.7 6.8-21.6 18.6-34.3 44.9-35.6 88.8-155.7 90.7-160.9.8-2.1 1-4.4.6-6.7-1.7-11.2-1.1-24.9 1.3-29 5.3.1 19.6 1.6 28.2 13.5 10.2 14.1 9.8 39.3-1.2 72.7-16.8 50.9-18.2 77.7-4.9 89.5 6.6 5.9 15.4 6.2 21.8 3.9 6.1-1.4 11.9-2.6 17.4-3.5.4-.1.9-.2 1.3-.3 30.7-6.7 85.7-10.8 104.8 6.6 16.2 14.8 4.7 34.4 3.4 36.5-3.7 5.6-2.6 12.9 2.4 17.4.1.1 10.6 10 11.1 23.3.4 8.9-3.8 18-12.5 27z"
-                                            fill="#000000" data-original="#000000" class=""></path>
-                                    </g></svg>
-                            </div>
-                            <span class="react-name">Like</span>
-                            <span class="react-count">2560</span>
+
+                            @if($post->user_profile)
+                                <img src=""
+                                     alt="image">
+                            @else
+                                <img src="{{asset("community-frontend/assets/images/community/home/news-post/Athore01.jpg")}}"
+                                     alt="image">
+                            @endif
+
                         </a>
-                        <ul class="react-option">
-                            <li><a href="#"><img
-                                        src="{{asset("community-frontend/assets/images/community/home/news-post/react-1.png")}}"
-                                        alt="React"></a></li>
-                            <li><a href="#"><img
-                                        src="{{asset("community-frontend/assets/images/community/home/news-post/react-2.png")}}"
-                                        alt="React"></a></li>
-                            <li><a href="#"><img
-                                        src="{{asset("community-frontend/assets/images/community/home/news-post/react-3.png")}}"
-                                        alt="React"></a></li>
-                            <li><a href="#"><img
-                                        src="{{asset("community-frontend/assets/images/community/home/news-post/react-4.png")}}"
-                                        alt="React"></a></li>
-                            <li><a href="#"><img
-                                        src="{{asset("community-frontend/assets/images/community/home/news-post/react-5.png")}}"
-                                        alt="React"></a></li>
-                            <li><a href="#"><img
-                                        src="{{asset("community-frontend/assets/images/community/home/news-post/react-6.png")}}"
-                                        alt="React"></a></li>
-                            <li><a href="#"><img
-                                        src="{{asset("community-frontend/assets/images/community/home/news-post/react-7.png")}}"
-                                        alt="React"></a></li>
+                        <div class="athore-info">
+                            <p class="athore-name"><a href="#">{{$post->name}}</a></p>
+                            <p class="posted-time"><a href="#">{{\Carbon\Carbon::parse($post->created_at)->diffForHumans()}}</a></p>
+                        </div>
+                    </div>
+                    <div class="post-option">
+                        <button type="button" class="dropdown-toggle" id="dropdownMenuButton1"
+                                data-bs-toggle="dropdown" aria-expanded="false"><i class="fa fa-ellipsis-h"
+                                                                                   aria-hidden="true"></i></button>
+                        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                            <li><a href="#" class="post-option-item"><i class="fa fa-pencil-square-o"
+                                                                        aria-hidden="true"></i> Edit Post</a></li>
+                            <li><a href="#" class="post-option-item"><i class="fa fa-eye-slash"
+                                                                        aria-hidden="true"></i> Hide Post</a></li>
+                            <li><a href="#" class="post-option-item"><i class="fa fa-trash-o"
+                                                                        aria-hidden="true"></i> Delete Post</a></li>
                         </ul>
-                    </li>
-                    <li class="post-react">
-                        <a href="#">
-                            <div class="react-icon">
-                                <svg xmlns="http://www.w3.org/2000/svg" version="1.1"
-                                     xmlns:xlink="http://www.w3.org/1999/xlink" x="0" y="0" viewBox="0 0 32 32"
-                                     style="enable-background:new 0 0 512 512" xml:space="preserve" class=""><g>
-                                        <g fill="#000">
-                                            <path
-                                                d="M10 11a2 2 0 1 0 0 4 2 2 0 0 0 0-4zM14 13a2 2 0 1 1 4 0 2 2 0 0 1-4 0zM22 11a2 2 0 1 0 0 4 2 2 0 0 0 0-4z"
-                                                fill="#000000" data-original="#000000"></path>
-                                            <path fill-rule="evenodd"
-                                                  d="M5 1a5 5 0 0 0-5 5v14a5 5 0 0 0 5 5h.012l.01 4.678a1 1 0 0 0 1.725.687L11.836 25H27a5 5 0 0 0 5-5V6a5 5 0 0 0-5-5zM2 6a3 3 0 0 1 3-3h22a3 3 0 0 1 3 3v14a3 3 0 0 1-3 3H11.406a1 1 0 0 0-.726.312l-3.664 3.862-.006-3.176a1 1 0 0 0-1-.998H5a3 3 0 0 1-3-3z"
-                                                  clip-rule="evenodd" fill="#000000"
-                                                  data-original="#000000"></path>
-                                        </g>
-                                    </g></svg>
-                            </div>
-                            <span class="react-name">Comment</span>
-                            <span class="react-count">256</span>
-                        </a>
-                    </li>
-                    <li class="post-react">
-                        <a href="#">
-                            <div class="react-icon">
-                                <svg xmlns="http://www.w3.org/2000/svg" version="1.1"
-                                     xmlns:xlink="http://www.w3.org/1999/xlink" x="0" y="0"
-                                     viewBox="0 0 512 512.001" style="enable-background:new 0 0 512 512"
-                                     xml:space="preserve" class=""><g>
-                                        <path
-                                            d="M361.824 344.395c-24.531 0-46.633 10.593-61.972 27.445l-137.973-85.453A83.321 83.321 0 0 0 167.605 256a83.29 83.29 0 0 0-5.726-30.387l137.973-85.457c15.34 16.852 37.441 27.45 61.972 27.45 46.211 0 83.805-37.594 83.805-83.805C445.629 37.59 408.035 0 361.824 0c-46.21 0-83.804 37.594-83.804 83.805a83.403 83.403 0 0 0 5.726 30.386l-137.969 85.454c-15.34-16.852-37.441-27.45-61.972-27.45C37.594 172.195 0 209.793 0 256c0 46.21 37.594 83.805 83.805 83.805 24.53 0 46.633-10.594 61.972-27.45l137.97 85.454a83.408 83.408 0 0 0-5.727 30.39c0 46.207 37.593 83.801 83.804 83.801s83.805-37.594 83.805-83.8c0-46.212-37.594-83.805-83.805-83.805zm-53.246-260.59c0-29.36 23.887-53.246 53.246-53.246s53.246 23.886 53.246 53.246c0 29.36-23.886 53.246-53.246 53.246s-53.246-23.887-53.246-53.246zM83.805 309.246c-29.364 0-53.25-23.887-53.25-53.246s23.886-53.246 53.25-53.246c29.36 0 53.242 23.887 53.242 53.246s-23.883 53.246-53.242 53.246zm224.773 118.95c0-29.36 23.887-53.247 53.246-53.247s53.246 23.887 53.246 53.246c0 29.36-23.886 53.246-53.246 53.246s-53.246-23.886-53.246-53.246zm0 0"
-                                            fill="#000000" data-original="#000000"></path>
-                                    </g></svg>
-                            </div>
-                            <span class="react-name">share</span>
-                            <span class="react-count">2506</span>
-                        </a>
-                    </li>
-                </ul>
-                <ul class="post-comment-list">
-                    <li class="single-comment">
-                        <div class="comment-img">
-                            <a href="#">
-                                <img
-                                    src="{{asset("community-frontend/assets/images/community/home/news-post/comment01.jpg")}}"
-                                    alt="image">
-                            </a>
-                        </div>
-                        <div class="comment-details">
-                            <div class="coment-info">
-                                <h6><a href="#">David Moore</a></h6>
-                                <span class="comment-time">10 Mint Ago</span>
-                            </div>
-                            <p class="comment-content">Donec rutrum congue leo eget malesuada nulla quis lorem
-                                ut libero malesuada feugiat donec rutrum congue leo eget malesuada donec rutrum
-                                congue leo eget malesuada. Praesent sapien massa convallis a pellentesque non
-                                nisi curabitur non nulla sit amet nisl tempus convallis lectus.</p>
-                            <ul class="coment-react">
-                                <li class="comment-like"><a href="#">Like(2)</a></li>
-                                <li><a href="#">Replay</a></li>
-                            </ul>
-                        </div>
-                    </li>
-                    <li class="single-comment">
-                        <div class="comment-img">
-                            <a href="#">
-                                <img src="/assets/images/community/home/news-post/coment02.jpg" alt="image">
-                            </a>
-                        </div>
-                        <div class="comment-details">
-                            <div class="coment-info">
-                                <h6><a href="#">Claire P. Toy</a></h6>
-                                <span class="comment-time">5 Mint Ago</span>
-                            </div>
-                            <p class="comment-content">Donec rutrum congue leo eget malesuada praesent sapien
-                                massa convallis a pellentesque nec egestas non nisi curabitur non nulla sit amet
-                                nisl tempus convallis quis ac lectus.</p>
-                            <ul class="coment-react">
-                                <li class="comment-like"><a href="#">Like(2)</a></li>
-                                <li><a href="#">Replay</a></li>
-                            </ul>
-                        </div>
-                    </li>
-                    <li class="single-comment">
-                        <div class="comment-img">
-                            <a href="#">
-                                <img src="/assets/images/community/home/news-post/comment03.jpg" alt="image">
-                            </a>
-                        </div>
-                        <div class="comment-details">
-                            <div class="coment-info">
-                                <h6><a href="#">Karen Williams</a></h6>
-                                <span class="comment-time">3 Mint Ago</span>
-                            </div>
-                            <p class="comment-content">Donec rutrum congue leo eget malesuada nulla quis lorem
-                                ut libero malesuada feugiat donec rutrum congue leo eget.</p>
-                            <ul class="coment-react">
-                                <li class="comment-like"><a href="#">Like(2)</a></li>
-                                <li><a href="#">Replay</a></li>
-                            </ul>
-                        </div>
-                    </li>
-                </ul>
-                <div class="more-comment">
-                    <a href="#">More Comments+</a>
-                </div>
-
-                <form action="#" class="new-comment">
-                    <a class="new-comment-img" href="#"><img
-                            src="{{asset("community-frontend/assets/images/community/home/user-0.jpg")}}"
-                            alt="Image"></a>
-                    <div class="new-comment-input">
-                        <input type="text" placeholder="Write a comment....">
-                        <div class="attached-icon">
-                            <a href="#"><i class="fa fa-camera" aria-hidden="true"></i></a>
-                        </div>
                     </div>
-                </form>
+                </div>
+                <div class="post-body">
+                    <p class="post-status">{{$post->postDescription}}.</p>
+
+                    @if($post->userPostMedia)
+                        <div class="post-img">
+                            <img src="{{asset("storage/community/".$post->userPostMedia)}}" alt="">
+                        </div>
+                    @endif
+{{--                    <div class="post-img">--}}
+{{--                        <img src="{{asset("community-frontend/assets/images/community/home/news-post/post-1.jpg")}}" alt="">--}}
+{{--                    </div>--}}
+                    <ul class="post-react-widget">
+                        <li class="post-react like-react">
+                            <a href="#">
+                                <div class="react-icon">
+                                    <svg xmlns="http://www.w3.org/2000/svg" version="1.1"
+                                         xmlns:xlink="http://www.w3.org/1999/xlink" x="0" y="0"
+                                         viewBox="0 0 478.2 478.2" style="enable-background:new 0 0 512 512"
+                                         xml:space="preserve" class=""><g>
+                                            <path
+                                                d="M457.575 325.1c9.8-12.5 14.5-25.9 13.9-39.7-.6-15.2-7.4-27.1-13-34.4 6.5-16.2 9-41.7-12.7-61.5-15.9-14.5-42.9-21-80.3-19.2-26.3 1.2-48.3 6.1-49.2 6.3h-.1c-5 .9-10.3 2-15.7 3.2-.4-6.4.7-22.3 12.5-58.1 14-42.6 13.2-75.2-2.6-97-16.6-22.9-43.1-24.7-50.9-24.7-7.5 0-14.4 3.1-19.3 8.8-11.1 12.9-9.8 36.7-8.4 47.7-13.2 35.4-50.2 122.2-81.5 146.3-.6.4-1.1.9-1.6 1.4-9.2 9.7-15.4 20.2-19.6 29.4-5.9-3.2-12.6-5-19.8-5h-61c-23 0-41.6 18.7-41.6 41.6v162.5c0 23 18.7 41.6 41.6 41.6h61c8.9 0 17.2-2.8 24-7.6l23.5 2.8c3.6.5 67.6 8.6 133.3 7.3 11.9.9 23.1 1.4 33.5 1.4 17.9 0 33.5-1.4 46.5-4.2 30.6-6.5 51.5-19.5 62.1-38.6 8.1-14.6 8.1-29.1 6.8-38.3 19.9-18 23.4-37.9 22.7-51.9-.4-8.1-2.2-15-4.1-20.1zm-409.3 122.2c-8.1 0-14.6-6.6-14.6-14.6V270.1c0-8.1 6.6-14.6 14.6-14.6h61c8.1 0 14.6 6.6 14.6 14.6v162.5c0 8.1-6.6 14.6-14.6 14.6h-61v.1zm383.7-133.9c-4.2 4.4-5 11.1-1.8 16.3 0 .1 4.1 7.1 4.6 16.7.7 13.1-5.6 24.7-18.8 34.6-4.7 3.6-6.6 9.8-4.6 15.4 0 .1 4.3 13.3-2.7 25.8-6.7 12-21.6 20.6-44.2 25.4-18.1 3.9-42.7 4.6-72.9 2.2h-1.4c-64.3 1.4-129.3-7-130-7.1h-.1l-10.1-1.2c.6-2.8.9-5.8.9-8.8V270.1c0-4.3-.7-8.5-1.9-12.4 1.8-6.7 6.8-21.6 18.6-34.3 44.9-35.6 88.8-155.7 90.7-160.9.8-2.1 1-4.4.6-6.7-1.7-11.2-1.1-24.9 1.3-29 5.3.1 19.6 1.6 28.2 13.5 10.2 14.1 9.8 39.3-1.2 72.7-16.8 50.9-18.2 77.7-4.9 89.5 6.6 5.9 15.4 6.2 21.8 3.9 6.1-1.4 11.9-2.6 17.4-3.5.4-.1.9-.2 1.3-.3 30.7-6.7 85.7-10.8 104.8 6.6 16.2 14.8 4.7 34.4 3.4 36.5-3.7 5.6-2.6 12.9 2.4 17.4.1.1 10.6 10 11.1 23.3.4 8.9-3.8 18-12.5 27z"
+                                                fill="#000000" data-original="#000000" class=""></path>
+                                        </g></svg>
+                                </div>
+                                <span class="react-name">Like</span>
+                                <span class="react-count">2560</span>
+                            </a>
+                            <ul class="react-option">
+                                <li><a href="#"><img
+                                            src="{{asset("community-frontend/assets/images/community/home/news-post/react-1.png")}}"
+                                            alt="React"></a></li>
+                                <li><a href="#"><img
+                                            src="{{asset("community-frontend/assets/images/community/home/news-post/react-2.png")}}"
+                                            alt="React"></a></li>
+                                <li><a href="#"><img
+                                            src="{{asset("community-frontend/assets/images/community/home/news-post/react-3.png")}}"
+                                            alt="React"></a></li>
+                                <li><a href="#"><img
+                                            src="{{asset("community-frontend/assets/images/community/home/news-post/react-4.png")}}"
+                                            alt="React"></a></li>
+                                <li><a href="#"><img
+                                            src="{{asset("community-frontend/assets/images/community/home/news-post/react-5.png")}}"
+                                            alt="React"></a></li>
+                                <li><a href="#"><img
+                                            src="{{asset("community-frontend/assets/images/community/home/news-post/react-6.png")}}"
+                                            alt="React"></a></li>
+                                <li><a href="#"><img
+                                            src="{{asset("community-frontend/assets/images/community/home/news-post/react-7.png")}}"
+                                            alt="React"></a></li>
+                            </ul>
+                        </li>
+                        <li class="post-react">
+                            <a href="#">
+                                <div class="react-icon">
+                                    <svg xmlns="http://www.w3.org/2000/svg" version="1.1"
+                                         xmlns:xlink="http://www.w3.org/1999/xlink" x="0" y="0" viewBox="0 0 32 32"
+                                         style="enable-background:new 0 0 512 512" xml:space="preserve" class=""><g>
+                                            <g fill="#000">
+                                                <path
+                                                    d="M10 11a2 2 0 1 0 0 4 2 2 0 0 0 0-4zM14 13a2 2 0 1 1 4 0 2 2 0 0 1-4 0zM22 11a2 2 0 1 0 0 4 2 2 0 0 0 0-4z"
+                                                    fill="#000000" data-original="#000000"></path>
+                                                <path fill-rule="evenodd"
+                                                      d="M5 1a5 5 0 0 0-5 5v14a5 5 0 0 0 5 5h.012l.01 4.678a1 1 0 0 0 1.725.687L11.836 25H27a5 5 0 0 0 5-5V6a5 5 0 0 0-5-5zM2 6a3 3 0 0 1 3-3h22a3 3 0 0 1 3 3v14a3 3 0 0 1-3 3H11.406a1 1 0 0 0-.726.312l-3.664 3.862-.006-3.176a1 1 0 0 0-1-.998H5a3 3 0 0 1-3-3z"
+                                                      clip-rule="evenodd" fill="#000000"
+                                                      data-original="#000000"></path>
+                                            </g>
+                                        </g></svg>
+                                </div>
+                                <span class="react-name">Comment</span>
+                                <span class="react-count">256</span>
+                            </a>
+                        </li>
+                        <li class="post-react">
+                            <a href="#">
+                                <div class="react-icon">
+                                    <svg xmlns="http://www.w3.org/2000/svg" version="1.1"
+                                         xmlns:xlink="http://www.w3.org/1999/xlink" x="0" y="0"
+                                         viewBox="0 0 512 512.001" style="enable-background:new 0 0 512 512"
+                                         xml:space="preserve" class=""><g>
+                                            <path
+                                                d="M361.824 344.395c-24.531 0-46.633 10.593-61.972 27.445l-137.973-85.453A83.321 83.321 0 0 0 167.605 256a83.29 83.29 0 0 0-5.726-30.387l137.973-85.457c15.34 16.852 37.441 27.45 61.972 27.45 46.211 0 83.805-37.594 83.805-83.805C445.629 37.59 408.035 0 361.824 0c-46.21 0-83.804 37.594-83.804 83.805a83.403 83.403 0 0 0 5.726 30.386l-137.969 85.454c-15.34-16.852-37.441-27.45-61.972-27.45C37.594 172.195 0 209.793 0 256c0 46.21 37.594 83.805 83.805 83.805 24.53 0 46.633-10.594 61.972-27.45l137.97 85.454a83.408 83.408 0 0 0-5.727 30.39c0 46.207 37.593 83.801 83.804 83.801s83.805-37.594 83.805-83.8c0-46.212-37.594-83.805-83.805-83.805zm-53.246-260.59c0-29.36 23.887-53.246 53.246-53.246s53.246 23.886 53.246 53.246c0 29.36-23.886 53.246-53.246 53.246s-53.246-23.887-53.246-53.246zM83.805 309.246c-29.364 0-53.25-23.887-53.25-53.246s23.886-53.246 53.25-53.246c29.36 0 53.242 23.887 53.242 53.246s-23.883 53.246-53.242 53.246zm224.773 118.95c0-29.36 23.887-53.247 53.246-53.247s53.246 23.887 53.246 53.246c0 29.36-23.886 53.246-53.246 53.246s-53.246-23.886-53.246-53.246zm0 0"
+                                                fill="#000000" data-original="#000000"></path>
+                                        </g></svg>
+                                </div>
+                                <span class="react-name">share</span>
+                                <span class="react-count">2506</span>
+                            </a>
+                        </li>
+                    </ul>
+                    <ul class="post-comment-list">
+                        <li class="single-comment">
+{{--                            <div class="comment-img">--}}
+{{--                                <a href="#">--}}
+{{--                                    <img--}}
+{{--                                        src="{{asset("community-frontend/assets/images/community/home/news-post/comment01.jpg")}}"--}}
+{{--                                        alt="image">--}}
+{{--                                </a>--}}
+{{--                            </div>--}}
+{{--                            <div class="comment-details">--}}
+{{--                                <div class="coment-info">--}}
+{{--                                    <h6><a href="#">David Moore</a></h6>--}}
+{{--                                    <span class="comment-time">10 Mint Ago</span>--}}
+{{--                                </div>--}}
+{{--                                <p class="comment-content">Donec rutrum congue leo eget malesuada nulla quis lorem--}}
+{{--                                    ut libero malesuada feugiat donec rutrum congue leo eget malesuada donec rutrum--}}
+{{--                                    congue leo eget malesuada. Praesent sapien massa convallis a pellentesque non--}}
+{{--                                    nisi curabitur non nulla sit amet nisl tempus convallis lectus.</p>--}}
+{{--                                <ul class="coment-react">--}}
+{{--                                    <li class="comment-like"><a href="#">Like(2)</a></li>--}}
+{{--                                    <li><a href="#">Replay</a></li>--}}
+{{--                                </ul>--}}
+{{--                            </div>--}}
+                        </li>
+
+                    </ul>
+                    <div class="more-comment">
+                        <a href="#">More Comments+</a>
+                    </div>
+
+                    <form action="#" class="new-comment">
+                        <a class="new-comment-img" href="#"><img
+                                src="{{asset("community-frontend/assets/images/community/home/user-0.jpg")}}"
+                                alt="Image"></a>
+                        <div class="new-comment-input">
+                            <input type="text" placeholder="Write a comment....">
+                            <div class="attached-icon">
+                                <a href="#"><i class="fa fa-camera" aria-hidden="true"></i></a>
+                            </div>
+                        </div>
+                    </form>
+                </div>
             </div>
-        </div>
+
+        @endforeach
 
     </div>
 

@@ -4,12 +4,12 @@
     </div>
 
 
-
+{{--@dd(allUsersDetails())--}}
     <div class="profile-title d-flex align-items-center">
         <a href="#"><img src="{{asset("community-frontend/assets/images/community/home/user-0.jpg")}}" alt=""></a>
         <div class="profile-name">
             <h6><a href="#">{{Auth::user()->name}}</a></h6>
-            <span class="locaiton">Washington</span>
+            <span class="locaiton">{{ allUsersDetails()->birthplace}}</span>
         </div>
     </div>
     <ul class="profile-statistics">

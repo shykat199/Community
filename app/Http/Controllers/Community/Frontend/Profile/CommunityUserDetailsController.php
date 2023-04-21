@@ -12,9 +12,7 @@ class CommunityUserDetailsController extends Controller
     public function dashboard(){
         $data=array();
 
-
     }
-
     public function index()
     {
         $data=array();
@@ -36,6 +34,7 @@ class CommunityUserDetailsController extends Controller
 //        return $sigleUser;
         return view('admin.community-page.singleUsersDetails',compact('singleUser'));
     }
+
 
 
 }

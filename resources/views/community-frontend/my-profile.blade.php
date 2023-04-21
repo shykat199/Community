@@ -1,36 +1,96 @@
 @extends('community-frontend.layout.frontend_master')
 @section('frontend.content')
-    {{--    <div class="col-lg-3">--}}
-    {{--        <div class="news-feed-left">--}}
 
-    {{--            @include('community-frontend.layout.userProfile')--}}
-    {{--            @include('community-frontend.layout.pageLike')--}}
-    {{--            @include('community-frontend.layout.suggestedGroup')--}}
-
-    {{--        </div>--}}
-    {{--    </div>--}}
     <!-- my profile start -->
+    {{--    @dd($userDetails)--}}
     <div class="main-profile">
         <div class="row">
             <div class="col-lg-12">
                 <div class="full-profile-box">
                     <div class="full-profile-cover">
                         <img
-                            src="{{asset("community-frontend/assets/images/community/myProfile/my-profile-cover.jpg")}}"
+{{--                            src="{{asset("community-frontend/assets/images/community/myProfile/my-profile-cover.jpg")}}"--}}
+                            src="{{asset("storage/community/cover-picture/".$userDetails->coverPicture)}}"
                             alt="cover">
                         <div class="edit-cover">
-                            <a href="#">Edit Cover</a>
+                            <button type="button" class="attachment-option-btn" data-bs-toggle="modal"
+                                    data-bs-target="#photoModalCover">
+                                Edit Cover
+                            </button>
+
+                            <div class="modal fade" id="photoModalCover" tabindex="-1"
+                                 aria-labelledby="photoModalLabel"
+                                 aria-hidden="true">
+                                <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+                                    <div class="modal-content post-modal-content">
+                                        <div class="modal-header">
+                                            <div class="post-modal-title">
+                                                <h6 class="modal-title" id="photoModalLabel">Upload Cover
+                                                    Photo</h6>
+                                            </div>
+                                            <button type="button" class=" post-close" data-bs-dismiss="modal"
+                                                    aria-label="Close"><i class="fa fa-times"
+                                                                          aria-hidden="true"></i>
+                                            </button>
+                                        </div>
+
+                                        <form action="{{route('community.user.upload.user.cover.photo')}}"
+                                              class="input-psot" enctype="multipart/form-data"
+                                              method="post">
+                                            @csrf
+                                            <div class="modal-body post-modal-body">
+
+                                                <div class="upload-media">
+                                                    <div class="photo-place">
+                                                            <span class="icon">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" version="1.1" x="0"
+                                                             y="0" viewBox="0 0 24 24"
+                                                             style="enable-background:new 0 0 512 512"
+                                                             xml:space="preserve" class=""><g><path
+                                                                    d="m22.448 7.608-1.2 8.58a3.142 3.142 0 0 1-1.257 2.312.311.311 0 0 1-.488-.244V9.665A3.829 3.829 0 0 0 15.335 5.5H5.923c-.3 0-.307-.27-.286-.39a3.134 3.134 0 0 1 1.112-2.085 3.2 3.2 0 0 1 2.442-.473l10.561 1.48a3.211 3.211 0 0 1 2.223 1.134 3.191 3.191 0 0 1 .473 2.442zM18 9.665v8.668A2.358 2.358 0 0 1 15.335 21H4.667A2.357 2.357 0 0 1 2 18.333V9.665A2.357 2.357 0 0 1 4.667 7h10.668A2.358 2.358 0 0 1 18 9.665zM13.25 14a.75.75 0 0 0-.75-.75h-1.75V11.5a.75.75 0 0 0-1.5 0v1.75H7.5a.75.75 0 0 0 0 1.5h1.75v1.75a.75.75 0 0 0 1.5 0v-1.75h1.75a.75.75 0 0 0 .75-.75z"
+                                                                    fill="#000000" data-original="#000000"
+                                                                    class=""></path></g></svg>
+                                                    </span>
+                                                        <h6 class="title">Add Cover Photo</h6>
+                                                        <p class="small-text">or drag and drop</p>
+                                                    </div>
+                                                    <div class="preview-file">
+                                                        <img id="previewImg" src="#" alt="">
+                                                        <button type="button" id="imgClose"><i
+                                                                class="fa fa-times"
+                                                                aria-hidden="true"></i></button>
+                                                    </div>
+                                                    <div class="media-input">
+                                                        <input name="userCoverPhoto" accept="" type='file'
+                                                               id="imgInp"/>
+                                                    </div>
+                                                </div>
+
+
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="submit" class="social-theme-btn post-btn">Post
+                                                </button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+
                         </div>
                     </div>
                     <div class="full-profile-info">
                         <div class="full-profile-left">
                             <div class="profile-img">
                                 <a href="#"><img
-                                        src="{{asset("community-frontend/assets/images/community/myProfile/my-profile.jpg")}}"
+                                        src="{{asset("storage/community/profile-picture/".$userDetails->profilePicture)}}"
                                         alt="Image">
                                 </a>
                                 <div class="replace-icon">
-                                    <a href="#">
+
+                                    <button type="button" class="attachment-option-btn" data-bs-toggle="modal"
+                                            data-bs-target="#photoModal">
+
                                         <svg xmlns="http://www.w3.org/2000/svg" version="1.1" x="0" y="0"
                                              viewBox="0 0 32 32" style="enable-background:new 0 0 512 512"
                                              xml:space="preserve" class=""><g>
@@ -43,12 +103,73 @@
                                                 <circle cx="26" cy="12" r="1" fill="#000000"
                                                         data-original="#000000"></circle>
                                             </g></svg>
-                                    </a>
+                                    </button>
+
+                                    <div class="modal fade" id="photoModal" tabindex="-1"
+                                         aria-labelledby="photoModalLabel"
+                                         aria-hidden="true">
+                                        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+                                            <div class="modal-content post-modal-content">
+                                                <div class="modal-header">
+                                                    <div class="post-modal-title">
+                                                        <h6 class="modal-title" id="photoModalLabel">Upload Profile
+                                                            Photo</h6>
+                                                    </div>
+                                                    <button type="button" class=" post-close" data-bs-dismiss="modal"
+                                                            aria-label="Close"><i class="fa fa-times"
+                                                                                  aria-hidden="true"></i>
+                                                    </button>
+                                                </div>
+
+                                                <form action="{{route('community.user.upload.user.profile.photo')}}"
+                                                      class="input-psot" enctype="multipart/form-data"
+                                                      method="post">
+                                                    @csrf
+                                                    <div class="modal-body post-modal-body">
+
+                                                        <div class="upload-media">
+                                                            <div class="photo-place">
+                                                            <span class="icon">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" version="1.1" x="0"
+                                                             y="0" viewBox="0 0 24 24"
+                                                             style="enable-background:new 0 0 512 512"
+                                                             xml:space="preserve" class=""><g><path
+                                                                    d="m22.448 7.608-1.2 8.58a3.142 3.142 0 0 1-1.257 2.312.311.311 0 0 1-.488-.244V9.665A3.829 3.829 0 0 0 15.335 5.5H5.923c-.3 0-.307-.27-.286-.39a3.134 3.134 0 0 1 1.112-2.085 3.2 3.2 0 0 1 2.442-.473l10.561 1.48a3.211 3.211 0 0 1 2.223 1.134 3.191 3.191 0 0 1 .473 2.442zM18 9.665v8.668A2.358 2.358 0 0 1 15.335 21H4.667A2.357 2.357 0 0 1 2 18.333V9.665A2.357 2.357 0 0 1 4.667 7h10.668A2.358 2.358 0 0 1 18 9.665zM13.25 14a.75.75 0 0 0-.75-.75h-1.75V11.5a.75.75 0 0 0-1.5 0v1.75H7.5a.75.75 0 0 0 0 1.5h1.75v1.75a.75.75 0 0 0 1.5 0v-1.75h1.75a.75.75 0 0 0 .75-.75z"
+                                                                    fill="#000000" data-original="#000000"
+                                                                    class=""></path></g></svg>
+                                                    </span>
+                                                                <h6 class="title">Add Profile Photo</h6>
+                                                                <p class="small-text">or drag and drop</p>
+                                                            </div>
+                                                            <div class="preview-file">
+                                                                <img id="previewImg" src="#" alt="">
+                                                                <button type="button" id="imgClose"><i
+                                                                        class="fa fa-times"
+                                                                        aria-hidden="true"></i></button>
+                                                            </div>
+                                                            <div class="media-input">
+                                                                <input name="userProfilePhoto" accept="" type='file'
+                                                                       id="imgInp"/>
+                                                            </div>
+                                                        </div>
+
+
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="submit" class="social-theme-btn post-btn">Post
+                                                        </button>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+
                                 </div>
                             </div>
                             <div class="profile-name">
                                 <h6><a href="#">{{Auth::user()->name}}</a></h6>
-                                <span class="locaiton">{{!empty($userDetails) && isset($userDetails)? $userDetails->birthplace:'No Data Found'}}</span>
+                                <span
+                                    class="locaiton">{{!empty($userDetails) && isset($userDetails)? $userDetails->birthplace:'No Data Found'}}</span>
                             </div>
                         </div>
                         <ul class="profile-statistics">
@@ -136,14 +257,16 @@
                             <form action="{{route('community.user.post')}}" class="input-psot" method="post"
                                   enctype="multipart/form-data">
                                 @csrf
-                                <textarea name="postMessage" id="postMessage" placeholder="Write something here..."></textarea>
+                                <textarea name="postMessage" id="postMessage"
+                                          placeholder="Write something here..."></textarea>
                                 <ul class="attachment-btn">
                                     <li>
                                         <button type="button" class="attachment-option-btn" data-bs-toggle="modal"
                                                 data-bs-target="#photoModal">
                                             <div class="attachment-icon photo-icon">
                                                 <svg xmlns="http://www.w3.org/2000/svg" version="1.1" x="0" y="0"
-                                                     viewBox="0 0 430.23 430.23" style="enable-background:new 0 0 512 512"
+                                                     viewBox="0 0 430.23 430.23"
+                                                     style="enable-background:new 0 0 512 512"
                                                      xml:space="preserve" class=""><g>
                                                         <path
                                                             d="M217.875 159.668c-24.237 0-43.886 19.648-43.886 43.886 0 24.237 19.648 43.886 43.886 43.886 24.237 0 43.886-19.648 43.886-43.886 0-24.238-19.648-43.886-43.886-43.886zm0 66.873c-12.696 0-22.988-10.292-22.988-22.988s10.292-22.988 22.988-22.988 22.988 10.292 22.988 22.988-10.292 22.988-22.988 22.988z"
@@ -155,16 +278,20 @@
                                             </div>
                                             Photo
                                         </button>
-                                        <div class="modal fade" id="photoModal" tabindex="-1" aria-labelledby="photoModalLabel"
+                                        <div class="modal fade" id="photoModal" tabindex="-1"
+                                             aria-labelledby="photoModalLabel"
                                              aria-hidden="true">
                                             <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
                                                 <div class="modal-content post-modal-content">
                                                     <div class="modal-header">
                                                         <div class="post-modal-title">
-                                                            <h6 class="modal-title" id="photoModalLabel">Create Post</h6>
+                                                            <h6 class="modal-title" id="photoModalLabel">Create
+                                                                Post</h6>
                                                         </div>
-                                                        <button type="button" class=" post-close" data-bs-dismiss="modal"
-                                                                aria-label="Close"><i class="fa fa-times" aria-hidden="true"></i>
+                                                        <button type="button" class=" post-close"
+                                                                data-bs-dismiss="modal"
+                                                                aria-label="Close"><i class="fa fa-times"
+                                                                                      aria-hidden="true"></i>
                                                         </button>
                                                     </div>
                                                     <div class="modal-body post-modal-body">
@@ -194,16 +321,19 @@
                                                             </div>
                                                             <div class="preview-file">
                                                                 <img id="previewImg" src="#" alt="">
-                                                                <button type="button" id="imgClose"><i class="fa fa-times"
-                                                                                                       aria-hidden="true"></i></button>
+                                                                <button type="button" id="imgClose"><i
+                                                                        class="fa fa-times"
+                                                                        aria-hidden="true"></i></button>
                                                             </div>
                                                             <div class="media-input">
-                                                                <input name="postFile" accept="" type='file' id="imgInp"/>
+                                                                <input name="postFile" accept="" type='file'
+                                                                       id="imgInp"/>
                                                             </div>
                                                         </div>
                                                     </div>
                                                     <div class="modal-footer">
-                                                        <button type="submit" class="social-theme-btn post-btn">Post</button>
+                                                        <button type="submit" class="social-theme-btn post-btn">Post
+                                                        </button>
                                                     </div>
                                                 </div>
                                             </div>
@@ -213,8 +343,10 @@
                                         <button type="button" class="attachment-option-btn" data-bs-toggle="modal"
                                                 data-bs-target="#photoModal">
                                             <div class="attachment-icon vido-icon">
-                                                <svg xmlns="http://www.w3.org/2000/svg" version="1.1" x="0" y="0" viewBox="0 0 512 512"
-                                                     style="enable-background:new 0 0 512 512" xml:space="preserve" class=""><g>
+                                                <svg xmlns="http://www.w3.org/2000/svg" version="1.1" x="0" y="0"
+                                                     viewBox="0 0 512 512"
+                                                     style="enable-background:new 0 0 512 512" xml:space="preserve"
+                                                     class=""><g>
                                                         <g fill-rule="evenodd">
                                                             <path
                                                                 d="M440.59 206.676H99.418l327.7-94.93a10.018 10.018 0 0 0 5.976-4.781 9.989 9.989 0 0 0 .847-7.606L416.793 40.16C409.941 16.516 387.926 0 363.253 0c-5.198 0-10.378.738-15.401 2.191L40.176 91.321c-14.23 4.12-26.024 13.581-33.215 26.632-7.188 13.05-8.875 28.078-4.754 42.305l16.754 57.836v238.254C18.96 487.035 43.926 512 74.609 512h120.164c5.524 0 10-4.477 10-10s-4.476-10-10-10H74.613c-19.66 0-35.652-15.992-35.652-35.652V320.262H430.589v136.086c0 19.66-15.991 35.652-35.651 35.652H274.773c-5.52 0-10 4.477-10 10s4.48 10 10 10h120.165c30.687 0 55.652-24.965 55.652-55.652V216.676c0-5.524-4.477-10-10-10zm-176.332 93.586 42.488-73.586h55.262l-42.485 73.586zm-78.36 0 42.489-73.586h55.261l-42.484 73.586zm-78.355 0 42.484-73.586h55.266l-42.488 73.586zm37.18-129.457-71.149-68.336 53.309-15.442a9.92 9.92 0 0 0 1.312 1.543l71.149 68.336-53.309 15.442a9.951 9.951 0 0 0-1.312-1.543zm134-125.84L349.87 113.3l-53.308 15.441a9.742 9.742 0 0 0-1.313-1.543l-71.148-68.336 53.308-15.441a9.92 9.92 0 0 0 1.313 1.543zM203.457 66.77l71.148 68.332-53.308 15.445a9.742 9.742 0 0 0-1.313-1.543l-71.148-68.336 53.309-15.441c.378.543.816 1.062 1.312 1.543zm149.961-45.368c3.21-.93 6.52-1.402 9.836-1.402 15.824 0 29.937 10.578 34.328 25.727l14.367 49.59-40.12 11.62a10.165 10.165 0 0 0-1.317-1.542l-71.145-68.333zM24.48 127.602c4.61-8.372 12.16-14.434 21.262-17.07l5.875-1.704a10.17 10.17 0 0 0 1.313 1.543l71.148 68.336-88.293 25.578-14.367-49.59c-2.637-9.097-1.547-18.718 3.062-27.093zm14.48 99.074h87.974l-42.485 73.586H38.961zm303.657 73.586 42.485-73.586h45.488v73.586zm0 0"
@@ -232,8 +364,10 @@
                                         <button type="button" class="attachment-option-btn" data-bs-toggle="modal"
                                                 data-bs-target="#tagFriendModal">
                                             <div class="attachment-icon tag-icon">
-                                                <svg xmlns="http://www.w3.org/2000/svg" version="1.1" x="0" y="0" viewBox="0 0 512 512"
-                                                     style="enable-background:new 0 0 512 512" xml:space="preserve" class=""><g>
+                                                <svg xmlns="http://www.w3.org/2000/svg" version="1.1" x="0" y="0"
+                                                     viewBox="0 0 512 512"
+                                                     style="enable-background:new 0 0 512 512" xml:space="preserve"
+                                                     class=""><g>
                                                         <path
                                                             d="M165.246 173.548c6.29 0 11.388-5.099 11.388-11.388s-5.099-11.388-11.388-11.388-11.388 5.099-11.388 11.388 5.099 11.388 11.388 11.388zM254.085 173.548c6.289 0 11.388-5.099 11.388-11.388s-5.099-11.388-11.388-11.388c-6.29 0-11.388 5.099-11.388 11.388s5.098 11.388 11.388 11.388zM177.049 219.84a39.628 39.628 0 0 0 32.616 17.146c13.02 0 25.214-6.41 32.617-17.146a7.44 7.44 0 0 0-12.246-8.446c-4.627 6.709-12.243 10.714-20.371 10.714s-15.743-4.006-20.37-10.714a7.438 7.438 0 1 0-12.246 8.446z"
                                                             fill="#000000" data-original="#000000" class=""></path>
@@ -245,25 +379,31 @@
                                             Tag Friends
                                         </button>
 
-                                        <div class="modal fade" id="tagFriendModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+                                        <div class="modal fade" id="tagFriendModal" tabindex="-1"
+                                             aria-labelledby="exampleModalLabel"
                                              aria-hidden="true">
                                             <div class="modal-dialog modal-dialog-centered">
                                                 <div class="modal-content post-modal-content">
                                                     <div class="modal-header">
                                                         <div class="post-modal-title">
-                                                            <h6 class="modal-title" id="exampleModalLabel">Tag Friend</h6>
+                                                            <h6 class="modal-title" id="exampleModalLabel">Tag
+                                                                Friend</h6>
                                                         </div>
-                                                        <button type="button" class=" post-close" data-bs-dismiss="modal"
-                                                                aria-label="Close"><i class="fa fa-times" aria-hidden="true"></i>
+                                                        <button type="button" class=" post-close"
+                                                                data-bs-dismiss="modal"
+                                                                aria-label="Close"><i class="fa fa-times"
+                                                                                      aria-hidden="true"></i>
                                                         </button>
                                                     </div>
                                                     <div class="modal-body post-modal-body tag-modal-body">
                                                         <div class="tag-head">
                                                             <div class="search_box">
                                                                 <form>
-                                                                    <input type="text" id="inputSearch" placeholder="Search...">
-                                                                    <button type="submit" id="inputSearchBtn"><i class="fa fa-search"
-                                                                                                                 aria-hidden="true"></i>
+                                                                    <input type="text" id="inputSearch"
+                                                                           placeholder="Search...">
+                                                                    <button type="submit" id="inputSearchBtn"><i
+                                                                            class="fa fa-search"
+                                                                            aria-hidden="true"></i>
                                                                     </button>
                                                                 </form>
                                                             </div>
@@ -281,7 +421,8 @@
                                                                     <div class="my-profile-name"
                                                                          data-id="{{$friends->uId}}">{{$friends->userName}}</div>
                                                                     <label><input type="checkbox" name="tagId[]"
-                                                                                  value="{{$friends->uId}}">{{$friends->uId}}</label>
+                                                                                  value="{{$friends->uId}}">{{$friends->uId}}
+                                                                    </label>
                                                                 </li>
                                                             @endforeach
 
@@ -298,22 +439,26 @@
                             </form>
                         </div>
 
-{{--                        @dd(getMyPostTimeLine())--}}
+                        {{--                        @dd(getMyPostTimeLine())--}}
                         @foreach(getMyPostTimeLine() as $myPost)
                             <div class="main-content posted-content">
                                 <div class="post-autore d-flex justify-content-between align-items-center">
                                     <div class="authore-title d-flex align-items-center">
-                                        <a href="#"><img src="{{asset("community-frontend/assets/images/community/home/news-post/Athore01.jpg")}}"
-                                                         alt="image"></a>
+                                        <a href="#"><img
+                                                src="{{asset("community-frontend/assets/images/community/home/news-post/Athore01.jpg")}}"
+                                                alt="image"></a>
                                         <div class="athore-info">
                                             <p class="athore-name"><a href="#">{{Auth::user()->name}}</a></p>
-                                            <p class="posted-time"><a href="#">{{\Carbon\Carbon::parse(strtotime($myPost->created_at))->diffForHumans()}}</a></p>
+                                            <p class="posted-time"><a
+                                                    href="#">{{\Carbon\Carbon::parse(strtotime($myPost->created_at))->diffForHumans()}}</a>
+                                            </p>
                                         </div>
                                     </div>
                                     <div class="post-option">
                                         <button type="button" class="dropdown-toggle" id="dropdownMenuButton1"
-                                                data-bs-toggle="dropdown" aria-expanded="false"><i class="fa fa-ellipsis-h"
-                                                                                                   aria-hidden="true"></i>
+                                                data-bs-toggle="dropdown" aria-expanded="false"><i
+                                                class="fa fa-ellipsis-h"
+                                                aria-hidden="true"></i>
                                         </button>
                                         <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
                                             <li><a href="#" class="post-option-item"><i class="fa fa-pencil-square-o"
@@ -323,7 +468,8 @@
                                                                                         aria-hidden="true"></i> Hide
                                                     Post</a></li>
                                             <li><a href="#" class="post-option-item"><i class="fa fa-trash-o"
-                                                                                        aria-hidden="true"></i> Delete Post</a>
+                                                                                        aria-hidden="true"></i> Delete
+                                                    Post</a>
                                             </li>
                                         </ul>
                                     </div>
@@ -344,7 +490,8 @@
                                                 <div class="react-icon">
                                                     <svg xmlns="http://www.w3.org/2000/svg" version="1.1"
                                                          xmlns:xlink="http://www.w3.org/1999/xlink" x="0" y="0"
-                                                         viewBox="0 0 478.2 478.2" style="enable-background:new 0 0 512 512"
+                                                         viewBox="0 0 478.2 478.2"
+                                                         style="enable-background:new 0 0 512 512"
                                                          xml:space="preserve" class=""><g>
                                                             <path
                                                                 d="M457.575 325.1c9.8-12.5 14.5-25.9 13.9-39.7-.6-15.2-7.4-27.1-13-34.4 6.5-16.2 9-41.7-12.7-61.5-15.9-14.5-42.9-21-80.3-19.2-26.3 1.2-48.3 6.1-49.2 6.3h-.1c-5 .9-10.3 2-15.7 3.2-.4-6.4.7-22.3 12.5-58.1 14-42.6 13.2-75.2-2.6-97-16.6-22.9-43.1-24.7-50.9-24.7-7.5 0-14.4 3.1-19.3 8.8-11.1 12.9-9.8 36.7-8.4 47.7-13.2 35.4-50.2 122.2-81.5 146.3-.6.4-1.1.9-1.6 1.4-9.2 9.7-15.4 20.2-19.6 29.4-5.9-3.2-12.6-5-19.8-5h-61c-23 0-41.6 18.7-41.6 41.6v162.5c0 23 18.7 41.6 41.6 41.6h61c8.9 0 17.2-2.8 24-7.6l23.5 2.8c3.6.5 67.6 8.6 133.3 7.3 11.9.9 23.1 1.4 33.5 1.4 17.9 0 33.5-1.4 46.5-4.2 30.6-6.5 51.5-19.5 62.1-38.6 8.1-14.6 8.1-29.1 6.8-38.3 19.9-18 23.4-37.9 22.7-51.9-.4-8.1-2.2-15-4.1-20.1zm-409.3 122.2c-8.1 0-14.6-6.6-14.6-14.6V270.1c0-8.1 6.6-14.6 14.6-14.6h61c8.1 0 14.6 6.6 14.6 14.6v162.5c0 8.1-6.6 14.6-14.6 14.6h-61v.1zm383.7-133.9c-4.2 4.4-5 11.1-1.8 16.3 0 .1 4.1 7.1 4.6 16.7.7 13.1-5.6 24.7-18.8 34.6-4.7 3.6-6.6 9.8-4.6 15.4 0 .1 4.3 13.3-2.7 25.8-6.7 12-21.6 20.6-44.2 25.4-18.1 3.9-42.7 4.6-72.9 2.2h-1.4c-64.3 1.4-129.3-7-130-7.1h-.1l-10.1-1.2c.6-2.8.9-5.8.9-8.8V270.1c0-4.3-.7-8.5-1.9-12.4 1.8-6.7 6.8-21.6 18.6-34.3 44.9-35.6 88.8-155.7 90.7-160.9.8-2.1 1-4.4.6-6.7-1.7-11.2-1.1-24.9 1.3-29 5.3.1 19.6 1.6 28.2 13.5 10.2 14.1 9.8 39.3-1.2 72.7-16.8 50.9-18.2 77.7-4.9 89.5 6.6 5.9 15.4 6.2 21.8 3.9 6.1-1.4 11.9-2.6 17.4-3.5.4-.1.9-.2 1.3-.3 30.7-6.7 85.7-10.8 104.8 6.6 16.2 14.8 4.7 34.4 3.4 36.5-3.7 5.6-2.6 12.9 2.4 17.4.1.1 10.6 10 11.1 23.3.4 8.9-3.8 18-12.5 27z"
@@ -352,7 +499,8 @@
                                                         </g></svg>
                                                 </div>
                                                 <span class="react-name">Like</span>
-                                                <span class="react-count">{{myPostReactionCount($myPost->postId)}}</span>
+                                                <span
+                                                    class="react-count">{{myPostReactionCount($myPost->postId)}}</span>
                                             </a>
                                             <ul class="react-option">
                                                 <li><a href="#"><img
@@ -405,7 +553,8 @@
                                                 <div class="react-icon">
                                                     <svg xmlns="http://www.w3.org/2000/svg" version="1.1"
                                                          xmlns:xlink="http://www.w3.org/1999/xlink" x="0" y="0"
-                                                         viewBox="0 0 512 512.001" style="enable-background:new 0 0 512 512"
+                                                         viewBox="0 0 512 512.001"
+                                                         style="enable-background:new 0 0 512 512"
                                                          xml:space="preserve" class=""><g>
                                                             <path
                                                                 d="M361.824 344.395c-24.531 0-46.633 10.593-61.972 27.445l-137.973-85.453A83.321 83.321 0 0 0 167.605 256a83.29 83.29 0 0 0-5.726-30.387l137.973-85.457c15.34 16.852 37.441 27.45 61.972 27.45 46.211 0 83.805-37.594 83.805-83.805C445.629 37.59 408.035 0 361.824 0c-46.21 0-83.804 37.594-83.804 83.805a83.403 83.403 0 0 0 5.726 30.386l-137.969 85.454c-15.34-16.852-37.441-27.45-61.972-27.45C37.594 172.195 0 209.793 0 256c0 46.21 37.594 83.805 83.805 83.805 24.53 0 46.633-10.594 61.972-27.45l137.97 85.454a83.408 83.408 0 0 0-5.727 30.39c0 46.207 37.593 83.801 83.804 83.801s83.805-37.594 83.805-83.8c0-46.212-37.594-83.805-83.805-83.805zm-53.246-260.59c0-29.36 23.887-53.246 53.246-53.246s53.246 23.886 53.246 53.246c0 29.36-23.886 53.246-53.246 53.246s-53.246-23.887-53.246-53.246zM83.805 309.246c-29.364 0-53.25-23.887-53.25-53.246s23.886-53.246 53.25-53.246c29.36 0 53.242 23.887 53.242 53.246s-23.883 53.246-53.242 53.246zm224.773 118.95c0-29.36 23.887-53.247 53.246-53.247s53.246 23.887 53.246 53.246c0 29.36-23.886 53.246-53.246 53.246s-53.246-23.886-53.246-53.246zm0 0"
@@ -418,59 +567,60 @@
                                         </li>
                                     </ul>
 
-{{--                                    <ul class="post-comment-list">--}}
-{{--                                        <li class="single-comment">--}}
-{{--                                            <div class="comment-img">--}}
-{{--                                                <a href="#">--}}
-{{--                                                    <img src="{{asset("community-frontend/assets/images/community/home/news-post/comment01.jpg")}}"--}}
-{{--                                                         alt="image">--}}
-{{--                                                </a>--}}
-{{--                                            </div>--}}
-{{--                                            <div class="comment-details">--}}
-{{--                                                <div class="coment-info">--}}
-{{--                                                    <h6><a href="#">David Moore</a></h6>--}}
-{{--                                                    <span class="comment-time">10 Mint Ago</span>--}}
-{{--                                                </div>--}}
-{{--                                                <p class="comment-content">Donec rutrum congue leo eget malesuada nulla quis--}}
-{{--                                                    lorem ut libero malesuada feugiat donec rutrum congue leo eget malesuada--}}
-{{--                                                    donec rutrum congue leo eget malesuada. Praesent sapien massa convallis--}}
-{{--                                                    a pellentesque non nisi curabitur non nulla sit amet nisl tempus--}}
-{{--                                                    convallis lectus.</p>--}}
-{{--                                                <ul class="coment-react">--}}
-{{--                                                    <li class="comment-like"><a href="#">Like(2)</a></li>--}}
-{{--                                                    <li><a href="#">Replay</a></li>--}}
-{{--                                                </ul>--}}
-{{--                                            </div>--}}
-{{--                                        </li>--}}
-{{--                                        <li class="single-comment">--}}
-{{--                                            <div class="comment-img">--}}
-{{--                                                <a href="#">--}}
-{{--                                                    <img src="{{asset("community-frontend/assets/images/community/home/news-post/coment02.jpg")}}"--}}
-{{--                                                         alt="image">--}}
-{{--                                                </a>--}}
-{{--                                            </div>--}}
-{{--                                            <div class="comment-details">--}}
-{{--                                                <div class="coment-info">--}}
-{{--                                                    <h6><a href="#">Claire P. Toy</a></h6>--}}
-{{--                                                    <span class="comment-time">5 Mint Ago</span>--}}
-{{--                                                </div>--}}
-{{--                                                <p class="comment-content">Donec rutrum congue leo eget malesuada praesent--}}
-{{--                                                    sapien massa convallis a pellentesque nec egestas non nisi curabitur non--}}
-{{--                                                    nulla sit amet nisl tempus convallis quis ac lectus.</p>--}}
-{{--                                                <ul class="coment-react">--}}
-{{--                                                    <li class="comment-like"><a href="#">Like(2)</a></li>--}}
-{{--                                                    <li><a href="#">Replay</a></li>--}}
-{{--                                                </ul>--}}
-{{--                                            </div>--}}
-{{--                                        </li>--}}
+                                    {{--                                    <ul class="post-comment-list">--}}
+                                    {{--                                        <li class="single-comment">--}}
+                                    {{--                                            <div class="comment-img">--}}
+                                    {{--                                                <a href="#">--}}
+                                    {{--                                                    <img src="{{asset("community-frontend/assets/images/community/home/news-post/comment01.jpg")}}"--}}
+                                    {{--                                                         alt="image">--}}
+                                    {{--                                                </a>--}}
+                                    {{--                                            </div>--}}
+                                    {{--                                            <div class="comment-details">--}}
+                                    {{--                                                <div class="coment-info">--}}
+                                    {{--                                                    <h6><a href="#">David Moore</a></h6>--}}
+                                    {{--                                                    <span class="comment-time">10 Mint Ago</span>--}}
+                                    {{--                                                </div>--}}
+                                    {{--                                                <p class="comment-content">Donec rutrum congue leo eget malesuada nulla quis--}}
+                                    {{--                                                    lorem ut libero malesuada feugiat donec rutrum congue leo eget malesuada--}}
+                                    {{--                                                    donec rutrum congue leo eget malesuada. Praesent sapien massa convallis--}}
+                                    {{--                                                    a pellentesque non nisi curabitur non nulla sit amet nisl tempus--}}
+                                    {{--                                                    convallis lectus.</p>--}}
+                                    {{--                                                <ul class="coment-react">--}}
+                                    {{--                                                    <li class="comment-like"><a href="#">Like(2)</a></li>--}}
+                                    {{--                                                    <li><a href="#">Replay</a></li>--}}
+                                    {{--                                                </ul>--}}
+                                    {{--                                            </div>--}}
+                                    {{--                                        </li>--}}
+                                    {{--                                        <li class="single-comment">--}}
+                                    {{--                                            <div class="comment-img">--}}
+                                    {{--                                                <a href="#">--}}
+                                    {{--                                                    <img src="{{asset("community-frontend/assets/images/community/home/news-post/coment02.jpg")}}"--}}
+                                    {{--                                                         alt="image">--}}
+                                    {{--                                                </a>--}}
+                                    {{--                                            </div>--}}
+                                    {{--                                            <div class="comment-details">--}}
+                                    {{--                                                <div class="coment-info">--}}
+                                    {{--                                                    <h6><a href="#">Claire P. Toy</a></h6>--}}
+                                    {{--                                                    <span class="comment-time">5 Mint Ago</span>--}}
+                                    {{--                                                </div>--}}
+                                    {{--                                                <p class="comment-content">Donec rutrum congue leo eget malesuada praesent--}}
+                                    {{--                                                    sapien massa convallis a pellentesque nec egestas non nisi curabitur non--}}
+                                    {{--                                                    nulla sit amet nisl tempus convallis quis ac lectus.</p>--}}
+                                    {{--                                                <ul class="coment-react">--}}
+                                    {{--                                                    <li class="comment-like"><a href="#">Like(2)</a></li>--}}
+                                    {{--                                                    <li><a href="#">Replay</a></li>--}}
+                                    {{--                                                </ul>--}}
+                                    {{--                                            </div>--}}
+                                    {{--                                        </li>--}}
 
-{{--                                    </ul>--}}
-{{--                                    <div class="more-comment">--}}
-{{--                                        <a href="#">More Comments+</a>--}}
-{{--                                    </div>--}}
+                                    {{--                                    </ul>--}}
+                                    {{--                                    <div class="more-comment">--}}
+                                    {{--                                        <a href="#">More Comments+</a>--}}
+                                    {{--                                    </div>--}}
                                     <form action="#" class="new-comment">
                                         <a class="new-comment-img" href="#"><img
-                                                src="{{asset("community-frontend/assets/images/community/home/user-0.jpg")}}" alt="Image"></a>
+                                                src="{{asset("community-frontend/assets/images/community/home/user-0.jpg")}}"
+                                                alt="Image"></a>
                                         <div class="new-comment-input">
                                             <input type="text" placeholder="Write a comment....">
                                             <div class="attached-icon">
@@ -483,7 +633,7 @@
                         @endforeach
 
 
-{{--                        @dd(myPostReactionCount())--}}
+                        {{--                        @dd(myPostReactionCount())--}}
                         <div class="load-more mb-30">
                             <a href="#">
                                     <span class="loading-icon">
@@ -542,22 +692,34 @@
                             {{--                        @dd($userDetails)--}}
                             <ul class="profile-personal-information">
                                 <li><span>Email:</span><a href="#">{{Auth::user()->email}}</a></li>
-                                <li><span>Birthday:</span>{{!empty($userDetails) && isset($userDetails)?\Carbon\Carbon::parse($userDetails->dob)->format('M d, Y'):'No Data Found'}}
-{{--                                <li><span>Birthday:</span>{{  \Carbon\Carbon::parse($userDetails->dob)->format('M d, Y')}}--}}
+                                <li>
+                                    <span>Birthday:</span>{{!empty($userDetails) && isset($userDetails)?\Carbon\Carbon::parse($userDetails->dob)->format('M d, Y'):'No Data Found'}}
+                                    {{--                                <li><span>Birthday:</span>{{  \Carbon\Carbon::parse($userDetails->dob)->format('M d, Y')}}--}}
                                 </li>
                                 <li><span>Occupation:</span>UX Designer</li>
-                                <li><span>Birthplace:</span> {{!empty($userDetails) && isset($userDetails)? $userDetails->birthplace:'No Data Found'}}
+                                <li>
+                                    <span>Birthplace:</span> {{!empty($userDetails) && isset($userDetails)? $userDetails->birthplace:'No Data Found'}}
                                 </li>
-                                <li><span>Phone:</span><a href="#">{{!empty($userDetails) && isset($userDetails)? $userDetails->phone:'No Data Found'}}</a></li>
-{{--                                <li><span>Phone:</span><a href="#">{{$userDetails->phone}}</a></li>--}}
-                                <li><span>Gender:</span><a href="#">{{!empty($userDetails) && isset($userDetails)? $userDetails->gender:'No Data Found'}}</a></li>
-{{--                                <li><span>Gender:</span><a href="#">{{$userDetails->gender}}</a></li>--}}
-                                <li><span>Relationship Status:</span><a href="#">{{!empty($userDetails) && isset($userDetails)? $userDetails->relationship:'No Data Found'}}</a></li>
-{{--                                <li><span>Relationship Status:</span><a href="#">{{$userDetails->relationship}}</a></li>--}}
-                                <li><span>Blood Group:</span><a href="#">{{!empty($userDetails) && isset($userDetails)? ($userDetails->blood.' Positive'):'No Data Found'}}</a></li>
-{{--                                <li><span>Blood Group:</span><a href="#">{{$userDetails->blood}} Positive</a></li>--}}
-                                <li><span>Website:</span><a href="#"><a href="#">{{!empty($userDetails) && isset($userDetails)? $userDetails->website:'No Data Found'}}</a></a></li>
-{{--                                <li><span>Website:</span><a href="#"><a href="#">{{$userDetails->website}}</a></a></li>--}}
+                                <li><span>Phone:</span><a
+                                        href="#">{{!empty($userDetails) && isset($userDetails)? $userDetails->phone:'No Data Found'}}</a>
+                                </li>
+                                {{--                                <li><span>Phone:</span><a href="#">{{$userDetails->phone}}</a></li>--}}
+                                <li><span>Gender:</span><a
+                                        href="#">{{!empty($userDetails) && isset($userDetails)? $userDetails->gender:'No Data Found'}}</a>
+                                </li>
+                                {{--                                <li><span>Gender:</span><a href="#">{{$userDetails->gender}}</a></li>--}}
+                                <li><span>Relationship Status:</span><a
+                                        href="#">{{!empty($userDetails) && isset($userDetails)? $userDetails->relationship:'No Data Found'}}</a>
+                                </li>
+                                {{--                                <li><span>Relationship Status:</span><a href="#">{{$userDetails->relationship}}</a></li>--}}
+                                <li><span>Blood Group:</span><a
+                                        href="#">{{!empty($userDetails) && isset($userDetails)? ($userDetails->blood.' Positive'):'No Data Found'}}</a>
+                                </li>
+                                {{--                                <li><span>Blood Group:</span><a href="#">{{$userDetails->blood}} Positive</a></li>--}}
+                                <li><span>Website:</span><a href="#"><a
+                                            href="#">{{!empty($userDetails) && isset($userDetails)? $userDetails->website:'No Data Found'}}</a></a>
+                                </li>
+                                {{--                                <li><span>Website:</span><a href="#"><a href="#">{{$userDetails->website}}</a></a></li>--}}
                                 <li><span>Languages:</span>
                                     <a href="#">
                                         @if(count($allUserLanguage)>0)
@@ -571,7 +733,6 @@
                                                 No Language Found
                                             </a>
                                         @endif
-
 
 
                                     </a>
@@ -606,11 +767,11 @@
                                 <p>
                                     {{!empty($userDetails) && isset($userDetails)?$userDetails->about_me:'No Data Found'}}
                                 </p>
-{{--                                <p>Vivamus magna justo lacinia eget consectetur sed convallis at tellus. Nulla porttitor--}}
-{{--                                    accumsan tincidunt. Quisque velit nisi pretium ut lacinia in elementum id enim.--}}
-{{--                                    Donec rutrum congue leo eget malesuada. Quisque velit nisi pretium ut lacinia in--}}
-{{--                                    elementum id enim. Vivamus magna justo lacinia eget consectetur sed convallis at--}}
-{{--                                    tellus.</p>--}}
+                                {{--                                <p>Vivamus magna justo lacinia eget consectetur sed convallis at tellus. Nulla porttitor--}}
+                                {{--                                    accumsan tincidunt. Quisque velit nisi pretium ut lacinia in elementum id enim.--}}
+                                {{--                                    Donec rutrum congue leo eget malesuada. Quisque velit nisi pretium ut lacinia in--}}
+                                {{--                                    elementum id enim. Vivamus magna justo lacinia eget consectetur sed convallis at--}}
+                                {{--                                    tellus.</p>--}}
                             </div>
                         </div>
                         <div class="main-content posted-content">
@@ -776,8 +937,9 @@
                                                     </div>
                                                     <div class="profile-title d-flex align-items-center">
                                                         <a href="#">
-                                                            <img src="{{asset("community-frontend/assets/images/community/home/user-0.jpg")}}"
-                                                                 alt=""></a>
+                                                            <img
+                                                                src="{{asset("community-frontend/assets/images/community/home/user-0.jpg")}}"
+                                                                alt=""></a>
                                                         <div class="profile-name">
                                                             <h6><a href="#">{{$friend->userName}}</a></h6>
                                                             <span class="locaiton">
@@ -785,7 +947,7 @@
                                                                 @if($friend->birthplace===null)
                                                                     No Data Found
                                                                 @else
-                                                                    $friend->birthplace
+                                                                    {{ $friend->birthplace}}
                                                                 @endif
 
                                                             </span>
@@ -843,8 +1005,9 @@
                                                     </div>
                                                     <div class="profile-title d-flex align-items-center">
                                                         <a href="#">
-                                                            <img src="{{asset("community-frontend/assets/images/community/home/user-0.jpg")}}"
-                                                                 alt=""></a>
+                                                            <img
+                                                                src="{{asset("community-frontend/assets/images/community/home/user-0.jpg")}}"
+                                                                alt=""></a>
                                                         <div class="profile-name">
                                                             <h6><a href="#">{{$friend->userName}}</a></h6>
                                                             <span class="locaiton">
@@ -852,7 +1015,7 @@
                                                                 @if($friend->birthplace===null)
                                                                     No Data Found
                                                                 @else
-                                                                    $friend->birthplace
+                                                                    {{$friend->birthplace}}
                                                                 @endif
 
                                                             </span>
@@ -899,7 +1062,7 @@
                             <div class="friends-title">
                                 <div class="friends-count">
                                     <p>Photos</p>
-                                    <span>600</span>
+                                    <span>{{$countPhoto}}</span>
                                 </div>
                                 <div class="friend-status">
                                     <ul class="nav nav-tabs status-tab" id="myTab" role="tablist">
@@ -984,18 +1147,18 @@
                         <div class="tab-pane fade" id="gallaryPhoto" role="tabpanel" aria-labelledby="gallaryPhotoTab">
                             <div class="profile-friend-list">
                                 <div class="profile-friend-list">
-{{--                                    @dd(userAllPhoto())--}}
+                                    {{--                                    @dd(userAllPhoto())--}}
                                     <div class="row">
 
-                                            <div class="col-lg-3 col-md-4 col-6">
-                                                <div class="single-gallary-photo">
-                                                    <a href="#">
-                                                        <img src=""
-                                                             alt="image">
-                                                    </a>
-                                                    <ul class="icon-list">
-                                                        <li>
-                                                            <a href="#">
+                                        <div class="col-lg-3 col-md-4 col-6">
+                                            <div class="single-gallary-photo">
+                                                <a href="#">
+                                                    <img src=""
+                                                         alt="image">
+                                                </a>
+                                                <ul class="icon-list">
+                                                    <li>
+                                                        <a href="#">
                                                                 <span class="icon">
                                                                     <svg xmlns="http://www.w3.org/2000/svg"
                                                                          version="1.1" x="0" y="0" viewBox="0 0 512 512"
@@ -1008,10 +1171,10 @@
                                                                                 fill="#000000"
                                                                                 data-original="#000000"></path></g></svg>
                                                                 </span>
-                                                            </a>
-                                                        </li>
-                                                        <li>
-                                                            <a href="#">
+                                                        </a>
+                                                    </li>
+                                                    <li>
+                                                        <a href="#">
                                                                 <span class="icon">
                                                                     <svg xmlns="http://www.w3.org/2000/svg"
                                                                          version="1.1" x="0" y="0" viewBox="0 0 32 32"
@@ -1021,12 +1184,11 @@
                                                                                 data-name="Download" fill="#000000"
                                                                                 data-original="#000000"></path></g></svg>
                                                                 </span>
-                                                            </a>
-                                                        </li>
-                                                    </ul>
-                                                </div>
+                                                        </a>
+                                                    </li>
+                                                </ul>
                                             </div>
-
+                                        </div>
 
 
                                     </div>

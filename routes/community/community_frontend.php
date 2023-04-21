@@ -19,6 +19,8 @@ Route::middleware(['user'])->group(function (){
 
     //User Profile
     Route::get('/user/my-profile',[UserProfileDetailsController::class,'index'])->name('user.my-profile');
+    Route::post('/user/my-profile/upload-profile-photo',[UserProfileDetailsController::class,'uploadProfilePhoto'])->name('community.user.upload.user.profile.photo');
+    Route::post('/user/my-profile/upload-cover-photo',[UserProfileDetailsController::class,'uploadCoverPhoto'])->name('community.user.upload.user.cover.photo');
 
 
     //User Profile Setting
