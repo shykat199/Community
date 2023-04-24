@@ -35,19 +35,13 @@
                 </li>
                 <li class="nav-item" role="presentation">
                     <button class="nav-link" id="edu-tab" data-bs-toggle="tab" data-bs-target="#edu-tab-pane"
-                            type="button" role="tab" aria-controls="edu-tab-pane" aria-selected="false">Education & Work
-                        Information
+                            type="button" role="tab" aria-controls="edu-tab-pane" aria-selected="false">Work Information
                     </button>
                 </li>
 
                 <li class="nav-item" role="presentation">
                     <button class="nav-link" id="interest-tab" data-bs-toggle="tab" data-bs-target="#interest-tab-pane"
                             type="button" role="tab" aria-controls="interest-tab-pane" aria-selected="false">Interest
-                    </button>
-                </li>
-                <li class="nav-item" role="presentation">
-                    <button class="nav-link" id="social-tab" data-bs-toggle="tab" data-bs-target="#social-tab-pane"
-                            type="button" role="tab" aria-controls="social-tab-pane" aria-selected="false">Social Links
                     </button>
                 </li>
 
@@ -293,81 +287,33 @@
                             </div>
                         </form>
                     </div>
-{{--                    @dd($userEducation)--}}
+{{--                    @dd($userWork)--}}
                     <div class="tab-pane fade" id="edu-tab-pane" role="tabpanel" aria-labelledby="edu-tab"
                          tabindex="0">
 
                         <form class="setting-form-wrapper profile-information"
-                              action="{{route('user.my-profile.profile.education')}}" method="post">
-                            @csrf
-
-                            <h5 class="setting-title">Education Information</h5>
-                            <div class="row">
-                                <div class="col-lg-6">
-                                    <label for="instituteName">Institute Name</label>
-                                    <input type="text" value="" id="instituteName" name="instituteName"
-                                           placeholder="Institute Name">
-                                </div>
-                                <div class="col-lg-6">
-                                    <label for="degreeName">Degree Name</label>
-                                    <input type="text" value="" id="degreeName" name="degreeName"
-                                           placeholder="Degree Name">
-                                </div>
-
-                                <div class="col-lg-6">
-                                    <label for="startingDate">Starting year</label>
-                                    <input type="text" name="startingDate" class="form-control datepicker"
-                                           value=""
-                                           placeholder="">
-
-                                </div>
-                                <div class="col-lg-6">
-                                    <label for="passingDate">Passing year</label>
-                                    <input type="text" name="passingDate" class="form-control datepicker"
-                                           value=""
-                                           placeholder="">
-
-                                </div>
-                                <div class="col-lg-6">
-                                    <label for="institute">About Institute</label>
-                                    <textarea class="form-control editor" placeholder="Enter the Description"
-                                              name="institute"></textarea>
-                                </div>
-
-                                <div class="col-lg-6">
-                                    <div class="form-check form-switch">
-                                        <input class="form-check-input"  name="is_present" type="checkbox" id="flexSwitchCheckDefault">
-                                        <label class="form-check-label" for="flexSwitchCheckDefault">Is Present</label>
-                                    </div>
-
-                                </div>
-                                <div class="col-12 mt-2">
-                                    <button type="submit" class="social-theme-btn save-btn">Save</button>
-                                </div>
-                            </div>
-                        </form>
-
-                        <form class="setting-form-wrapper profile-information"
-                              action="{{route('user.my-profile.profile.work')}}" method="post">
+                              action="{{route('user.my-profile.update.profile.work',$userWork->id)}}" method="post">
                             @csrf
 
                             <h5 class="setting-title">Work Information</h5>
                             <div class="row">
                                 <div class="col-lg-6">
                                     <label for="designation">Designation</label>
-                                    <input type="text" value="" id="designation" name="designation"
+                                    <input type="text" value="{{$userWork->designation}}" id="designation"
+                                           name="designation"
                                            placeholder="Designation Name">
                                 </div>
                                 <div class="col-lg-6">
                                     <label for="companyName">Company Name</label>
-                                    <input type="text" value="" id="companyName" name="companyName"
+                                    <input type="text" value="{{$userWork->institute}}" id="companyName"
+                                           name="companyName"
                                            placeholder="Company Name">
                                 </div>
 
                                 <div class="col-lg-6">
                                     <label for="startingDate">Starting Date</label>
                                     <input type="text" name="startingDate" class="form-control datepicker"
-                                           value=""
+                                           value="{{$userWork->starting_date}}"
                                            placeholder="">
 
                                 </div>
@@ -375,7 +321,7 @@
                                 <div class="col-lg-6">
                                     <label for="startingDate">Ending Date</label>
                                     <input type="text" name="passingDate" class="form-control datepicker"
-                                           value=""
+                                           value="{{$userWork->ending_date}}"
                                            placeholder="">
 
                                 </div>
@@ -383,12 +329,13 @@
                                 <div class="col-lg-6">
                                     <label for="company">About Company</label>
                                     <textarea class="form-control" id="editor1" placeholder="Enter the Description"
-                                              name="company"></textarea>
+                                              name="company">{!! $userWork->description!!}</textarea>
                                 </div>
 
                                 <div class="col-lg-6">
                                     <div class="form-check form-switch">
-                                        <input class="form-check-input"  name="is_present" type="checkbox" id="flexSwitchCheckDefault">
+                                        <input class="form-check-input" name="is_present" type="checkbox" {{$userWork->is_present===1?'checked':''}}
+                                               id="flexSwitchCheckDefault">
                                         <label class="form-check-label" for="flexSwitchCheckDefault">Is Present</label>
                                     </div>
 
@@ -403,8 +350,9 @@
 
                     <div class="tab-pane fade" id="interest-tab-pane" role="tabpanel" aria-labelledby="interest-tab"
                          tabindex="0">
-{{--                        @dd($userInterests)--}}
-                        <form action="{{route('user.my-profile.profile.interest')}}" class="setting-form-wrapper profile-information" method="post">
+                        {{--                        @dd($userInterests)--}}
+                        <form action="{{route('user.my-profile.profile.interest')}}"
+                              class="setting-form-wrapper profile-information" method="post">
                             @csrf
                             <h5 class="setting-title">Field Of Interest information</h5>
                             <div class="row">
@@ -414,7 +362,10 @@
                                         <div class="input-group-prepend">
                                             <span class="input-group-text" id="inputGroup-sizing-sm">Hobby</span>
                                         </div>
-                                        <input type="text" name="hobby" value="{{(isset($userInterests['hobby'])) ? $userInterests['hobby'] : ''}}" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm">
+                                        <input type="text" name="hobby"
+                                               value="{{(isset($userInterests['hobby'])) ? $userInterests['hobby'] : ''}}"
+                                               class="form-control" aria-label="Small"
+                                               aria-describedby="inputGroup-sizing-sm">
 
                                     </div>
                                 </div>
@@ -422,9 +373,13 @@
                                 <div class="col-lg-12">
                                     <div class="input-group input-group-sm mb-3">
                                         <div class="input-group-prepend">
-                                            <span class="input-group-text" id="inputGroup-sizing-sm">Favourite Book</span>
+                                            <span class="input-group-text"
+                                                  id="inputGroup-sizing-sm">Favourite Book</span>
                                         </div>
-                                        <input type="text" name="fav_book" value="{{(isset($userInterests['fav_book'])) ? $userInterests['fav_book'] : ''}}" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm">
+                                        <input type="text" name="fav_book"
+                                               value="{{(isset($userInterests['fav_book'])) ? $userInterests['fav_book'] : ''}}"
+                                               class="form-control" aria-label="Small"
+                                               aria-describedby="inputGroup-sizing-sm">
 
                                     </div>
                                 </div>
@@ -432,71 +387,13 @@
                                 <div class="col-lg-12">
                                     <div class="input-group input-group-sm mb-3">
                                         <div class="input-group-prepend">
-                                            <span class="input-group-text" id="inputGroup-sizing-sm">Other Interest</span>
+                                            <span class="input-group-text"
+                                                  id="inputGroup-sizing-sm">Other Interest</span>
                                         </div>
-                                        <input type="text" name="other_interest" value="{{(isset($userInterests['other_interest'])) ? $userInterests['other_interest'] : ''}}" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm">
-
-                                    </div>
-                                </div>
-                                <div class="col-12">
-                                    <button type="submit" class="social-theme-btn save-btn">Save</button>
-                                </div>
-                            </div>
-                        </form>
-                    </div>
-
-                    <div class="tab-pane fade" id="social-tab-pane" role="tabpanel" aria-labelledby="social-tab"
-                         tabindex="0">
-{{--                        @dd($userInterests)--}}
-                        <form action="{{route('user.my-profile.profile.social')}}" class="setting-form-wrapper profile-information" method="post">
-                            @csrf
-                            <h5 class="setting-title">Social Links</h5>
-                            <div class="row">
-
-                                <div class="col-lg-12">
-                                    <div class="input-group input-group-sm mb-3">
-                                        <div class="input-group-prepend">
-                                            <span class="input-group-text" id="inputGroup-sizing-sm">Facebook</span>
-                                        </div>
-                                        <input type="text" name="facebook" value="{{(isset($userSocial['facebook'])) ? $userSocial['facebook'] : ''}}" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm">
-
-                                    </div>
-                                </div>
-
-                                <div class="col-lg-12">
-                                    <div class="input-group input-group-sm mb-3">
-                                        <div class="input-group-prepend">
-                                            <span class="input-group-text" id="inputGroup-sizing-sm">Twitter</span>
-                                        </div>
-                                        <input type="text" name="twitter" value="{{(isset($userSocial['twitter'])) ? $userSocial['twitter'] : ''}}" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm">
-
-                                    </div>
-                                </div>
-
-                                <div class="col-lg-12">
-                                    <div class="input-group input-group-sm mb-3">
-                                        <div class="input-group-prepend">
-                                            <span class="input-group-text" id="inputGroup-sizing-sm">Instagram</span>
-                                        </div>
-                                        <input type="text" name="instagram" value="{{(isset($userSocial['instagram'])) ? $userSocial['instagram'] : ''}}" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm">
-
-                                    </div>
-                                </div>
-                                <div class="col-lg-12">
-                                    <div class="input-group input-group-sm mb-3">
-                                        <div class="input-group-prepend">
-                                            <span class="input-group-text" id="inputGroup-sizing-sm">Linkedin</span>
-                                        </div>
-                                        <input type="text" name="linkedin" value="{{(isset($userSocial['linkedin'])) ? $userSocial['linkedin'] : ''}}" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm">
-
-                                    </div>
-                                </div>
-                                <div class="col-lg-12">
-                                    <div class="input-group input-group-sm mb-3">
-                                        <div class="input-group-prepend">
-                                            <span class="input-group-text" id="inputGroup-sizing-sm">Pinterest</span>
-                                        </div>
-                                        <input type="text" name="pinterest" value="{{(isset($userSocial['pinterest'])) ? $userSocial['pinterest'] : ''}}" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm">
+                                        <input type="text" name="other_interest"
+                                               value="{{(isset($userInterests['other_interest'])) ? $userInterests['other_interest'] : ''}}"
+                                               class="form-control" aria-label="Small"
+                                               aria-describedby="inputGroup-sizing-sm">
 
                                     </div>
                                 </div>
@@ -514,7 +411,8 @@
                             <div class="row">
                                 <div class="col-lg-6">
                                     <label for="recoveryMail">Recovery Email</label>
-                                    <input type="email" value="" id="recoveryMail" name="fname" placeholder="Recovery Email">
+                                    <input type="email" value="" id="recoveryMail" name="fname"
+                                           placeholder="Recovery Email">
                                 </div>
                                 <div class="col-lg-6">
                                     <label for="recoveryNumber">Recovery Phone</label>
@@ -970,7 +868,7 @@
     </script>
 
     <script>
-        $(document).ready(function() {
+        $(document).ready(function () {
             $('.js-example-basic-multiple').select2();
         });
     </script>

@@ -183,7 +183,7 @@
             </form>
 
         </div>
-{{--@dd($allUserPosts)--}}
+        {{--@dd($allUserPosts)--}}
         @foreach($allUserPosts as $post)
             <div class="main-content posted-content">
                 <div class="post-autore d-flex justify-content-between align-items-center">
@@ -191,17 +191,19 @@
                         <a href="#">
 
                             @if($post->user_profile)
-                                <img src=""
+                                <img src="{{asset("storage/community/profile-picture/".$post->user_profile)}}"
                                      alt="image">
                             @else
-                                <img src="{{asset("community-frontend/assets/images/community/home/news-post/Athore01.jpg")}}"
-                                     alt="image">
+                                <img
+                                    src="{{asset("community-frontend/assets/images/community/home/news-post/Athore01.jpg")}}"
+                                    alt="image">
                             @endif
 
                         </a>
                         <div class="athore-info">
                             <p class="athore-name"><a href="#">{{$post->name}}</a></p>
-                            <p class="posted-time"><a href="#">{{\Carbon\Carbon::parse($post->created_at)->diffForHumans()}}</a></p>
+                            <p class="posted-time"><a
+                                    href="#">{{\Carbon\Carbon::parse($post->created_at)->diffForHumans()}}</a></p>
                         </div>
                     </div>
                     <div class="post-option">
@@ -226,9 +228,9 @@
                             <img src="{{asset("storage/community/".$post->userPostMedia)}}" alt="">
                         </div>
                     @endif
-{{--                    <div class="post-img">--}}
-{{--                        <img src="{{asset("community-frontend/assets/images/community/home/news-post/post-1.jpg")}}" alt="">--}}
-{{--                    </div>--}}
+                    {{--                    <div class="post-img">--}}
+                    {{--                        <img src="{{asset("community-frontend/assets/images/community/home/news-post/post-1.jpg")}}" alt="">--}}
+                    {{--                    </div>--}}
                     <ul class="post-react-widget">
                         <li class="post-react like-react">
                             <a href="#">
@@ -243,7 +245,9 @@
                                         </g></svg>
                                 </div>
                                 <span class="react-name">Like</span>
-                                <span class="react-count">2560</span>
+                                {{--                                @dd( countComments())--}}
+                                <span
+                                    class="react-count">{{countReactions($post->post_id) !== null && isset(countReactions($post->post_id)->reactionCount) ?countReactions($post->post_id)->reactionCount:'0'}}</span>
                             </a>
                             <ul class="react-option">
                                 <li><a href="#"><img
@@ -287,7 +291,8 @@
                                         </g></svg>
                                 </div>
                                 <span class="react-name">Comment</span>
-                                <span class="react-count">256</span>
+                                <span class="react-count">{{countComments($post->post_id) !== null && isset(countComments($post->post_id)->commentCount) ?countComments($post->post_id)->commentCount:'0'}}</span>
+{{--                                <span class="react-count">{{countComments($post->post_id)->commentCount}}</span>--}}
                             </a>
                         </li>
                         <li class="post-react">
@@ -309,27 +314,27 @@
                     </ul>
                     <ul class="post-comment-list">
                         <li class="single-comment">
-{{--                            <div class="comment-img">--}}
-{{--                                <a href="#">--}}
-{{--                                    <img--}}
-{{--                                        src="{{asset("community-frontend/assets/images/community/home/news-post/comment01.jpg")}}"--}}
-{{--                                        alt="image">--}}
-{{--                                </a>--}}
-{{--                            </div>--}}
-{{--                            <div class="comment-details">--}}
-{{--                                <div class="coment-info">--}}
-{{--                                    <h6><a href="#">David Moore</a></h6>--}}
-{{--                                    <span class="comment-time">10 Mint Ago</span>--}}
-{{--                                </div>--}}
-{{--                                <p class="comment-content">Donec rutrum congue leo eget malesuada nulla quis lorem--}}
-{{--                                    ut libero malesuada feugiat donec rutrum congue leo eget malesuada donec rutrum--}}
-{{--                                    congue leo eget malesuada. Praesent sapien massa convallis a pellentesque non--}}
-{{--                                    nisi curabitur non nulla sit amet nisl tempus convallis lectus.</p>--}}
-{{--                                <ul class="coment-react">--}}
-{{--                                    <li class="comment-like"><a href="#">Like(2)</a></li>--}}
-{{--                                    <li><a href="#">Replay</a></li>--}}
-{{--                                </ul>--}}
-{{--                            </div>--}}
+                            {{--                            <div class="comment-img">--}}
+                            {{--                                <a href="#">--}}
+                            {{--                                    <img--}}
+                            {{--                                        src="{{asset("community-frontend/assets/images/community/home/news-post/comment01.jpg")}}"--}}
+                            {{--                                        alt="image">--}}
+                            {{--                                </a>--}}
+                            {{--                            </div>--}}
+                            {{--                            <div class="comment-details">--}}
+                            {{--                                <div class="coment-info">--}}
+                            {{--                                    <h6><a href="#">David Moore</a></h6>--}}
+                            {{--                                    <span class="comment-time">10 Mint Ago</span>--}}
+                            {{--                                </div>--}}
+                            {{--                                <p class="comment-content">Donec rutrum congue leo eget malesuada nulla quis lorem--}}
+                            {{--                                    ut libero malesuada feugiat donec rutrum congue leo eget malesuada donec rutrum--}}
+                            {{--                                    congue leo eget malesuada. Praesent sapien massa convallis a pellentesque non--}}
+                            {{--                                    nisi curabitur non nulla sit amet nisl tempus convallis lectus.</p>--}}
+                            {{--                                <ul class="coment-react">--}}
+                            {{--                                    <li class="comment-like"><a href="#">Like(2)</a></li>--}}
+                            {{--                                    <li><a href="#">Replay</a></li>--}}
+                            {{--                                </ul>--}}
+                            {{--                            </div>--}}
                         </li>
 
                     </ul>
@@ -338,9 +343,15 @@
                     </div>
 
                     <form action="#" class="new-comment">
-                        <a class="new-comment-img" href="#"><img
-                                src="{{asset("community-frontend/assets/images/community/home/user-0.jpg")}}"
-                                alt="Image"></a>
+                        @if($post->user_profile)
+                            <img src="{{asset("storage/community/profile-picture/".$post->user_profile)}}"
+                                 style="height: 80px;width: 80px"
+                                 alt="image">
+                        @else
+                            <img
+                                src="{{asset("community-frontend/assets/images/community/home/news-post/Athore01.jpg")}}"
+                                alt="image">
+                        @endif
                         <div class="new-comment-input">
                             <input type="text" placeholder="Write a comment....">
                             <div class="attached-icon">

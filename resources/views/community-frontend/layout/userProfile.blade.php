@@ -1,12 +1,22 @@
 <div class="view-profile left-widget">
     <div class="profile-cover">
-        <img src="{{asset('community-frontend/assets/images/community/home/smallCover.jpg')}}" alt="cover">
+        @if(allUsersDetails()->user_cover)
+            <img src="{{asset('storage/community/cover-picture/'.allUsersDetails()->user_cover)}}" alt="cover">
+        @else
+            <img src="{{asset('community-frontend/assets/images/community/home/smallCover.jpg')}}" alt="cover">
+
+        @endif
     </div>
 
 
 {{--@dd(allUsersDetails())--}}
     <div class="profile-title d-flex align-items-center">
-        <a href="#"><img src="{{asset("community-frontend/assets/images/community/home/user-0.jpg")}}" alt=""></a>
+        @if(allUsersDetails()->user_profile)
+            <img src="{{asset('storage/community/profile-picture/'.allUsersDetails()->user_profile)}}" alt="cover" style="height: 100px;width: 80px;">
+        @else
+            <img src="{{asset('community-frontend/assets/images/community/home/smallCover.jpg')}}" alt="cover">
+
+        @endif
         <div class="profile-name">
             <h6><a href="#">{{Auth::user()->name}}</a></h6>
             <span class="locaiton">{{ allUsersDetails()->birthplace}}</span>

@@ -493,9 +493,13 @@ function getMyPostTimeLine()
         ->leftJoin('users as taggedUser', function ($q) {
             $q->on('taggedUser.id', '=', 'userTag.tag_user_id');
         })
+        ->leftJoin('community_user_profile_photos as userProfile',function ($q){
+            $q->on('userProfile.user_id','=','users.id');
+            $q->where('userProfile.user_id','=',Auth::id());
+        })
         ->selectRaw('users.id as uId,users.name as userName,userPosts.id as postId,userPosts.post_description as postDescription,userPosts.created_at,
         postMedia.post_image_video as postMediaFile, postMedia.caption as postMediaFileCaption,userTag.tag_user_id as taggedUser,
-        taggedUser.name as taggedUserName')
+        taggedUser.name as taggedUserName,userProfile.user_profile')
         ->get();
 
     return $allMyPosts;
@@ -525,18 +529,45 @@ function allUsersDetails()
 {
     $allUserDetails = User::join('community_user_details as userDetail', function ($q) {
         $q->on('userDetail.user_id', '=', 'users.id');
-        $q->where('userDetail.user_id','=',Auth::id());
-        $q->where('userDetail.user_id','!=',ADMIN_ROLE);
+        $q->where('userDetail.user_id', '=', Auth::id());
+        $q->where('userDetail.user_id', '!=', ADMIN_ROLE);
     })
-        ->selectRaw('userDetail.birthplace')
+        ->join('community_user_profile_covers as userCover', 'userCover.user_id', '=', 'users.id')
+        ->join('community_user_profile_photos as userProfile', 'userProfile.user_id', '=', 'users.id')
+        ->selectRaw('userDetail.birthplace,userCover.user_cover,userProfile.user_profile')
         ->first();
     return $allUserDetails;
 }
 
 function allMonths()
 {
-     $months= ["January","February","March","April","May","June","July",
-    "August","September","October","November","December"];
+    $months = ["January", "February", "March", "April", "May", "June", "July",
+        "August", "September", "October", "November", "December"];
     return $months;
+}
+
+function countReactions($id)
+{
+    $countReaction = \App\Models\Community\User_Post\CommunityUserPostReaction::join('community_user_posts as userPost', function ($q) use ($id){
+        $q->on('userPost.id', '=', 'community_user_post_reactions.user_post_id');
+        $q->where('community_user_post_reactions.user_post_id','=',$id);
+    })
+        ->selectRaw('COUNT(community_user_post_reactions.id) as reactionCount')
+        ->groupBy('userPost.id')
+        ->first();
+    return $countReaction;
+}
+
+function countComments($id)
+{
+    $countComments = \App\Models\Community\User\CommunityUserPost::join('community_user_post_comments as userComment',function ($q) use ($id){
+            $q->on('userComment.user_post_id','=','community_user_posts.id');
+            $q->where('userComment.user_post_id','=',$id);
+        })
+
+        ->selectRaw('COUNT(userComment.id) as commentCount')
+        ->groupBy('community_user_posts.id')
+        ->first();
+    return $countComments;
 }
 

@@ -16,7 +16,8 @@ return new class extends Migration
             $table->bigInteger('user_id');
             $table->string('degree_name',50)->nullable();
             $table->string('institute',50)->nullable();
-            $table->string('description',50)->nullable();
+            $table->text('description')->nullable();
+            $table->string('designation',50)->nullable();
             $table->date('starting_date')->nullable();
             $table->date('ending_date')->nullable();
             $table->boolean('is_present')->nullable()->default(0);

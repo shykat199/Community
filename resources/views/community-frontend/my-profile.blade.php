@@ -9,7 +9,7 @@
                 <div class="full-profile-box">
                     <div class="full-profile-cover">
                         <img
-{{--                            src="{{asset("community-frontend/assets/images/community/myProfile/my-profile-cover.jpg")}}"--}}
+                            {{--                            src="{{asset("community-frontend/assets/images/community/myProfile/my-profile-cover.jpg")}}"--}}
                             src="{{asset("storage/community/cover-picture/".$userDetails->coverPicture)}}"
                             alt="cover">
                         <div class="edit-cover">
@@ -211,22 +211,56 @@
                                 </button>
                             </li>
                         </ul>
+{{--                        @dd($userSocialLinks)--}}
                         <ul class="profile-social">
-                            <li><a href="#"><img
-                                        src="{{asset("community-frontend/assets/images/community/myProfile/facebook.png")}}"
-                                        alt="icon"></a></li>
-                            <li><a href="#"><img
-                                        src="{{asset("community-frontend/assets/images/community/myProfile/twitter.png")}}"
-                                        alt="icon"></a></li>
-                            <li><a href="#"><img
-                                        src="{{asset("community-frontend/assets/images/community/myProfile/instagram.png")}}"
-                                        alt="icon"></a></li>
-                            <li><a href="#"><img
-                                        src="{{asset("community-frontend/assets/images/community/myProfile/linkedin.png")}}"
-                                        alt="icon"></a></li>
-                            <li><a href="#"><img
-                                        src="{{asset("community-frontend/assets/images/community/myProfile/pinterest.png")}}"
-                                        alt="icon"></a></li>
+                            @if($userSocialLinks['facebook'])
+                                <li>
+                                    <a href="{{$userSocialLinks['facebook']}}">
+                                        <img
+                                            src="{{asset("community-frontend/assets/images/community/myProfile/facebook.png")}}"
+                                            alt="icon">
+                                    </a>
+                                </li>
+                            @endif
+
+                            @if($userSocialLinks['twitter'])
+                                <li>
+                                    <a href="{{$userSocialLinks['twitter']}}"><img
+                                            src="{{asset("community-frontend/assets/images/community/myProfile/twitter.png")}}"
+                                            alt="icon">
+                                    </a>
+                                </li>
+                            @endif
+
+                            @if($userSocialLinks['instagram'])
+                                <li>
+                                    <a href="{{$userSocialLinks['instagram']}}"><img
+                                            src="{{asset("community-frontend/assets/images/community/myProfile/instagram.png")}}"
+                                            alt="icon">
+                                    </a>
+                                </li>
+                            @endif
+
+                            @if($userSocialLinks['linkedin'])
+                                <li>
+                                    <a href="{{$userSocialLinks['linkedin']}}"><img
+                                            src="{{asset("community-frontend/assets/images/community/myProfile/linkedin.png")}}"
+                                            alt="icon">
+                                    </a>
+                                </li>
+                            @endif
+
+                            @if($userSocialLinks['pinterest'])
+                                <li>
+                                    <a href="{{$userSocialLinks['pinterest']}}">
+                                        <img
+                                            src="{{asset("community-frontend/assets/images/community/myProfile/pinterest.png")}}"
+                                            alt="icon">
+                                    </a>
+                                </li>
+                            @endif
+
+
                         </ul>
                     </div>
                 </div>
@@ -439,13 +473,13 @@
                             </form>
                         </div>
 
-                        {{--                        @dd(getMyPostTimeLine())--}}
+{{--                                                @dd(getMyPostTimeLine())--}}
                         @foreach(getMyPostTimeLine() as $myPost)
                             <div class="main-content posted-content">
                                 <div class="post-autore d-flex justify-content-between align-items-center">
                                     <div class="authore-title d-flex align-items-center">
                                         <a href="#"><img
-                                                src="{{asset("community-frontend/assets/images/community/home/news-post/Athore01.jpg")}}"
+                                                src="{{asset("storage/community/profile-picture/".$myPost->user_profile)}}"
                                                 alt="image"></a>
                                         <div class="athore-info">
                                             <p class="athore-name"><a href="#">{{Auth::user()->name}}</a></p>
@@ -619,7 +653,7 @@
                                     {{--                                    </div>--}}
                                     <form action="#" class="new-comment">
                                         <a class="new-comment-img" href="#"><img
-                                                src="{{asset("community-frontend/assets/images/community/home/user-0.jpg")}}"
+                                                src="{{asset("storage/community/profile-picture/".$myPost->user_profile)}}"
                                                 alt="Image"></a>
                                         <div class="new-comment-input">
                                             <input type="text" placeholder="Write a comment....">
@@ -671,32 +705,34 @@
                             <div
                                 class="post-autore profile-about-left d-flex justify-content-between align-items-center">
                                 <p class="about-left-title">Personal Information</p>
-                                <div class="post-option">
-                                    <button type="button" class="dropdown-toggle" id="dropdownMenuButton1"
-                                            data-bs-toggle="dropdown" aria-expanded="false"><i class="fa fa-ellipsis-h"
-                                                                                               aria-hidden="true"></i>
-                                    </button>
-                                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                                        <li><a href="#" class="post-option-item"><i class="fa fa-pencil-square-o"
-                                                                                    aria-hidden="true"></i> Edit
-                                                Post</a></li>
-                                        <li><a href="#" class="post-option-item"><i class="fa fa-eye-slash"
-                                                                                    aria-hidden="true"></i> Hide
-                                                Post</a></li>
-                                        <li><a href="#" class="post-option-item"><i class="fa fa-trash-o"
-                                                                                    aria-hidden="true"></i> Delete Post</a>
-                                        </li>
-                                    </ul>
-                                </div>
+                                {{--                                <div class="post-option">--}}
+                                {{--                                    <button type="button" class="dropdown-toggle" id="dropdownMenuButton1"--}}
+                                {{--                                            data-bs-toggle="dropdown" aria-expanded="false"><i class="fa fa-ellipsis-h"--}}
+                                {{--                                                                                               aria-hidden="true"></i>--}}
+                                {{--                                    </button>--}}
+                                {{--                                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">--}}
+                                {{--                                        <li><a href="#" class="post-option-item"><i class="fa fa-pencil-square-o"--}}
+                                {{--                                                                                    aria-hidden="true"></i> Edit--}}
+                                {{--                                                Post</a></li>--}}
+                                {{--                                        <li><a href="#" class="post-option-item"><i class="fa fa-eye-slash"--}}
+                                {{--                                                                                    aria-hidden="true"></i> Hide--}}
+                                {{--                                                Post</a></li>--}}
+                                {{--                                        <li><a href="#" class="post-option-item"><i class="fa fa-trash-o"--}}
+                                {{--                                                                                    aria-hidden="true"></i> Delete Post</a>--}}
+                                {{--                                        </li>--}}
+                                {{--                                    </ul>--}}
+                                {{--                                </div>--}}
                             </div>
-                            {{--                        @dd($userDetails)--}}
+                            {{--                                                    @dd($userDetails)--}}
                             <ul class="profile-personal-information">
                                 <li><span>Email:</span><a href="#">{{Auth::user()->email}}</a></li>
                                 <li>
                                     <span>Birthday:</span>{{!empty($userDetails) && isset($userDetails)?\Carbon\Carbon::parse($userDetails->dob)->format('M d, Y'):'No Data Found'}}
                                     {{--                                <li><span>Birthday:</span>{{  \Carbon\Carbon::parse($userDetails->dob)->format('M d, Y')}}--}}
                                 </li>
-                                <li><span>Occupation:</span>UX Designer</li>
+                                <li>
+                                    <span>Occupation:</span>{{!empty($userDetails) && isset($userDetails)? $userDetails->designation:'No Data Found'}}
+                                </li>
                                 <li>
                                     <span>Birthplace:</span> {{!empty($userDetails) && isset($userDetails)? $userDetails->birthplace:'No Data Found'}}
                                 </li>
@@ -751,15 +787,10 @@
                                                                                                aria-hidden="true"></i>
                                     </button>
                                     <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                                        <li><a href="#" class="post-option-item"><i class="fa fa-pencil-square-o"
-                                                                                    aria-hidden="true"></i> Edit
+                                        <li><a href="{{route('user.my-profile.setting')}}" class="post-option-item"><i
+                                                    class="fa fa-pencil-square-o"
+                                                    aria-hidden="true"></i> Edit
                                                 Post</a></li>
-                                        <li><a href="#" class="post-option-item"><i class="fa fa-eye-slash"
-                                                                                    aria-hidden="true"></i> Hide
-                                                Post</a></li>
-                                        <li><a href="#" class="post-option-item"><i class="fa fa-trash-o"
-                                                                                    aria-hidden="true"></i> Delete Post</a>
-                                        </li>
                                     </ul>
                                 </div>
                             </div>
@@ -777,102 +808,87 @@
                         <div class="main-content posted-content">
                             <div
                                 class="post-autore profile-about-left d-flex justify-content-between align-items-center">
-                                <p class="about-left-title">Education & Work</p>
-                                <div class="post-option">
-                                    <button type="button" class="dropdown-toggle" id="dropdownMenuButton1"
-                                            data-bs-toggle="dropdown" aria-expanded="false"><i class="fa fa-ellipsis-h"
-                                                                                               aria-hidden="true"></i>
-                                    </button>
-                                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                                        <li><a href="#" class="post-option-item"><i class="fa fa-pencil-square-o"
-                                                                                    aria-hidden="true"></i> Edit
-                                                Post</a></li>
-                                        <li><a href="#" class="post-option-item"><i class="fa fa-eye-slash"
-                                                                                    aria-hidden="true"></i> Hide
-                                                Post</a></li>
-                                        <li><a href="#" class="post-option-item"><i class="fa fa-trash-o"
-                                                                                    aria-hidden="true"></i> Delete Post</a>
-                                        </li>
-                                    </ul>
-                                </div>
+                                <p class="about-left-title">Education</p>
+
                             </div>
+                            {{--                            @dd($userEducationDetails)--}}
                             <div class="education-work-list">
-                                <div class="single-education">
-                                    <h6 class="education-title">Master of Computer Science <span>(2018 - 2020)</span>
-                                    </h6>
-                                    <p class="education-sub-title">University of Stanford</p>
-                                    <p class="details">Vivamus magna justo lacinia eget consectetur sed convallis at
-                                        tellus. Nulla porttitor accumsan tincidunt. Quisque velit nisi pretium ut
-                                        lacinia in elementum id enim. Donec rutrum congue leo eget malesuada. Quisque
-                                        velit nisi pretium ut lacinia in elementum id enim. Vivamus magna justo lacinia
-                                        eget consectetur sed convallis at tellus.</p>
-                                </div>
-                                <div class="single-education">
-                                    <h6 class="education-title">Bachelor of Computer Science <span>(2014 - 2018)</span>
-                                    </h6>
-                                    <p class="education-sub-title">Massachusetts Institute of Technology</p>
-                                    <p class="details">Vivamus magna justo lacinia eget consectetur sed convallis at
-                                        tellus. Nulla porttitor accumsan tincidunt. Quisque velit nisi pretium ut
-                                        lacinia in elementum id enim. Donec rutrum congue leo eget malesuada.</p>
-                                </div>
-                                <div class="single-education">
-                                    <h6 class="education-title">Senior UX/UI Designer <span>(Jun 2020 - Present)</span>
-                                    </h6>
-                                    <p class="education-sub-title">Themeforest</p>
-                                    <p class="details">Vivamus magna justo lacinia eget consectetur sed convallis at
-                                        tellus. Nulla porttitor accumsan tincidunt. Quisque velit nisi pretium ut
-                                        lacinia in elementum id enim. Donec rutrum congue leo eget malesuada. Quisque
-                                        velit nisi pretium ut lacinia in elementum id enim. </p>
-                                </div>
-                                <div class="single-education">
-                                    <h6 class="education-title">Product Designer <span>(Jan 2018 - May 2019)</span></h6>
-                                    <p class="education-sub-title">Themeforest</p>
-                                    <p class="details">Vivamus magna justo lacinia eget consectetur sed convallis at
-                                        tellus. Nulla porttitor accumsan tincidunt. Quisque velit nisi pretium ut
-                                        lacinia in elementum id enim. Donec rutrum congue leo eget malesuada. Quisque
-                                        velit nisi pretium ut lacinia in elementum id enim. Vivamus magna justo lacinia
-                                        eget consectetur sed convallis at tellus.</p>
-                                </div>
+
+                                @foreach($userEducationDetails as $education)
+
+                                    <div class="single-education">
+
+                                        <div class="post-option" style="float: right;">
+                                            <h4>
+                                                <a href="{{route('user.my-profile.profile.edit.education',$education->id)}}"><i
+                                                        class="fa fa-pencil-square"></i></a>
+                                            </h4>
+                                        </div>
+
+                                        <h6 class="education-title">{{$education->degree_name}} <span>({{\Carbon\Carbon::parse($education->starting_date)->format('Y')}} - {{$education->is_present===1?'Present':\Carbon\Carbon::parse($education->ending_date)->format('Y')}})</span>
+                                        </h6>
+                                        <p class="education-sub-title">{{$education->institute}}</p>
+                                        <p class="details">{!! $education->description !!}</p>
+                                    </div>
+                                @endforeach
+
                             </div>
                         </div>
+
+                        <div class="main-content posted-content">
+                            <div
+                                class="post-autore profile-about-left d-flex justify-content-between align-items-center">
+                                <p class="about-left-title">Work</p>
+
+                            </div>
+                            <div class="education-work-list">
+
+                                @foreach($userWorkDetails as $work)
+
+                                    <div class="single-education">
+
+                                        <div class="post-option" style="float: right;">
+                                            <h4>
+                                                <a href="{{route('user.my-profile.edit.profile.work',$work->id)}}"><i
+                                                        class="fa fa-pencil-square"></i></a>
+                                            </h4>
+                                        </div>
+
+                                        <h6 class="education-title">{{$work->designation}} <span>({{\Carbon\Carbon::parse($work->starting_date)->format('Y')}} - {{$work->is_present===1?'Present':\Carbon\Carbon::parse($work->ending_date)->format('Y')}})</span>
+                                        </h6>
+                                        <p class="education-sub-title">{{$work->institute}}</p>
+                                        <p class="details">{!! $work->description !!}</p>
+                                    </div>
+                                @endforeach
+                            </div>
+                        </div>
+
                         <div class="main-content posted-content">
                             <div
                                 class="post-autore profile-about-left d-flex justify-content-between align-items-center">
                                 <p class="about-left-title">Interest</p>
-                                <div class="post-option">
-                                    <button type="button" class="dropdown-toggle" id="dropdownMenuButton1"
-                                            data-bs-toggle="dropdown" aria-expanded="false"><i class="fa fa-ellipsis-h"
-                                                                                               aria-hidden="true"></i>
-                                    </button>
-                                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                                        <li><a href="#" class="post-option-item"><i class="fa fa-pencil-square-o"
-                                                                                    aria-hidden="true"></i> Edit
-                                                Post</a></li>
-                                        <li><a href="#" class="post-option-item"><i class="fa fa-eye-slash"
-                                                                                    aria-hidden="true"></i> Hide
-                                                Post</a></li>
-                                        <li><a href="#" class="post-option-item"><i class="fa fa-trash-o"
-                                                                                    aria-hidden="true"></i> Delete Post</a>
-                                        </li>
-                                    </ul>
-                                </div>
                             </div>
+
                             <div class="education-work-list">
-                                <div class="single-education">
-                                    <h6 class="education-title">Hobbies:</h6>
-                                    <p class="details">Vivamus magna justo lacinia eget consectetur sed convallis at
-                                        tellus. Nulla porttitor accumsan tincidunt. Quisque velit nisi pretium ut </p>
-                                </div>
-                                <div class="single-education">
-                                    <h6 class="education-title">Favourite Books:</h6>
-                                    <p class="details">Vivamus magna justo lacinia eget consectetur sed convallis at
-                                        tellus. Nulla porttitor accumsan tincidunt. Quisque velit nisi pretium ut </p>
-                                </div>
-                                <div class="single-education">
-                                    <h6 class="education-title">Others Interests:</h6>
-                                    <p class="details">Vivamus magna justo lacinia eget consectetur sed convallis at
-                                        tellus. Nulla porttitor accumsan tincidunt. Quisque velit nisi pretium ut </p>
-                                </div>
+
+                                @foreach($userInterest as $interest)
+                                    <div class="single-education">
+                                        <h6 class="education-title">
+                                            @if($interest->interest_name==='hobby')
+                                                Hobby
+                                            @elseif($interest->interest_name==='fav_book')
+                                                Favourite Book
+                                            @elseif($interest->interest_name==='other_interest')
+                                                Other Interest
+                                            @endif
+
+                                            :</h6>
+                                        <p class="details">{{$interest->interest_details}}</p>
+                                    </div>
+
+                                @endforeach
+
+
                             </div>
                         </div>
                     </div>

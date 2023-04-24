@@ -6,10 +6,13 @@ use App\Http\Controllers\Controller;
 use App\Models\Community\User\CommunityUserDetails;
 use App\Models\Community\User\CommunityUserPostFileType;
 use App\Models\Community\User_Profile\CommunityUserProfileCover;
+use App\Models\Community\User_Profile\CommunityUserProfileEducation;
+use App\Models\Community\User_Profile\CommunityUserProfileInterest;
 use App\Models\Community\User_Profile\CommunityUserProfileLanguage;
 
 
 use App\Models\Community\User_Profile\CommunityUserProfilePhoto;
+use App\Models\Community\User_Profile\CommunityUserProfileSocialink;
 use Faker\Provider\Uuid;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -23,8 +26,15 @@ class UserProfileDetailsController extends Controller
         $userDetails = CommunityUserDetails::leftJoin('users', 'users.id', 'community_user_details.user_id')
             ->leftJoin('community_user_profile_photos as userProfilePhoto', 'userProfilePhoto.user_id', 'users.id')
             ->leftJoin('community_user_profile_covers as userCoverPhoto', 'userCoverPhoto.user_id', 'users.id')
+            ->leftJoin('community_user_profile_education as userProfileWork',function ($q){
+                $q->on('users.id','=','userProfileWork.user_id');
+                $q->where('users.id','=',Auth::id());
+                $q->where('userProfileWork.type','=','w');
+                $q->where('userProfileWork.is_present','=',1);
+            })
             ->where('users.id', '=', Auth::id())
-            ->selectRaw('community_user_details.*,users.id as Uid,users.name,userProfilePhoto.user_profile as profilePicture,userCoverPhoto.user_cover as coverPicture')
+            ->selectRaw('community_user_details.*,users.id as Uid,users.name,userProfilePhoto.user_profile as profilePicture,
+            userCoverPhoto.user_cover as coverPicture,userProfileWork.designation')
             ->first();
 
         $allUserLanguage = CommunityUserProfileLanguage::where('user_id', '=', Auth::id())->get();
@@ -38,8 +48,22 @@ class UserProfileDetailsController extends Controller
             })
             ->groupBy("users.id")
             ->count();
-//        return $countPhoto;
-        return view('community-frontend.my-profile', compact('userDetails', 'allUserLanguage', 'countPhoto'));
+
+        $userEducationDetails = CommunityUserProfileEducation::where('user_id', '=', Auth::id())
+            ->where('type', '=', 'e')
+            ->get();
+
+        $userWorkDetails= CommunityUserProfileEducation::where('user_id', '=', Auth::id())
+            ->where('type', '=', 'w')
+            ->get();
+
+        $userInterest=CommunityUserProfileInterest::where('user_id','=',Auth::id())
+            ->get();
+
+        $userSocialLinks=CommunityUserProfileSocialink::where('user_id',Auth::id())->pluck('link','name')->toArray();
+
+        return view('community-frontend.my-profile', compact('userDetails', 'allUserLanguage', 'countPhoto',
+            'userEducationDetails','userWorkDetails','userInterest','userSocialLinks'));
     }
 
     public function uploadProfilePhoto(Request $request)
@@ -83,4 +107,6 @@ class UserProfileDetailsController extends Controller
             return redirect()->back();
         }
     }
+
+
 }

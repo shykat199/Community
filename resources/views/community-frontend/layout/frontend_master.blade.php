@@ -160,7 +160,11 @@
                     <a href="#" role="button" id="settingDropDown" data-bs-toggle="dropdown" aria-expanded="false">
                         <div class="logged_profil d-flex align-items-center justify-content-between">
                             <div class="menu-profile d-flex align-items-center me-3">
-                                <img src="{{asset("community-frontend/assets/images/community/header/01.jpg")}}" alt="">
+                                @if(allUsersDetails()->user_profile)
+                                    <img src="{{asset('storage/community/profile-picture/'.allUsersDetails()->user_profile)}}" alt="cover" style="height: 100px;width: 80px;">
+                                @else
+                                    <img src="{{asset('community-frontend/assets/images/community/home/smallCover.jpg')}}" alt="cover">
+                                @endif
                                 <p class="member_name">{{Auth::user()->name}}
                                     <span class="login-status"></span>
                                 </p>
