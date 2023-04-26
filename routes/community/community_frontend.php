@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Community\Frontend\Profile\UserProfileDetailsController;
 use App\Http\Controllers\Community\Frontend\Profile\UserProfileSettingController;
 use App\Http\Controllers\Community\Frontend\User\CommunityUserFriendBirthday;
+use App\Http\Controllers\Community\Frontend\Group\CommunityUserGroupController;
 
 Route::middleware(['user'])->group(function (){
 
@@ -61,5 +62,14 @@ Route::middleware(['user'])->group(function (){
 
     //Friend Section
     Route::get('/user/friends',[CommunityUserFriendRequestController::class,'allFriendRequest'])->name('all.requested.friend.users');
+
+
+    //Group Section
+    Route::get('/user/all-groups',[CommunityUserGroupController::class,'index'])->name('user.all.groups');
+    Route::post('/user/create_group',[CommunityUserGroupController::class,'createGroup'])->name('user.create.groups');
+    Route::post('/user/join/group',[CommunityUserGroupController::class,'storeUserRequest'])->name('user.join.groups');
+    Route::get('/user/group/{id}',[CommunityUserGroupController::class,'getSingleGroupView'])->name('user.group.details');
+    Route::post('/user/group/accept-user-invitation',[CommunityUserGroupController::class,'acceptGroupUserInvitation'])->name('user.group.accept.invitation');
+
 });
 

@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('community_user_group_cover_photos', function (Blueprint $table) {
             $table->id();
             $table->bigInteger('group_id');
-            $table->bigInteger('cover_photo')->nullable();
+            $table->string('cover_photo')->nullable();
             $table->timestamps();
         });
     }

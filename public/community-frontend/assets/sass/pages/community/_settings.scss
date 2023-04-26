@@ -81,7 +81,7 @@
         margin-bottom: 10px;
         font-weight: 400;
     }
-    input, select {
+    input, .nice-select {
         width: 100%;
         height: 50px;
         background:#F4F7FC;
@@ -94,10 +94,17 @@
         margin-bottom: 20px;
         font-weight: 400;
         transition: all .3s ease;
+        line-height: 28px;
         &:focus{
             outline: 1px solid $theme-color;
             &::placeholder{
                 color: transparent;
+            }
+        }
+        .list {
+            width: 100%;
+            .option {
+                margin: 0;
             }
         }
     }
@@ -145,7 +152,7 @@
 
 
 
-// privacy page start 
+// privacy page start
 .privacy-page-wrap {
     padding: 45px;
     background: $white;
@@ -178,7 +185,7 @@
     }
 }
 
-//Help and Support page start 
+//Help and Support page start
 .help-issu-box {
     padding: 45px;
     background: $white;
@@ -202,11 +209,11 @@
             margin: auto;
         }
     }
-    
+
 }
 
 
-//notificaiton area start 
+//notificaiton area start
 .common-box {
     max-width: 850px;
     margin: auto;
@@ -330,7 +337,7 @@
             &:hover{
                 color: $theme-color;
             }
-        }    
+        }
     }
 }
 .chat-container {
@@ -435,20 +442,20 @@
 }
 
 
-//Group Page edit CSS 
+//Group Page edit CSS
 
 .single-group-list {
     .join-group {
         li {
             width: 100%;
             .add-btn {
-                width: 100%;                    
+                width: 100%;
             }
         }
     }
 }
 
-// favorite page start 
+// favorite page start
 .favorie-page-title {
     display: flex;
     align-items: center;
@@ -482,7 +489,7 @@
             a{
                 color: #6B7C8F;
             }
-        }    
+        }
     }
 }
 .favorite-info {
@@ -497,7 +504,7 @@
         }
         p {
             font-size: 14px;
-            color: #6B7C8F;       
+            color: #6B7C8F;
         }
     }
 }
@@ -547,8 +554,8 @@
     }
 }
 
-// Birthday Page start 
-.birthday-widget { 
+// Birthday Page start
+.birthday-widget {
     .single-wish {
         align-items: flex-start;
         margin-bottom: 15px;
@@ -599,14 +606,14 @@
 
 .like-items {
     .right-wdget-img {
-    a {
-        img {
-        max-width: 45px;
-        max-height: 45px;
-        border-radius: 50%;
+        a {
+            img {
+                max-width: 45px;
+                max-height: 45px;
+                border-radius: 50%;
+            }
+        }
     }
-}
-    } 
 }
 .single-info {
     display: flex;
@@ -618,7 +625,7 @@
             img {
                 max-width: 55px;
                 max-height: 55px;
-                border-radius: 50%;                    
+                border-radius: 50%;
             }
         }
     }
@@ -650,5 +657,198 @@
     margin: 20px 0;
     &:last-child{
         margin-bottom: 0;
+    }
+}
+
+
+
+// login page start
+.community-login-area {
+    background: $theme-font;
+    padding: 150px 0;
+    height: 100%;
+    width: 100%;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    .home-icon {
+        height: 50px;
+        width: 50px;
+        background: $white;
+        color: $theme-font;
+        border-radius: 50%;
+        position: absolute;
+        top: 20px;
+        left: 20px;
+        text-align: center;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 25px;
+        transition: all .3s ease;
+        border: 1px solid $white;
+        &:hover{
+            color: $white;
+            background: $theme-color;
+            border: 1px solid $white;
+        }
+    }
+    .community-login {
+        position: relative;
+        z-index: 1;
+        background: $white;
+        padding: 50px;
+        max-width: 600px;
+        border-radius: 12px;
+        width: 100%;
+        // box-shadow: 3px 3px 5px 6px #ccc;
+        @media (max-width: 576px) {
+            padding: 30px;
+        }
+        .login-logo {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+        .community-loginForm {
+            .login-title {
+                font-size: 22px;
+                font-weight: 600;
+                margin-bottom: 25px;
+            }
+            .login-box {
+                margin-bottom: 25px;
+                position: relative;
+                input {
+                    height: 50px;
+                    padding: 0 20px;
+                    width: 100%;
+                    border: 1px solid #6b7c8f;
+                    border-radius: 8px;
+                    color: $theme-font;
+                    outline: none;
+                }
+                label {
+                    font-size: 14px;
+                    color: $theme-font;
+                    font-weight: 600;
+                    position: absolute;
+                    top: 50%;
+                    left: 20px;
+                    transform: translateY(-50%);
+                    pointer-events: none;
+                    transition: all .3s ease;
+                }
+                input:focus~label,
+                &:valid~label{
+                    top: -1px;
+                    left: 10px;
+                    font-size: 12px;
+                    color: #6b7c8f;
+                    padding: 5px 0;
+                    background: $white;
+                }
+            }
+            .remember-box {
+                display: flex;
+                justify-content: space-between;
+                margin-bottom: 30px;
+                @media (max-width:425px) {
+                    flex-direction: column;
+                    row-gap: 10px;
+                    justify-content: center;
+                    text-align: center;
+                }
+                span {
+                    display: flex;
+                    align-items: center;
+                    column-gap: 8px;
+                    @media (max-width:425px) {
+                        justify-content: center;
+                        text-align: center;
+                    }
+                    input {
+                        height: 15px;
+                        width: 15px;
+                    }
+                    label {
+                        font-size: 15px;
+                        color: $theme-font;
+                    }
+                }
+                .forgot-pass {
+                    font-size: 15px;
+                    color: $theme-font;
+                    text-decoration: underline;
+                }
+            }
+            .login-btn-list {
+                display: flex;
+                flex-direction: column;
+                row-gap: 20px;
+                @media (max-width:425px) {
+                    row-gap: 10px;
+                }
+                p {
+                    text-align: center;
+                    font-size: 18px;
+                    color: $theme-font;
+                    font-weight: 600;
+                }
+                button {
+                    width: 100%;
+                }
+                .googl-btn {
+                    background: $theme-font;
+                    color: $white;
+                    border: 1px solid $theme-font;
+                }
+            }
+        }
+    }
+}
+// login page end
+
+.group-page-cover{
+    position: relative;
+    .group-add-btn {
+        position: absolute;
+        bottom: 20px;
+        right: 20px;
+    }
+}
+.add-group-modal {
+    label{
+        font-size: 15px;
+        color: $theme-font;
+        display: block;
+        margin-bottom: 5px;
+    }
+    input, textarea {
+        width: 100%;
+        height: 50px;
+        border: 1px solid $theme-color;
+        outline: none;
+        background: transparent;
+        border-radius: 8px;
+        margin-bottom: 20px;
+        padding: 10px 15px;
+    }
+    textarea {
+        min-height: 100px;
+    }
+    .group-btn-div {
+        text-align: end;
+        .creat-group-btn {
+            background: $theme-font;
+            border: 1px solid $theme-font;
+            color: $white;
+            &:hover{
+                background: $theme-color;
+                border: 1px solid $theme-color;
+            }
+        }
     }
 }

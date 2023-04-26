@@ -33,26 +33,61 @@
         <!-- today Birthday list start  -->
         <ul class="like-items birthday-widget">
             @if(count($todayBirthdays)>0)
+
                 @foreach($todayBirthdays as $todayBirthday)
-                    <li class="single-wish">
-                        <div class="right-wdget-img"><a href="#"><img
-                                    src="{{asset("community-frontend/assets/images/community/home/right/birthday01.jpg")}}"
-                                    alt="img"></a></div>
-                        <div class="page-title">
-                            <a href="#">{{$todayBirthday->userName}}</a>
-                            <span class="date">{{\Carbon\Carbon::now()->format('d F , Y')}}</span>
-                            <form action="{{route('user.friend.birthday.wishMessage')}}" class="birthday-wish"
-                                  method="post">
-                                @csrf
-                                <button type="button" class="emoji-btn"><i class="fa fa-meh-o" aria-hidden="true"></i>
-                                </button>
-                                <input type="text" name="message" placeholder="Write something">
-                                <input type="hidden" name="wished_user_id" value="{{$todayBirthday->Uid}}"
-                                       placeholder="Write something">
-                                <button type="submit" class="social-theme-btn wish-send-btn">Send</button>
-                            </form>
-                        </div>
-                    </li>
+
+{{--                @dd($todayBirthday)--}}
+
+                    @if($todayBirthday->message===null)
+                        <li class="single-wish">
+                            {{--                            @dd($todayBirthday)--}}
+                            <div class="right-wdget-img"><a href="#"><img
+                                        src="{{asset("community-frontend/assets/images/community/home/right/birthday01.jpg")}}"
+                                        alt="img"></a></div>
+                            <div class="page-title">
+                                <a href="#">{{$todayBirthday->userName}}</a>
+                                <span class="date">{{\Carbon\Carbon::now()->format('d F , Y')}}</span>
+                                <form action="{{route('user.friend.birthday.wishMessage')}}" class="birthday-wish"
+                                      method="post">
+                                    @csrf
+                                    <button type="button" class="emoji-btn"><i class="fa fa-meh-o"
+                                                                               aria-hidden="true"></i>
+                                    </button>
+                                    <input type="text" name="message" placeholder="Write something">
+                                    <input type="hidden" name="wished_user_id" value="{{$todayBirthday->Uid}}"
+                                           placeholder="Write something">
+                                    <button type="submit" class="social-theme-btn wish-send-btn">Send</button>
+                                </form>
+                            </div>
+
+                        </li>
+                    @endif
+
+
+
+
+
+{{--                @dd($todayBirthday)--}}
+{{--                    <li class="single-wish">--}}
+{{--                        <div class="right-wdget-img"><a href="#"><img--}}
+{{--                                    src="{{asset("community-frontend/assets/images/community/home/right/birthday01.jpg")}}"--}}
+{{--                                    alt="img"></a></div>--}}
+{{--                        <div class="page-title">--}}
+{{--                            <a href="#">{{$todayBirthday->userName}}</a>--}}
+{{--                            <span class="date">{{\Carbon\Carbon::now()->format('d F , Y')}}</span>--}}
+{{--                            <form action="{{route('user.friend.birthday.wishMessage')}}" class="birthday-wish"--}}
+{{--                                  method="post">--}}
+{{--                                @csrf--}}
+{{--                                <button type="button" class="emoji-btn"><i class="fa fa-meh-o"--}}
+{{--                                                                           aria-hidden="true"></i>--}}
+{{--                                </button>--}}
+{{--                                <input type="text" name="message" placeholder="Write something">--}}
+{{--                                <input type="hidden" name="wished_user_id" value="{{$todayBirthday->Uid}}"--}}
+{{--                                       placeholder="Write something">--}}
+{{--                                <button type="submit" class="social-theme-btn wish-send-btn">Send</button>--}}
+{{--                            </form>--}}
+{{--                        </div>--}}
+{{--                    </li>--}}
 
                 @endforeach
             @else
@@ -60,12 +95,11 @@
             @endif
 
 
-
         </ul>
 
         <!-- upcoming birthdays  start -->
         <div class="upcoming-birthday-wrap">
-            <h5 class="setting-title">Upcoming Birthdayy</h5>
+            <h5 class="setting-title">Upcoming Birthday</h5>
             <div class="upcoming-birthday-list">
                 <div class="row">
                     @foreach(getUpComingBirthday() as $recentBirthday)
@@ -96,8 +130,10 @@
                 <h5 class="setting-title">{{$months}}</h5>
                 <div class="upcoming-birthday-list">
                     <div class="row">
+                        {{--                        @dd($getAllBirthdays)--}}
+                        {{--                        @dd(\Carbon\Carbon::parse($getWishedBirthday->created_at)->format('Y') )--}}
                         @foreach($getAllBirthdays as $birthday)
-                            {{--                            @dd($birthday)--}}
+                            {{--                                                        @dd(\Carbon\Carbon::parse($birthday->created_at)->format('Y')===\Carbon\Carbon::now()->format('Y')?'exist':'')--}}
                             @if(\Carbon\Carbon::parse($birthday->dob)->format('F') === $months)
                                 <div class="col-lg-4 col-md-4">
                                     <div class="single-info">

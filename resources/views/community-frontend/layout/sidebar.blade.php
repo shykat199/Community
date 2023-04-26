@@ -67,7 +67,7 @@
                 </a>
             </li>
             <li class="single-side">
-                <a href="#">
+                <a href="{{route('user.all.groups')}}">
                             <span class="side-icon">
                                 <svg xmlns="http://www.w3.org/2000/svg" version="1.1" x="0" y="0" viewBox="0 0 496 496"
                                      style="enable-background:new 0 0 512 512" xml:space="preserve"><g><path

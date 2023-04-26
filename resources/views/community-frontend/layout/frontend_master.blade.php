@@ -156,14 +156,36 @@
                         <option value="arb">العربيّة</option>
                     </select>
                 </li>
+{{--                @php--}}
+{{--                    $userDetails=allUsersDetails();--}}
+{{--                        $userCover=explode(',',$userDetails->user_cover);--}}
+{{--                        $userProfile=explode(',',$userDetails->user_profile);--}}
+{{--                @endphp--}}
+                @php
+                    $userDetails=allUsersDetails() !== null ? allUsersDetails():'' ;
+                        $userCover=explode(',',!empty($userDetails->user_cover) && isset($userDetails->user_cover)?$userDetails->user_cover:'');
+                        $userProfile=explode(',',!empty($userDetails->user_profile) && isset($userDetails->user_cover)?$userDetails->user_cover:'');
+                @endphp
+
+{{--                @dd('storage/community/profile-picture/'.!empty($userProfile[0]) && isset($userProfile[0])?$userProfile[0]:'')--}}
+
                 <li class="list_option">
                     <a href="#" role="button" id="settingDropDown" data-bs-toggle="dropdown" aria-expanded="false">
                         <div class="logged_profil d-flex align-items-center justify-content-between">
                             <div class="menu-profile d-flex align-items-center me-3">
-                                @if(allUsersDetails()->user_profile)
-                                    <img src="{{asset('storage/community/profile-picture/'.allUsersDetails()->user_profile)}}" alt="cover" style="height: 100px;width: 80px;">
+                                @if(!empty(allUsersDetails()->user_profile) && isset(allUsersDetails()->user_profile))
+                                    @if(!empty($userProfile[0]) &&  isset($userProfile[0]))
+                                        <img
+                                            src="{{asset('storage/community/profile-picture/'.$userProfile[0])}}"
+                                            alt="cover"
+                                            style="height: 100px;width: 80px;">
+                                    @else
+                                        <img src="{{asset('community-frontend/assets/images/community/home/user-0.jpg')}}" alt="cover">
+
+                                    @endif
+
                                 @else
-                                    <img src="{{asset('community-frontend/assets/images/community/home/smallCover.jpg')}}" alt="cover">
+                                    <img src="{{asset('community-frontend/assets/images/community/home/user-0.jpg')}}" alt="cover">
                                 @endif
                                 <p class="member_name">{{Auth::user()->name}}
                                     <span class="login-status"></span>
@@ -186,7 +208,7 @@
                                 <li><i class="fa fa-cog" aria-hidden="true"></i><a
                                         href="{{route('user.my-profile.setting')}}">Setting</a></li>
                                 <li><i class="fa fa-user-secret" aria-hidden="true"></i><a
-                                        href="{{route('sight.privacy_policy')}}">Privecy</a></li>
+                                        href="{{route('sight.privacy_policy')}}">Privacy</a></li>
                                 <li><i class="fa fa-question-circle" aria-hidden="true"></i><a
                                         href="{{route('sight.help_support')}}">Help &
                                         Support</a></li>

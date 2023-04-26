@@ -4,6 +4,7 @@ use App\Models\Community\Group\CommunityUserGroup;
 use App\Models\Community\Page\CommunityPage;
 use App\Models\User;
 use App\Models\Community\User\CommunityUserFollowing;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 
 
@@ -395,6 +396,7 @@ function myFriends()
         ->groupBy('users.id')
         ->orderBy('users.name')
         ->get();
+
     return $myFriends;
 }
 
@@ -470,6 +472,7 @@ function getUpComingBirthday()
         ->join('community_user_details as userDetails', function ($q) use ($currentDate) {
             $q->on('userDetails.user_id', '=', 'userFriend.requested_user_id');
             $q->whereRaw("DATE_FORMAT(userDetails.dob,'%m-%d') > DATE_FORMAT(now(), '%m-%d')");
+            $q->whereRaw('MONTH(userDetails.dob) = ' . Carbon::now()->format('m'));
         })
         ->selectRaw('users.id as Uid, users.name as userName,userDetails.dob')
         ->orderBy('userDetails.dob', 'ASC')
@@ -493,9 +496,9 @@ function getMyPostTimeLine()
         ->leftJoin('users as taggedUser', function ($q) {
             $q->on('taggedUser.id', '=', 'userTag.tag_user_id');
         })
-        ->leftJoin('community_user_profile_photos as userProfile',function ($q){
-            $q->on('userProfile.user_id','=','users.id');
-            $q->where('userProfile.user_id','=',Auth::id());
+        ->leftJoin('community_user_profile_photos as userProfile', function ($q) {
+            $q->on('userProfile.user_id', '=', 'users.id');
+            $q->where('userProfile.user_id', '=', Auth::id());
         })
         ->selectRaw('users.id as uId,users.name as userName,userPosts.id as postId,userPosts.post_description as postDescription,userPosts.created_at,
         postMedia.post_image_video as postMediaFile, postMedia.caption as postMediaFileCaption,userTag.tag_user_id as taggedUser,
@@ -532,9 +535,11 @@ function allUsersDetails()
         $q->where('userDetail.user_id', '=', Auth::id());
         $q->where('userDetail.user_id', '!=', ADMIN_ROLE);
     })
-        ->join('community_user_profile_covers as userCover', 'userCover.user_id', '=', 'users.id')
-        ->join('community_user_profile_photos as userProfile', 'userProfile.user_id', '=', 'users.id')
-        ->selectRaw('userDetail.birthplace,userCover.user_cover,userProfile.user_profile')
+        ->leftJoin('community_user_profile_covers as userCover', 'userCover.user_id', '=', 'users.id')
+        ->leftJoin('community_user_profile_photos as userProfile', 'userProfile.user_id', '=', 'users.id')
+        ->selectRaw('userDetail.birthplace,GROUP_CONCAT(userCover.user_cover ORDER BY userCover.created_at DESC) as user_cover,
+        GROUP_CONCAT(userProfile.user_profile ORDER BY userProfile.created_at DESC) as user_profile')
+        ->groupBy('users.id')
         ->first();
     return $allUserDetails;
 }
@@ -548,9 +553,9 @@ function allMonths()
 
 function countReactions($id)
 {
-    $countReaction = \App\Models\Community\User_Post\CommunityUserPostReaction::join('community_user_posts as userPost', function ($q) use ($id){
+    $countReaction = \App\Models\Community\User_Post\CommunityUserPostReaction::join('community_user_posts as userPost', function ($q) use ($id) {
         $q->on('userPost.id', '=', 'community_user_post_reactions.user_post_id');
-        $q->where('community_user_post_reactions.user_post_id','=',$id);
+        $q->where('community_user_post_reactions.user_post_id', '=', $id);
     })
         ->selectRaw('COUNT(community_user_post_reactions.id) as reactionCount')
         ->groupBy('userPost.id')
@@ -560,14 +565,59 @@ function countReactions($id)
 
 function countComments($id)
 {
-    $countComments = \App\Models\Community\User\CommunityUserPost::join('community_user_post_comments as userComment',function ($q) use ($id){
-            $q->on('userComment.user_post_id','=','community_user_posts.id');
-            $q->where('userComment.user_post_id','=',$id);
-        })
-
+    $countComments = \App\Models\Community\User\CommunityUserPost::join('community_user_post_comments as userComment', function ($q) use ($id) {
+        $q->on('userComment.user_post_id', '=', 'community_user_posts.id');
+        $q->where('userComment.user_post_id', '=', $id);
+    })
         ->selectRaw('COUNT(userComment.id) as commentCount')
         ->groupBy('community_user_posts.id')
         ->first();
     return $countComments;
 }
+
+function getGroupPostCount($id)
+{
+    $allGroupPostCount = CommunityUserGroup::leftJoin('community_user_group_posts as groupPost', 'groupPost.group_id', '=', 'community_user_groups.id')
+        ->where('groupPost.group_id', '=', $id)
+        ->groupBy('community_user_groups.id')
+        ->count();
+    return $allGroupPostCount;
+}
+
+
+function getAllGroupUserRequest($id)
+{
+
+    $groupUsers = User::join('community_user_group_pivots as userGroupPivot', function ($q) use ($id) {
+        $q->on('userGroupPivot.user_id', '=', 'users.id');
+        $q->where('userGroupPivot.group_user_role', '=', 3);
+        $q->where('userGroupPivot.user_status', '=', 0);
+        $q->where('userGroupPivot.group_id', '=', $id);
+    })
+        ->leftJoin('community_user_group_profile_photos as groupProfile', 'groupProfile.group_id', '=', 'users.id')
+        ->leftJoin('community_user_group_cover_photos as groupCover', 'groupCover.group_id', '=', 'users.id')
+
+        ->selectRaw('users.id as Uid,users.name,groupProfile.group_profile_photo as gProfile,groupCover.cover_photo as gCover,userGroupPivot.id')
+        ->orderBy('userGroupPivot.id','DESC')
+        ->limit(6)
+        ->get();
+
+    return $groupUsers;
+}
+
+function getGroupUserList($id){
+
+    $allGroupUsers=User::join('community_user_group_pivots as userGroupPivot',function ($q) use($id){
+        $q->on('userGroupPivot.user_id','=','users.id');
+        $q->where('userGroupPivot.user_status', '=', 1);
+        $q->where('userGroupPivot.group_id', '=', $id);
+    })
+        ->leftJoin('community_user_group_profile_photos as groupProfile', 'groupProfile.group_id', '=', 'users.id')
+        ->leftJoin('community_user_group_cover_photos as groupCover', 'groupCover.group_id', '=', 'users.id')
+
+        ->selectRaw('userGroupPivot.user_id as uId,users.name,groupProfile.group_profile_photo as gProfile,groupCover.cover_photo as gCover,userGroupPivot.id,userGroupPivot.group_user_role')
+        ->get();
+    return $allGroupUsers;
+}
+
 
