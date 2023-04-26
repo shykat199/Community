@@ -14,8 +14,8 @@ return new class extends Migration
         Schema::create('community_user_group_post_files', function (Blueprint $table) {
             $table->id();
             $table->bigInteger('group_post_id');
-            $table->text('group_post_caption');
-            $table->string('group_post_file');
+            $table->text('group_post_caption')->nullable();
+            $table->string('group_post_file')->nullable();
             $table->timestamps();
         });
     }

@@ -39,6 +39,7 @@ class CommunityUserPostController extends Controller
             ]);
 
             if ($request->get('tagId')){
+
                 $input['tagId']=$request->input('tagId');
 //                dd(is_array($input['tagId']));
                 if (is_array($input['tagId'])){

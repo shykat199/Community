@@ -6,7 +6,7 @@
     <ul class="like-items">
         {{--        @dd($id)--}}
         <input type="hidden" name="gId" id="gId" value="{{$id}}">
-{{--        @dd(getGroupUserList($id))--}}
+        {{--        @dd(getGroupUserList($id))--}}
 
         @foreach(getGroupUserList($id) as $user)
 
@@ -16,29 +16,22 @@
                             alt="img"></a>
                 </div>
 
-                    <div class="page-title">
-                        <a href="#">{{$user->name}} {{$user->group_user_role==1 ? '(Admin)':''}}
-                        </a>
-                    </div>
-{{--                @elseif($user->group_user_role===3)--}}
-{{--                    <div class="page-title">--}}
-{{--                        <a href="#">{{$user->name}}--}}
-{{--                        </a>--}}
-{{--                    </div>--}}
-{{--                @else--}}
-{{--                    <div class="page-title">--}}
-{{--                        <a href="#">{{$user->name}} (Moderator)--}}
-{{--                        </a>--}}
-{{--                    </div>--}}
-
-
-                <div class="d-flex mx-auto user">
-                    <h6 class="me-2"><a class="text-success btnAccept" data-id="{{$user->Uid}}"
-                                        data-idd="{{$user->id}}"><i class="fa fa-check-circle"
-                                                                    aria-hidden="true"></i></a>
-                    </h6>
-                    <h6><a class="text-danger"><i class="fa fa-times-circle-o" aria-hidden="true"></i></a></h6>
+                <div class="page-title">
+                    <a href="#">{{$user->name}} {{$user->group_user_role==1 ? '(Admin)':''}}
+                    </a>
                 </div>
+
+{{--                @if($user->group_user_role==1)--}}
+{{--                    <div class="d-flex mx-auto user">--}}
+{{--                        <h6 class="me-2">--}}
+{{--                            <a class="text-success btnAccept" data-id="{{$user->Uid}}"--}}
+{{--                               data-idd="{{$user->id}}"><i class="fa fa-check-circle" aria-hidden="true"></i>--}}
+{{--                            </a>--}}
+{{--                        </h6>--}}
+{{--                        <h6><a class="text-danger"><i class="fa fa-times-circle-o" aria-hidden="true"></i></a></h6>--}}
+{{--                    </div>--}}
+{{--                @endif--}}
+
             </li>
 
         @endforeach

@@ -70,6 +70,7 @@ Route::middleware(['user'])->group(function (){
     Route::post('/user/join/group',[CommunityUserGroupController::class,'storeUserRequest'])->name('user.join.groups');
     Route::get('/user/group/{id}',[CommunityUserGroupController::class,'getSingleGroupView'])->name('user.group.details');
     Route::post('/user/group/accept-user-invitation',[CommunityUserGroupController::class,'acceptGroupUserInvitation'])->name('user.group.accept.invitation');
+    Route::post('/user/group/post',[CommunityUserGroupController::class,'userGroupPostStore'])->name('user.group.post.store');
 
 });
 

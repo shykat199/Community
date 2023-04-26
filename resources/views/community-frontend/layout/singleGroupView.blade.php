@@ -24,9 +24,10 @@
             <div class="widget-title">
                 <h5>Create New Post</h5>
             </div>
-            <form action="{{route('community.user.post')}}" class="input-psot" method="post"
+            <form action="{{route('user.group.post.store')}}" class="input-psot" method="post"
                   enctype="multipart/form-data">
                 @csrf
+                <input type="hidden" name="groupId" value="{{Request::segment(3)}}">
                 <textarea name="postMessage" id="postMessage" placeholder="Write something here..."></textarea>
                 <ul class="attachment-btn">
                     <li>
