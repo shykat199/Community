@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Community\Group\CommunityUserGroup;
 use App\Models\Community\Group\CommunityUserGroupPost;
 use App\Models\Community\Group\CommunityUserGroupPostFile;
+use App\Models\Community\Group\CommunityUserGroupPostReaction;
 use Faker\Provider\Uuid;
 use Illuminate\Http\Request;
 use App\Models\Community\Group\CommunityUserGroupPivot;
@@ -123,7 +124,30 @@ class CommunityUserGroupController extends Controller
 
 //        return $getGroupDetails;
 
-        return view('community-frontend.layout.singleGroupView', compact('getGroupDetails'));
+        $groupPosts = CommunityUserGroupPost::join('community_user_groups as communityGroups', function ($q) use ($id) {
+            $q->on('communityGroups.id', '=', 'community_user_group_posts.group_id');
+            $q->where('community_user_group_posts.group_id', '=', $id);
+        })
+            ->join('users', 'users.id', '=', 'community_user_group_posts.user_id')
+            ->leftJoin('community_user_group_post_files as userGroupPostFileType', function ($q) {
+                $q->on('userGroupPostFileType.group_post_id', '=', 'community_user_group_posts.id');
+            })
+//            ->leftJoin('community_user_profile_photos as userProfile', 'userProfile.user_id', '=', 'users.id')
+
+                ->leftJoin('community_user_group_post_reactions as postReaction',function ($q){
+                    $q->on('postReaction.group_post_id','=','community_user_group_posts.id');
+            })
+
+            ->selectRaw('community_user_group_posts.id as gId,communityGroups.group_name as gName,community_user_group_posts.post_description,users.id as userId,
+            users.name as userName,userGroupPostFileType.group_post_caption,userGroupPostFileType.group_post_file,
+            community_user_group_posts.created_at,community_user_group_posts.id as grpPostId,postReaction.reaction_type')
+            ->orderBy('community_user_group_posts.id', 'DESC')
+//            ->groupBy('users.id')
+            ->get();
+
+//        return $groupPosts;
+
+        return view('community-frontend.layout.singleGroupView', compact('getGroupDetails', 'groupPosts'));
     }
 
     public function acceptGroupUserInvitation(Request $request)
@@ -158,17 +182,16 @@ class CommunityUserGroupController extends Controller
     public function userGroupPostStore(Request $request)
     {
 //        dd($request->all());
-        if ($request->get('imageCaption')===null || $request->hasFile('postFile') === null) {
+        if ($request->get('imageCaption') === null || $request->hasFile('postFile') === null) {
             $storeGroupPost = CommunityUserGroupPost::create([
                 'group_id' => $request->get('groupId'),
                 'user_id' => Auth::id(),
                 'post_description' => $request->get('postMessage'),
             ]);
-        }
-        else {
+        } else {
 
             $image = null;
-            if ($request->hasFile('postFile') !== null || $request->get('imageCaption')!==null) {
+            if ($request->hasFile('postFile') !== null || $request->get('imageCaption') !== null) {
                 $storeGroupPost = CommunityUserGroupPost::create([
                     'group_id' => $request->get('groupId'),
                     'user_id' => Auth::id(),
@@ -197,6 +220,43 @@ class CommunityUserGroupController extends Controller
             return Redirect::back();
         }
         toastr()->error('An error has occurred please try again later.');
+
+    }
+
+    public function storeUserGroupPostReaction(Request $request)
+    {
+
+
+        if ($request->ajax()) {
+            $userId = Auth::id();
+            $getReaction = $request->get('getReaction');
+            $grpPostId = $request->get('grpPostId');
+
+            if ($userId !== null && $getReaction !== null && $grpPostId !== null) {
+
+                $storePostReaction = CommunityUserGroupPostReaction::create([
+                    'user_id' => $userId,
+                    'group_post_id' => $grpPostId,
+                    'reaction_type' => $getReaction,
+                ]);
+            }
+
+            if ($storePostReaction) {
+                return \response()->json([
+                    'status' => true,
+                    'success' => true,
+                    'data'=>$storePostReaction,
+                    'msg' => 'Successfully Added.',
+                ]);
+            } else {
+                return \response()->json([
+                    'status' => true,
+                    'success' => false,
+                    'data'=>$storePostReaction,
+                    'msg' => 'Something wrong.',
+                ]);
+            }
+        }
 
     }
 

@@ -4,9 +4,9 @@
         <a href="#">See All</a>
     </div>
     <ul class="like-items">
-        {{--        @dd($id)--}}
+
         <input type="hidden" name="gId" id="gId" value="{{$id}}">
-        {{--        @dd(getGroupUserList($id))--}}
+
 
         @foreach(getGroupUserList($id) as $user)
 
@@ -17,21 +17,29 @@
                 </div>
 
                 <div class="page-title">
-                    <a href="#">{{$user->name}} {{$user->group_user_role==1 ? '(Admin)':''}}
-                    </a>
+                    <a href="#">{{$user->name}} {{$user->group_user_role==1 ? '(Admin)':''}}</a>
                 </div>
 
-{{--                @if($user->group_user_role==1)--}}
-{{--                    <div class="d-flex mx-auto user">--}}
-{{--                        <h6 class="me-2">--}}
-{{--                            <a class="text-success btnAccept" data-id="{{$user->Uid}}"--}}
-{{--                               data-idd="{{$user->id}}"><i class="fa fa-check-circle" aria-hidden="true"></i>--}}
-{{--                            </a>--}}
-{{--                        </h6>--}}
-{{--                        <h6><a class="text-danger"><i class="fa fa-times-circle-o" aria-hidden="true"></i></a></h6>--}}
-{{--                    </div>--}}
-{{--                @endif--}}
+                @php
+                    $isAdmin=\App\Models\Community\Group\CommunityUserGroupPivot::select('group_user_role')->where('user_id','=',Auth::id())
+                    ->where('group_id','=',$user->group_id)->first();
 
+                @endphp
+
+                @if(!empty($isAdmin->group_user_role) && isset($isAdmin->group_user_role) && $isAdmin->group_user_role == 1)
+                    @if($user->group_user_role == 3 || $user->group_user_role == 2)
+                        <div class="d-flex mx-auto user">
+                            <h6 class="me-2">
+                                <a class="text-success btnAccept" data-id="{{$user->Uid}}"
+                                   data-idd="{{$user->id}}"><i class="fa fa-check-circle" aria-hidden="true"></i>
+                                </a>
+                            </h6>
+                            <h6><a class="text-danger"><i class="fa fa-times-circle-o" aria-hidden="true"></i></a></h6>
+                        </div>
+
+                    @endif
+
+                @endif
             </li>
 
         @endforeach

@@ -249,6 +249,7 @@
                                 <span
                                     class="react-count">{{countReactions($post->post_id) !== null && isset(countReactions($post->post_id)->reactionCount) ?countReactions($post->post_id)->reactionCount:'0'}}</span>
                             </a>
+
                             <ul class="react-option">
                                 <li><a href="#"><img
                                             src="{{asset("community-frontend/assets/images/community/home/news-post/react-1.png")}}"

@@ -3,9 +3,11 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use App\Models\Community\Group\CommunityUserGroup;
 use App\Models\Community\Page\CommunityPage;
 use App\Models\Community\Page\UsersPage;
 use App\Models\Community\User_Profile\CommunityUserProfileLanguage;
+use App\Models\Community\User_Profile\CommunityUserProfilePhoto;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -55,5 +57,16 @@ class User extends Authenticatable
     public function languages(): \Illuminate\Database\Eloquent\Relations\HasMany
     {
         return $this->hasMany(CommunityUserProfileLanguage::class);
+    }
+
+    public function userProfileImages(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(CommunityUserProfilePhoto::class);
+    }
+
+
+    public function groups(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(CommunityUserGroup::class);
     }
 }

@@ -596,8 +596,7 @@ function getAllGroupUserRequest($id)
     })
         ->leftJoin('community_user_group_profile_photos as groupProfile', 'groupProfile.group_id', '=', 'users.id')
         ->leftJoin('community_user_group_cover_photos as groupCover', 'groupCover.group_id', '=', 'users.id')
-
-        ->selectRaw('users.id as Uid,users.name,groupProfile.group_profile_photo as gProfile,groupCover.cover_photo as gCover,userGroupPivot.id')
+        ->selectRaw('users.id as Uid,users.name,groupProfile.group_profile_photo as gProfile,groupCover.cover_photo as gCover,userGroupPivot.id,userGroupPivot.group_id')
         ->orderBy('userGroupPivot.id','DESC')
         ->limit(6)
         ->get();
@@ -615,7 +614,10 @@ function getGroupUserList($id){
         ->leftJoin('community_user_group_profile_photos as groupProfile', 'groupProfile.group_id', '=', 'users.id')
         ->leftJoin('community_user_group_cover_photos as groupCover', 'groupCover.group_id', '=', 'users.id')
 
-        ->selectRaw('userGroupPivot.user_id as uId,users.name,groupProfile.group_profile_photo as gProfile,groupCover.cover_photo as gCover,userGroupPivot.id,userGroupPivot.group_user_role')
+        ->selectRaw('userGroupPivot.user_id as uId,users.name,
+        groupProfile.group_profile_photo as gProfile,groupCover.cover_photo as gCover,
+        userGroupPivot.id,userGroupPivot.group_user_role,
+        userGroupPivot.user_id,userGroupPivot.group_id')
         ->get();
     return $allGroupUsers;
 }
