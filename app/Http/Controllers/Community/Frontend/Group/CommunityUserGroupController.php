@@ -158,26 +158,38 @@ class CommunityUserGroupController extends Controller
     public function userGroupPostStore(Request $request)
     {
 //        dd($request->all());
-
-        $storeGroupPost = CommunityUserGroupPost::create([
-            'group_id' => $request->get('groupId'),
-            'user_id' => Auth::id(),
-            'post_description' => $request->get('postMessage'),
-        ]);
-        $image = null;
-        if ($storeGroupPost) {
-
-            if ($request->hasFile('postFile')) {
-                $image = Uuid::uuid() . '.' . $request->file('postFile')->getClientOriginalExtension();
-                $name = Storage::put('/public/community/group-post/' . $image, file_get_contents($request->file("postFile")));
-            }
-
-            $GroupPostFile = CommunityUserGroupPostFile::create([
-                'group_post_id' => $storeGroupPost->id,
-                'group_post_caption' => $request->get('imageCaption'),
-                'group_post_file' => $image,
+        if ($request->get('imageCaption')===null || $request->hasFile('postFile') === null) {
+            $storeGroupPost = CommunityUserGroupPost::create([
+                'group_id' => $request->get('groupId'),
+                'user_id' => Auth::id(),
+                'post_description' => $request->get('postMessage'),
             ]);
         }
+        else {
+
+            $image = null;
+            if ($request->hasFile('postFile') !== null || $request->get('imageCaption')!==null) {
+                $storeGroupPost = CommunityUserGroupPost::create([
+                    'group_id' => $request->get('groupId'),
+                    'user_id' => Auth::id(),
+                    'post_description' => $request->get('postMessage'),
+                ]);
+
+                if ($request->hasFile('postFile')) {
+                    $image = Uuid::uuid() . '.' . $request->file('postFile')->getClientOriginalExtension();
+                    $name = Storage::put('/public/community/group-post/' . $image, file_get_contents($request->file("postFile")));
+                }
+
+                $GroupPostFile = CommunityUserGroupPostFile::create([
+                    'group_post_id' => $storeGroupPost->id,
+                    'group_post_caption' => $request->get('imageCaption'),
+                    'group_post_file' => $image,
+                ]);
+            }
+
+
+        }
+
 
         if ($storeGroupPost || $GroupPostFile) {
 //            toastr('dd', 'success');
