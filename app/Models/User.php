@@ -4,6 +4,7 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use App\Models\Community\Group\CommunityUserGroup;
+use App\Models\Community\Group\CommunityUserGroupPost;
 use App\Models\Community\Page\CommunityPage;
 use App\Models\Community\Page\UsersPage;
 use App\Models\Community\User_Profile\CommunityUserProfileLanguage;
@@ -51,7 +52,7 @@ class User extends Authenticatable
 
     public function pages(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
     {
-        return $this->belongsToMany(CommunityPage::class,'users_pages','user_id','page_id');
+        return $this->belongsToMany(CommunityPage::class, 'users_pages', 'user_id', 'page_id');
     }
 
     public function languages(): \Illuminate\Database\Eloquent\Relations\HasMany
@@ -59,14 +60,24 @@ class User extends Authenticatable
         return $this->hasMany(CommunityUserProfileLanguage::class);
     }
 
-    public function userProfileImages(): \Illuminate\Database\Eloquent\Relations\HasMany
-    {
-        return $this->hasMany(CommunityUserProfilePhoto::class);
-    }
-
 
     public function groups(): \Illuminate\Database\Eloquent\Relations\HasMany
     {
         return $this->hasMany(CommunityUserGroup::class);
+    }
+
+    public function userProfileImages(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(CommunityUserProfilePhoto::class,'user_id')->latest();
+    }
+
+    public function groupPosts(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(CommunityUserGroupPost::class, 'user_id');
+    }
+
+    public  function  communityUserPost(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(CommunityUserGroupPost::class,'user_id');
     }
 }

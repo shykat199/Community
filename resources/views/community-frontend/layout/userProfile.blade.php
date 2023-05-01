@@ -26,7 +26,7 @@
     </div>
 
 
-    {{--@dd(allUsersDetails())--}}
+{{--    @dd(allUsersDetails())--}}
 
     <div class="profile-title d-flex align-items-center">
         @if(!empty(allUsersDetails()->user_profile) && isset(allUsersDetails()->user_profile))
@@ -46,7 +46,7 @@
         <div class="profile-name">
             <h6><a href="#">{{Auth::user()->name}}</a></h6>
             <span
-                class="locaiton">{{!empty(allUsersDetails()->birthplace) && isset(allUsersDetails()->birthplace)}}</span>
+                class="locaiton">{{!empty(allUsersDetails()->birthplace) && isset(allUsersDetails()->birthplace)?allUsersDetails()->birthplace:''}}</span>
         </div>
     </div>
     <ul class="profile-statistics">

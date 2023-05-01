@@ -9,7 +9,6 @@
 
 
         @foreach(getGroupUserList($id) as $user)
-
             <li>
                 <div class="page-img"><a href="#"><img
                             src="{{asset("community-frontend/assets/images/community/home/page-like/page01.jpg")}}"
@@ -30,11 +29,10 @@
                     @if($user->group_user_role == 3 || $user->group_user_role == 2)
                         <div class="d-flex mx-auto user">
                             <h6 class="me-2">
-                                <a class="text-success btnAccept" data-id="{{$user->Uid}}"
-                                   data-idd="{{$user->id}}"><i class="fa fa-check-circle" aria-hidden="true"></i>
+                                <a class="text-danger btnRemove" data-id="{{$user->Uid}}"
+                                   data-idd="{{$user->pivotId}}"><i class="fa fa-trash" aria-hidden="true"></i>
                                 </a>
                             </h6>
-                            <h6><a class="text-danger"><i class="fa fa-times-circle-o" aria-hidden="true"></i></a></h6>
                         </div>
 
                     @endif
@@ -51,22 +49,21 @@
         crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script>
     $(document).ready(function () {
-        $('.btnAccept').on('click', function () {
+        $('.btnRemove').on('click', function () {
             let elm = $(this);
             let gId = $('#gId').val();
             let userId = $(this).attr('data-id');
-            let id = $(this).attr('data-idd');
+            let pivotId = $(this).attr('data-idd');
+            console.log(pivotId);
 
-            console.log(userId, id);
-
-            if (gId !== '' && userId !== '') {
+            if (pivotId!=='') {
                 $.ajax({
-                    url: '{{route('user.group.accept.invitation')}}',
+                    url: '{{route('user.group.remove')}}',
                     type: 'POST',
                     data: {
                         uId: userId,
                         gId: gId,
-                        id: id,
+                        pivotId: pivotId,
                         '_token': '{{csrf_token()}}'
                     },
                     success: function (response) {

@@ -473,14 +473,24 @@
                             </form>
                         </div>
 
-{{--                                                @dd(getMyPostTimeLine())--}}
+
+{{--                        @dd(getMyPostTimeLine())--}}
                         @foreach(getMyPostTimeLine() as $myPost)
                             <div class="main-content posted-content">
                                 <div class="post-autore d-flex justify-content-between align-items-center">
                                     <div class="authore-title d-flex align-items-center">
-                                        <a href="#"><img
-                                                src="{{asset("storage/community/profile-picture/".$myPost->user_profile)}}"
-                                                alt="image"></a>
+                                        <a href="#">
+                                            @if(!empty($myPost->users->userProfileImages[0]) && isset($myPost->users->userProfileImages[0]) ? $myPost->users->userProfileImages[0]:'')
+                                                <img
+                                                    src="{{asset("storage/community/profile-picture/".$myPost->users->userProfileImages[0]->user_profile)}}"
+                                                    alt="image">
+                                            @else
+                                                <img
+                                                    src="{{asset("community-frontend/assets/images/community/home/news-post/Athore01.jpg")}}"
+                                                    alt="image">
+                                            @endif
+
+                                        </a>
                                         <div class="athore-info">
                                             <p class="athore-name"><a href="#">{{Auth::user()->name}}</a></p>
                                             <p class="posted-time"><a
@@ -652,9 +662,17 @@
                                     {{--                                        <a href="#">More Comments+</a>--}}
                                     {{--                                    </div>--}}
                                     <form action="#" class="new-comment">
-                                        <a class="new-comment-img" href="#"><img
-                                                src="{{asset("storage/community/profile-picture/".$myPost->user_profile)}}"
-                                                alt="Image"></a>
+                                        <a class="new-comment-img" href="#">
+                                            @if(!empty($myPost->users->userProfileImages[0]) && isset($myPost->users->userProfileImages[0]) ? $myPost->users->userProfileImages[0]:'')
+                                                <img
+                                                    src="{{asset("storage/community/profile-picture/".$myPost->users->userProfileImages[0]->user_profile)}}"
+                                                    alt="image">
+                                            @else
+                                                <img
+                                                    src="{{asset("community-frontend/assets/images/community/home/news-post/Athore01.jpg")}}"
+                                                    alt="image">
+                                            @endif
+                                        </a>
                                         <div class="new-comment-input">
                                             <input type="text" placeholder="Write a comment....">
                                             <div class="attached-icon">

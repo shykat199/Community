@@ -22,36 +22,51 @@ class CommunityFrontendController extends Controller
         foreach (myFriends() as $friend) {
             $friendList[] = $friend->uId;
         }
-//        dd($friendList);
-        $allUserPosts = CommunityUserPost::join('users', function ($q) use ($friendList) {
-            $q->on('users.id', '=', 'community_user_posts.user_id');
-            $q->whereIn('users.id', $friendList);
-        })
+
+        $allUserPosts = CommunityUserPost::with('users.userProfileImages')
+            ->join('users', function ($q) use ($friendList) {
+                $q->on('users.id', '=', 'community_user_posts.user_id');
+                $q->whereIn('users.id', $friendList);
+            })
             ->leftJoin('community_user_post_file_types as postMedia', function ($q) {
                 $q->on('postMedia.post_id', '=', 'community_user_posts.id');
             })
-            ->leftJoin('community_user_profile_photos as profilePhoto', function ($q) {
-                $q->on('profilePhoto.user_id', '=', 'users.id');
-                $q->where('users.id', '!=', ADMIN_ROLE);
-            })
-            ->leftJoin('community_user_profile_covers as profileCover', function ($q) {
-                $q->on('profileCover.user_id', '=', 'users.id');
-                $q->where('users.id', '!=', ADMIN_ROLE);
 
+            ->leftJoin('community_user_post_reactions as userPostReaction',function ($q){
+                $q->on('userPostReaction.user_post_id','=','community_user_posts.id');
+                $q->where('userPostReaction.user_id','=',Auth::id());
             })
-//            ->leftJoin('community_user_post_reactions as postReaction',function ($q){
-//                $q->on('postReaction.user_post_id','=','community_user_posts.id');
+
+//            ->leftJoin('community_user_profile_photos as profilePhoto', function ($q) {
+//                $q->on('profilePhoto.user_id', '=', 'users.id');
 //            })
-            ->selectRaw('users.id as uId,users.name,community_user_posts.post_description as postDescription,community_user_posts.created_at,
-            postMedia.post_id,postMedia.post_image_video as userPostMedia,postMedia.caption,profilePhoto.user_profile,
-        profileCover.user_cover')
-//            ->whereIn('users.id',$friendList)
-//            ->groupBy('users.id')
+//            ->selectRaw("
+//            GROUP_CONCAT( DISTINCT users.id ORDER BY users.id DESC ) as uId,GROUP_CONCAT( DISTINCT users.name ORDER BY users.id DESC) as name,
+//            GROUP_CONCAT( DISTINCT community_user_posts.post_description ORDER BY community_user_posts.id DESC) as postDescription,
+//            GROUP_CONCAT( DISTINCT community_user_posts.created_at ORDER BY community_user_posts.id DESC) as created_at,
+//            GROUP_CONCAT( DISTINCT postMedia.post_id ORDER BY postMedia.id DESC) as post_id,
+//            GROUP_CONCAT( DISTINCT postMedia.post_image_video ORDER BY postMedia.id DESC) as userPostMedia,
+//            GROUP_CONCAT( DISTINCT postMedia.caption ORDER BY postMedia.id DESC) as caption,
+//            GROUP_CONCAT( DISTINCT community_user_posts.id ORDER BY community_user_posts.id DESC) as postId,
+//            GROUP_CONCAT( DISTINCT profilePhoto.user_profile ORDER BY profilePhoto.id DESC) as user_profile")
+
+            ->selectRaw("
+            users.id as user_id,users.name,
+            community_user_posts.post_description as postDescription,
+            community_user_posts.created_at as created_at,
+            postMedia.post_id as post_id,
+            postMedia.post_image_video as userPostMedia,
+            postMedia.caption as caption,
+            community_user_posts.id as postId,
+            userPostReaction.reaction_type,
+            userPostReaction.id as reactionId
+            ")
+            ->latest()
             ->get();
 
 //        return $allUserPosts;
 
-        return view('community-frontend.index',compact('allUserPosts'));
+        return view('community-frontend.index', compact('allUserPosts'));
     }
 
     public function addUserFollow(Request $request)

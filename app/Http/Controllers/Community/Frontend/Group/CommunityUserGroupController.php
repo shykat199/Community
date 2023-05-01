@@ -8,6 +8,7 @@ use App\Models\Community\Group\CommunityUserGroupPost;
 use App\Models\Community\Group\CommunityUserGroupPostFile;
 use App\Models\Community\Group\CommunityUserGroupPostReaction;
 use Faker\Provider\Uuid;
+use http\Env\Response;
 use Illuminate\Http\Request;
 use App\Models\Community\Group\CommunityUserGroupPivot;
 use Illuminate\Support\Facades\Auth;
@@ -122,23 +123,20 @@ class CommunityUserGroupController extends Controller
             ->groupBy('community_user_groups.id')
             ->first();
 
-//        return $getGroupDetails;
 
-        $groupPosts = CommunityUserGroupPost::join('community_user_groups as communityGroups', function ($q) use ($id) {
-            $q->on('communityGroups.id', '=', 'community_user_group_posts.group_id');
-            $q->where('community_user_group_posts.group_id', '=', $id);
-        })
+        $groupPosts = CommunityUserGroupPost::with('users.userProfileImages')
+            ->join('community_user_groups as communityGroups', function ($q) use ($id) {
+                $q->on('communityGroups.id', '=', 'community_user_group_posts.group_id');
+                $q->where('community_user_group_posts.group_id', '=', $id);
+            })
             ->join('users', 'users.id', '=', 'community_user_group_posts.user_id')
             ->leftJoin('community_user_group_post_files as userGroupPostFileType', function ($q) {
                 $q->on('userGroupPostFileType.group_post_id', '=', 'community_user_group_posts.id');
             })
-//            ->leftJoin('community_user_profile_photos as userProfile', 'userProfile.user_id', '=', 'users.id')
-
-                ->leftJoin('community_user_group_post_reactions as postReaction',function ($q){
-                    $q->on('postReaction.group_post_id','=','community_user_group_posts.id');
+            ->leftJoin('community_user_group_post_reactions as postReaction', function ($q) {
+                $q->on('postReaction.group_post_id', '=', 'community_user_group_posts.id');
             })
-
-            ->selectRaw('community_user_group_posts.id as gId,communityGroups.group_name as gName,community_user_group_posts.post_description,users.id as userId,
+            ->selectRaw('community_user_group_posts.id as gId,communityGroups.group_name as gName,community_user_group_posts.post_description,users.id as user_id,
             users.name as userName,userGroupPostFileType.group_post_caption,userGroupPostFileType.group_post_file,
             community_user_group_posts.created_at,community_user_group_posts.id as grpPostId,postReaction.reaction_type')
             ->orderBy('community_user_group_posts.id', 'DESC')
@@ -183,6 +181,7 @@ class CommunityUserGroupController extends Controller
     {
 //        dd($request->all());
         if ($request->get('imageCaption') === null || $request->hasFile('postFile') === null) {
+
             $storeGroupPost = CommunityUserGroupPost::create([
                 'group_id' => $request->get('groupId'),
                 'user_id' => Auth::id(),
@@ -209,7 +208,6 @@ class CommunityUserGroupController extends Controller
                     'group_post_file' => $image,
                 ]);
             }
-
 
         }
 
@@ -245,17 +243,45 @@ class CommunityUserGroupController extends Controller
                 return \response()->json([
                     'status' => true,
                     'success' => true,
-                    'data'=>$storePostReaction,
+                    'data' => $storePostReaction,
                     'msg' => 'Successfully Added.',
                 ]);
             } else {
                 return \response()->json([
                     'status' => true,
                     'success' => false,
-                    'data'=>$storePostReaction,
+                    'data' => $storePostReaction,
                     'msg' => 'Something wrong.',
                 ]);
             }
+        }
+
+    }
+
+
+    public function destroy(Request $request)
+    {
+
+        if ($request->ajax()) {
+            $userId = $request->get('userId');
+            $gId = $request->get('gId');
+            $pivotId = $request->get('pivotId');
+
+            $removeUser = CommunityUserGroupPivot::find($pivotId)->delete();
+        }
+
+        if ($removeUser) {
+            return \response()->json([
+                'status' => true,
+                'success' => true,
+                'msg' => "Successfully Deleted."
+            ]);
+        } else {
+            return \response()->json([
+                'status' => true,
+                'success' => false,
+                'msg' => 'Something wrong.',
+            ]);
         }
 
     }

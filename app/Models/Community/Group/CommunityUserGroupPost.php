@@ -2,6 +2,7 @@
 
 namespace App\Models\Community\Group;
 
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -14,5 +15,10 @@ class CommunityUserGroupPost extends Model
     public function groupPosts(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {
         return $this->belongsTo(CommunityUserGroup::class);
+    }
+
+    public function users(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    {
+        return $this->belongsTo(User::class,'user_id');
     }
 }

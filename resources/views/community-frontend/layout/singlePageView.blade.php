@@ -13,13 +13,13 @@
         @endphp
         <div class="news-feed-left">
 
-            @include('community-frontend.layout.groupProfile')
+            @include('community-frontend.layout.pageProfile',['getPageDetails'=>$getPageDetails])
 
-            @if(!empty($isAdmin->group_user_role) && isset($isAdmin->group_user_role) && $isAdmin->group_user_role == 1)
-                @include('community-frontend.layout.groupUserInvitation',['id'=>$id])
-            @endif
+{{--            @if(!empty($isAdmin->group_user_role) && isset($isAdmin->group_user_role) && $isAdmin->group_user_role == 1)--}}
+{{--                @include('community-frontend.layout.groupUserInvitation',['id'=>$id])--}}
+{{--            @endif--}}
 
-            @include('community-frontend.layout.suggestedGroup',['id',$id])
+            @include('community-frontend.layout.pageLike',['id'=>$id])
 
         </div>
     </div>
@@ -31,10 +31,11 @@
             <div class="widget-title">
                 <h5>Create New Post</h5>
             </div>
-            <form action="{{route('user.group.post.store')}}" class="input-psot" method="post"
+            <form action="{{route('user.page.post.store')}}" class="input-psot" method="post"
                   enctype="multipart/form-data">
                 @csrf
-                <input type="hidden" name="groupId" value="{{Request::segment(3)}}">
+                <input type="hidden" name="pageId" value="{{Request::segment(3)}}">
+
                 <textarea name="postMessage" id="postMessage" placeholder="Write something here..."></textarea>
                 <ul class="attachment-btn">
                     <li>
@@ -198,8 +199,8 @@
             </form>
 
         </div>
-        {{--                @dd($groupPosts)--}}
-        @foreach($groupPosts as $post)
+{{--                        @dd($pagePosts)--}}
+        @foreach($pagePosts as $post)
             <div class="main-content posted-content">
                 <div class="post-autore d-flex justify-content-between align-items-center">
                     <div class="authore-title d-flex align-items-center">
@@ -255,34 +256,35 @@
                                          src="{{asset("community-frontend/assets/images/community/home/news-post/like.png")}}"
                                          alt="">
                                 </div>
+{{--                                @dd($post)--}}
 
                                 <span class="react-name">Like</span>
                                 <span
-                                    class="react-count">{{getGroupPostReactionCount($post->grpPostId)}}</span>
+                                    class="react-count">{{getGroupPostReactionCount($post->pId)}}</span>
                             </a>
                             <ul class="react-option">
-                                <li class="reaction" data-reaction_type="like" data-gId="{{$post->grpPostId}}">
+                                <li class="reaction" data-reaction_type="like" data-gId="{{$post->pId}}">
                                     <img
                                         src="{{asset("community-frontend/assets/images/community/home/news-post/react-1.png")}}"
                                         alt="React">
                                 </li>
                                 {{--                                @dd($post)--}}
-                                <li class="reaction" data-reaction_type="love" data-gId="{{$post->grpPostId}}"><img
+                                <li class="reaction" data-reaction_type="love" data-gId="{{$post->pId}}"><img
                                         src="{{asset("community-frontend/assets/images/community/home/news-post/react-2.png")}}"
                                         alt="React"></li>
-                                <li class="reaction" data-reaction_type="care" data-gId="{{$post->grpPostId}}"><img
+                                <li class="reaction" data-reaction_type="care" data-gId="{{$post->pId}}"><img
                                         src="{{asset("community-frontend/assets/images/community/home/news-post/react-3.png")}}"
                                         alt="React"></li>
-                                <li class="reaction" data-reaction_type="haha" data-gId="{{$post->grpPostId}}"><img
+                                <li class="reaction" data-reaction_type="haha" data-gId="{{$post->pId}}"><img
                                         src="{{asset("community-frontend/assets/images/community/home/news-post/react-4.png")}}"
                                         alt="React"></li>
-                                <li class="reaction" data-reaction_type="wow" data-gId="{{$post->grpPostId}}"><img
+                                <li class="reaction" data-reaction_type="wow" data-gId="{{$post->pId}}"><img
                                         src="{{asset("community-frontend/assets/images/community/home/news-post/react-5.png")}}"
                                         alt="React"></li>
-                                <li class="reaction" data-reaction_type="sad" data-gId="{{$post->grpPostId}}"><img
+                                <li class="reaction" data-reaction_type="sad" data-gId="{{$post->pId}}"><img
                                         src="{{asset("community-frontend/assets/images/community/home/news-post/react-6.png")}}"
                                         alt="React"></li>
-                                <li class="reaction" data-reaction_type="care" data-gId="{{$post->grpPostId}}"><img
+                                <li class="reaction" data-reaction_type="care" data-gId="{{$post->pId}}"><img
                                         src="{{asset("community-frontend/assets/images/community/home/news-post/react-7.png")}}"
                                         alt="React"></li>
                             </ul>
@@ -305,7 +307,7 @@
                                         </g></svg>
                                 </div>
                                 <span class="react-name">Comment</span>
-                                <span class="react-count">{{getGroupPostCommentCount($post->grpPostId)}}</span>
+                                <span class="react-count">{{getGroupPostCommentCount($post->pId)}}</span>
                             </a>
                         </li>
 
@@ -327,6 +329,7 @@
                         </li>
 
                     </ul>
+
                     {{--                    <ul class="post-comment-list">--}}
                     {{--                        <li class="single-comment">--}}
                     {{--                            <div class="comment-img">--}}
@@ -392,7 +395,7 @@
 
 
             {{--            @include('community-frontend.layout.birthday')--}}
-            @include('community-frontend.layout.group_user_list')
+{{--            @include('community-frontend.layout.group_user_list')--}}
 
             {{--            @include('community-frontend.layout.followers')--}}
 
@@ -411,7 +414,11 @@
             $(this).addClass('active');
 
             let getReaction = $(this).attr('data-reaction_type');
-            let grpPostId = $(this).attr('data-gId');
+            let pagePostId = $(this).attr('data-gId');
+            console.log(getReaction)
+            console.log(pagePostId)
+
+            // return false
 
             let img_src = $(this).find('img').attr('src')
             $(this).parents('.like-react').find('.react-icon img').attr('src', img_src)
@@ -420,13 +427,13 @@
             // let img_src = $(this).find('img').attr('src');
             // console.log(img_src,'img_src');
 
-            if (getReaction !== '' && grpPostId !== '') {
+            if (getReaction !== '' && pagePostId !== '') {
                 $.ajax({
-                    url: '{{route('user.group.post.reaction')}}',
+                    url: '{{route('user.page.post.reaction')}}',
                     type: 'POST',
                     data: {
                         getReaction: getReaction,
-                        grpPostId: grpPostId,
+                        pagePostId: pagePostId,
                         '_token': '{{csrf_token()}}'
                     },
                     success: function (response) {

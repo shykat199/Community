@@ -8,6 +8,7 @@ use App\Http\Controllers\Community\Frontend\Profile\UserProfileDetailsController
 use App\Http\Controllers\Community\Frontend\Profile\UserProfileSettingController;
 use App\Http\Controllers\Community\Frontend\User\CommunityUserFriendBirthday;
 use App\Http\Controllers\Community\Frontend\Group\CommunityUserGroupController;
+use App\Http\Controllers\Community\Frontend\Page\CommunityUserPageController;
 
 Route::middleware(['user'])->group(function (){
 
@@ -72,6 +73,20 @@ Route::middleware(['user'])->group(function (){
     Route::post('/user/group/accept-user-invitation',[CommunityUserGroupController::class,'acceptGroupUserInvitation'])->name('user.group.accept.invitation');
     Route::post('/user/group/post',[CommunityUserGroupController::class,'userGroupPostStore'])->name('user.group.post.store');
     Route::post('/user/group/post/reaction',[CommunityUserGroupController::class,'storeUserGroupPostReaction'])->name('user.group.post.reaction');
+    Route::post('/user/group/remove',[CommunityUserGroupController::class,'destroy'])->name('user.group.remove');
+
+
+    //Page Section
+    Route::get('/users/all-pages',[CommunityUserPageController::class,'index'])->name('user.all.pages');
+    Route::post('/user/create_page',[CommunityUserPageController::class,'createPage'])->name('user.create.pages');
+    Route::get('/user/page/{id}',[CommunityUserPageController::class,'getSinglePageView'])->name('user.page.details');
+    Route::post('/user/page/post',[CommunityUserPageController::class,'userPagePostStore'])->name('user.page.post.store');
+    Route::post('/user/page/post/reaction',[CommunityUserPageController::class,'storeUserPagePostReaction'])->name('user.page.post.reaction');
+
+
+
+
+
 
 });
 
