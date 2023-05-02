@@ -1,56 +1,33 @@
 <!DOCTYPE html>
 <html lang="en">
 
-<!-- Mirrored from coderthemes.com/hyper/saas/pages-login.html by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 13 May 2022 20:22:57 GMT -->
 <head>
-    <meta charset="utf-8" />
-    <title>Log In | Hyper - Responsive Bootstrap 5 Admin Dashboard</title>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta content="A fully featured admin theme which can be used to build CRM, CMS, etc." name="description" />
-    <meta content="Coderthemes" name="author" />
-    <!-- App favicon -->
-    <link rel="shortcut icon" href="{{asset("admin/assets/images/favicon.ico")}}">
+    <link rel="shortcut icon" type="image/png" href="{{asset("community-frontend/assets/images/community/favicon.png")}}">
+    <title>Community</title>
+    <link rel="stylesheet" href="{{asset("community-frontend/assets/css/bootstrap.min.css")}}">
+    <link rel="stylesheet" href="{{asset("community-frontend/assets/css/odometer-theme-default.css")}}">
+    <link rel="stylesheet" href="{{asset("community-frontend/assets/css/slick.css")}}">
+    <link rel="stylesheet" href="{{asset("community-frontend/assets/css/font-awesome.min.css")}}">
+    <link rel="stylesheet" href="{{asset("community-frontend/assets/css/default.css")}}">
+    <link rel="stylesheet" href="{{asset("community-frontend/assets/sass/style.css")}}">
 
-    <!-- App css -->
-    <link href="{{asset("admin/assets/css/icons.min.css")}}" rel="stylesheet" type="text/css" />
-    <link href="{{asset("admin/assets/css/app.min.css")}}" rel="stylesheet" type="text/css" id="app-style"/>
-
+    <script src="{{asset("community-frontend/assets/js/jquery.min.js")}}"></script>
 </head>
 
-<body class="loading authentication-bg" data-layout-config='{"darkMode":false}'>
-<div class="account-pages pt-2 pt-sm-5 pb-4 pb-sm-5">
-    <div class="container">
-        <div class="row justify-content-center">
-            <div class="col-xxl-4 col-lg-5">
-                <div class="card">
+<body>
 
-                    <!-- Logo -->
-                    <div class="card-header pt-4 pb-4 text-center bg-primary">
-                        <a href="index-2.html">
-                            <span><img src="{{asset("admin/assets/images/logo.png")}}" alt="" height="18"></span>
-                        </a>
-                    </div>
+<!-- login page start  -->
+@yield('auth.content')
+<!-- login page end  -->
 
-                    @yield('auth.content')
 
-                </div> <!-- end col -->
-            </div>
-
-            <!-- end row -->
-        </div>
-        <!-- end container -->
-    </div>
-    <!-- end page -->
-
-    <footer class="footer footer-alt">
-        2018 - <script>document.write(new Date().getFullYear())</script> © Hyper - Coderthemes.com
-    </footer>
-
-    <!-- bundle -->
-    <script src="{{asset("admin/assets/js/vendor.min.js")}}"></script>
-    <script src="{{asset("admin/assets/js/app.min.js")}}"></script>
-
+<script src="{{asset("community-frontend/assets/js/bootstrap.bundle.min.js")}}"></script>
+<script src="{{asset("community-frontend/assets/js/odometer.js")}}"></script>
+<script src="{{asset("community-frontend/assets/js/slick-slider.js")}}"></script>
+<script src="{{asset("community-frontend/assets/js/community/script.js")}}"></script>
 </body>
 
-<!-- Mirrored from coderthemes.com/hyper/saas/pages-login.html by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 13 May 2022 20:22:57 GMT -->
 </html>

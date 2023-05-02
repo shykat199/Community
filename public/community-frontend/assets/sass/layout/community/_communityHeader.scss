@@ -420,6 +420,15 @@
         font-weight: 400;
     }
 }
+.nice-select {
+    background: transparent;
+    border: none;
+    .list {
+        .option {
+            margin: 0;
+        }
+    }
+}
 .logged_profil {
     display: flex;
     align-items: center;

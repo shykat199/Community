@@ -259,3 +259,7 @@ $('.bestseller-active').slick({
   ]
 });
 
+
+
+
+

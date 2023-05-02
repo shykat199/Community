@@ -107,7 +107,7 @@
                 margin: 0;
             }
         }
-    }
+    }    
     .notification-check-list {
         margin-bottom: 25px;
         li {
@@ -152,7 +152,7 @@
 
 
 
-// privacy page start
+// privacy page start 
 .privacy-page-wrap {
     padding: 45px;
     background: $white;
@@ -185,7 +185,7 @@
     }
 }
 
-//Help and Support page start
+//Help and Support page start 
 .help-issu-box {
     padding: 45px;
     background: $white;
@@ -209,11 +209,11 @@
             margin: auto;
         }
     }
-
+    
 }
 
 
-//notificaiton area start
+//notificaiton area start 
 .common-box {
     max-width: 850px;
     margin: auto;
@@ -337,7 +337,7 @@
             &:hover{
                 color: $theme-color;
             }
-        }
+        }    
     }
 }
 .chat-container {
@@ -440,22 +440,97 @@
         top: 0;
     }
 }
+//message page end
 
+//Live chat start
+.chat-online {
+    padding: 20px 25px;
+    background: $white;
+    .single-online-person {
+        display: inline-block;
+        text-align: center;
+        .online-person-img {
+            position: relative;
+            display: inline-block;
+            img{
+                border-radius: 50%;
+                max-width: 100px;
+                min-height: 100px;
+                object-fit: cover;
+                width: 100%;
+            }
+            .online-status {
+                position: absolute;
+                width: 10px;
+                height: 10px;
+                border-radius: 50%;
+                background: $theme-color;
+                top: 5px;
+                right: 20px;
+            }
+        }
+        .online-person-name {
+            text-align: center;
+            margin-top: 8px;
+            a{
+                font-size: 18px;
+                color: $theme-font;
+                transition: all .3s ease;
 
-//Group Page edit CSS
+            }
+        }
+    }
+}
+.live-chat-title {
+    padding-bottom: 30px;
+    border-bottom: 1px solid #eeeeee;
+    margin-bottom: 30px !important;
+    .single-info {
+        margin-bottom: 0;
+    }
+}
+.chat-call {
+    display: flex;
+    align-items: center;
+    column-gap: 10px;
+    .chat-call-btn {
+        height: 40px;
+        width: 40px;
+        border-radius: 5px;
+        border: none;
+        outline: none;
+        color: $theme-color;
+        transition: all .3s ease;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        &:hover{
+            color: $white;
+            background: $theme-color;
+        }
+        @media (max-width: 576px) {
+            height: 30px;
+            width: 30px;
+            font-size: 12px;
+        }
+    }
+}
+//Live chat end
+
+//Group Page edit CSS 
 
 .single-group-list {
     .join-group {
         li {
             width: 100%;
             .add-btn {
-                width: 100%;
+                width: 100%;                    
             }
         }
     }
 }
 
-// favorite page start
+// favorite page start 
 .favorie-page-title {
     display: flex;
     align-items: center;
@@ -489,7 +564,7 @@
             a{
                 color: #6B7C8F;
             }
-        }
+        }    
     }
 }
 .favorite-info {
@@ -504,7 +579,7 @@
         }
         p {
             font-size: 14px;
-            color: #6B7C8F;
+            color: #6B7C8F;       
         }
     }
 }
@@ -554,8 +629,8 @@
     }
 }
 
-// Birthday Page start
-.birthday-widget {
+// Birthday Page start 
+.birthday-widget { 
     .single-wish {
         align-items: flex-start;
         margin-bottom: 15px;
@@ -606,14 +681,14 @@
 
 .like-items {
     .right-wdget-img {
-        a {
-            img {
-                max-width: 45px;
-                max-height: 45px;
-                border-radius: 50%;
-            }
-        }
+    a {
+        img {
+        max-width: 45px;
+        max-height: 45px;
+        border-radius: 50%;
     }
+}
+    } 
 }
 .single-info {
     display: flex;
@@ -625,7 +700,7 @@
             img {
                 max-width: 55px;
                 max-height: 55px;
-                border-radius: 50%;
+                border-radius: 50%;                    
             }
         }
     }
@@ -662,7 +737,7 @@
 
 
 
-// login page start
+// login page start 
 .community-login-area {
     background: $theme-font;
     padding: 150px 0;
@@ -740,7 +815,7 @@
                     transform: translateY(-50%);
                     pointer-events: none;
                     transition: all .3s ease;
-                }
+                }                
                 input:focus~label,
                 &:valid~label{
                     top: -1px;
@@ -798,7 +873,7 @@
                     font-weight: 600;
                 }
                 button {
-                    width: 100%;
+                    width: 100%;                    
                 }
                 .googl-btn {
                     background: $theme-font;
@@ -809,7 +884,7 @@
         }
     }
 }
-// login page end
+// login page end 
 
 .group-page-cover{
     position: relative;
@@ -852,3 +927,114 @@
         }
     }
 }
+
+//vido page start 
+.single-upload-video {
+    background: $white;
+    padding: 10px;
+    margin: 15px 0 30px 0;
+    border-radius: 5px;
+    .video-img {
+        position: relative;
+        margin-bottom: 20px;
+        img {
+            border-radius: 5px;
+            width: 100%;
+        }
+        &::after{
+            content: "";
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            border-radius: 5px;
+            left: 0;
+            top: 0;
+            visibility: hidden;
+            opacity: 0;
+            transition: all .3s ease;
+        }
+        .vido-play-icon {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: $white;
+            font-size: 24px;
+            z-index: 1;
+            transition: all .3s ease;
+        }
+        &:hover{
+            &::after{
+                visibility: visible;
+                opacity: 1;
+            }
+            .vido-play-icon {
+                color: $theme-color;
+            }
+        }
+    }
+    .post-react-widget {
+        display: flex;
+        column-gap: 20px;
+        align-items: center;
+        justify-content: unset;
+        @media (max-width:1499px) and (min-width:1399px) {
+            column-gap: 10px;
+        }
+        .post-react {
+            a {
+               display: flex;
+               align-items: center;
+               .react-icon {
+                width: 15px;
+               }
+               .video-react-icon {
+                color: $theme-color;
+               }
+               .react-count{
+                padding-left: 5px;
+                margin-left: 5px;
+                border-left: 1px solid #eee;
+                font-size: 12px;
+                @media (max-width:1499px) and (min-width:1399px) {
+                    padding-left: 0;
+                    margin-left: 2px;
+                    border-left: none;
+                }
+               }
+           }
+        }
+    }
+    .vido-coment {
+        position: relative;
+        margin-top: 20px;
+        input{
+            width: 100%;
+            height: 50px;
+            padding: 0 15px;
+            border: none;
+            outline: none;
+            background: #F4F7FC;
+            color: #6B7C8F;
+            border-radius: 5px;
+            font-size: 14px;
+            &:placeholder{
+                color: #6B7C8F;
+                font-size: 14px;
+            }
+        }
+        .vido-coment-send {
+            position: absolute;
+            top: 0;
+            right: 0;
+            height: 50px;
+            color: $theme-color;
+            padding: 0 15px;
+            border: none;
+            outline: none;
+            background: transparent;
+        }
+    }
+}
+//vido page end 
