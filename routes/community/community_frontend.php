@@ -9,6 +9,7 @@ use App\Http\Controllers\Community\Frontend\Profile\UserProfileSettingController
 use App\Http\Controllers\Community\Frontend\User\CommunityUserFriendBirthday;
 use App\Http\Controllers\Community\Frontend\Group\CommunityUserGroupController;
 use App\Http\Controllers\Community\Frontend\Page\CommunityUserPageController;
+use App\Http\Controllers\Community\Frontend\Video\VideoController;
 
 Route::middleware(['user'])->group(function (){
 
@@ -59,6 +60,10 @@ Route::middleware(['user'])->group(function (){
     //Birthday Routes
     Route::get('/user/friends-birthday',[CommunityUserFriendBirthday::class,'index'])->name('user.friend.birthday.wish');
     Route::post('/user/friends-birthday/wish',[CommunityUserFriendBirthday::class,'storeMessage'])->name('user.friend.birthday.wishMessage');
+
+
+    //Video Section
+    Route::get('/user/videos',[VideoController::class,'index'])->name('user.all.videos');
 
 
     //Friend Section

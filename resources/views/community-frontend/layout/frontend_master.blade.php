@@ -177,8 +177,7 @@
                                     @if(!empty($userProfile[0]) &&  isset($userProfile[0]))
                                         <img
                                             src="{{asset('storage/community/profile-picture/'.$userProfile[0])}}"
-                                            alt="cover"
-                                            style="height: 100px;width: 80px;">
+                                            alt="cover">
                                     @else
                                         <img src="{{asset('community-frontend/assets/images/community/home/user-0.jpg')}}" alt="cover">
 
@@ -236,16 +235,6 @@
         @yield('frontend.others')
 
         <div class="row">
-            {{--            <div class="col-lg-3">--}}
-            {{--                <div class="news-feed-left">--}}
-
-            {{--                    @include('community-frontend.layout.userProfile')--}}
-            {{--                    @include('community-frontend.layout.pageLike')--}}
-            {{--                    @include('community-frontend.layout.suggestedGroup')--}}
-
-            {{--                </div>--}}
-            {{--            </div>--}}
-
 
             @yield('frontend.content')
 

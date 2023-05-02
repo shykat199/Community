@@ -18,7 +18,7 @@ class CommunityUserPostController extends Controller
 
     public function store(Request $request)
     {
-//        dd($request->all());
+//        dd($request->file('postFile')->getClientOriginalExtension());
 
         if ($request->get('imageCaption') && $request->get('imageCaption') === null) {
 //            dd(1);
@@ -36,8 +36,19 @@ class CommunityUserPostController extends Controller
                     'post_description' => $request->get('postMessage')
                 ]);
                 if ($request->hasFile('postFile')) {
-                    $fileName = Uuid::uuid() . '.' . $request->file('postFile')->getClientOriginalExtension();
-                    $file = Storage::put('/public/community/post/' . $fileName, file_get_contents($request->file('postFile')));
+
+                    if ($request->file('postFile')->getClientOriginalExtension() == 'mp4' ||
+                        $request->file('postFile')->getClientOriginalExtension() == 'mov' || $request->file('postFile')->getClientOriginalExtension() == 'wmv' ||
+                        $request->file('postFile')->getClientOriginalExtension() == 'avi' || $request->file('postFile')->getClientOriginalExtension() == 'mkv' ||
+                        $request->file('postFile')->getClientOriginalExtension() == 'webm'
+                    ) {
+                        $fileName = Uuid::uuid() . '.' . $request->file('postFile')->getClientOriginalExtension();
+                        $file = Storage::put('/public/community/post/videos/' . $fileName, file_get_contents($request->file('postFile')));
+                    } else {
+                        $fileName = Uuid::uuid() . '.' . $request->file('postFile')->getClientOriginalExtension();
+                        $file = Storage::put('/public/community/post/' . $fileName, file_get_contents($request->file('postFile')));
+                    }
+
                 }
 //                dd(3);
                 $postImageCaption = CommunityUserPostFileType::create([
