@@ -15,6 +15,8 @@ Route::middleware(['user'])->group(function (){
 
     Route::get('/home',[CommunityFrontendController::class,'index'])->name('community.index');
     Route::post('/user/following',[CommunityFrontendController::class,'addUserFollow'])->name('community.user.follow');
+    Route::get('/user/post/delete/{id}',[CommunityFrontendController::class,'destroy'])->name('community.user.post.delete');
+    Route::post('/user/post/update',[CommunityFrontendController::class,'updatePost'])->name('community.user.post.update');
 
     //user details
     Route::post('/user-friend/accept_request',[CommunityUserFriendRequestController::class,'acceptRequest'])->name('community.user.acceptRequest');
@@ -87,10 +89,6 @@ Route::middleware(['user'])->group(function (){
     Route::get('/user/page/{id}',[CommunityUserPageController::class,'getSinglePageView'])->name('user.page.details');
     Route::post('/user/page/post',[CommunityUserPageController::class,'userPagePostStore'])->name('user.page.post.store');
     Route::post('/user/page/post/reaction',[CommunityUserPageController::class,'storeUserPagePostReaction'])->name('user.page.post.reaction');
-
-
-
-
 
 
 });

@@ -15,18 +15,20 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css"/>
     <link rel="stylesheet" href="http://demo.itsolutionstuff.com/plugin/bootstrap-3.min.css">
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet"/>
+    <link rel=”stylesheet” href="ttps://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.css">
     @stack('css')
 
 </head>
 
 <body>
 <!-- community header area start  -->
-
+@include('sweetalert::alert')
 
 <header class="community-header-area">
     <div class="main-header">
         <div class="community-logo">
-            <a href="{{route('community.index')}}"><img src="{{asset("community-frontend/assets/images/community/logo.png")}}" alt="Logo"></a>
+            <a href="{{route('community.index')}}"><img
+                    src="{{asset("community-frontend/assets/images/community/logo.png")}}" alt="Logo"></a>
         </div>
         <div class="community-header-content">
             <div class="menu-show">
@@ -156,18 +158,18 @@
                         <option value="arb">العربيّة</option>
                     </select>
                 </li>
-{{--                @php--}}
-{{--                    $userDetails=allUsersDetails();--}}
-{{--                        $userCover=explode(',',$userDetails->user_cover);--}}
-{{--                        $userProfile=explode(',',$userDetails->user_profile);--}}
-{{--                @endphp--}}
+                {{--                @php--}}
+                {{--                    $userDetails=allUsersDetails();--}}
+                {{--                        $userCover=explode(',',$userDetails->user_cover);--}}
+                {{--                        $userProfile=explode(',',$userDetails->user_profile);--}}
+                {{--                @endphp--}}
                 @php
                     $userDetails=allUsersDetails() !== null ? allUsersDetails():'' ;
                         $userCover=explode(',',!empty($userDetails->user_cover) && isset($userDetails->user_cover)?$userDetails->user_cover:'');
                         $userProfile=explode(',',!empty($userDetails->user_profile) && isset($userDetails->user_cover)?$userDetails->user_cover:'');
                 @endphp
 
-{{--                @dd('storage/community/profile-picture/'.!empty($userProfile[0]) && isset($userProfile[0])?$userProfile[0]:'')--}}
+                {{--                @dd('storage/community/profile-picture/'.!empty($userProfile[0]) && isset($userProfile[0])?$userProfile[0]:'')--}}
 
                 <li class="list_option">
                     <a href="#" role="button" id="settingDropDown" data-bs-toggle="dropdown" aria-expanded="false">
@@ -179,12 +181,15 @@
                                             src="{{asset('storage/community/profile-picture/'.$userProfile[0])}}"
                                             alt="cover">
                                     @else
-                                        <img src="{{asset('community-frontend/assets/images/community/home/user-0.jpg')}}" alt="cover">
+                                        <img
+                                            src="{{asset('community-frontend/assets/images/community/home/user-0.jpg')}}"
+                                            alt="cover">
 
                                     @endif
 
                                 @else
-                                    <img src="{{asset('community-frontend/assets/images/community/home/user-0.jpg')}}" alt="cover">
+                                    <img src="{{asset('community-frontend/assets/images/community/home/user-0.jpg')}}"
+                                         alt="cover">
                                 @endif
                                 <p class="member_name">{{Auth::user()->name}}
                                     <span class="login-status"></span>
@@ -266,6 +271,9 @@
 <script src="{{asset("community-frontend/assets/js/slick-slider.js")}}"></script>
 <script src="{{asset("community-frontend/assets/js/community/script.js")}}"></script>
 <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
 @stack('script')
 
 
