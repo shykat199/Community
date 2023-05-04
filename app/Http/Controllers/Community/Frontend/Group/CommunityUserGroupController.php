@@ -5,8 +5,15 @@ namespace App\Http\Controllers\Community\Frontend\Group;
 use App\Http\Controllers\Controller;
 use App\Models\Community\Group\CommunityUserGroup;
 use App\Models\Community\Group\CommunityUserGroupPost;
+use App\Models\Community\Group\CommunityUserGroupPostComment;
+use App\Models\Community\Group\CommunityUserGroupPostCommentReaction;
 use App\Models\Community\Group\CommunityUserGroupPostFile;
 use App\Models\Community\Group\CommunityUserGroupPostReaction;
+use App\Models\Community\User\CommunityUserPost;
+use App\Models\Community\User\CommunityUserPostFileType;
+use App\Models\Community\User\CommunityUserPostTag;
+use App\Models\Community\User_Post\CommunityUserPostComment;
+use App\Models\Community\User_Post\CommunityUserPostReaction;
 use Faker\Provider\Uuid;
 use http\Env\Response;
 use Illuminate\Http\Request;
@@ -180,32 +187,40 @@ class CommunityUserGroupController extends Controller
     public function userGroupPostStore(Request $request)
     {
 //        dd($request->all());
-        if ($request->get('imageCaption') === null || $request->hasFile('postFile') === null) {
-
+        if ($request->get('imageCaption') === null && $request->hasFile('postFile') === null) {
+//            dd(1);
             $storeGroupPost = CommunityUserGroupPost::create([
                 'group_id' => $request->get('groupId'),
                 'user_id' => Auth::id(),
                 'post_description' => $request->get('postMessage'),
             ]);
         } else {
-
-            $image = null;
+//            dd(2);
+            $fileName = null;
             if ($request->hasFile('postFile') !== null || $request->get('imageCaption') !== null) {
+
                 $storeGroupPost = CommunityUserGroupPost::create([
                     'group_id' => $request->get('groupId'),
                     'user_id' => Auth::id(),
                     'post_description' => $request->get('postMessage'),
                 ]);
 
-                if ($request->hasFile('postFile')) {
-                    $image = Uuid::uuid() . '.' . $request->file('postFile')->getClientOriginalExtension();
-                    $name = Storage::put('/public/community/group-post/' . $image, file_get_contents($request->file("postFile")));
+                if ($request->file('postFile')->getClientOriginalExtension() == 'mp4' || $request->file('postFile')->getClientOriginalExtension() == 'mov' ||
+                    $request->file('postFile')->getClientOriginalExtension() == 'wmv' || $request->file('postFile')->getClientOriginalExtension() == 'avi' ||
+                    $request->file('postFile')->getClientOriginalExtension() == 'mkv' || $request->file('postFile')->getClientOriginalExtension() == 'webm'
+                ) {
+                    $fileName = Uuid::uuid() . '.' . $request->file('postFile')->getClientOriginalExtension();
+                    $file = Storage::put('/public/community/group-post/videos/' . $fileName, file_get_contents($request->file('postFile')));
+                } else {
+                    $fileName = Uuid::uuid() . '.' . $request->file('postFile')->getClientOriginalExtension();
+                    $file = Storage::put('/public/community/group-post/' . $fileName, file_get_contents($request->file('postFile')));
                 }
+//                dd(3);
 
                 $GroupPostFile = CommunityUserGroupPostFile::create([
                     'group_post_id' => $storeGroupPost->id,
                     'group_post_caption' => $request->get('imageCaption'),
-                    'group_post_file' => $image,
+                    'group_post_file' => $fileName,
                 ]);
             }
 
@@ -258,6 +273,61 @@ class CommunityUserGroupController extends Controller
 
     }
 
+    public function editPost(Request $request)
+    {
+
+        if ($request->get('imageCaption') === null && $request->hasFile('postFile1') === null) {
+//            dd(1);
+            $userPost = CommunityUserGroupPost::find($request->get('postId'))->update([
+//                'user_id' => Auth::id(),
+                'post_description' => $request->get('postMessage')
+            ]);
+
+        } else {
+//            dd(2);
+            $fileName = null;
+            if ($request->hasFile('postFile1') !== null || $request->get('imageCaption') !== null) {
+//                dd(2);
+                $userPost = CommunityUserGroupPost::find($request->get('postId'))->update([
+//                    'user_id' => Auth::id(),
+                    'post_description' => $request->get('postMessage')
+                ]);
+//                dd(4);
+                if ($request->hasFile('postFile1')) {
+//                    dd(5);
+                    if ($request->file('postFile1')->getClientOriginalExtension() == 'mp4' ||
+                        $request->file('postFile1')->getClientOriginalExtension() == 'mov' || $request->file('postFile1')->getClientOriginalExtension() == 'wmv' ||
+                        $request->file('postFile1')->getClientOriginalExtension() == 'avi' || $request->file('postFile1')->getClientOriginalExtension() == 'mkv' ||
+                        $request->file('postFile1')->getClientOriginalExtension() == 'webm'
+                    ) {
+//                        dd(6);
+                        $fileName = Uuid::uuid() . '.' . $request->file('postFile1')->getClientOriginalExtension();
+                        $file = Storage::put('/public/community/post/videos/' . $fileName, file_get_contents($request->file('postFile1')));
+                    } else {
+                        $fileName = Uuid::uuid() . '.' . $request->file('postFile1')->getClientOriginalExtension();
+                        $file = Storage::put('/public/community/post/' . $fileName, file_get_contents($request->file('postFile1')));
+                    }
+
+                }
+//                dd($request->get('postId'));
+                $postImageCaption = CommunityUserGroupPostFile::where('group_post_id', $request->get('postId'))->update([
+                    'group_post_file' => $fileName,
+                    'group_post_caption' => $request->get('imageCaption'),
+                ]);
+            }
+        }
+
+        if ($userPost || $postImageCaption) {
+//            toastr('dd', 'success');
+            toastr()->success('Post has been updated successfully!', 'Congrats');
+            return Redirect::back();
+        } else {
+            toastr()->error('An error has occurred please try again later.');
+
+        }
+
+    }
+
 
     public function destroy(Request $request)
     {
@@ -282,6 +352,52 @@ class CommunityUserGroupController extends Controller
                 'success' => false,
                 'msg' => 'Something wrong.',
             ]);
+        }
+
+    }
+
+
+    public function destroyPost($id)
+    {
+//        dd(1);
+        $postImage = CommunityUserGroupPostFile::where('group_post_id', '=', $id)->first();
+//        $postImage = $postImage->post_image_video;
+//        dd($postImage);
+        if ($postImage) {
+            $postImage = $postImage->post_image_video;
+//            dd($postImage);
+            $mediaExtension = explode('.', $postImage);
+            if ($mediaExtension[1] == 'mp4' || $mediaExtension[1] == 'mov' || $mediaExtension[1] == 'wmv' ||
+                $mediaExtension[1] == 'avi' || $mediaExtension[1] == 'mkv' || $mediaExtension[1] == 'webm'
+            ) {
+//                @dd(1);
+                $dltVideo = Storage::delete('public/community/group-post/videos/' . $postImage);
+                $dltPostComment = CommunityUserGroupPostComment::where('group_post_id', '=', $id)->delete();
+//                $dltPostCommentReaction = CommunityUserGroupPostCommentReaction::where('group_post_id', '=', $id)->delete();
+                $dltPostReaction = CommunityUserGroupPostReaction::where('group_post_id', '=', $id)->delete();
+                $dltPost = CommunityUserGroupPost::find($id)->delete();
+
+            } else {
+                $dltImag = Storage::delete('public/community/group-post/' . $postImage);
+                $dltPostComment = CommunityUserGroupPostComment::where('group_post_id', '=', $id)->delete();
+//                $dltPostCommentReaction = CommunityUserGroupPostCommentReaction::where('group_post_id', '=', $id)->delete();
+                $dltPostReaction = CommunityUserGroupPostReaction::where('group_post_id', '=', $id)->delete();
+                $dltPost = CommunityUserGroupPost::find($id)->delete();
+
+            }
+        } else {
+            $dltPostComment = CommunityUserGroupPostComment::where('group_post_id', '=', $id)->delete();
+//          dltPostCommentReaction = CommunityUserGroupPostCommentReaction::where('group_post_id', '=', $id)->delete();
+            $dltPostReaction = CommunityUserGroupPostReaction::where('group_post_id', '=', $id)->delete();
+            $dltPost = CommunityUserGroupPost::find($id)->delete();
+//            dd($dltPost);
+        }
+
+        if ($dltPost) {
+            return Redirect::back()->with('success', 'Post Deleted Successfully');
+        } else {
+            return Redirect::back()->with('error', 'Something Wrong');
+
         }
 
     }

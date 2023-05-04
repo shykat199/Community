@@ -15,9 +15,9 @@ return new class extends Migration
             $table->id();
             $table->bigInteger('user_id');
             $table->bigInteger('user_post_id');
-            $table->bigInteger('user_post_comment_id');
+            $table->bigInteger('user_post_comment_id')->nullable()->default(0);
             $table->string('comment_text');
-            $table->string('comment_image');
+            $table->string('comment_image')->nullable();
             $table->timestamps();
         });
     }

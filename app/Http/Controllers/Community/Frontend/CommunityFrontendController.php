@@ -9,6 +9,7 @@ use App\Models\Community\User\CommunityUserPost;
 use App\Models\Community\User\CommunityUserPostFileType;
 use App\Models\Community\User\CommunityUserPostTag;
 use App\Models\Community\User_Post\CommunityUserPostComment;
+use App\Models\Community\User_Post\CommunityUserPostReaction;
 use App\Models\User;
 use Carbon\Carbon;
 use Faker\Provider\Uuid;
@@ -99,6 +100,43 @@ class CommunityFrontendController extends Controller
 
     }
 
+    public function storeComment(Request $request)
+    {
+//        dd($request->all());
+
+        if ($request->ajax()) {
+            $storePostComment = CommunityUserPostComment::create([
+                'user_id' => Auth::id(),
+                'user_post_id' => $request->get('postId'),
+                'comment_text' => $request->get('postComment'),
+            ]);
+        }
+
+        if ($storePostComment) {
+            return \response()->json([
+                'status' => true,
+                'success' => true,
+                'data' => $storePostComment,
+                'msg' => 'Successfully Added.',
+            ]);
+        } else {
+            return \response()->json([
+                'status' => true,
+                'success' => false,
+                'data' => $storePostComment,
+                'msg' => 'Something wrong.',
+            ]);
+        }
+
+
+//        if ($storePostComment){
+//            return \redirect()->back()->with('success','Comment Posted Successfully');
+//        }else{
+//            return  \redirect()->back()->with('error','Something Error');
+//        }
+
+    }
+
 
     public function updatePost(Request $request)
     {
@@ -174,37 +212,59 @@ class CommunityFrontendController extends Controller
     public function destroy($id)
     {
 
+//        $postImage = $postImage->post_image_video;
+//        $mediaExtension = explode('.', $postImage);
+//        if ($mediaExtension[1] == 'mp4' || $mediaExtension[1] == 'mov' || $mediaExtension[1] == 'wmv' ||
+//            $mediaExtension[1] == 'avi' || $mediaExtension[1] == 'mkv' || $mediaExtension[1] == 'webm'
+//        ) {
+//          @dd(1);
+//            $dltVideo = Storage::delete('public/community/post/videos/' . $postImage);
+//
+//        } else {
+//            $dltImag = Storage::delete('public/community/post/' . $postImage);
+//
+//        }
+
         $postImage = CommunityUserPostFileType::where('post_id', '=', $id)->first();
 //        $postImage = $postImage->post_image_video;
-
-        if ($postImage === null) {
-
-            $dltPostComment = CommunityUserPostComment::where('user_post_id', '=', $id)->delete();
-            $dltPostTag = CommunityUserPostTag::where('user_post_id', $id)->delete();
-
-            $dltMedia = CommunityUserPostFileType::where('post_id', '=', $id)->delete();
-            $dltPost = CommunityUserPost::find($id)->delete();
-
-
-        } else {
-
+//        dd($postImage);
+        if ($postImage) {
             $postImage = $postImage->post_image_video;
+//            dd($postImage);
             $mediaExtension = explode('.', $postImage);
             if ($mediaExtension[1] == 'mp4' || $mediaExtension[1] == 'mov' || $mediaExtension[1] == 'wmv' ||
                 $mediaExtension[1] == 'avi' || $mediaExtension[1] == 'mkv' || $mediaExtension[1] == 'webm'
             ) {
-//            @dd(1);
+//                @dd(1);
                 $dltVideo = Storage::delete('public/community/post/videos/' . $postImage);
+                $dltPostTag = CommunityUserPostTag::where('user_post_id', '=', $id)->delete();
+                $dltPostComment = CommunityUserPostComment::where('user_post_id', '=', $id)->delete();
+                $dltPostTag = CommunityUserPostReaction::where('user_post_id', '=', $id)->delete();
+                $dltPost = CommunityUserPost::find($id)->delete();
 
             } else {
                 $dltImag = Storage::delete('public/community/post/' . $postImage);
+                $dltPostTag = CommunityUserPostTag::where('user_post_id', '=', $id)->delete();
+                $dltPostComment = CommunityUserPostComment::where('user_post_id', '=', $id)->delete();
+                $dltPostTag = CommunityUserPostReaction::where('user_post_id', '=', $id)->delete();
+                $dltPost = CommunityUserPost::find($id)->delete();
 
             }
+        } else {
+            $dltPostTag = CommunityUserPostTag::where('user_post_id', '=', $id)->delete();
+            $dltPostComment = CommunityUserPostComment::where('user_post_id', '=', $id)->delete();
+            $dltPostTag = CommunityUserPostReaction::where('user_post_id', '=', $id)->delete();
+            $dltPost = CommunityUserPost::find($id)->delete();
+//            dd($dltPost);
+        }
 
+        if ($dltPost) {
+            return Redirect::back()->with('success', 'Post Deleted Successfully');
+        } else {
+            return Redirect::back()->with('error', 'Something Wrong');
 
         }
 
-        return \redirect()->back()->with('success', 'Post Deleted Successfully');
 
 //        return $postImage;
 //        return 'deleted';

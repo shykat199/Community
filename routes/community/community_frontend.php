@@ -17,6 +17,7 @@ Route::middleware(['user'])->group(function (){
     Route::post('/user/following',[CommunityFrontendController::class,'addUserFollow'])->name('community.user.follow');
     Route::get('/user/post/delete/{id}',[CommunityFrontendController::class,'destroy'])->name('community.user.post.delete');
     Route::post('/user/post/update',[CommunityFrontendController::class,'updatePost'])->name('community.user.post.update');
+    Route::post('/user/post/comments',[CommunityFrontendController::class,'storeComment'])->name('community.user.post.comment');
 
     //user details
     Route::post('/user-friend/accept_request',[CommunityUserFriendRequestController::class,'acceptRequest'])->name('community.user.acceptRequest');
@@ -77,6 +78,8 @@ Route::middleware(['user'])->group(function (){
     Route::post('/user/create_group',[CommunityUserGroupController::class,'createGroup'])->name('user.create.groups');
     Route::post('/user/join/group',[CommunityUserGroupController::class,'storeUserRequest'])->name('user.join.groups');
     Route::get('/user/group/{id}',[CommunityUserGroupController::class,'getSingleGroupView'])->name('user.group.details');
+    Route::get('/user/group-post/delete/{id}',[CommunityUserGroupController::class,'destroyPost'])->name('community.group.post.delete');
+    Route::post('/user/group-post/update',[CommunityUserGroupController::class,'editPost'])->name('community.group.post.update');
     Route::post('/user/group/accept-user-invitation',[CommunityUserGroupController::class,'acceptGroupUserInvitation'])->name('user.group.accept.invitation');
     Route::post('/user/group/post',[CommunityUserGroupController::class,'userGroupPostStore'])->name('user.group.post.store');
     Route::post('/user/group/post/reaction',[CommunityUserGroupController::class,'storeUserGroupPostReaction'])->name('user.group.post.reaction');

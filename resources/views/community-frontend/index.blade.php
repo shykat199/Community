@@ -54,11 +54,34 @@
                                                 aria-label="Close"><i class="fa fa-times" aria-hidden="true"></i>
                                         </button>
                                     </div>
+
+                                    @php
+                                        $profilePic=\App\Models\Community\User_Profile\CommunityUserProfilePhoto::with('users.userProfileImages')->leftJoin('users','users.id','=','community_user_profile_photos.user_id')
+                                    ->where('users.id','=',Auth::id())
+                                    ->selectRaw('users.id as user_id,community_user_profile_photos.user_profile,community_user_profile_photos.created_at,community_user_profile_photos.id as ppId')
+                                    ->latest()
+                                    ->first();
+                                    @endphp
+                                    {{--                                                                        @dd($profilePic)--}}
                                     <div class="modal-body post-modal-body">
                                         <div class="my-profile">
-                                            <div class="my-profile-img"><a href="#"><img
-                                                        src="{{asset("community-frontend/assets/images/community/home/right/birthday01.jpg")}}"
-                                                        alt="img"></a></div>
+                                            <div class="my-profile-img">
+
+                                                @if(!empty($profilePic->users->userProfileImages[0]) && isset($profilePic->users->userProfileImages[0])?$profilePic->users->userProfileImages[0]:'')
+
+                                                    @if(!empty($profilePic->users->userProfileImages[0]) && isset($profilePic->users->userProfileImages[0])?$profilePic->users->userProfileImages[0]:'')
+                                                        <a href=""><img
+                                                                src="{{asset("storage/community/profile-picture/".$profilePic->users->userProfileImages[0]->user_profile)}}"
+                                                                alt="image"></a>
+                                                    @else
+                                                        <a href=""><img
+                                                                src="{{asset("community-frontend/assets/images/community/home/news-post/Athore01.jpg")}}"
+                                                                alt="image"></a>
+                                                    @endif
+                                                @endif
+
+
+                                            </div>
                                             <div class="my-profile-name">{{Auth::user()->name}}</div>
                                         </div>
                                         <div class="post-text">
@@ -259,7 +282,8 @@
                                                 aria-hidden="true"></i> Edit Post
                                         </a>
                                     </li>
-                                    <li><a href="{{route('community.user.post.delete',$post->postId)}}" data-id="{{$post->postId}}"
+                                    <li><a href="{{route('community.user.post.delete',$post->postId)}}"
+                                           data-id="{{$post->postId}}"
                                            class="post-option-item dltPost"><i class="fa fa-trash-o"
                                                                                aria-hidden="true"></i> Delete Post</a>
                                     </li>
@@ -287,7 +311,7 @@
                             <form action="{{route('community.user.post.update')}}" method="post"
                                   enctype="multipart/form-data">
                                 @csrf
-                                <input type="text" name="postId" class="postId" value="">
+                                <input type="hidden" name="postId" class="postId" value="">
                                 <div class="modal-body post-modal-body">
                                     <div class="my-profile">
                                         <div class="my-profile-img"><a href="#"><img
@@ -297,7 +321,8 @@
                                     </div>
                                     <div class="post-text">
                                         <div class="post-text">
-                                            <textarea id="postArea" class="postDescription" name="postMessage"
+                                            <textarea id="postArea" class="postDescription userPostComment"
+                                                      name="postMessage"
                                                       placeholder="Write Something here..."></textarea>
                                         </div>
                                     </div>
@@ -476,7 +501,7 @@
                                         </g></svg>
                                 </div>
                                 <span class="react-name">share</span>
-                                <span class="react-count">2506</span>
+                                <span class="react-count">0</span>
                             </a>
                         </li>
                     </ul>
@@ -510,8 +535,10 @@
                         <a href="#">More Comments+</a>
                     </div>
 
-                    <form action="#" class="new-comment">
-                        <a href="#">
+                    <div class="new-comment">
+
+{{--                        <input type="hidden" class="postId" name="postId" value="{{$post->postId}}">--}}
+                        <a href="#" class="new-comment-img">
 
                             @if(!empty($post->users->userProfileImages[0]) && isset($post->users->userProfileImages[0])?$post->users->userProfileImages[0]:'')
                                 <img
@@ -525,12 +552,12 @@
 
                         </a>
                         <div class="new-comment-input">
-                            <input type="text" placeholder="Write a comment....">
+                            <input type="text" data-postId="{{$post->postId}}" class="postComments" name="postComment" placeholder="Write a comment....">
                             <div class="attached-icon">
                                 <a href="#"><i class="fa fa-camera" aria-hidden="true"></i></a>
                             </div>
                         </div>
-                    </form>
+                    </div>
 
                 </div>
             </div>
@@ -538,7 +565,6 @@
         @endforeach
 
     </div>
-
 
     <div class="col-lg-3">
         <div class="news-feed-right">
@@ -611,9 +637,51 @@
                 })
             }
         })
-    })
 
+
+        $('.postComments').keydown(function (e) {
+            if (e.keyCode === 13) {
+               let comment= e.target.value;
+               let postId= $(this).attr('data-postId');
+                $(this).val('');
+                // console.log($(this));
+                // return false;
+
+                // console.log(comment,postId);
+                if(comment !== ''&& postId !== ''){
+                    $.ajax({
+                        url: '{{route('community.user.post.comment')}}',
+                        type: 'POST',
+                        data: {
+                            postId: postId,
+                            postComment: comment,
+                            '_token': '{{csrf_token()}}'
+                        },
+                        success: function (response) {
+                            // console.log(response);
+
+                            if (response.success === true) {
+                                toastr.success(response.msg);
+                                // console.log($(this),'this')
+                                // $(this).val('');
+                                // console.log(response.data);
+
+                            } else {
+                                toastr.error(response.msg);
+                            }
+                        },
+                        error: function (err) {
+
+                            toastr.error("Error with AJAX callback !");
+                        }
+                    })
+                }
+            }
+        })
+
+    })
 </script>
+
 
 <script>
 
@@ -659,7 +727,7 @@
             if (result.isConfirmed) {
                 let url = '{{ route("community.user.post.delete", ":slug") }}';
                 url = url.replace(':slug', postId);
-                window.location.href=url
+                window.location.href = url
                 Swal.fire('Saved!', '', 'success')
             } else if (result.isDenied) {
                 Swal.fire('Changes are not saved', '', 'info')

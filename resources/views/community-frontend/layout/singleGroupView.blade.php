@@ -66,38 +66,65 @@
                                                 aria-label="Close"><i class="fa fa-times" aria-hidden="true"></i>
                                         </button>
                                     </div>
+
+                                    @php
+                                        $profilePic=\App\Models\Community\User_Profile\CommunityUserProfilePhoto::with('users.userProfileImages')->leftJoin('users','users.id','=','community_user_profile_photos.user_id')
+                                    ->where('users.id','=',Auth::id())
+                                    ->selectRaw('users.id as user_id,community_user_profile_photos.user_profile,community_user_profile_photos.created_at,community_user_profile_photos.id as ppId')
+                                    ->latest()
+                                    ->first();
+                                    @endphp
+                                    {{--                                                                        @dd($profilePic)--}}
                                     <div class="modal-body post-modal-body">
                                         <div class="my-profile">
-                                            <div class="my-profile-img"><a href="#"><img
-                                                        src="{{asset("community-frontend/assets/images/community/home/right/birthday01.jpg")}}"
-                                                        alt="img"></a></div>
+                                            <div class="my-profile-img">
+
+                                                @if(!empty($profilePic->users->userProfileImages[0]) && isset($profilePic->users->userProfileImages[0])?$profilePic->users->userProfileImages[0]:'')
+
+                                                    @if(!empty($profilePic->users->userProfileImages[0]) && isset($profilePic->users->userProfileImages[0])?$profilePic->users->userProfileImages[0]:'')
+                                                        <a href=""><img
+                                                                src="{{asset("storage/community/profile-picture/".$profilePic->users->userProfileImages[0]->user_profile)}}"
+                                                                alt="image"></a>
+                                                    @else
+                                                        <a href=""><img
+                                                                src="{{asset("community-frontend/assets/images/community/home/news-post/Athore01.jpg")}}"
+                                                                alt="image"></a>
+                                                    @endif
+                                                @endif
+
+
+                                            </div>
                                             <div class="my-profile-name">{{Auth::user()->name}}</div>
                                         </div>
                                         <div class="post-text">
+                                            <div class="post-text">
                                             <textarea id="postArea" name="imageCaption"
                                                       placeholder="Write Something here..."></textarea>
+                                            </div>
                                         </div>
+
                                         <div class="upload-media">
                                             <div class="photo-place">
-                                                    <span class="icon">
-                                                        <svg xmlns="http://www.w3.org/2000/svg" version="1.1" x="0"
-                                                             y="0" viewBox="0 0 24 24"
-                                                             style="enable-background:new 0 0 512 512"
-                                                             xml:space="preserve" class=""><g><path
-                                                                    d="m22.448 7.608-1.2 8.58a3.142 3.142 0 0 1-1.257 2.312.311.311 0 0 1-.488-.244V9.665A3.829 3.829 0 0 0 15.335 5.5H5.923c-.3 0-.307-.27-.286-.39a3.134 3.134 0 0 1 1.112-2.085 3.2 3.2 0 0 1 2.442-.473l10.561 1.48a3.211 3.211 0 0 1 2.223 1.134 3.191 3.191 0 0 1 .473 2.442zM18 9.665v8.668A2.358 2.358 0 0 1 15.335 21H4.667A2.357 2.357 0 0 1 2 18.333V9.665A2.357 2.357 0 0 1 4.667 7h10.668A2.358 2.358 0 0 1 18 9.665zM13.25 14a.75.75 0 0 0-.75-.75h-1.75V11.5a.75.75 0 0 0-1.5 0v1.75H7.5a.75.75 0 0 0 0 1.5h1.75v1.75a.75.75 0 0 0 1.5 0v-1.75h1.75a.75.75 0 0 0 .75-.75z"
-                                                                    fill="#000000" data-original="#000000"
-                                                                    class=""></path></g></svg>
-                                                    </span>
+                                                        <span class="icon">
+                                                            <svg xmlns="http://www.w3.org/2000/svg" version="1.1" x="0"
+                                                                 y="0" viewBox="0 0 24 24"
+                                                                 style="enable-background:new 0 0 512 512"
+                                                                 xml:space="preserve" class=""><g><path
+                                                                        d="m22.448 7.608-1.2 8.58a3.142 3.142 0 0 1-1.257 2.312.311.311 0 0 1-.488-.244V9.665A3.829 3.829 0 0 0 15.335 5.5H5.923c-.3 0-.307-.27-.286-.39a3.134 3.134 0 0 1 1.112-2.085 3.2 3.2 0 0 1 2.442-.473l10.561 1.48a3.211 3.211 0 0 1 2.223 1.134 3.191 3.191 0 0 1 .473 2.442zM18 9.665v8.668A2.358 2.358 0 0 1 15.335 21H4.667A2.357 2.357 0 0 1 2 18.333V9.665A2.357 2.357 0 0 1 4.667 7h10.668A2.358 2.358 0 0 1 18 9.665zM13.25 14a.75.75 0 0 0-.75-.75h-1.75V11.5a.75.75 0 0 0-1.5 0v1.75H7.5a.75.75 0 0 0 0 1.5h1.75v1.75a.75.75 0 0 0 1.5 0v-1.75h1.75a.75.75 0 0 0 .75-.75z"
+                                                                        fill="#000000" data-original="#000000"
+                                                                        class=""></path></g></svg>
+                                                        </span>
                                                 <h6 class="title">Add Photos/Videos</h6>
                                                 <p class="small-text">or drag and drop</p>
                                             </div>
                                             <div class="preview-file">
-                                                <img id="previewImg" src="#" alt="">
-                                                <button type="button" id="imgClose"><i class="fa fa-times"
-                                                                                       aria-hidden="true"></i></button>
+                                                <img class="previewImg" src="#" alt="">
+                                                <button type="button" class="imgClose"><i class="fa fa-times"
+                                                                                          aria-hidden="true"></i>
+                                                </button>
                                             </div>
                                             <div class="media-input">
-                                                <input name="postFile" accept="" type='file' id="imgInp"/>
+                                                <input accept="" name="postFile" type='file' class="imgInp"/>
                                             </div>
                                         </div>
                                     </div>
@@ -107,6 +134,7 @@
                                 </div>
                             </div>
                         </div>
+
                     </li>
                     <li>
                         <button type="button" class="attachment-option-btn" data-bs-toggle="modal"
@@ -128,77 +156,13 @@
                         </button>
                     </li>
                     <li>
-
-                        {{--                        <button type="button" class="attachment-option-btn" data-bs-toggle="modal"--}}
-                        {{--                                data-bs-target="#tagFriendModal">--}}
-                        {{--                            <div class="attachment-icon tag-icon">--}}
-                        {{--                                <svg xmlns="http://www.w3.org/2000/svg" version="1.1" x="0" y="0" viewBox="0 0 512 512"--}}
-                        {{--                                     style="enable-background:new 0 0 512 512" xml:space="preserve" class=""><g>--}}
-                        {{--                                        <path--}}
-                        {{--                                            d="M165.246 173.548c6.29 0 11.388-5.099 11.388-11.388s-5.099-11.388-11.388-11.388-11.388 5.099-11.388 11.388 5.099 11.388 11.388 11.388zM254.085 173.548c6.289 0 11.388-5.099 11.388-11.388s-5.099-11.388-11.388-11.388c-6.29 0-11.388 5.099-11.388 11.388s5.098 11.388 11.388 11.388zM177.049 219.84a39.628 39.628 0 0 0 32.616 17.146c13.02 0 25.214-6.41 32.617-17.146a7.44 7.44 0 0 0-12.246-8.446c-4.627 6.709-12.243 10.714-20.371 10.714s-15.743-4.006-20.37-10.714a7.438 7.438 0 1 0-12.246 8.446z"--}}
-                        {{--                                            fill="#000000" data-original="#000000" class=""></path>--}}
-                        {{--                                        <path--}}
-                        {{--                                            d="M504.837 421.781 399.333 316.277a26.005 26.005 0 0 0-16.431-7.539l-31.499-2.366a156.12 156.12 0 0 0-67.227-26.234v-26.651a106.799 106.799 0 0 0 28.114-72.288v-57.093c7.956-1.6 15.717-3.937 23.12-6.985a128.417 128.417 0 0 1 2.674 26.12v124.465a7.439 7.439 0 1 0 14.878 0V143.241C352.961 64.258 288.703 0 209.719 0c-23.01 0-45.887 5.588-66.157 16.161a7.439 7.439 0 0 0 6.88 13.191c18.154-9.469 38.652-14.474 59.276-14.474 56.589 0 104.738 36.81 121.773 87.743-13.848 5.995-29.22 9.158-44.727 9.158-26.194 0-51.044-8.754-69.976-24.651a10.983 10.983 0 0 0-14.141.001c-18.931 15.896-43.782 24.65-69.975 24.65-15.513 0-30.845-3.154-44.692-9.143 6.918-20.706 19.059-39.563 35.526-54.5a7.438 7.438 0 0 0-9.996-11.019C83.62 64.23 66.476 102.911 66.476 143.243v165.566a157.039 157.039 0 0 0-23.699 21.412C16.841 358.954 2.556 396.115 2.556 434.858v18.011c0 6.836 5.562 12.398 12.398 12.398h148.691c-.23.208-.453.427-.66.668a7.438 7.438 0 0 0 .798 10.489 56.288 56.288 0 0 0 36.653 13.569c19.349 0 36.447-9.815 46.583-24.726H377.1l42.126 42.126a15.628 15.628 0 0 0 11.125 4.608c4.202 0 8.152-1.636 11.124-4.608l63.363-63.362a15.63 15.63 0 0 0 4.607-11.124 15.637 15.637 0 0 0-4.608-11.126zm-352.83-154.862c2.103 1.742 28.762 19.447 31.689 21.471 8.188 5.504 17.572 8.256 26.957 8.256 9.383-.001 18.771-2.753 26.957-8.256 3.055-2.112 29.476-19.652 31.689-21.47v24.563c0 26.224-21.335 47.559-47.559 47.559h-22.174c-26.224 0-47.559-21.335-47.559-47.559zm57.712-166.362c21.262 16.852 48.488 26.098 77.046 26.098 3.559 0 7.112-.148 10.647-.44V181.2a91.97 91.97 0 0 1-40.725 76.444l-27.376 18.4c-11.334 7.619-25.983 7.619-37.317 0l-27.375-18.4a91.965 91.965 0 0 1-40.726-76.444v-54.855c2.917.198 5.845.31 8.779.31 28.559 0 55.785-9.246 77.047-26.098zM81.355 143.241c0-8.838.925-17.587 2.705-26.118 7.978 3.284 16.359 5.744 24.957 7.341V181.2c0 27.13 10.227 52.81 28.141 72.316-.013.178-.027.356-.027.537v26.09a155.453 155.453 0 0 0-55.775 19.003V143.241zm119.081 331.874a41.4 41.4 0 0 1-26.804-9.849h29.376a7.439 7.439 0 1 0 0-14.878H17.433v-15.531c0-70.242 51.091-129.255 119.814-139.703 1.908 32.724 29.126 58.764 62.319 58.764h22.174c33.188 0 60.402-26.033 62.318-58.75a141.063 141.063 0 0 1 31.692 8.739c-3.698.298-7.202 1.872-9.864 4.535a15.71 15.71 0 0 0-4.562 12.301l1.603 21.356h-4.791c-31.038 0-56.288 25.251-56.288 56.288v35.315c0 22.836-18.577 41.413-41.412 41.413zm53.764-24.726a56.104 56.104 0 0 0 2.525-16.685v-35.315c0-22.834 18.577-41.411 41.411-41.411h5.908l2.139 28.481a26.004 26.004 0 0 0 7.538 16.429l48.501 48.501zm240.116-16.879-63.363 63.362a.854.854 0 0 1-1.208 0L324.242 391.369a11.125 11.125 0 0 1-3.224-7.026l-2.055-27.366h18.061c2.312 3.199 6.063 5.288 10.312 5.288 7.029 0 12.727-5.698 12.727-12.727s-5.698-12.727-12.727-12.727c-4.248 0-8 2.09-10.312 5.288h-19.178l-1.687-22.471a.82.82 0 0 1 .248-.667.817.817 0 0 1 .67-.248l64.713 4.86a11.112 11.112 0 0 1 7.024 3.223L494.318 432.3a.856.856 0 0 1-.002 1.21z"--}}
-                        {{--                                            fill="#000000" data-original="#000000" class=""></path>--}}
-                        {{--                                    </g></svg>--}}
-                        {{--                            </div>--}}
-                        {{--                            Tag Friends--}}
-                        {{--                        </button>--}}
-                        {{--                        @dd($getGroupDetails)--}}
-                        {{--                        <div class="modal fade" id="tagFriendModal" tabindex="-1" aria-labelledby="exampleModalLabel"--}}
-                        {{--                             aria-hidden="true">--}}
-                        {{--                            <div class="modal-dialog modal-dialog-centered">--}}
-                        {{--                                <div class="modal-content post-modal-content">--}}
-                        {{--                                    <div class="modal-header">--}}
-                        {{--                                        <div class="post-modal-title">--}}
-                        {{--                                            <h6 class="modal-title" id="exampleModalLabel">Tag Friend</h6>--}}
-                        {{--                                        </div>--}}
-                        {{--                                        <button type="button" class=" post-close" data-bs-dismiss="modal"--}}
-                        {{--                                                aria-label="Close"><i class="fa fa-times" aria-hidden="true"></i>--}}
-                        {{--                                        </button>--}}
-                        {{--                                    </div>--}}
-                        {{--                                    <div class="modal-body post-modal-body tag-modal-body">--}}
-                        {{--                                        <div class="tag-head">--}}
-                        {{--                                            <div class="search_box">--}}
-                        {{--                                                <form>--}}
-                        {{--                                                    <input type="text" id="inputSearch" placeholder="Search...">--}}
-                        {{--                                                    <button type="submit" id="inputSearchBtn"><i class="fa fa-search"--}}
-                        {{--                                                                                                 aria-hidden="true"></i>--}}
-                        {{--                                                    </button>--}}
-                        {{--                                                </form>--}}
-                        {{--                                            </div>--}}
-                        {{--                                            <h6 class="small-title">SUGGESTIONS</h6>--}}
-                        {{--                                        </div>--}}
-                        {{--                                        --}}{{--@dd(myFriends())--}}
-                        {{--                                        <ul class="suggestion-list">--}}
-                        {{--                                            @foreach(myFriends() as $friends)--}}
-                        {{--                                                <li class="suggestion-option">--}}
-                        {{--                                                    <div class="my-profile-img">--}}
-                        {{--                                                        <img--}}
-                        {{--                                                            src="{{asset("community-frontend/assets/images/community/home/right/birthday01.jpg")}}"--}}
-                        {{--                                                            alt="img">--}}
-                        {{--                                                    </div>--}}
-                        {{--                                                    <div class="my-profile-name"--}}
-                        {{--                                                         data-id="{{$friends->uId}}">{{$friends->userName}}</div>--}}
-                        {{--                                                    <label><input type="checkbox" name="tagId[]"--}}
-                        {{--                                                                  value="{{$friends->uId}}">{{$friends->uId}}</label>--}}
-                        {{--                                                </li>--}}
-                        {{--                                            @endforeach--}}
-
-                        {{--                                        </ul>--}}
-                        {{--                                    </div>--}}
-                        {{--                                </div>--}}
-                        {{--                            </div>--}}
-                        {{--                        </div>--}}
-                    </li>
-                    <li>
                         <button type="submit" class="social-theme-btn">Post</button>
                     </li>
                 </ul>
             </form>
 
         </div>
-        {{--                @dd($groupPosts)--}}
+        {{--                                        @dd($groupPosts)--}}
         @foreach($groupPosts as $post)
             <div class="main-content posted-content">
                 <div class="post-autore d-flex justify-content-between align-items-center">
@@ -216,6 +180,7 @@
                             @endif
 
                         </a>
+                        {{--                        @dd($post)--}}
                         <div class="athore-info">
                             <p class="athore-name"><a href="#">{{$post->userName}}</a></p>
                             <p class="posted-time"><a
@@ -223,27 +188,156 @@
                             </p>
                         </div>
                     </div>
+
+                    @php
+                        $isAdmin=\App\Models\Community\Group\CommunityUserGroupPivot::select('group_user_role')->where('user_id','=',Auth::id())
+                    ->where('group_id','=',Request::segment(3))->first();
+//                    @dd($isAdmin)
+//                            dd($isOwner);
+                    @endphp
+
+
                     <div class="post-option">
-                        <button type="button" class="dropdown-toggle" id="dropdownMenuButton1"
-                                data-bs-toggle="dropdown" aria-expanded="false"><i class="fa fa-ellipsis-h"
-                                                                                   aria-hidden="true"></i></button>
-                        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                            <li><a href="#" class="post-option-item"><i class="fa fa-pencil-square-o"
-                                                                        aria-hidden="true"></i> Edit Post</a></li>
-                            <li><a href="#" class="post-option-item"><i class="fa fa-eye-slash"
-                                                                        aria-hidden="true"></i> Hide Post</a></li>
-                            <li><a href="#" class="post-option-item"><i class="fa fa-trash-o"
-                                                                        aria-hidden="true"></i> Delete Post</a></li>
-                        </ul>
+
+
+                        @if($isAdmin)
+
+                            <button type="button" class="dropdown-toggle" id="dropdownMenuButton1"
+                                    data-bs-toggle="dropdown" aria-expanded="false"><i class="fa fa-ellipsis-h"
+                                                                                       aria-hidden="true"></i>
+                            </button>
+                            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                                <li>
+                                    <a href="#" data-mediaDetails="{{$post->group_post_file}}"
+                                       data-postDetails="{{$post->post_description}}"
+                                       data-postId="{{$post->grpPostId}}"
+                                       data-bs-toggle="modal"
+                                       data-bs-target="#photoModal1" class="post-option-item btnEdit"><i
+                                            class="fa fa-pencil-square-o"
+                                            aria-hidden="true"></i> Edit Post
+                                    </a>
+                                </li>
+                                {{--                            @dd($post->grpPostId)--}}
+                                <li><a href="{{route('community.group.post.delete',$post->grpPostId)}}"
+                                       data-id="{{$post->grpPostId}}"
+                                       class="post-option-item dltPost"><i class="fa fa-trash-o"
+                                                                           aria-hidden="true"></i> Delete Post</a>
+                                </li>
+                            </ul>
+                        @endif
+
+
                     </div>
                 </div>
+
+                <!-- Modal -->
+                <div class="modal fade" id="photoModal1" tabindex="-1" aria-labelledby="photoModalLabel"
+                     aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+                        <div class="modal-content post-modal-content">
+                            <div class="modal-header">
+                                <div class="post-modal-title">
+                                    <h6 class="modal-title" id="photoModalLabel">Edit Post</h6>
+                                </div>
+                                <button type="button" class=" post-close" data-bs-dismiss="modal"
+                                        aria-label="Close"><i class="fa fa-times" aria-hidden="true"></i>
+                                </button>
+                            </div>
+                            <form action="{{route('community.group.post.update')}}" method="post"
+                                  enctype="multipart/form-data">
+                                @csrf
+                                <input type="hidden" name="postId" class="postId" value="">
+                                <div class="modal-body post-modal-body">
+                                    <div class="my-profile">
+                                        <div class="my-profile-img"><a href="#"><img
+                                                    src="{{asset("community-frontend/assets/images/community/home/right/birthday01.jpg")}}"
+                                                    alt="img"></a></div>
+                                        <div class="my-profile-name">{{Auth::user()->name}}</div>
+                                    </div>
+                                    <div class="post-text">
+                                        <div class="post-text">
+                                            <textarea id="postArea" class="postDescription" name="postMessage"
+                                                      placeholder="Write Something here..."></textarea>
+                                        </div>
+                                    </div>
+
+                                    <div class="upload-media">
+                                        <div class="photo-place">
+                                                        <span class="icon">
+                                                            <svg xmlns="http://www.w3.org/2000/svg" version="1.1" x="0"
+                                                                 y="0" viewBox="0 0 24 24"
+                                                                 style="enable-background:new 0 0 512 512"
+                                                                 xml:space="preserve" class=""><g><path
+                                                                        d="m22.448 7.608-1.2 8.58a3.142 3.142 0 0 1-1.257 2.312.311.311 0 0 1-.488-.244V9.665A3.829 3.829 0 0 0 15.335 5.5H5.923c-.3 0-.307-.27-.286-.39a3.134 3.134 0 0 1 1.112-2.085 3.2 3.2 0 0 1 2.442-.473l10.561 1.48a3.211 3.211 0 0 1 2.223 1.134 3.191 3.191 0 0 1 .473 2.442zM18 9.665v8.668A2.358 2.358 0 0 1 15.335 21H4.667A2.357 2.357 0 0 1 2 18.333V9.665A2.357 2.357 0 0 1 4.667 7h10.668A2.358 2.358 0 0 1 18 9.665zM13.25 14a.75.75 0 0 0-.75-.75h-1.75V11.5a.75.75 0 0 0-1.5 0v1.75H7.5a.75.75 0 0 0 0 1.5h1.75v1.75a.75.75 0 0 0 1.5 0v-1.75h1.75a.75.75 0 0 0 .75-.75z"
+                                                                        fill="#000000" data-original="#000000"
+                                                                        class=""></path></g></svg>
+                                                        </span>
+                                            <h6 class="title">Add Photos/Videos</h6>
+                                            <p class="small-text">or drag and drop</p>
+                                        </div>
+                                        <div class="preview-file">
+                                            {{--                                        <div class="post-img">--}}
+                                            {{--                                            <video width="550" height="240" controls>--}}
+                                            {{--                                                <source class="videoSrc" src="#" type="video/mp4">--}}
+                                            {{--                                            </video>--}}
+                                            {{--                                        </div>--}}
+                                            <img class="previewImg postMedia" src="#" alt="">
+                                            <button type="button" class="imgClose"><i class="fa fa-times"
+                                                                                      aria-hidden="true"></i>
+                                            </button>
+                                        </div>
+                                        <div class="media-input">
+                                            <input accept="" name="postFile1" type='file' class="imgInp"/>
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="submit" class="social-theme-btn post-btn">Update</button>
+                                </div>
+                            </form>
+
+                        </div>
+                    </div>
+                </div>
+
+
                 <div class="post-body">
                     <p class="post-status">{{$post->post_description}}</p>
+                    {{--                    @dd($post->group_post_file)--}}
 
-                    @if($post->group_post_file)
-                        <div class="post-img">
-                            <img src="{{asset("storage/community/group-post/".$post->group_post_file)}}" alt="">
-                        </div>
+                    @if($post->group_post_file!=null)
+
+                        {{--                    @dd(explode('.',$post->userPostMedia))--}}
+                        @php
+                            $extension=explode('.',$post->group_post_file);
+                        @endphp
+                        {{--                                            @dd($extension[1])--}}
+
+                        @if($post->group_post_file)
+
+                            @if($extension[1]==='mp4'||$extension[1]==='mov'||$extension[1]==='wmv'||$extension[1]==='avi'||
+                            $extension[1]==='mkv'||$extension[1]==='webm')
+                                <div class="post-img">
+                                    <video width="550" height="240" controls>
+                                        <source
+                                            src="{{asset("storage/community/group-post/videos/".$post->group_post_file)}}"
+                                            type="video/mp4">
+                                    </video>
+                                </div>
+                            @else
+                                <div class="post-img">
+                                    <img src="{{asset("storage/community/group-post/".$post->group_post_file)}}" alt="">
+                                </div>
+                            @endif
+
+                        @endif
+                        {{--                    <div class="post-img">--}}
+                        {{--                        <img src="{{asset("community-frontend/assets/images/community/home/news-post/post-1.jpg")}}" alt="">--}}
+                        {{--                    </div>--}}
+                        {{--                        <div class="post-img">--}}
+                        {{--                            <img src="{{asset("storage/community/group-post/".$post->group_post_file)}}" alt="">--}}
+                        {{--                        </div>--}}
                     @endif
 
                     <ul class="post-react-widget">
@@ -358,15 +452,18 @@
                     </div>
 
                     <form action="#" class="new-comment">
-                        @if(!empty($post->users->userProfileImages[0]) && isset($post->users->userProfileImages[0]) ? $post->users->userProfileImages[0]:'')
-                            <img
-                                src="{{asset("storage/community/profile-picture/".$post->users->userProfileImages[0]->user_profile)}}"
-                                alt="image" style="height: 60px; width: 60px">
-                        @else
-                            <img
-                                src="{{asset("community-frontend/assets/images/community/home/news-post/Athore01.jpg")}}"
-                                alt="image">
-                        @endif
+                        <a href="#" class="new-comment-img">
+                            @if(!empty($post->users->userProfileImages[0]) && isset($post->users->userProfileImages[0]) ? $post->users->userProfileImages[0]:'')
+                                <img
+                                    src="{{asset("storage/community/profile-picture/".$post->users->userProfileImages[0]->user_profile)}}"
+                                    alt="image" style="height: 60px; width: 60px">
+                            @else
+                                <img
+                                    src="{{asset("community-frontend/assets/images/community/home/news-post/Athore01.jpg")}}"
+                                    alt="image">
+                            @endif
+                        </a>
+
                         <div class="new-comment-input">
                             <input type="text" placeholder="Write a comment....">
                             <div class="attached-icon">
@@ -453,4 +550,57 @@
         })
     })
 
+</script>
+
+<script>
+
+    $(document).on('click', '.btnEdit', function () {
+        let postText = $(this).attr("data-postDetails");
+        let postMedia = $(this).attr("data-mediaDetails");
+        let postId = $(this).attr("data-postId");
+        // console.log(postId);
+        // console.log(postText);
+
+        $('.postId').val(postId);
+        let post = postMedia.split('.');
+        console.log(post);
+        $('.postDescription').val(postText);
+        if (post[1] === 'mp4' || post[1] === 'mov' || post[1] === 'wmv' || post[1] === 'avi' ||
+            post[1] === 'mkv' || post[1] === 'webm') {
+            $('.videoSrc').attr('src', `{{asset("storage/community/group-post/videos")}}` + "/" + postMedia);
+
+        } else {
+            $('.postMedia').attr('src', `{{asset("storage/community/group-post/")}}` + "/" + postMedia);
+
+        }
+
+    })
+</script>
+
+<script>
+    $(document).on('click', '.dltPost', function (event) {
+        event.preventDefault();
+        let postId = $(this).attr("data-id");
+        {{--console.log({{route('community.user.post.delete')}}+postId);--}}
+        // return false;
+        Swal.fire({
+            title: 'Do you want to delete the post?',
+            showDenyButton: true,
+            showCancelButton: false,
+            confirmButtonColor: "#DD6B55",
+            denyButtonColor: '#8CD4F5',
+            confirmButtonText: `Delete`,
+            denyButtonText: `Don't Delete`,
+        }).then((result) => {
+            /* Read more about isConfirmed, isDenied below */
+            if (result.isConfirmed) {
+                let url = '{{ route("community.group.post.delete", ":slug") }}';
+                url = url.replace(':slug', postId);
+                window.location.href = url
+                Swal.fire('Saved!', '', 'success')
+            } else if (result.isDenied) {
+                Swal.fire('Changes are not saved', '', 'info')
+            }
+        })
+    });
 </script>
