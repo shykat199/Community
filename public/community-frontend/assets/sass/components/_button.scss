@@ -45,6 +45,13 @@
         color: white;
 
     }
+    @media (max-width:768px) {
+        font-size: 14px;
+    }
+
+    @media (max-width:576px) {
+        // font-size: unset;
+    }
      // @media (max-width: 991px) {
     //     padding: 11px 25px;
     // }

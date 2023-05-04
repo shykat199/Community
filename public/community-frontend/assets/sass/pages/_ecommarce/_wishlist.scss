@@ -139,3 +139,20 @@
         }
     }
 }
+.wishlist-modal-cross-btn {
+    width: 35px;
+    height: 35px;
+    font-size: 30px; 
+    background-color: $theme-font;
+    color: white;
+    display: block;
+    text-align: center;
+    line-height: 35px;
+    position: absolute;
+    top: 0;
+    right: 0;
+    &:hover{
+        color: white;
+    }
+  
+}

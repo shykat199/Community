@@ -1,0 +1,220 @@
+.gallery-hero {
+    height: 500px;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center center;
+    position: relative;
+    z-index: 1;
+    @media (max-width:576px) {
+        height: 400px;
+    }
+
+    &::before {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        content: "";
+        background: #000;
+        z-index: -1;
+        opacity: .5;
+    }
+}
+
+.gallery-hero-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    h2 {
+        max-width: 780px;
+        width: 100%;
+        text-align: center;
+    }
+    p{
+        @media (max-width:576px) {
+            font-size: 14px;
+        }
+    }
+}
+
+.gallery-hero-search {
+    margin-top: 40px;
+    position: relative;
+    max-width: 450px;
+    width: 100%;
+
+    input {
+        max-width: 450px;
+        width: 100%;
+        min-height: 40px;
+        height: 40px;
+        padding: 20px 25px;
+        outline: none;
+        border-radius: 20px;
+        border: none;
+    }
+
+    .gallery-hero-search-icon {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        right: 25px;
+        cursor: pointer;
+        color: $theme-font;
+        transition: all .3s ease;
+
+        &:hover {
+            color: $theme-color;
+        }
+    }
+}
+
+// inspiration section
+.inspiration-section {
+    margin-top: 70px;
+
+    .inspiration-section-content {
+        h2 {
+            max-width: 500px;
+            width: 100%;
+            margin: auto;
+            text-align: center;
+        }
+    }
+}
+
+.inspiration-single-card {
+    position: relative;
+    transition: all 0.3s ease-in-out;
+    
+
+    .inspiration-card-img {
+        width: -webkit-fill-available;
+        max-height: 200px;
+        min-height: 200px;
+        height: 100%;
+        object-fit: cover;
+        filter: brightness(50%);
+        border-radius: 8px;
+    }
+
+    .inspiration-card-title {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%);
+        color: white;
+        font-size: 18px;
+        font-weight: 500;
+    }
+    &:hover{
+        opacity: .6;
+    }
+}
+
+// brows photo gallery
+
+.brows-photo-gallery {
+    padding: 70px 0;
+    .brows-photo-gallery-content{
+        h2 {
+            max-width: 500px;
+            width: 100%;
+            margin: auto;
+            text-align: center;
+        }
+    }
+}
+
+/* Main CSS */
+.grid-wrapper {
+    div {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 5px;
+            vertical-align: middle;
+            display: inline-block;
+        }
+    }
+
+}
+
+.grid-wrapper {
+    display: grid;
+    grid-gap: 10px;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        @media (min-width: 1400px) {
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        }
+    @media (max-width:576px) {
+        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    }
+    @media (max-width:350px) {
+        grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+    }
+    grid-auto-rows: 200px;
+    grid-auto-flow: dense;
+}
+
+.grid-wrapper .wide {
+    grid-column: span 2;
+}
+
+.grid-wrapper .tall {
+    grid-row: span 2;
+}
+
+.grid-wrapper .big {
+    grid-column: span 2;
+    grid-row: span 2;
+}
+
+
+// video gallery section
+.video-gallery-section {
+    margin-top: 70px;
+
+    .video-gallery-section-content {
+        h2 {
+            max-width: 500px;
+            width: 100%;
+            margin: auto;
+            text-align: center;
+        }
+    }
+}
+
+.video-gallery-single-card {
+    .poster-size {
+        object-fit: cover;
+    }
+
+    .inspiration-card-img {
+        width: -webkit-fill-available;
+        max-height: 200px;
+        min-height: 200px;
+        height: 100%;
+        object-fit: cover;
+        filter: brightness(50%);
+    }
+
+    .video-gallery-card-title {
+        padding-top: 15px;
+        font-size: 16px;
+        font-weight: 700;
+    }
+
+    .video-gallery-card-uploader {
+        padding-top: 10px;
+        font-size: 14px;
+        opacity: 0.6;
+    }
+}

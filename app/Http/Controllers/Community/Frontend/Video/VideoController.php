@@ -14,13 +14,11 @@ class VideoController extends Controller
 
         $allVideos = CommunityUserPost::with(['users.userProfileImages'])
             ->join('community_user_post_file_types', function ($q) use ($videoType) {
-
                 $q->on('community_user_post_file_types.post_id', '=', 'community_user_posts.id');
-
             })
             ->join('users', 'users.id', '=', 'community_user_posts.user_id')
             ->selectRaw('users.id as user_id,users.name,community_user_posts.created_at,
-            community_user_posts.id as pId,community_user_post_file_types.post_image_video as postMedia');
+            community_user_posts.id as pId,community_user_post_file_types.post_image_video as postMedia,community_user_posts.post_description');
 
         foreach ($videoType as $type) {
             $allVideos = $allVideos->orWhere('community_user_post_file_types.post_image_video', 'like', "%{$type}%");

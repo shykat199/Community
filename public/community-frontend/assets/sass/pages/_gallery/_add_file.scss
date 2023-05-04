@@ -1,0 +1,22 @@
+.file-upload-top-part{
+  padding-bottom: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.file-upload-top-part-img{
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+.add-file-custom-dropdown{
+  border: none;
+  background-color: white;
+}
+.add-file-custom-dropdown-menu{
+  width: max-content;
+  height: max-content;
+  padding: 10px 5px;
+}

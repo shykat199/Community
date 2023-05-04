@@ -11,3 +11,23 @@
     border-color: $theme-font;
     box-shadow: none;
 }
+.profile-custom-select{
+    border-color: $theme-font;
+    box-shadow: none;
+    margin:30px 0;
+    font-size: 14px;
+    max-width: 150px;
+    width: 100%;
+    background-color: $primary-bg;
+    &:focus{
+        border-color: $theme-font;
+        box-shadow: none;
+    }
+    @media (max-width: 576px) {
+        font-size: 12px;
+        max-width: 100px;
+        margin: 20px 0;
+    }
+}
+
+

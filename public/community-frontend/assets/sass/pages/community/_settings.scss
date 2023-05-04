@@ -936,24 +936,27 @@
     border-radius: 5px;
     .video-img {
         position: relative;
-        margin-bottom: 20px;
-        img {
-            border-radius: 5px;
-            width: 100%;
-        }
-        &::after{
-            content: "";
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.5);
-            border-radius: 5px;
-            left: 0;
-            top: 0;
-            visibility: hidden;
-            opacity: 0;
-            transition: all .3s ease;
-        }
+        cursor: pointer;
+        // margin-bottom: 20px;
+            display: block;
+            position: relative;
+            img {
+                border-radius: 5px;
+                width: 100%;
+            }
+            &::after{
+                content: "";
+                position: absolute;
+                width: 100%;
+                height: 100%;
+                background: rgba(0, 0, 0, 0.5);
+                border-radius: 5px;
+                left: 0;
+                top: 0;
+                visibility: hidden;
+                opacity: 0;
+                transition: all .3s ease;
+            }
         .vido-play-icon {
             position: absolute;
             top: 50%;
@@ -968,7 +971,7 @@
             &::after{
                 visibility: visible;
                 opacity: 1;
-            }
+            }            
             .vido-play-icon {
                 color: $theme-color;
             }
@@ -1037,4 +1040,233 @@
         }
     }
 }
+.video-modal-show {
+    .vido-modal-close-btn{
+        position: absolute;
+        right: 0px;
+        top: -25px;
+        color: $white;
+        height: 25px;
+        width: 25px;
+        background: transparent;
+        border: none;
+        outline: none;
+    }
+    .playing-video {
+        width: 100%;
+        height: auto;
+        border-radius: 5px;
+    }
+    .video-coment-list {
+        height: 140px;
+        overflow-y: auto;
+    }
+    .uploaded-video-status{
+        p{
+            font-size: 14px;
+            color: #091727;
+            line-height: 24px;
+            margin-bottom: 20px;
+        }
+    }
+    .more-comment {
+        text-align: center;
+        a {
+            font-size: 14px;
+            color: #ff5b2e;
+        }
+    }
+}
 //vido page end 
+
+// weather area start 
+.weather-img2 {
+    margin-bottom: 40px;
+    a {
+        display: block;
+        img {width: 100%;}
+    }
+}
+.weather-input-form {
+    padding: 0;
+}
+// weather area end  
+
+// / marketPlace page start
+.marketplace-page-title {
+    align-items: center;
+    .our-product {
+        font-size: 18px;
+        font-weight: 600;
+        color: $theme-font;
+    }
+}
+.single-market-product {
+    padding: 20px;
+    background: $white;
+    margin-bottom: 30px;
+    border-radius: 5px;
+    .product-img {
+        position: relative;
+        margin-bottom: 20px;
+        img{
+            width: 100%;
+            // max-height: 200px;
+            border-radius: 5px
+        }
+        .product-price {
+            position: absolute;
+            padding: 10px 15px;
+            border-radius: 5px;
+            right: 10px;
+            bottom: 10px;
+            background: $white;
+            font-size: 14px;
+            color: $theme-font;
+            font-weight: 500;
+            transition: all .3s ease;
+        }        
+        &:hover{
+            .product-price {
+                color: $white;
+                background: $theme-color;  
+            }          
+        }
+    }
+}
+.market-product-name{
+ margin-bottom: 7px;
+ a{
+     font-size: 18px;
+     color: $theme-font;
+     font-weight: 500;
+     display: block;
+     transition: all .3s ease;
+     &:hover{
+         color: $theme-color;
+     }
+ }
+}
+.product-address {
+ font-size: 12px;
+ color: #6B7C8F;
+ span{
+     margin-right: 5px;
+ }
+}
+
+.market-product-details-title{
+    font-size: 22px;
+    font-weight: 600;
+    color: $theme-font;
+    padding: 20px 30px;
+    background: $white;
+    margin-bottom: 30px;
+    border-radius: 8px;
+    text-transform: capitalize;
+}
+.market-product-details-img{
+    margin-bottom: 30px;
+    background-image: url(/assets/images/community/market/marketplace-1.jpg);
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    height: 100%;
+    width: 100%;
+    border-radius: 5px;
+    @media (max-width:991px) {
+        height: 350px;
+    }
+    // img{
+    //     width: 100%;
+    //     border-radius: 5px;
+    // }
+}
+.market-product-details {
+    margin-bottom: 30px;
+    h6{
+        font-size: 20px;
+    color: $theme-font;
+    font-weight: 600;
+    margin-bottom: 10px;
+    }
+    .product-address {
+        font-size: 15px;
+        margin-bottom: 10px;
+    }
+    .product-price {
+        font-size: 16px;
+        color: $theme-font;
+        font-weight: 600;
+        margin-bottom: 10px;
+    }
+    .product-condition {
+        li {
+            font-size: 18px;
+            .condition-title {
+                color: $theme-font;
+                font-weight: 500;
+                margin-right: 10px;
+            }
+            font-weight: 400;
+            margin-bottom: 10px;
+        } 
+    }
+}
+.market-product-description {
+    margin-bottom: 20px;
+    h5 {
+        font-size: 22px;
+        font-weight: 600;
+        color: $theme-font;
+        margin-bottom: 10px;
+    }
+    p {
+        font-size: 15px;
+        color: $theme-font;
+        margin-bottom: 10px;
+        &:last-child{
+            margin-bottom: 0;
+        }
+    }
+}
+.product-seller-information{
+    background: transparent;
+    padding: 0px;
+    margin: 0;
+    h4 {
+        font-size: 20px;
+        color: $theme-font;
+        margin-bottom: 18px;
+        font-weight: 600;
+    }
+    .notification-author {
+        align-items: flex-start;
+        .figure {
+            img{
+                max-width: 70px;
+            }
+        }
+        .text {
+            .seller-name {
+                font-size: 17px;
+                font-weight: 600;
+                color: $theme-font;
+            }
+        }
+    }
+    .seller-msg-title {
+        font-size: 17px;
+        color: $theme-font;
+        margin: 20px 0 10px 0;
+        font-weight: 500;
+    }
+    .product-seller-msg {
+        margin-top: 0px;
+        input{
+            background: $white;
+        }
+    }
+}
+// / marketPlace page end
+

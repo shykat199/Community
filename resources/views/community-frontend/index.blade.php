@@ -552,10 +552,15 @@
 
                         </a>
                         <div class="new-comment-input">
+
                             <input type="text" data-postId="{{$post->postId}}" class="postComments" name="postComment" placeholder="Write a comment....">
                             <div class="attached-icon">
                                 <a href="#"><i class="fa fa-camera" aria-hidden="true"></i></a>
                             </div>
+{{--                            <input type="text" data-postId="{{$post->postId}}" class="postComments" name="postComment" placeholder="Write a comment....">--}}
+{{--                            <div class="attached-icon">--}}
+{{--                                <a href="#"><i class="fa fa-camera" aria-hidden="true"></i></a>--}}
+{{--                            </div>--}}
                         </div>
                     </div>
 
@@ -604,7 +609,7 @@
             // console.log(parests_data, 'parests_data')
             // let img_src = $(this).find('img').attr('src');
             // console.log(img_src,'img_src');
-            return false;
+            // return false;
 
             if (getReaction !== '' && grpPostId !== '') {
                 $.ajax({

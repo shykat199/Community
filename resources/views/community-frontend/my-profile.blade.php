@@ -211,7 +211,7 @@
                                 </button>
                             </li>
                         </ul>
-{{--                        @dd($userSocialLinks)--}}
+                        {{--                        @dd($userSocialLinks)--}}
                         <ul class="profile-social">
                             @if($userSocialLinks['facebook'])
                                 <li>
@@ -474,7 +474,7 @@
                         </div>
 
 
-{{--                        @dd(getMyPostTimeLine())--}}
+                        {{--                        @dd(getMyPostTimeLine())--}}
                         @foreach(getMyPostTimeLine() as $myPost)
                             <div class="main-content posted-content">
                                 <div class="post-autore d-flex justify-content-between align-items-center">
@@ -498,33 +498,76 @@
                                             </p>
                                         </div>
                                     </div>
+                                    @php
+                                        $isOwner=\App\Models\Community\User\CommunityUserPost::select('id','user_id')->where('user_id','=',Auth::id())
+                                       ->get();
+                //                            dd($isOwner);
+                                    @endphp
+
+                                    {{--                    @dd($post)--}}
+                                    {{--                    <form action="{{ route('orders.destroy', $row->id) }}" method="post"--}}
+                                    {{--                          class="d-inline">@csrf@method('DELETE')--}}
+                                    {{--                        <button type="button" class="btn btn-sm btn-danger confirm-delete"><i class="fas fa-times"></i>--}}
+                                    {{--                        </button>--}}
+                                    {{--                    </form>--}}
+
+
                                     <div class="post-option">
-                                        <button type="button" class="dropdown-toggle" id="dropdownMenuButton1"
-                                                data-bs-toggle="dropdown" aria-expanded="false"><i
-                                                class="fa fa-ellipsis-h"
-                                                aria-hidden="true"></i>
-                                        </button>
-                                        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                                            <li><a href="#" class="post-option-item"><i class="fa fa-pencil-square-o"
-                                                                                        aria-hidden="true"></i> Edit
-                                                    Post</a></li>
-                                            <li><a href="#" class="post-option-item"><i class="fa fa-eye-slash"
-                                                                                        aria-hidden="true"></i> Hide
-                                                    Post</a></li>
-                                            <li><a href="#" class="post-option-item"><i class="fa fa-trash-o"
-                                                                                        aria-hidden="true"></i> Delete
-                                                    Post</a>
-                                            </li>
-                                        </ul>
+
+                                        @foreach($isOwner as $owner)
+                                            @if($myPost->postId==$owner->id)
+                                                <button type="button" class="dropdown-toggle" id="dropdownMenuButton1"
+                                                        data-bs-toggle="dropdown" aria-expanded="false"><i class="fa fa-ellipsis-h"
+                                                                                                           aria-hidden="true"></i>
+                                                </button>
+
+                                                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                                                    <li>
+                                                        <a href="#" data-mediaDetails="{{$myPost->userPostMedia}}"
+                                                           data-postDetails="{{$myPost->postDescription}}" data-postId="{{$myPost->postId}}"
+                                                           data-bs-toggle="modal"
+                                                           data-bs-target="#photoModal1" class="post-option-item btnEdit"><i
+                                                                class="fa fa-pencil-square-o"
+                                                                aria-hidden="true"></i> Edit Post
+                                                        </a>
+                                                    </li>
+                                                    <li><a href="{{route('community.user.post.delete',$myPost->postId)}}"
+                                                           data-id="{{$myPost->postId}}"
+                                                           class="post-option-item dltPost"><i class="fa fa-trash-o"
+                                                                                               aria-hidden="true"></i> Delete Post</a>
+                                                    </li>
+
+                                                    @endif
+                                                    @endforeach
+                                                </ul>
                                     </div>
                                 </div>
+                                {{--                                @dd($myPost)--}}
                                 <div class="post-body">
                                     <p class="post-status">{{$myPost->postDescription}}.</p>
 
+                                    @php
+                                        $extension=explode('.',$myPost->postMediaFile);
+                                    @endphp
+                                    {{--                    @dd($extension[1])--}}
+
                                     @if($myPost->postMediaFile)
-                                        <div class="post-img">
-                                            <img src="{{asset('storage/community/'.$myPost->postMediaFile)}}" alt="">
-                                        </div>
+
+                                        @if($extension[1]==='mp4'||$extension[1]==='mov'||$extension[1]==='wmv'||$extension[1]==='avi'||
+                                        $extension[1]==='mkv'||$extension[1]==='webm')
+                                            <div class="post-img">
+                                                <video width="550" height="240" controls>
+                                                    <source
+                                                        src="{{asset("storage/community/post/videos/".$myPost->postMediaFile)}}"
+                                                        type="video/mp4">
+                                                </video>
+                                            </div>
+                                        @else
+                                            <div class="post-img">
+                                                <img src="{{asset("storage/community/post/".$myPost->postMediaFile)}}"
+                                                     alt="">
+                                            </div>
+                                        @endif
 
                                     @endif
 
@@ -532,42 +575,46 @@
                                         <li class="post-react like-react">
                                             <a href="#">
                                                 <div class="react-icon">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" version="1.1"
-                                                         xmlns:xlink="http://www.w3.org/1999/xlink" x="0" y="0"
-                                                         viewBox="0 0 478.2 478.2"
-                                                         style="enable-background:new 0 0 512 512"
-                                                         xml:space="preserve" class=""><g>
-                                                            <path
-                                                                d="M457.575 325.1c9.8-12.5 14.5-25.9 13.9-39.7-.6-15.2-7.4-27.1-13-34.4 6.5-16.2 9-41.7-12.7-61.5-15.9-14.5-42.9-21-80.3-19.2-26.3 1.2-48.3 6.1-49.2 6.3h-.1c-5 .9-10.3 2-15.7 3.2-.4-6.4.7-22.3 12.5-58.1 14-42.6 13.2-75.2-2.6-97-16.6-22.9-43.1-24.7-50.9-24.7-7.5 0-14.4 3.1-19.3 8.8-11.1 12.9-9.8 36.7-8.4 47.7-13.2 35.4-50.2 122.2-81.5 146.3-.6.4-1.1.9-1.6 1.4-9.2 9.7-15.4 20.2-19.6 29.4-5.9-3.2-12.6-5-19.8-5h-61c-23 0-41.6 18.7-41.6 41.6v162.5c0 23 18.7 41.6 41.6 41.6h61c8.9 0 17.2-2.8 24-7.6l23.5 2.8c3.6.5 67.6 8.6 133.3 7.3 11.9.9 23.1 1.4 33.5 1.4 17.9 0 33.5-1.4 46.5-4.2 30.6-6.5 51.5-19.5 62.1-38.6 8.1-14.6 8.1-29.1 6.8-38.3 19.9-18 23.4-37.9 22.7-51.9-.4-8.1-2.2-15-4.1-20.1zm-409.3 122.2c-8.1 0-14.6-6.6-14.6-14.6V270.1c0-8.1 6.6-14.6 14.6-14.6h61c8.1 0 14.6 6.6 14.6 14.6v162.5c0 8.1-6.6 14.6-14.6 14.6h-61v.1zm383.7-133.9c-4.2 4.4-5 11.1-1.8 16.3 0 .1 4.1 7.1 4.6 16.7.7 13.1-5.6 24.7-18.8 34.6-4.7 3.6-6.6 9.8-4.6 15.4 0 .1 4.3 13.3-2.7 25.8-6.7 12-21.6 20.6-44.2 25.4-18.1 3.9-42.7 4.6-72.9 2.2h-1.4c-64.3 1.4-129.3-7-130-7.1h-.1l-10.1-1.2c.6-2.8.9-5.8.9-8.8V270.1c0-4.3-.7-8.5-1.9-12.4 1.8-6.7 6.8-21.6 18.6-34.3 44.9-35.6 88.8-155.7 90.7-160.9.8-2.1 1-4.4.6-6.7-1.7-11.2-1.1-24.9 1.3-29 5.3.1 19.6 1.6 28.2 13.5 10.2 14.1 9.8 39.3-1.2 72.7-16.8 50.9-18.2 77.7-4.9 89.5 6.6 5.9 15.4 6.2 21.8 3.9 6.1-1.4 11.9-2.6 17.4-3.5.4-.1.9-.2 1.3-.3 30.7-6.7 85.7-10.8 104.8 6.6 16.2 14.8 4.7 34.4 3.4 36.5-3.7 5.6-2.6 12.9 2.4 17.4.1.1 10.6 10 11.1 23.3.4 8.9-3.8 18-12.5 27z"
-                                                                fill="#000000" data-original="#000000" class=""></path>
-                                                        </g></svg>
+                                                    <img class="like"
+                                                         src="{{asset("community-frontend/assets/images/community/home/news-post/like.png")}}"
+                                                         alt="">
                                                 </div>
                                                 <span class="react-name">Like</span>
                                                 <span
                                                     class="react-count">{{myPostReactionCount($myPost->postId)}}</span>
                                             </a>
                                             <ul class="react-option">
-                                                <li><a href="#"><img
-                                                            src="{{asset("community-frontend/assets/images/community/home/news-post/react-1.png")}}"
-                                                            alt="React"></a></li>
-                                                <li><a href="#"><img
-                                                            src="{{asset("community-frontend/assets/images/community/home/news-post/react-2.png")}}"
-                                                            alt="React"></a></li>
-                                                <li><a href="#"><img
-                                                            src="{{asset("community-frontend/assets/images/community/home/news-post/react-3.png")}}"
-                                                            alt="React"></a></li>
-                                                <li><a href="#"><img
-                                                            src="{{asset("community-frontend/assets/images/community/home/news-post/react-4.png")}}"
-                                                            alt="React"></a></li>
-                                                <li><a href="#"><img
-                                                            src="{{asset("community-frontend/assets/images/community/home/news-post/react-5.png")}}"
-                                                            alt="React"></a></li>
-                                                <li><a href="#"><img
-                                                            src="{{asset("community-frontend/assets/images/community/home/news-post/react-6.png")}}"
-                                                            alt="React"></a></li>
-                                                <li><a href="#"><img
-                                                            src="{{asset("community-frontend/assets/images/community/home/news-post/react-7.png")}}"
-                                                            alt="React"></a></li>
+                                                <li class="reaction {{$myPost->reaction_type=='like'?'active':''}}"
+                                                    data-reaction_type="like" data-gId="{{$myPost->postId}}">
+                                                    <img
+                                                        src="{{asset("community-frontend/assets/images/community/home/news-post/react-1.png")}}"
+                                                        alt="React">
+                                                </li>
+                                                {{--                                @dd($post)--}}
+                                                <li class="reaction {{$myPost->reaction_type=='love'?'active':''}}"
+                                                    data-reaction_type="love" data-gId="{{$myPost->postId}}"><img
+                                                        src="{{asset("community-frontend/assets/images/community/home/news-post/react-2.png")}}"
+                                                        alt="React"></li>
+                                                <li class="reaction {{$myPost->reaction_type=='care'?'active':''}}"
+                                                    data-reaction_type="care" data-gId="{{$myPost->postId}}"><img
+                                                        src="{{asset("community-frontend/assets/images/community/home/news-post/react-3.png")}}"
+                                                        alt="React"></li>
+                                                <li class="reaction {{$myPost->reaction_type=='haha'?'active':''}}"
+                                                    data-reaction_type="haha" data-gId="{{$myPost->postId}}"><img
+                                                        src="{{asset("community-frontend/assets/images/community/home/news-post/react-4.png")}}"
+                                                        alt="React"></li>
+                                                <li class="reaction {{$myPost->reaction_type=='wow'?'active':''}}"
+                                                    data-reaction_type="wow" data-gId="{{$myPost->postId}}"><img
+                                                        src="{{asset("community-frontend/assets/images/community/home/news-post/react-5.png")}}"
+                                                        alt="React"></li>
+                                                <li class="reaction {{$myPost->reaction_type=='sad'?'active':''}}"
+                                                    data-reaction_type="sad" data-gId="{{$myPost->postId}}"><img
+                                                        src="{{asset("community-frontend/assets/images/community/home/news-post/react-6.png")}}"
+                                                        alt="React"></li>
+                                                <li class="reaction {{$myPost->reaction_type=='angry'?'active':''}}"
+                                                    data-reaction_type="care" data-gId="{{$myPost->postId}}"><img
+                                                        src="{{asset("community-frontend/assets/images/community/home/news-post/react-7.png")}}"
+                                                        alt="React"></li>
                                             </ul>
                                         </li>
                                         <li class="post-react">
@@ -674,7 +721,8 @@
                                             @endif
                                         </a>
                                         <div class="new-comment-input">
-                                            <input type="text" placeholder="Write a comment....">
+                                            <input type="text" data-postId="{{$myPost->postId}}" class="postComments"
+                                                   name="postComment" placeholder="Write a comment....">
                                             <div class="attached-icon">
                                                 <a href="#"><i class="fa fa-camera" aria-hidden="true"></i></a>
                                             </div>
@@ -1236,3 +1284,155 @@
     </div>
     <!-- news feeds content start  -->
 @endsection
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.4/jquery.min.js"
+        integrity="sha512-pumBsjNRGGqkPzKHndZMaAG+bir374sORyzM3uulLV14lN5LyykqNk8eEeUlUkB3U0M4FApyaHraT65ihJhDpQ=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script>
+    $(document).ready(function () {
+
+        $('.reaction').on('click', function () {
+
+            $('.reaction').removeClass('active');
+            $(this).addClass('active');
+
+            let getReaction = $(this).attr('data-reaction_type');
+            let grpPostId = $(this).attr('data-gId');
+
+            let img_src = $(this).find('img').attr('src')
+            $(this).parents('.like-react').find('.react-icon img').attr('src', img_src)
+
+            // console.log(parests_data, 'parests_data')
+            // let img_src = $(this).find('img').attr('src');
+            // console.log(img_src,'img_src');
+            // return false;
+
+            if (getReaction !== '' && grpPostId !== '') {
+                $.ajax({
+                    url: '{{route('user.group.post.reaction')}}',
+                    type: 'POST',
+                    data: {
+                        getReaction: getReaction,
+                        grpPostId: grpPostId,
+                        '_token': '{{csrf_token()}}'
+                    },
+                    success: function (response) {
+                        console.log(response);
+                        console.log(response.data);
+                        if (response.success === true) {
+
+                            toastr.success(response.msg);
+
+                            // let img_src = $(this).find('img').attr('src');
+                            // console.log(img_src,'img_src');
+                            // $(this).parents('.like-react').find('.react-icon img').attr('src', img_src);
+
+                        } else {
+                            toastr.error(response.msg);
+                        }
+                    },
+                    error: function (err) {
+
+                        toastr.error("Error with AJAX callback !");
+                    }
+                })
+            }
+        })
+
+
+        $('.postComments').keydown(function (e) {
+            if (e.keyCode === 13) {
+                let comment = e.target.value;
+                let postId = $(this).attr('data-postId');
+                $(this).val('');
+                // console.log($(this));
+                // return false;
+
+                // console.log(comment,postId);
+                if (comment !== '' && postId !== '') {
+                    $.ajax({
+                        url: '{{route('community.user.post.comment')}}',
+                        type: 'POST',
+                        data: {
+                            postId: postId,
+                            postComment: comment,
+                            '_token': '{{csrf_token()}}'
+                        },
+                        success: function (response) {
+                            // console.log(response);
+
+                            if (response.success === true) {
+                                toastr.success(response.msg);
+                                // console.log($(this),'this')
+                                // $(this).val('');
+                                // console.log(response.data);
+
+                            } else {
+                                toastr.error(response.msg);
+                            }
+                        },
+                        error: function (err) {
+
+                            toastr.error("Error with AJAX callback !");
+                        }
+                    })
+                }
+            }
+        })
+
+    })
+</script>
+
+
+<script>
+
+    $(document).on('click', '.btnEdit', function () {
+        let postText = $(this).attr("data-postDetails");
+        let postMedia = $(this).attr("data-mediaDetails");
+        let postId = $(this).attr("data-postId");
+        // console.log(postId);
+        // console.log(postText);
+
+        $('.postId').val(postId);
+        let post = postMedia.split('.');
+        console.log(post);
+        $('.postDescription').val(postText);
+        if (post[1] === 'mp4' || post[1] === 'mov' || post[1] === 'wmv' || post[1] === 'avi' ||
+            post[1] === 'mkv' || post[1] === 'webm') {
+            $('.videoSrc').attr('src', `{{asset("storage/community/post/videos")}}` + "/" + postMedia);
+
+        } else {
+            $('.postMedia').attr('src', `{{asset("storage/community/post/")}}` + "/" + postMedia);
+
+        }
+
+    })
+</script>
+
+<script>
+    $(document).on('click', '.dltPost', function (event) {
+        event.preventDefault();
+        let postId = $(this).attr("data-id");
+        {{--console.log({{route('community.user.post.delete')}}+postId);--}}
+        // return false;
+        Swal.fire({
+            title: 'Do you want to delete the post?',
+            showDenyButton: true,
+            showCancelButton: false,
+            confirmButtonColor: "#DD6B55",
+            denyButtonColor: '#8CD4F5',
+            confirmButtonText: `Delete`,
+            denyButtonText: `Don't Delete`,
+        }).then((result) => {
+            /* Read more about isConfirmed, isDenied below */
+            if (result.isConfirmed) {
+                let url = '{{ route("community.user.post.delete", ":slug") }}';
+                url = url.replace(':slug', postId);
+                window.location.href = url
+                Swal.fire('Saved!', '', 'success')
+            } else if (result.isDenied) {
+                Swal.fire('Changes are not saved', '', 'info')
+            }
+        })
+    });
+</script>
