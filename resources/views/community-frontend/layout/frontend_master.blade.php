@@ -312,7 +312,6 @@
 </script>
 
 <script>
-    import toastr from "../../../../public/community-frontend/assets/js/odometer";
 
     @if(Session::has('message'))
         toastr.options =

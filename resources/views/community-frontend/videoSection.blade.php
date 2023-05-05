@@ -119,13 +119,19 @@
                                 class="date">Published: {{\Carbon\Carbon::parse( $video->created_at)->format('d M, Y')}}</span>
                         </div>
                     </div>
-                    <div class="video-img" data-postId="{{$video->pId}}"
+
+
+                    <div class="video-img" data-bs-toggle="modal" data-bs-target="#videoShow"
+                         data-postId="{{$video->pId}}"
                          data-postDescription="{{$video->post_description}}"
                          data-userNmae="{{$video->name}}"
                          data-date="{{\Carbon\Carbon::parse( $video->created_at)->format('d M, Y')}}"
                          data-postImg="{{$video->postMedia}}"
-                         data-userImg="{{$video->users->userProfileImages[0]->user_profile}}" data-bs-toggle="modal" data-bs-target="#videoShow">
-                        <img src="{{asset("community-frontend/assets/images/community/video/video-1.jpg")}}" alt="img">
+                         data-userImg="{{$video->users->userProfileImages[0]->user_profile}}">
+                        <video class="community-video-poster">
+                            <source src="{{asset('storage/community/post/videos/'.$video->postMedia)}}"
+                                    type="video/mp4">
+                        </video>
                         <div class="vido-play-icon">
                             <i class="fa fa-youtube-play" aria-hidden="true"></i>
                         </div>
@@ -137,7 +143,7 @@
                                 <div class="react-icon video-react-icon">
                                     <i class="fa fa-heart-o" aria-hidden="true"></i>
                                 </div>
-                                <span class="react-count">2560</span>
+                                <span class="react-count">{{getUserTimeLinePostReactionCount($video->pId)}}</span>
                             </a>
                         </li>
                         <li class="post-react">
@@ -156,7 +162,7 @@
                                             </g>
                                         </g></svg>
                                 </div>
-                                <span class="react-count">256</span>
+                                <span class="react-count">{{getUserTimeLinePostCommentCount($video->pId)}}</span>
                             </a>
                         </li>
                         <li class="post-react">
@@ -171,7 +177,7 @@
                                                 fill="#000000" data-original="#000000"></path>
                                         </g></svg>
                                 </div>
-                                <span class="react-count">2506</span>
+                                <span class="react-count">0</span>
                             </a>
                         </li>
                     </ul>
@@ -186,36 +192,40 @@
 
         <!-- video show modal start -->
         <div class="modal fade video-modal-show" id="videoShow" tabindex="-1" aria-labelledby="exampleModalLabel"
-             aria-hidden="true">
+             aria-hidden="true" onclick="document.getElementById('comunityVideoPause').pause();">
             <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content">
-                    <button type="button" class="vido-modal-close-btn" data-bs-dismiss="modal" aria-label="Close"><i
-                            class="fa fa-times" aria-hidden="true"></i></button>
+                    <button type="button" class="vido-modal-close-btn" data-bs-dismiss="modal" aria-label="Close"
+                            onclick="document.getElementById('comunityVideoPause').pause();"><i class="fa fa-times"
+                                                                                                aria-hidden="true"></i>
+                    </button>
                     <div class="modal-body">
                         <div class="single-info">
                             <div class="page-img "><a href="#"><img class="uImg"
-                                        src=""
-                                        alt="img"></a></div>
+                                                                    src=""
+                                                                    alt="img"></a>
+                            </div>
                             <div class="page-title">
-                                <a href="#" class="userName"></a>
+                                <a href="#">Lolita Benally</a>
                                 <span class="date">Published: 10 July, 2021</span>
                             </div>
                         </div>
                         <div class="uploaded-video-status">
                             <p class="postDescription"></p>
-
                         </div>
-                        <video controls class="playing-video">
-                            <source class="videoMedia"
-                                    src=""
-                                    type="video/mp4">
+
+
+                        <video class="playing-video" id="comunityVideoPause" controls>
+                            <source class="source" src="" type="video/mp4">
                         </video>
+
                         {{--                        <div class="vido-cm-div video-coment-list">--}}
                         {{--                            <ul class="post-comment-list ">--}}
                         {{--                                <li class="single-comment">--}}
                         {{--                                    <div class="comment-img">--}}
                         {{--                                        <a href="#">--}}
-                        {{--                                            <img src="{{asset("community-frontend/assets/images/community/home/news-post/comment01.jpg")}}" alt="image">--}}
+                        {{--                                            <img src="../assets/images/community/home/news-post/comment01.jpg"--}}
+                        {{--                                                 alt="image">--}}
                         {{--                                        </a>--}}
                         {{--                                    </div>--}}
                         {{--                                    <div class="comment-details">--}}
@@ -223,7 +233,8 @@
                         {{--                                            <h6><a href="#">David Moore</a></h6>--}}
                         {{--                                            <span class="comment-time">10 Mint Ago</span>--}}
                         {{--                                        </div>--}}
-                        {{--                                        <p class="comment-content">Praesent sapien massa convallis a pellentesque non nisi curabitur non nulla sit amet nisl tempus convallis lectus.</p>--}}
+                        {{--                                        <p class="comment-content">Praesent sapien massa convallis a pellentesque non--}}
+                        {{--                                            nisi curabitur non nulla sit amet nisl tempus convallis lectus.</p>--}}
                         {{--                                        <ul class="coment-react">--}}
                         {{--                                            <li class="comment-like"><a href="#">Like(2)</a></li>--}}
                         {{--                                            <li><a href="#">Replay</a></li>--}}
@@ -240,6 +251,8 @@
             </div>
         </div>
         <!-- video show modal end -->
+
+
     </div>
 @endsection
 @include('community-frontend.layout.liveChat')
@@ -260,12 +273,14 @@
             console.log(userImag)
             console.log(postMedia)
 
+            console.log(`{{asset("storage/community/post/videos")}}` + '/' + postMedia)
             $('.userName').text(userName);
             $('.date').text(postTime);
             $('.postDescription').text(postDescription);
-            $('source').attr('src', `{{asset("storage/community/post/videos")}}`+ '/' + postMedia) ;
-            $('.uImg').attr('src', `{{asset("storage/community/profile-picture")}}`+ '/' + userImag) ;
-
+            $('.source').attr('src', `{{asset("storage/community/post/videos")}}` + '/' + postMedia);
+            $('.uImg').attr('src', `{{asset("storage/community/profile-picture")}}` + '/' + userImag);
+            let v = document.getElementById('comunityVideoPause');
+            v.load();
         })
     })
 </script>

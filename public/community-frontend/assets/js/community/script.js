@@ -41,6 +41,7 @@ document.querySelectorAll(".sidebar-list li a").forEach((link) => {
 //     }
 //   });
 // }
+
 let files
 $(document).on('change','.imgInp',function(e){
  files = this.files

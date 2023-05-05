@@ -90,9 +90,10 @@ Route::middleware(['user'])->group(function (){
     Route::get('/users/all-pages',[CommunityUserPageController::class,'index'])->name('user.all.pages');
     Route::post('/user/create_page',[CommunityUserPageController::class,'createPage'])->name('user.create.pages');
     Route::get('/user/page/{id}',[CommunityUserPageController::class,'getSinglePageView'])->name('user.page.details');
+    Route::get('/user/page/post-dlt/{id}',[CommunityUserPageController::class,'destroyPagePost'])->name('user.page.post.dlt');
     Route::post('/user/page/post',[CommunityUserPageController::class,'userPagePostStore'])->name('user.page.post.store');
+    Route::post('/user/page/post/update',[CommunityUserPageController::class,'updatePagePost'])->name('user.page.post.update');
     Route::post('/user/page/post/reaction',[CommunityUserPageController::class,'storeUserPagePostReaction'])->name('user.page.post.reaction');
-
 
 });
 

@@ -68,7 +68,7 @@
                                                 <a href="#"><img src="{{asset("community-frontend/assets/images/community/home/user-0.jpg")}}" alt=""></a>
                                                 <div class="profile-name">
                                                     <h6><a href="#">{{$requestFriend->name}}</a></h6>
-                                                    <span class="mutual-friend">10 Mutual Friends</span>
+                                                    <span class="mutual-friend">{{$requestFriend->countMutualFriend}} Mutual Friends</span>
                                                 </div>
                                             </div>
                                             <ul class="profile-statistics">
@@ -101,6 +101,8 @@
                     <div class="profile-friend-list">
                         <div class="row">
 
+{{--                            @dd($allUsers)--}}
+
                             @foreach($allUsers as $user)
                                 <div class="col-lg-3 col-md-6 col-12">
                                     <div class="single-profile-list">
@@ -115,7 +117,7 @@
                                                 <a href="#"><img src="{{asset("community-frontend/assets/images/community/home/user-0.jpg")}}" alt=""></a>
                                                 <div class="profile-name">
                                                     <h6><a href="#">{{$user->name}}</a></h6>
-                                                    <span class="mutual-friend">10 Mutual Friends</span>
+                                                    <span class="mutual-friend">{{$user->countMutualFriend}} Mutual Friends</span>
                                                 </div>
                                             </div>
                                             <ul class="profile-statistics">
@@ -140,7 +142,6 @@
                                     </div>
                                 </div>
                             @endforeach
-
 
                         </div>
                     </div>

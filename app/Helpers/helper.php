@@ -735,7 +735,7 @@ function pageFollowCount($id){
         $q->where('community_page_follow_likes.page_id','=',$id);
     })
         ->groupBy('community_pages.id')
-        ->toSql();
+        ->count();
 
     return $pageFollowCount;
 }

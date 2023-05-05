@@ -1074,13 +1074,15 @@
     }
 }
 .video-active {
+    margin-bottom: 50px;
     .single-video {
         margin-bottom: 20px;
         .video-tumbnil {
             position: relative;
             display: inline-block;
             width: 100%;
-            img {
+            line-height: 0;
+            .provider-video-poster {
                 border-radius: 12px;
                 width: 100%;
             }
@@ -1092,11 +1094,12 @@
                 text-align: center;
                 background: $theme-color;
                 color: $white;
-                font-size: 20px;
-                bottom: 0;
-                right: 0;
-                border-top-left-radius: 10px;
-                border-bottom-right-radius: 10px;
+                font-size: 18px;
+                left: 50%;
+                top: 50%;
+                transform: translate(-50%, -50%);
+                border-radius: 50%;
+                z-index: 1;
             }
         }
     }
@@ -1136,6 +1139,36 @@
     }
     .slick-list{
         margin: 0 -10px;
+    }
+}
+.service-video-modal {
+    .modal-body {
+        padding: 0;
+        line-height: 0;
+        border-radius: 5px;
+    }
+    .service-video-modal-close {
+        position: absolute;
+        top: 0;
+        right: -25px;
+        height: 25px;
+        width: 25px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        font-size: 16px;
+        color: $white;
+        border: none;
+        outline: none;
+        background: transparent;
+    }
+    .service-playing-video {
+        width: 100%;
+        height: auto;
+        border-radius: 5px;
+        border: none;
+        outline: none;
     }
 }
 // service details page end 

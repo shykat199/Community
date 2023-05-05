@@ -382,7 +382,7 @@
                         @if($extension[1]==='mp4'||$extension[1]==='mov'||$extension[1]==='wmv'||$extension[1]==='avi'||
                         $extension[1]==='mkv'||$extension[1]==='webm')
                             <div class="post-img">
-                                <video width="550" height="240" controls>
+                                <video width="470" height="240" controls>
                                     <source src="{{asset("storage/community/post/videos/".$post->userPostMedia)}}"
                                             type="video/mp4">
                                 </video>

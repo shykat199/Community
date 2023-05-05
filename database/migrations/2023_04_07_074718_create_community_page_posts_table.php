@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->bigInteger('page_id');
             $table->bigInteger('user_id');
-            $table->text('post_description');
+            $table->text('post_description')->nullable();
             $table->timestamps();
         });
     }

@@ -6,10 +6,13 @@ use App\Http\Controllers\Controller;
 use App\Models\Community\Group\CommunityUserGroup;
 use App\Models\Community\Group\CommunityUserGroupPivot;
 use App\Models\Community\Group\CommunityUserGroupPost;
+use App\Models\Community\Group\CommunityUserGroupPostComment;
 use App\Models\Community\Group\CommunityUserGroupPostFile;
 use App\Models\Community\Group\CommunityUserGroupPostReaction;
 use App\Models\Community\Page\CommunityPage;
 use App\Models\Community\Page\CommunityPagePost;
+use App\Models\Community\Page\CommunityPagePostComment;
+use App\Models\Community\Page\CommunityPagePostCommentReaction;
 use App\Models\Community\Page\CommunityPagePostFileType;
 use App\Models\Community\Page\CommunityPagePostReaction;
 use App\Models\Community\Page\UsersPage;
@@ -58,7 +61,7 @@ class CommunityUserPageController extends Controller
         $createPage = CommunityPage::create([
             'page_name' => $request->get('pageName'),
             'page_details' => $request->get('pageDescription'),
-            'user_id'=>Auth::id(),
+            'user_id' => Auth::id(),
         ]);
 
         if ($createPage) {
@@ -119,7 +122,7 @@ class CommunityUserPageController extends Controller
             })
             ->join('users', 'users.id', '=', 'community_page_posts.user_id')
             ->leftJoin('community_page_post_file_types as userPagePostFileType', function ($q) {
-                $q->on('userPagePostFileType.page_id', '=', 'community_page_posts.id');
+                $q->on('userPagePostFileType.page_post_id', '=', 'community_page_posts.id');
             })
             ->leftJoin('community_page_post_reactions as postReaction', function ($q) {
                 $q->on('postReaction.page_post_id', '=', 'community_page_posts.id');
@@ -131,7 +134,7 @@ class CommunityUserPageController extends Controller
 //            ->groupBy('users.id')
             ->get();
 
-//        return $groupPosts;
+//        return $pagePosts;
 
         return view('community-frontend.layout.singlePageView', compact('getPageDetails', 'pagePosts'));
     }
@@ -164,37 +167,53 @@ class CommunityUserPageController extends Controller
         }
     }
 
+    public function updatePagePost(Request $request)
+    {
+
+    }
+
 
     public function userPagePostStore(Request $request)
     {
 //        dd($request->all());
-        if ($request->get('imageCaption') === null || $request->hasFile('postFile') === null) {
-
+//      dd($request->get('pa    geId'));
+        if ($request->get('imageCaption') === null && $request->hasFile('postFile') === null) {
+//            dd(1);
             $storePagePost = CommunityPagePost::create([
                 'page_id' => $request->get('pageId'),
                 'user_id' => Auth::id(),
                 'post_description' => $request->get('postMessage'),
             ]);
         } else {
-
-            $image = null;
+//            dd(2);
+            $fileName = null;
             if ($request->hasFile('postFile') !== null || $request->get('imageCaption') !== null) {
-
+//                dd(3);
                 $storePagePost = CommunityPagePost::create([
                     'page_id' => $request->get('pageId'),
                     'user_id' => Auth::id(),
                     'post_description' => $request->get('postMessage'),
                 ]);
-
                 if ($request->hasFile('postFile')) {
-                    $image = Uuid::uuid() . '.' . $request->file('postFile')->getClientOriginalExtension();
-                    $name = Storage::put('/public/community/page-post/' . $image, file_get_contents($request->file("postFile")));
+                    if ($request->file('postFile')->getClientOriginalExtension() == 'mp4' || $request->file('postFile')->getClientOriginalExtension() == 'mov' ||
+                        $request->file('postFile')->getClientOriginalExtension() == 'wmv' || $request->file('postFile')->getClientOriginalExtension() == 'avi' ||
+                        $request->file('postFile')->getClientOriginalExtension() == 'mkv' || $request->file('postFile')->getClientOriginalExtension() == 'webm'
+                    ) {
+//                    dd(4);
+                        $fileName = Uuid::uuid() . '.' . $request->file('postFile')->getClientOriginalExtension();
+                        $file = Storage::put('/public/community/page-post/videos/' . $fileName, file_get_contents($request->file('postFile')));
+                    } else {
+//                    dd(5,$fileName);
+                        $fileName = Uuid::uuid() . '.' . $request->file('postFile')->getClientOriginalExtension();
+                        $file = Storage::put('/public/community/page-post/' . $fileName, file_get_contents($request->file('postFile')));
+                    }
                 }
+//                dd(6,$fileName);
 
                 $pagePostFile = CommunityPagePostFileType::create([
-                    'page_id' => $storePagePost->id,
+                    'page_post_id' => $storePagePost->id,
                     'post_comment_caption' => $request->get('imageCaption'),
-                    'group_post_file' => $image,
+                    'post_image_video' => $fileName,
                 ]);
             }
 
@@ -208,12 +227,13 @@ class CommunityUserPageController extends Controller
         }
         toastr()->error('An error has occurred please try again later.');
 
+
     }
 
     public function storeUserPagePostReaction(Request $request)
     {
 
-        $storePostReaction='';
+        $storePostReaction = '';
 
         if ($request->ajax()) {
             $userId = Auth::id();
@@ -274,6 +294,58 @@ class CommunityUserPageController extends Controller
                 'msg' => 'Something wrong.',
             ]);
         }
+
+    }
+
+    public function destroyPagePost($id)
+    {
+//        dd($id);
+
+        $postImage = CommunityPagePostFileType::where('page_post_id', '=', $id)->first();
+//        $postImage = $postImage->post_image_video;
+//        dd($postImage);
+        if ($postImage) {
+            $postImage = $postImage->post_image_video;
+//            dd($postImage);
+            $mediaExtension = explode('.', $postImage);
+
+            if ($mediaExtension[1] == 'mp4' || $mediaExtension[1] == 'mov' || $mediaExtension[1] == 'wmv' ||
+                $mediaExtension[1] == 'avi' || $mediaExtension[1] == 'mkv' || $mediaExtension[1] == 'webm'
+            ) {
+//                @dd(1);
+                $dltVideo = Storage::delete('public/community/page-post/videos/' . $postImage);
+                $dltPostComment = CommunityPagePostComment::where('page_post_id', '=', $id)->delete();
+                $dltPostFile = CommunityPagePostFileType::where('page_post_id', '=', $id)->delete();
+//                $dltPostCommentReaction = CommunityUserGroupPostCommentReaction::where('group_post_id', '=', $id)->delete();
+                $dltPostReaction = CommunityPagePostReaction::where('page_post_id', '=', $id)->delete();
+                $dltPost = CommunityPagePost::find($id)->delete();
+
+            } else {
+                $dltImag = Storage::delete('public/community/group-post/' . $postImage);
+                $dltPostComment = CommunityPagePostComment::where('page_post_id', '=', $id)->delete();
+                $dltPostFile = CommunityPagePostFileType::where('page_post_id', '=', $id)->delete();
+//                $dltPostCommentReaction = CommunityUserGroupPostCommentReaction::where('group_post_id', '=', $id)->delete();
+                $dltPostReaction = CommunityPagePostReaction::where('page_post_id', '=', $id)->delete();
+                $dltPost = CommunityPagePost::find($id)->delete();
+
+            }
+        } else {
+//            dd($id);
+            $dltPostComment = CommunityPagePostComment::where('page_post_id', '=', $id)->delete();
+            $dltPostFile = CommunityPagePostFileType::where('page_post_id', '=', $id)->delete();
+//                $dltPostCommentReaction = CommunityUserGroupPostCommentReaction::where('group_post_id', '=', $id)->delete();
+            $dltPostReaction = CommunityPagePostReaction::where('page_post_id', '=', $id)->delete();
+            $dltPost = CommunityPagePost::find($id)->delete();
+//            dd($dltPost);
+        }
+
+        if ($dltPost) {
+            return Redirect::back()->with('success', 'Post Deleted Successfully');
+        } else {
+            return Redirect::back()->with('error', 'Something Wrong');
+
+        }
+
 
     }
 }

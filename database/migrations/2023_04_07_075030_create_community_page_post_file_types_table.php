@@ -13,9 +13,9 @@ return new class extends Migration
     {
         Schema::create('community_page_post_file_types', function (Blueprint $table) {
             $table->id();
-            $table->bigInteger('page_id');
-            $table->text('post_comment_caption');
-            $table->string('post_image_video');
+            $table->bigInteger('page_post_id')->nullable();
+            $table->text('post_comment_caption')->nullable();
+            $table->string('post_image_video')->nullable();
             $table->timestamps();
         });
     }
