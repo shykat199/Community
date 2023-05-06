@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\AdminLogin;
 use App\Http\Requests\AdminRequest;
+use App\Models\Community\User\CommunityUserBan;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
@@ -19,7 +20,7 @@ class AuthController extends Controller
 
             if (Auth::user()->role === ADMIN_ROLE) {
 
-                return to_route('admin.dashboard')->with('success','Admin Login Successfully.');
+                return to_route('admin.dashboard')->with('success', 'Admin Login Successfully.');
 
             } elseif (Auth::user()->role === USER_ROLE) {
                 return to_route('community.index');
@@ -39,7 +40,7 @@ class AuthController extends Controller
         if (Auth::check() && Auth::user()) {
             if (Auth::user()->role === ADMIN_ROLE) {
 
-                return to_route('admin.dashboard')->with('success','Admin Login Successfully.');
+                return to_route('admin.dashboard')->with('success', 'Admin Login Successfully.');
 
             }
             if (Auth::user()->role === USER_ROLE) {
@@ -57,7 +58,20 @@ class AuthController extends Controller
 
         $check = $request->all();
 
-        //dd($check);
+//        dd($check);
+//        $banUserCheck = CommunityUserBan::join('users', 'users.id', '=', 'community_user_bans.user_id')
+////            ->where('community_user_bans.user_ban', '=', '1')
+//            ->where('community_user_bans.user_id', '=', Auth::id())
+//            ->selectRaw('community_user_bans.user_id,community_user_bans.user_ban')
+//            ->get();
+
+//        dd($banUserCheck);
+
+//        $getLoggedUserDetails = User::where('email', '=', $check['email'])->select('email', 'password')->first();
+////        dd($getLoggedUserDetails);
+//        if ($check['email'] === $getLoggedUserDetails->email && $check['password'] === Hash::check('plain-text', $getLoggedUserDetails->password)) {
+//            dd('check pass');
+//        }
 
         if (Auth::attempt([
             'email' => $check['email'],
@@ -73,10 +87,14 @@ class AuthController extends Controller
 
             if (Auth::user()->role === ADMIN_ROLE) {
 
-                return to_route('admin.dashboard')->with('success','Admin Login Successfully.');
+                return to_route('admin.dashboard')->with('success', 'Admin Login Successfully.');
 
             } elseif (Auth::user()->role === USER_ROLE) {
-                return to_route('community.index')->with('success','LogIn Successfully');
+
+
+                return to_route('community.index')->with('success', 'LogIn Successfully');
+
+
             } else {
                 return "Invalid User";
             }

@@ -55,6 +55,8 @@
                                     <td>
                                         <a href="{{route('community.allUser.details.groups',$group->cGroupId)}}" class="btn btn-warning">
                                             Check Users !</a>
+
+
                                     </td>
                                 </tr>
                             @endforeach

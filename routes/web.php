@@ -23,6 +23,6 @@ Route::get('/logout', [AuthController::class, 'logout'])->name('admin.logout');
 Route::get('/register/page', [AuthController::class, 'registerPage'])->name('admin.register_page');
 Route::post('/register', [AuthController::class, 'register'])->name('admin.register');
 
-Route::middleware(['auth'])->group(function(){
+Route::middleware(['auth','admin'])->group(function(){
     Route::get('/admin/dashboard',[AdminDashboardController::class,'dashboard'])->name('admin.dashboard');
 });

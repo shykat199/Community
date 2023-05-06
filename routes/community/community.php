@@ -18,6 +18,9 @@ Route::middleware(['auth','admin'])->prefix('/community')->group(function (){
     //Community users Section
     Route::get('/users',[CommunityUserDetailsController::class,'index'])->name('community.user');
     Route::get('/users/{id}',[CommunityUserDetailsController::class,'show'])->name('community.user.show');
+    Route::get('/users/ban/{id}',[CommunityUserDetailsController::class,'userBan'])->name('community.user.ban');
+    Route::get('/all-ban/users',[\App\Http\Controllers\Community\Admin\Users\UserBanController::class,'allBanUsers'])->name('community.alluser.ban');
+    Route::get('/unban/user/{id}',[\App\Http\Controllers\Community\Admin\Users\UserBanController::class,'unbanUser'])->name('community.user.unban');
 
 
     //Community group Section

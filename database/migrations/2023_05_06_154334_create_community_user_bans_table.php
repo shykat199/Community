@@ -11,8 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('community_pages', function (Blueprint $table) {
-            $table->tinyInteger('user_id')->after('page_name');
+        Schema::create('community_user_bans', function (Blueprint $table) {
+            $table->id();
+            $table->tinyInteger('user_id');
+            $table->tinyInteger('user_ban')->default('0');
+            $table->timestamps();
         });
     }
 
@@ -21,8 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('community_pages', function (Blueprint $table) {
-            $table->dropColumn('user_id');
-        });
+        Schema::dropIfExists('community_user_bans');
     }
 };

@@ -5,7 +5,7 @@
 
     <div class="content-page">
         <div class="content">
-            <h4 class="page-title">All Users</h4>
+            <h4 class="page-title">All Ban Users</h4>
             <div class="">
                 <div class="card mt-2">
 
@@ -56,8 +56,8 @@
                                         <a href="{{route('community.user.show',$user->uId)}}" class="btn btn-warning">
                                             <i class="fa-solid fa-eye"></i></a>
 
-                                        <a href="{{route('community.user.ban',$user->uId)}}" data-uId="{{$user->uId}}" class="btn btn-danger banUser">
-                                            <i class="fa-solid fa-ban"></i></a>
+                                        <a href="{{route('community.user.unban',$user->uId)}}" data-uId="{{$user->uId}}" class="btn btn-info banUser">
+                                            Active</a>
                                     </td>
                                 </tr>
                             @endforeach
@@ -88,14 +88,14 @@
             title: 'Do you want to ban this user?',
             showDenyButton: true,
             showCancelButton: false,
-            confirmButtonColor: "#DD6B55",
+            confirmButtonColor: "#6cc070",
             denyButtonColor: '#8CD4F5',
-            confirmButtonText: `Ban User`,
-            denyButtonText: `Don't Ban`,
+            confirmButtonText: `Unban User`,
+            denyButtonText: `Don't Unban`,
         }).then((result) => {
             /* Read more about isConfirmed, isDenied below */
             if (result.isConfirmed) {
-                let url = '{{ route("community.user.ban", ":slug") }}';
+                let url = '{{ route("community.user.unban", ":slug") }}';
                 url = url.replace(':slug', uId);
                 window.location.href = url
                 Swal.fire('Saved!', '', 'success')
