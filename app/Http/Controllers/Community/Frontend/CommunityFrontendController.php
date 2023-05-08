@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Community\Frontend;
 
 use App\Http\Controllers\Controller;
 use App\Models\Community\Page\CommunityPage;
+use App\Models\Community\Page\CommunityPagePostComment;
 use App\Models\Community\User\CommunityUserFollowing;
 use App\Models\Community\User\CommunityUserPost;
 use App\Models\Community\User\CommunityUserPostFileType;
@@ -44,6 +45,9 @@ class CommunityFrontendController extends Controller
                 $q->on('userPostReaction.user_post_id', '=', 'community_user_posts.id');
                 $q->where('userPostReaction.user_id', '=', Auth::id());
             })
+//            ->leftJoin('community_user_post_comments as postComments',function ($q){
+//                $q->on('community_user_posts.id','=','postComments.user_post_id');
+//            })
 
 //            ->leftJoin('community_user_profile_photos as profilePhoto', function ($q) {
 //                $q->on('profilePhoto.user_id', '=', 'users.id');
@@ -74,8 +78,67 @@ class CommunityFrontendController extends Controller
 
 //        return $allUserPosts;
 
+
+
         return view('community-frontend.index', compact('allUserPosts'));
     }
+
+
+    public function showComments(Request $request){
+
+
+        if ($request->ajax()){
+            $postComments=CommunityUserPostComment::with(['userPosts.users'])->where('user_post_id','=',$request->get('postId'))->get();
+
+
+//            dd($postComments);
+            $html='';
+
+            foreach ( $postComments as $comment) {
+                $date=Carbon::parse($comment->created_at)->diffForHumans();
+                $userName=$comment->userPosts->users->name;
+                $comments=$comment->comment_text;
+                $commentId=$comment->id;
+//                dd($userName);
+//                '<option value="' . $name->id . '"';
+                $html.='<li class="single-comment">
+                            <div class="comment-img">
+                                <a href="#">
+                                    <img
+                                        src="'.asset("community-frontend/assets/images/community/home/news-post/comment01.jpg").'"
+                                        alt="image">
+                                </a>
+                            </div>
+                            <div class="comment-details">
+                                <div class="coment-info">
+                                    <h6><a href="#">'.$userName.'</a></h6>
+                                    <span class="comment-time">'.$date.'</span>
+                                </div>
+                                <p class="comment-content">'.$comments.'</p>
+                                <ul class="coment-react">
+                                    <li class="comment-like"><a href="#">Like(2)</a></li>
+                                    <li><a href="" data-commentId="'.$commentId.'">Reply</a></li>
+                                </ul>
+                            </div>
+                        </li>';
+            }
+
+            if ($postComments){
+                return \response()->json([
+                    'status' => true,
+                    'msg' => 'Successfully Added',
+                    'postComments'=>json_encode($postComments),
+                    'html'=>$html
+                ]);
+            }
+
+        }
+
+
+
+//        return $postComments;
+    }
+
 
     public function addUserFollow(Request $request)
     {

@@ -170,6 +170,59 @@ class CommunityUserPageController extends Controller
     public function updatePagePost(Request $request)
     {
 
+//        dd($request->all());
+
+        if ($request->get('imageCaption') === null && $request->hasFile('postFile1') === null) {
+//            dd(1);
+            $userPost = CommunityPagePost::find($request->get('postId'))->update([
+//                'user_id' => Auth::id(),
+                'post_description' => $request->get('postMessage')
+            ]);
+
+        } else {
+//            dd(2);
+            $fileName = null;
+            if ($request->hasFile('postFile1') !== null || $request->get('imageCaption') !== null) {
+//                dd(2);
+                $userPost = CommunityPagePost::find($request->get('postId'))->update([
+//                    'user_id' => Auth::id(),
+                    'post_description' => $request->get('postMessage')
+                ]);
+//                dd(4);
+                if ($request->hasFile('postFile1')) {
+//                    dd(5);
+                    if ($request->file('postFile1')->getClientOriginalExtension() == 'mp4' ||
+                        $request->file('postFile1')->getClientOriginalExtension() == 'mov' || $request->file('postFile1')->getClientOriginalExtension() == 'wmv' ||
+                        $request->file('postFile1')->getClientOriginalExtension() == 'avi' || $request->file('postFile1')->getClientOriginalExtension() == 'mkv' ||
+                        $request->file('postFile1')->getClientOriginalExtension() == 'webm'
+                    ) {
+//                    dd(4);
+                        $fileName = Uuid::uuid() . '.' . $request->file('postFile')->getClientOriginalExtension();
+                        $file = Storage::put('/public/community/page-post/videos/' . $fileName, file_get_contents($request->file('postFile')));
+                    } else {
+//                    dd(5,$fileName);
+                        $fileName = Uuid::uuid() . '.' . $request->file('postFile')->getClientOriginalExtension();
+                        $file = Storage::put('/public/community/page-post/' . $fileName, file_get_contents($request->file('postFile')));
+                    }
+
+                    $postImageCaption = CommunityPagePostFileType::where('page_post_id', $request->get('postId'))->update([
+                        'post_image_video' => $fileName,
+                        'post_comment_caption' => $request->get('imageCaption'),
+                    ]);
+                }
+            }
+        }
+
+        if ($userPost || $postImageCaption) {
+//            toastr('dd', 'success');
+            toastr()->success('Post has been updated successfully!', 'Congrats');
+            return Redirect::back();
+        } else {
+            toastr()->error('An error has occurred please try again later.');
+
+        }
+
+
     }
 
 
@@ -177,7 +230,7 @@ class CommunityUserPageController extends Controller
     {
 //        dd($request->all());
 //      dd($request->get('pa    geId'));
-        if ($request->get('imageCaption') === null && $request->hasFile('postFile') === null) {
+        if ($request->get('imageCaption') && $request->get('imageCaption') === null) {
 //            dd(1);
             $storePagePost = CommunityPagePost::create([
                 'page_id' => $request->get('pageId'),
@@ -195,6 +248,7 @@ class CommunityUserPageController extends Controller
                     'post_description' => $request->get('postMessage'),
                 ]);
                 if ($request->hasFile('postFile')) {
+
                     if ($request->file('postFile')->getClientOriginalExtension() == 'mp4' || $request->file('postFile')->getClientOriginalExtension() == 'mov' ||
                         $request->file('postFile')->getClientOriginalExtension() == 'wmv' || $request->file('postFile')->getClientOriginalExtension() == 'avi' ||
                         $request->file('postFile')->getClientOriginalExtension() == 'mkv' || $request->file('postFile')->getClientOriginalExtension() == 'webm'
@@ -207,14 +261,12 @@ class CommunityUserPageController extends Controller
                         $fileName = Uuid::uuid() . '.' . $request->file('postFile')->getClientOriginalExtension();
                         $file = Storage::put('/public/community/page-post/' . $fileName, file_get_contents($request->file('postFile')));
                     }
+                    $pagePostFile = CommunityPagePostFileType::create([
+                        'page_post_id' => $storePagePost->id,
+                        'post_comment_caption' => $request->get('imageCaption'),
+                        'post_image_video' => $fileName,
+                    ]);
                 }
-//                dd(6,$fileName);
-
-                $pagePostFile = CommunityPagePostFileType::create([
-                    'page_post_id' => $storePagePost->id,
-                    'post_comment_caption' => $request->get('imageCaption'),
-                    'post_image_video' => $fileName,
-                ]);
             }
 
         }
@@ -304,7 +356,8 @@ class CommunityUserPageController extends Controller
         $postImage = CommunityPagePostFileType::where('page_post_id', '=', $id)->first();
 //        $postImage = $postImage->post_image_video;
 //        dd($postImage);
-        if ($postImage) {
+        if ($postImage !== null) {
+//            dd(1);
             $postImage = $postImage->post_image_video;
 //            dd($postImage);
             $mediaExtension = explode('.', $postImage);
@@ -330,7 +383,7 @@ class CommunityUserPageController extends Controller
 
             }
         } else {
-//            dd($id);
+//            dd(2);
             $dltPostComment = CommunityPagePostComment::where('page_post_id', '=', $id)->delete();
             $dltPostFile = CommunityPagePostFileType::where('page_post_id', '=', $id)->delete();
 //                $dltPostCommentReaction = CommunityUserGroupPostCommentReaction::where('group_post_id', '=', $id)->delete();

@@ -18,6 +18,7 @@ Route::middleware(['user'])->group(function (){
     Route::get('/user/post/delete/{id}',[CommunityFrontendController::class,'destroy'])->name('community.user.post.delete');
     Route::post('/user/post/update',[CommunityFrontendController::class,'updatePost'])->name('community.user.post.update');
     Route::post('/user/post/comments',[CommunityFrontendController::class,'storeComment'])->name('community.user.post.comment');
+    Route::get('get/user/post/comments',[CommunityFrontendController::class,'showComments'])->name('user.post.comment');
 
     //user details
     Route::post('/user-friend/accept_request',[CommunityUserFriendRequestController::class,'acceptRequest'])->name('community.user.acceptRequest');

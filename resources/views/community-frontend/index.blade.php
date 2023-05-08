@@ -505,39 +505,17 @@
                             </a>
                         </li>
                     </ul>
-                    <ul class="post-comment-list">
-                        <li class="single-comment">
-                            {{--                            <div class="comment-img">--}}
-                            {{--                                <a href="#">--}}
-                            {{--                                    <img--}}
-                            {{--                                        src="{{asset("community-frontend/assets/images/community/home/news-post/comment01.jpg")}}"--}}
-                            {{--                                        alt="image">--}}
-                            {{--                                </a>--}}
-                            {{--                            </div>--}}
-                            {{--                            <div class="comment-details">--}}
-                            {{--                                <div class="coment-info">--}}
-                            {{--                                    <h6><a href="#">David Moore</a></h6>--}}
-                            {{--                                    <span class="comment-time">10 Mint Ago</span>--}}
-                            {{--                                </div>--}}
-                            {{--                                <p class="comment-content">Donec rutrum congue leo eget malesuada nulla quis lorem--}}
-                            {{--                                    ut libero malesuada feugiat donec rutrum congue leo eget malesuada donec rutrum--}}
-                            {{--                                    congue leo eget malesuada. Praesent sapien massa convallis a pellentesque non--}}
-                            {{--                                    nisi curabitur non nulla sit amet nisl tempus convallis lectus.</p>--}}
-                            {{--                                <ul class="coment-react">--}}
-                            {{--                                    <li class="comment-like"><a href="#">Like(2)</a></li>--}}
-                            {{--                                    <li><a href="#">Replay</a></li>--}}
-                            {{--                                </ul>--}}
-                            {{--                            </div>--}}
-                        </li>
+                    <ul class="post-comment-list" >
+
 
                     </ul>
                     <div class="more-comment">
-                        <a href="#">More Comments+</a>
+                        <a class="checkCmt" data-postIdd="{{$post->postId}}">More Comments+</a>
                     </div>
 
                     <div class="new-comment">
 
-{{--                        <input type="hidden" class="postId" name="postId" value="{{$post->postId}}">--}}
+                        {{--                        <input type="hidden" class="postId" name="postId" value="{{$post->postId}}">--}}
                         <a href="#" class="new-comment-img">
 
                             @if(!empty($post->users->userProfileImages[0]) && isset($post->users->userProfileImages[0])?$post->users->userProfileImages[0]:'')
@@ -553,14 +531,15 @@
                         </a>
                         <div class="new-comment-input">
 
-                            <input type="text" data-postId="{{$post->postId}}" class="postComments" name="postComment" placeholder="Write a comment....">
+                            <input type="text" data-postId="{{$post->postId}}" class="postComments" name="postComment"
+                                   placeholder="Write a comment....">
                             <div class="attached-icon">
                                 <a href="#"><i class="fa fa-camera" aria-hidden="true"></i></a>
                             </div>
-{{--                            <input type="text" data-postId="{{$post->postId}}" class="postComments" name="postComment" placeholder="Write a comment....">--}}
-{{--                            <div class="attached-icon">--}}
-{{--                                <a href="#"><i class="fa fa-camera" aria-hidden="true"></i></a>--}}
-{{--                            </div>--}}
+                            {{--                            <input type="text" data-postId="{{$post->postId}}" class="postComments" name="postComment" placeholder="Write a comment....">--}}
+                            {{--                            <div class="attached-icon">--}}
+                            {{--                                <a href="#"><i class="fa fa-camera" aria-hidden="true"></i></a>--}}
+                            {{--                            </div>--}}
                         </div>
                     </div>
 
@@ -646,14 +625,14 @@
 
         $('.postComments').keydown(function (e) {
             if (e.keyCode === 13) {
-               let comment= e.target.value;
-               let postId= $(this).attr('data-postId');
+                let comment = e.target.value;
+                let postId = $(this).attr('data-postId');
                 $(this).val('');
                 // console.log($(this));
                 // return false;
 
                 // console.log(comment,postId);
-                if(comment !== ''&& postId !== ''){
+                if (comment !== '' && postId !== '') {
                     $.ajax({
                         url: '{{route('community.user.post.comment')}}',
                         type: 'POST',
@@ -686,7 +665,6 @@
 
     })
 </script>
-
 
 <script>
 
@@ -739,5 +717,31 @@
             }
         })
     });
+</script>
+
+<script>
+    $(document).on('click', '.checkCmt', function () {
+        let postId = $(this).attr('data-postIdd');
+        console.log(postId);
+        let htmlData = $(this).parents('.posted-content').find('.post-comment-list')
+        $.ajax({
+            url: "{{route('user.post.comment')}}",
+            post: "GET",
+            data: {
+                postId: postId
+            },
+            success: function (response) {
+
+                if (response.status == true) {
+
+                    // console.log(response.html,'cmt');
+                    htmlData.html(response.html);
+                }
+
+
+            },
+        })
+
+    })
 </script>
 

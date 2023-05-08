@@ -2,6 +2,7 @@
 
 namespace App\Models\Community\User;
 
+use App\Models\Community\User_Post\CommunityUserPostComment;
 use App\Models\Community\User_Post\CommunityUserPostReaction;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -20,5 +21,10 @@ class CommunityUserPost extends Model
     public  function users(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {
         return $this->belongsTo(User::class,'user_id');
+    }
+
+    public function comments(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(CommunityUserPostComment::class,'user_post_id');
     }
 }

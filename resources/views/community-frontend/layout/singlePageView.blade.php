@@ -60,10 +60,11 @@
                                 </div>
                                 Photo
                             </button>
+
                             <div class="modal fade" id="photoModal" tabindex="-1" aria-labelledby="photoModalLabel"
                                  aria-hidden="true">
                                 <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
-                                    <div class="modal-content post-modal-content">
+                                    <div class="modal-content post-modal-content" style="overflow-y: auto ">
                                         <div class="modal-header">
                                             <div class="post-modal-title">
                                                 <h6 class="modal-title" id="photoModalLabel">Create Post</h6>
@@ -72,39 +73,65 @@
                                                     aria-label="Close"><i class="fa fa-times" aria-hidden="true"></i>
                                             </button>
                                         </div>
+
+                                        @php
+                                            $profilePic=\App\Models\Community\User_Profile\CommunityUserProfilePhoto::with('users.userProfileImages')->leftJoin('users','users.id','=','community_user_profile_photos.user_id')
+                                        ->where('users.id','=',Auth::id())
+                                        ->selectRaw('users.id as user_id,community_user_profile_photos.user_profile,community_user_profile_photos.created_at,community_user_profile_photos.id as ppId')
+                                        ->latest()
+                                        ->first();
+                                        @endphp
+                                        {{--                                                                        @dd($profilePic)--}}
                                         <div class="modal-body post-modal-body">
                                             <div class="my-profile">
-                                                <div class="my-profile-img"><a href="#"><img
-                                                            src="{{asset("community-frontend/assets/images/community/home/right/birthday01.jpg")}}"
-                                                            alt="img"></a></div>
+                                                <div class="my-profile-img">
+
+                                                    @if(!empty($profilePic->users->userProfileImages[0]) && isset($profilePic->users->userProfileImages[0])?$profilePic->users->userProfileImages[0]:'')
+
+                                                        @if(!empty($profilePic->users->userProfileImages[0]) && isset($profilePic->users->userProfileImages[0])?$profilePic->users->userProfileImages[0]:'')
+                                                            <a href=""><img
+                                                                    src="{{asset("storage/community/profile-picture/".$profilePic->users->userProfileImages[0]->user_profile)}}"
+                                                                    alt="image"></a>
+                                                        @else
+                                                            <a href=""><img
+                                                                    src="{{asset("community-frontend/assets/images/community/home/news-post/Athore01.jpg")}}"
+                                                                    alt="image"></a>
+                                                        @endif
+                                                    @endif
+
+
+                                                </div>
                                                 <div class="my-profile-name">{{Auth::user()->name}}</div>
                                             </div>
                                             <div class="post-text">
+                                                <div class="post-text">
                                             <textarea id="postArea" name="imageCaption"
                                                       placeholder="Write Something here..."></textarea>
+                                                </div>
                                             </div>
+
                                             <div class="upload-media">
                                                 <div class="photo-place">
-                                                    <span class="icon">
-                                                        <svg xmlns="http://www.w3.org/2000/svg" version="1.1" x="0"
-                                                             y="0" viewBox="0 0 24 24"
-                                                             style="enable-background:new 0 0 512 512"
-                                                             xml:space="preserve" class=""><g><path
-                                                                    d="m22.448 7.608-1.2 8.58a3.142 3.142 0 0 1-1.257 2.312.311.311 0 0 1-.488-.244V9.665A3.829 3.829 0 0 0 15.335 5.5H5.923c-.3 0-.307-.27-.286-.39a3.134 3.134 0 0 1 1.112-2.085 3.2 3.2 0 0 1 2.442-.473l10.561 1.48a3.211 3.211 0 0 1 2.223 1.134 3.191 3.191 0 0 1 .473 2.442zM18 9.665v8.668A2.358 2.358 0 0 1 15.335 21H4.667A2.357 2.357 0 0 1 2 18.333V9.665A2.357 2.357 0 0 1 4.667 7h10.668A2.358 2.358 0 0 1 18 9.665zM13.25 14a.75.75 0 0 0-.75-.75h-1.75V11.5a.75.75 0 0 0-1.5 0v1.75H7.5a.75.75 0 0 0 0 1.5h1.75v1.75a.75.75 0 0 0 1.5 0v-1.75h1.75a.75.75 0 0 0 .75-.75z"
-                                                                    fill="#000000" data-original="#000000"
-                                                                    class=""></path></g></svg>
-                                                    </span>
+                                                        <span class="icon">
+                                                            <svg xmlns="http://www.w3.org/2000/svg" version="1.1" x="0"
+                                                                 y="0" viewBox="0 0 24 24"
+                                                                 style="enable-background:new 0 0 512 512"
+                                                                 xml:space="preserve" class=""><g><path
+                                                                        d="m22.448 7.608-1.2 8.58a3.142 3.142 0 0 1-1.257 2.312.311.311 0 0 1-.488-.244V9.665A3.829 3.829 0 0 0 15.335 5.5H5.923c-.3 0-.307-.27-.286-.39a3.134 3.134 0 0 1 1.112-2.085 3.2 3.2 0 0 1 2.442-.473l10.561 1.48a3.211 3.211 0 0 1 2.223 1.134 3.191 3.191 0 0 1 .473 2.442zM18 9.665v8.668A2.358 2.358 0 0 1 15.335 21H4.667A2.357 2.357 0 0 1 2 18.333V9.665A2.357 2.357 0 0 1 4.667 7h10.668A2.358 2.358 0 0 1 18 9.665zM13.25 14a.75.75 0 0 0-.75-.75h-1.75V11.5a.75.75 0 0 0-1.5 0v1.75H7.5a.75.75 0 0 0 0 1.5h1.75v1.75a.75.75 0 0 0 1.5 0v-1.75h1.75a.75.75 0 0 0 .75-.75z"
+                                                                        fill="#000000" data-original="#000000"
+                                                                        class=""></path></g></svg>
+                                                        </span>
                                                     <h6 class="title">Add Photos/Videos</h6>
                                                     <p class="small-text">or drag and drop</p>
                                                 </div>
                                                 <div class="preview-file">
-                                                    <img id="previewImg" src="#" alt="">
-                                                    <button type="button" id="imgClose"><i class="fa fa-times"
-                                                                                           aria-hidden="true"></i>
+                                                    <img class="previewImg" src="#" alt="">
+                                                    <button type="button" class="imgClose"><i class="fa fa-times"
+                                                                                              aria-hidden="true"></i>
                                                     </button>
                                                 </div>
                                                 <div class="media-input">
-                                                    <input name="postFile" accept="" type='file' id="imgInp"/>
+                                                    <input accept="" name="postFile" type='file' class="imgInp"/>
                                                 </div>
                                             </div>
                                         </div>
@@ -237,10 +264,7 @@
                     {{--                    @dd()--}}
                     <div class="post-option">
 
-
                         @if($isAdmin)
-
-
 
                             <button type="button" class="dropdown-toggle" id="dropdownMenuButton1"
                                     data-bs-toggle="dropdown" aria-expanded="false"><i class="fa fa-ellipsis-h"
@@ -260,6 +284,7 @@
                                 {{--                            @dd($post->grpPostId)--}}
                                 <li><a href="{{route('user.page.post.dlt',$post->pagePostId)}}"
                                        data-id="{{$post->pagePostId}}"
+                                       data-userProfile="{{$post->users->userProfileImages[0]!=null && isset($post->users->userProfileImages[0])? $post->users->userProfileImages[0]->user_profile:''}}"
                                        class="post-option-item dltPost"><i class="fa fa-trash-o"
                                                                            aria-hidden="true"></i> Delete Post</a>
                                 </li>
@@ -446,7 +471,7 @@
         <div class="modal fade" id="photoModal1" tabindex="-1" aria-labelledby="photoModalLabel"
              aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
-                <div class="modal-content post-modal-content">
+                <div class="modal-content post-modal-content" style="overflow-y: auto ">
                     <div class="modal-header">
                         <div class="post-modal-title">
                             <h6 class="modal-title" id="photoModalLabel">Edit Post</h6>
@@ -455,15 +480,36 @@
                                 aria-label="Close"><i class="fa fa-times" aria-hidden="true"></i>
                         </button>
                     </div>
+
                     <form action="{{route('user.page.post.update')}}" method="post"
                           enctype="multipart/form-data">
                         @csrf
                         <input type="hidden" name="postId" class="postId" value="">
                         <div class="modal-body post-modal-body">
+
+                            @php
+                                $profilePic=\App\Models\Community\User_Profile\CommunityUserProfilePhoto::with('users.userProfileImages')->leftJoin('users','users.id','=','community_user_profile_photos.user_id')
+                            ->where('users.id','=',Auth::id())
+                            ->selectRaw('users.id as user_id,community_user_profile_photos.user_profile,community_user_profile_photos.created_at,community_user_profile_photos.id as ppId')
+                            ->latest()
+                            ->first();
+                            @endphp
+
                             <div class="my-profile">
-                                <div class="my-profile-img"><a href="#"><img
-                                            src="{{asset("community-frontend/assets/images/community/home/right/birthday01.jpg")}}"
-                                            alt="img"></a></div>
+                                <div class="my-profile-img">
+                                    @if(!empty($profilePic->users->userProfileImages[0]) && isset($profilePic->users->userProfileImages[0])?$profilePic->users->userProfileImages[0]:'')
+
+                                        @if(!empty($profilePic->users->userProfileImages[0]) && isset($profilePic->users->userProfileImages[0])?$profilePic->users->userProfileImages[0]:'')
+                                            <a href=""><img
+                                                    src="{{asset("storage/community/profile-picture/".$profilePic->users->userProfileImages[0]->user_profile)}}"
+                                                    alt="image"></a>
+                                        @else
+                                            <a href=""><img
+                                                    src="{{asset("community-frontend/assets/images/community/home/news-post/Athore01.jpg")}}"
+                                                    alt="image"></a>
+                                        @endif
+                                    @endif
+                                </div>
                                 <div class="my-profile-name">{{Auth::user()->name}}</div>
                             </div>
                             <div class="post-text">
@@ -488,12 +534,12 @@
                                     <p class="small-text">or drag and drop</p>
                                 </div>
                                 <div class="preview-file">
-                                    {{--                                        <div class="post-img">--}}
-                                    {{--                                            <video width="550" height="240" controls>--}}
-                                    {{--                                                <source class="videoSrc" src="#" type="video/mp4">--}}
-                                    {{--                                            </video>--}}
-                                    {{--                                        </div>--}}
-                                    <img class="previewImg postMedia" src="#" alt="">
+{{--                                                                            <div class="post-img">--}}
+{{--                                                                                <video width="550" height="240" controls>--}}
+{{--                                                                                    <source class="videoSrc" src="#" type="video/mp4">--}}
+{{--                                                                                </video>--}}
+{{--                                                                            </div>--}}
+                                    <img class="previewImg postMedia" src="" alt="">
                                     <button type="button" class="imgClose"><i class="fa fa-times"
                                                                               aria-hidden="true"></i>
                                     </button>
@@ -619,4 +665,26 @@
             }
         })
     });
+</script>
+
+<script>
+    $(document).on('click','.btnEdit',function (){
+        let postId=$(this).attr('data-postId');
+        let mediaDetails=$(this).attr('data-mediaDetails');
+        let postDetails=$(this).attr('data-postDetails');
+        let userProfilePicture=$(this).attr('data-userProfile');
+
+        $('.postDescription').val(postDetails);
+        $('.postId').val(postId);
+        let post = mediaDetails.split('.');
+        if (post[1] === 'mp4' || post[1] === 'mov' || post[1] === 'wmv' || post[1] === 'avi' ||
+            post[1] === 'mkv' || post[1] === 'webm') {
+            $('.videoSrc').attr('src', `{{asset("storage/community/page-post/videos")}}` + "/" + mediaDetails);
+
+        } else {
+            $('.previewImg').attr('src', `{{asset("storage/community/page-post/")}}` + "/" + mediaDetails);
+
+        }
+
+    })
 </script>

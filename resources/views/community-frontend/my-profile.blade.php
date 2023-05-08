@@ -7,6 +7,7 @@
         <div class="row">
             <div class="col-lg-12">
                 <div class="full-profile-box">
+
                     <div class="full-profile-cover">
                         <img
                             {{--                            src="{{asset("community-frontend/assets/images/community/myProfile/my-profile-cover.jpg")}}"--}}
@@ -79,6 +80,7 @@
 
                         </div>
                     </div>
+
                     <div class="full-profile-info">
                         <div class="full-profile-left">
                             <div class="profile-img">
@@ -187,6 +189,7 @@
                                 </a></li>
                         </ul>
                     </div>
+
                     <div class="profile-down-part">
                         <ul class="nav nav-tabs profile-dwon-tab" id="myTab" role="tablist">
                             <li class="nav-item" role="presentation">
@@ -259,7 +262,6 @@
                                     </a>
                                 </li>
                             @endif
-
 
                         </ul>
                     </div>

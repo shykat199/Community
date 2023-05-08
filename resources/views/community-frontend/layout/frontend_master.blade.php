@@ -231,6 +231,8 @@
 <!-- community header area end  -->
 <!-- community main content area start  -->
 <section class="all-content">
+
+    @yield('group.mainProfile')
     <!-- news feed content start  -->
     @yield('frontend.user_setting')
     @yield('frontend.others.birthday')
