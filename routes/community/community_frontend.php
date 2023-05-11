@@ -10,6 +10,7 @@ use App\Http\Controllers\Community\Frontend\User\CommunityUserFriendBirthday;
 use App\Http\Controllers\Community\Frontend\Group\CommunityUserGroupController;
 use App\Http\Controllers\Community\Frontend\Page\CommunityUserPageController;
 use App\Http\Controllers\Community\Frontend\Video\VideoController;
+use App\Http\Controllers\Community\Frontend\GetCommentController;
 
 Route::middleware(['user'])->group(function (){
 
@@ -23,6 +24,8 @@ Route::middleware(['user'])->group(function (){
     //user details
     Route::post('/user-friend/accept_request',[CommunityUserFriendRequestController::class,'acceptRequest'])->name('community.user.acceptRequest');
     Route::post('/user/post',[CommunityUserPostController::class,'store'])->name('community.user.post');
+    Route::post('/user/store/post-comment',[CommunityUserPostController::class,'storeCommentOfComment'])->name('community.user.store.commentsOfComments');
+
 
     //User Profile
     Route::get('/user/my-profile',[UserProfileDetailsController::class,'index'])->name('user.my-profile');
@@ -85,6 +88,12 @@ Route::middleware(['user'])->group(function (){
     Route::post('/user/group/post',[CommunityUserGroupController::class,'userGroupPostStore'])->name('user.group.post.store');
     Route::post('/user/group/post/reaction',[CommunityUserGroupController::class,'storeUserGroupPostReaction'])->name('user.group.post.reaction');
     Route::post('/user/group/remove',[CommunityUserGroupController::class,'destroy'])->name('user.group.remove');
+    Route::post('/user/group/upload-cover-photo',[CommunityUserGroupController::class,'storeGroupCoverPhoto'])->name('user.group.cover.upload');
+    Route::post('/user/group/upload-profile-photo',[CommunityUserGroupController::class,'storeGroupProfilePhoto'])->name('user.group.profile.upload');
+    Route::post('/user/group/store/post-commentOfComment',[CommunityUserGroupController::class,'storeGroupPostCommentOfComment'])->name('community.user.store.group.commentsOfComments');
+    Route::post('/user/group/store/post-commentOfComment',[CommunityUserGroupController::class,'storeGroupPostComment'])->name('community.store.user.group.post.comment');
+
+
 
 
     //Page Section
@@ -95,6 +104,12 @@ Route::middleware(['user'])->group(function (){
     Route::post('/user/page/post',[CommunityUserPageController::class,'userPagePostStore'])->name('user.page.post.store');
     Route::post('/user/page/post/update',[CommunityUserPageController::class,'updatePagePost'])->name('user.page.post.update');
     Route::post('/user/page/post/reaction',[CommunityUserPageController::class,'storeUserPagePostReaction'])->name('user.page.post.reaction');
+    Route::post('/user/page/upload-profile-photo',[CommunityUserPageController::class,'storePageProfilePhoto'])->name('user.page.profile.upload');
+    Route::post('/user/page/upload-cover-photo',[CommunityUserPageController::class,'storePageCoverPhoto'])->name('user.page.cover.upload');
+
+
+    //get all Comments........
+    Route::get('/user/get-all-comments',[GetCommentController::class,'getAllComments'])->name('users.get-all-comments');
 
 });
 

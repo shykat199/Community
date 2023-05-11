@@ -10,11 +10,13 @@ use App\Models\Community\Group\CommunityUserGroupPostComment;
 use App\Models\Community\Group\CommunityUserGroupPostFile;
 use App\Models\Community\Group\CommunityUserGroupPostReaction;
 use App\Models\Community\Page\CommunityPage;
+use App\Models\Community\Page\CommunityPageCoverPhoto;
 use App\Models\Community\Page\CommunityPagePost;
 use App\Models\Community\Page\CommunityPagePostComment;
 use App\Models\Community\Page\CommunityPagePostCommentReaction;
 use App\Models\Community\Page\CommunityPagePostFileType;
 use App\Models\Community\Page\CommunityPagePostReaction;
+use App\Models\Community\Page\CommunityPageProfilePhoto;
 use App\Models\Community\Page\UsersPage;
 use Faker\Provider\Uuid;
 use Illuminate\Http\Request;
@@ -401,4 +403,60 @@ class CommunityUserPageController extends Controller
 
 
     }
+
+
+
+    public function storePageProfilePhoto(Request $request){
+
+
+//        dd($request->all());
+        $fileName=null;
+        if ($request->hasFile('grpProfile')){
+
+            $fileName = Uuid::uuid() . '.' . $request->file('grpProfile')->getClientOriginalExtension();
+            $file = Storage::put('/public/community/page-post/profile/' . $fileName, file_get_contents($request->file('grpProfile')));
+
+        }
+        $storeProfilePicture=CommunityPageProfilePhoto::updateOrCreate([
+            'page_id'=>$request->get('pageId'),
+        ],
+        [
+            'page_profile_photo'=>$fileName,
+        ]);
+
+        if ($storeProfilePicture){
+            return \redirect()->back()->with('success','Profile has uploaded');
+        }
+
+
+    }
+
+
+    public function storePageCoverPhoto(Request $request){
+
+
+//        dd($request->all());
+        $fileName=null;
+        if ($request->hasFile('grpCover')){
+
+            $fileName = Uuid::uuid() . '.' . $request->file('grpCover')->getClientOriginalExtension();
+            $file = Storage::put('/public/community/page-post/cover/' . $fileName, file_get_contents($request->file('grpCover')));
+
+        }
+        $storeCoverPicture=CommunityPageCoverPhoto::updateOrCreate([
+            'page_id'=>$request->get('pageId'),
+        ],
+        [
+            'page_cover_photo'=>$fileName,
+        ]);
+
+        if ($storeCoverPicture){
+            return \redirect()->back()->with('success','Cover photo has uploaded');
+        }else{
+            return  \redirect()->back()->with('error','Something error');
+        }
+
+
+    }
+
 }

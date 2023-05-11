@@ -211,7 +211,7 @@
 
         </div>
 
-        {{--                @dd($allUserPosts)--}}
+        {{--                        @dd($allUserPosts)--}}
         @foreach($allUserPosts as $post)
 
             {{--            @php--}}
@@ -371,11 +371,9 @@
                 <div class="post-body">
                     <p class="post-status">{{$post->postDescription}}</p>
 
-                    {{--                    @dd(explode('.',$post->userPostMedia))--}}
                     @php
                         $extension=explode('.',$post->userPostMedia);
                     @endphp
-                    {{--                    @dd($extension[1])--}}
 
                     @if($post->userPostMedia)
 
@@ -394,9 +392,7 @@
                         @endif
 
                     @endif
-                    {{--                    <div class="post-img">--}}
-                    {{--                        <img src="{{asset("community-frontend/assets/images/community/home/news-post/post-1.jpg")}}" alt="">--}}
-                    {{--                    </div>--}}
+
                     <ul class="post-react-widget">
                         <li class="post-react like-react">
                             <a href="#">
@@ -465,6 +461,7 @@
                                         alt="React"></li>
                             </ul>
                         </li>
+
                         <li class="post-react">
                             <a href="#">
                                 <div class="react-icon">
@@ -505,8 +502,10 @@
                             </a>
                         </li>
                     </ul>
-                    <ul class="post-comment-list" >
 
+                    <ul class="post-comment-list">
+
+                    {{--All Comments List--}}
 
                     </ul>
                     <div class="more-comment">
@@ -630,7 +629,6 @@
                 $(this).val('');
                 // console.log($(this));
                 // return false;
-
                 // console.log(comment,postId);
                 if (comment !== '' && postId !== '') {
                     $.ajax({
@@ -647,7 +645,7 @@
                             if (response.success === true) {
                                 toastr.success(response.msg);
                                 // console.log($(this),'this')
-                                // $(this).val('');
+                                $(this).val('');
                                 // console.log(response.data);
 
                             } else {
@@ -720,6 +718,7 @@
 </script>
 
 <script>
+
     $(document).on('click', '.checkCmt', function () {
         let postId = $(this).attr('data-postIdd');
         console.log(postId);
@@ -735,6 +734,7 @@
                 if (response.status == true) {
 
                     // console.log(response.html,'cmt');
+                    $('.cmtText').val('');
                     htmlData.html(response.html);
                 }
 
@@ -745,3 +745,49 @@
     })
 </script>
 
+<script>
+    $(document).on('click', '.replay-tag', function () {
+
+        $(this).parents('.comment-details').find('.replay-new-comment').css('display', 'block');
+    })
+
+    $(document).keypress('.cmtText', function (e) {
+        let cmtId = e.target.dataset.cmtid;
+        let user_post_id = e.target.dataset.userpostid;
+        let cmtText = e.target.value;
+        let key = e.which;
+        // console.log(user_post_id);
+// return false;
+        if (key === 13) {
+            // console.log(cmtText);
+
+            $.ajax({
+                url: "{{route('community.user.store.commentsOfComments')}}",
+                type: 'POST',
+                data: {
+                    cmtId: cmtId,
+                    cmtText: cmtText,
+                    user_post_id: user_post_id,
+                    '_token': '{{csrf_token()}}'
+                },
+                success: function (response) {
+                    // console.log(response);
+
+                    if (response.success === true) {
+                        toastr.success(response.msg);
+                        $('.cmtText').val('');
+                        $('.comment-parent-'+cmtId).append(response.data);
+                    } else {
+                        toastr.error(response.msg);
+                    }
+                },
+                error: function (err) {
+
+                    toastr.error("Error with AJAX callback !");
+                }
+            })
+        }
+
+
+    })
+</script>

@@ -33,7 +33,7 @@ class CommunityFrontendController extends Controller
             $friendList[] = $friend->uId;
         }
 
-        $allUserPosts = CommunityUserPost::with('users.userProfileImages')
+        $allUserPosts = CommunityUserPost::with(['users.userProfileImages', 'comments'])
             ->join('users', function ($q) use ($friendList) {
                 $q->on('users.id', '=', 'community_user_posts.user_id');
                 $q->whereIn('users.id', $friendList);
@@ -49,18 +49,6 @@ class CommunityFrontendController extends Controller
 //                $q->on('community_user_posts.id','=','postComments.user_post_id');
 //            })
 
-//            ->leftJoin('community_user_profile_photos as profilePhoto', function ($q) {
-//                $q->on('profilePhoto.user_id', '=', 'users.id');
-//            })
-//            ->selectRaw("
-//            GROUP_CONCAT( DISTINCT users.id ORDER BY users.id DESC ) as uId,GROUP_CONCAT( DISTINCT users.name ORDER BY users.id DESC) as name,
-//            GROUP_CONCAT( DISTINCT community_user_posts.post_description ORDER BY community_user_posts.id DESC) as postDescription,
-//            GROUP_CONCAT( DISTINCT community_user_posts.created_at ORDER BY community_user_posts.id DESC) as created_at,
-//            GROUP_CONCAT( DISTINCT postMedia.post_id ORDER BY postMedia.id DESC) as post_id,
-//            GROUP_CONCAT( DISTINCT postMedia.post_image_video ORDER BY postMedia.id DESC) as userPostMedia,
-//            GROUP_CONCAT( DISTINCT postMedia.caption ORDER BY postMedia.id DESC) as caption,
-//            GROUP_CONCAT( DISTINCT community_user_posts.id ORDER BY community_user_posts.id DESC) as postId,
-//            GROUP_CONCAT( DISTINCT profilePhoto.user_profile ORDER BY profilePhoto.id DESC) as user_profile")
 
             ->selectRaw("
             users.id as user_id,users.name,
@@ -70,70 +58,128 @@ class CommunityFrontendController extends Controller
             postMedia.post_image_video as userPostMedia,
             postMedia.caption as caption,
             community_user_posts.id as postId,
+            community_user_posts.id,
             userPostReaction.reaction_type,
             userPostReaction.id as reactionId
             ")
             ->latest()
             ->get();
-
+//            return $allUserPosts;
 //        return $allUserPosts;
-
 
 
         return view('community-frontend.index', compact('allUserPosts'));
     }
 
 
-    public function showComments(Request $request){
+    public function showComments(Request $request)
+    {
 
+        if ($request->ajax()) {
 
-        if ($request->ajax()){
-            $postComments=CommunityUserPostComment::with(['userPosts.users'])->where('user_post_id','=',$request->get('postId'))->get();
-
-
+            $postComments = CommunityUserPostComment::with(['userPosts.users.userProfileImages', 'replies.users'])
+                ->where('user_post_id', '=', $request->get('postId'))
+                ->where('user_post_comment_id', '=', 0)
+                ->get();
 //            dd($postComments);
-            $html='';
+            $html = '';
 
-            foreach ( $postComments as $comment) {
-                $date=Carbon::parse($comment->created_at)->diffForHumans();
-                $userName=$comment->userPosts->users->name;
-                $comments=$comment->comment_text;
-                $commentId=$comment->id;
-//                dd($userName);
-//                '<option value="' . $name->id . '"';
-                $html.='<li class="single-comment">
+            foreach ($postComments as $comment) {
+                $date = Carbon::parse($comment->created_at)->diffForHumans();
+                $userName = $comment->userPosts->users->name;
+                $comments = $comment->comment_text;
+                $commentId = $comment->id;
+                $userProfilePicture = $comment->users->userProfileImages[0]->user_profile;
+                $html .= '
+                     <li class="single-comment">
                             <div class="comment-img">
-                                <a href="#">
-                                    <img
-                                        src="'.asset("community-frontend/assets/images/community/home/news-post/comment01.jpg").'"
-                                        alt="image">
-                                </a>
+                                <a href="#">';
+
+                if (isset($userProfilePicture)) {
+                    $html .= ' <img src="' . asset("storage/community/profile-picture/$userProfilePicture") . '" alt="image">
+                                </a>';
+                } else {
+                    $html .= '<img src="' . asset("community-frontend/assets/images/community/home/news-post/comment01.jpg") . '"alt="image">';
+
+                }
+
+                $html .= '</a>
                             </div>
                             <div class="comment-details">
                                 <div class="coment-info">
-                                    <h6><a href="#">'.$userName.'</a></h6>
-                                    <span class="comment-time">'.$date.'</span>
+                                    <h6><a href="#">' . $userName . '</a></h6>
+                                    <span class="comment-time">' . $date . '</span>
                                 </div>
-                                <p class="comment-content">'.$comments.'</p>
+                                <p class="comment-content">' . $comments . '</p>
                                 <ul class="coment-react">
                                     <li class="comment-like"><a href="#">Like(2)</a></li>
-                                    <li><a href="" data-commentId="'.$commentId.'">Reply</a></li>
-                                </ul>
-                            </div>
-                        </li>';
+                                    <li><a href="javascript:void(0)" class="replay-tag">Replay</a></li>
+                                </ul>';
+
+                if ($comment->replies) {
+
+                    $html .= '<div class="comment-parent-' . $comment->id . '">';
+
+                    foreach ($comment->replies as $reply) {
+                        $html .=
+                            '<div class="single-replay-comnt">
+                                                        <div class="replay-coment-box">
+                                                            <div class="replay-comment-img">
+                                                                <a href="#">';
+                        if (isset($userProfilePicture)) {
+                            $html .= '<img src="' . asset("storage/community/profile-picture/$userProfilePicture") . '" alt="image">';
+                        } else {
+                            $html .= '<img src="' . asset("community-frontend/assets/images/community/home/news-post/comment01.jpg") . '"alt="image">';
+                        }
+
+                        $html .= '</a>
+                                                </div>
+                                                            <div class="replay-comment-details">
+                                                                <div class="replay-coment-info">
+                                                                    <h6><a class="replay-comnt-name" href="#">' . $reply->users->name . '</a></h6>
+                                                                    <span class="replay-time-comnt">' . Carbon::parse($reply->created_at)->diffForHumans() . '</span>
+                                                                </div>
+                                                                <p class="comment-content">' . $reply->comment_text . '</p>
+
+                                                            </div>
+                                                        </div>
+                                                    </div>';
+                    }
+                    $html .= '</div>';
+
+                    $html .= '<div class="new-comment replay-new-comment">
+                                                            <a class="new-comment-img replay-comment-img" href="#">';
+                    if ($userProfilePicture) {
+                        $html .= '<img src="' . asset("storage/community/profile-picture/$userProfilePicture") . '"alt="image">';
+                    } else {
+                        $html .= '<img src="' . asset("community-frontend/assets/images/community/home/news-post/comment01.jpg") . '"alt="image">';
+                    }
+
+                    $html .= '</a><div class="new-comment-input replay-commnt-input">
+                                                            <input data-cmtId="' . $comment->id . '" class="cmtText" type="text" name="cmttext" data-userPostId="' . $comment->user_post_id . '" placeholder="Write a comment....">
+                                                                <div class="attached-icon">
+                                                                    <a href="#"><i class="fa fa-camera" aria-hidden="true"></i></a>
+                                                                </div>
+                                                            </div>
+                                                        </div>';
+
+                }
+                $html .= '</li>';
             }
 
-            if ($postComments){
+//            $html=view('community-frontend.index',['postComments'=>$postComments])->render();
+
+            if ($postComments) {
+
                 return \response()->json([
                     'status' => true,
                     'msg' => 'Successfully Added',
-                    'postComments'=>json_encode($postComments),
-                    'html'=>$html
+                    'postComments' => json_encode($postComments),
+                    'html' => $html
                 ]);
             }
 
         }
-
 
 
 //        return $postComments;
@@ -171,6 +217,7 @@ class CommunityFrontendController extends Controller
             $storePostComment = CommunityUserPostComment::create([
                 'user_id' => Auth::id(),
                 'user_post_id' => $request->get('postId'),
+                'user_post_comment_id' => 0,
                 'comment_text' => $request->get('postComment'),
             ]);
         }

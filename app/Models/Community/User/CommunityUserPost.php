@@ -27,4 +27,10 @@ class CommunityUserPost extends Model
     {
         return $this->hasMany(CommunityUserPostComment::class,'user_post_id');
     }
+
+    public function commentLimits(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(CommunityUserPostComment::class,'user_post_id')->latest()->limit(2);
+    }
+
 }

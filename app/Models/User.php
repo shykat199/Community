@@ -5,8 +5,10 @@ namespace App\Models;
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use App\Models\Community\Group\CommunityUserGroup;
 use App\Models\Community\Group\CommunityUserGroupPost;
+use App\Models\Community\Group\CommunityUserGroupPostComment;
 use App\Models\Community\Page\CommunityPage;
 use App\Models\Community\Page\UsersPage;
+use App\Models\Community\User_Post\CommunityUserPostComment;
 use App\Models\Community\User_Profile\CommunityUserProfileLanguage;
 use App\Models\Community\User_Profile\CommunityUserProfilePhoto;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -80,4 +82,16 @@ class User extends Authenticatable
     {
         return $this->hasMany(CommunityUserGroupPost::class,'user_id');
     }
+
+    public function userComments(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(CommunityUserPostComment::class,'user_id');
+    }
+
+    public function userGroupPostComments(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(CommunityUserGroupPostComment::class,'user_id');
+    }
+
+
 }

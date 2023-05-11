@@ -741,3 +741,9 @@ function pageFollowCount($id){
 }
 
 
+function getAllComments()
+{
+
+}
+
+

@@ -21,4 +21,10 @@ class CommunityUserGroupPost extends Model
     {
         return $this->belongsTo(User::class,'user_id');
     }
+
+    public function comments(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(CommunityUserGroupPostComment::class,'group_post_id');
+    }
+
 }

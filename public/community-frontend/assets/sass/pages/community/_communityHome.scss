@@ -415,6 +415,14 @@
                     width: 100%;
                     border-radius: 5px;
                 }
+                .status-video {
+                    width: 100%;
+                    border-radius: 5px;
+                    position: absolute;
+                    top: 0;
+                    left: 0;
+                    display: none;
+                }
                 .imgClose {
                     position: absolute;
                     top: 20px;
@@ -616,6 +624,7 @@
             position: absolute;
             top: 0;
             left: 0;
+            z-index: 1;
             img {
                 max-width: 60px;
                 border-radius: 50%;
@@ -779,7 +788,7 @@
         .comment-details {
             padding-left: 85px;
             @media (max-width: 576px) {
-                padding-left: 60px;
+                padding-left: 45px;
             }
             .coment-info {
                 h6 {
@@ -826,6 +835,60 @@
         }
     }
 }
+.replay-new-comment {
+    display: none;
+    .replay-comment-img {
+        img {
+            max-width: 40px !important;
+            border-radius: 50%;
+        }
+    }
+    .replay-commnt-input {
+        padding-left: 50px !important;
+        input{
+            height: 40px !important;
+            @media (max-width:375px) {
+                padding: 15px !important;
+            }
+        }
+        .attached-icon {
+            line-height: 40px !important;
+        }
+    }
+}
+.replay-coment-box {
+    padding-left: 50px;
+    position: relative;
+    margin-top: 15px;
+    .replay-comment-img {
+        position: absolute;
+        top: 0;
+        left: 0;
+        a {
+            img{
+                width: 40px;
+                border-radius: 50%;
+            }
+        }
+    }
+}
+.replay-coment-info {
+    .replay-comnt-name {
+        font-size: 15px;
+        color: #091727;
+        transition: all .3s ease;
+        display: block;
+        &:hover{
+            color: $theme-color;
+        }
+    }
+    .replay-time-comnt{
+        font-size: 13px;
+    }
+}
+
+
+
 .load-more {
     text-align: center;
     a {

@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Community\User\CommunityUserPost;
 use App\Models\Community\User\CommunityUserPostFileType;
 use App\Models\Community\User\CommunityUserPostTag;
+use App\Models\Community\User_Post\CommunityUserPostComment;
 use Carbon\Carbon;
 use Faker\Provider\Uuid;
 use Illuminate\Http\Request;
@@ -82,6 +83,54 @@ class CommunityUserPostController extends Controller
         }
         toastr()->error('An error has occurred please try again later.');
 
+    }
+
+    public function storeCommentOfComment(Request $request)
+    {
+        $html = '';
+        if ($request->ajax()) {
+//            dd($request->all());
+            $storeComments = CommunityUserPostComment::create([
+                'user_id' => Auth::id(),
+                'user_post_id' => $request->get('user_post_id'),
+                'user_post_comment_id' => $request->get('cmtId'),
+                'comment_text' => $request->get('cmtText'),
+            ]);
+
+            if ($storeComments) {
+//                dd($storeComments->users->userProfileImages[0]->user_profile);
+                $userProfileImages = $storeComments->users->userProfileImages[0]->user_profile;
+                $html .= '<div class="single-replay-comnt">
+                                    <div class="replay-coment-box">
+                                        <div class="replay-comment-img">
+                                            <a href="#">';
+
+                if (isset($storeComments->users->userProfileImages)) {
+                    $html .= ' <img src="' . asset("storage/community/profile-picture/$userProfileImages") . '" alt="image">';
+                } else {
+                    $html .= '<img src="' . asset("community-frontend/assets/images/community/home/news-post/comment01.jpg") . '"alt="image">';
+                }
+
+                $html .= '</a>
+                                        </div>
+                                        <div class="replay-comment-details">
+                                            <div class="replay-coment-info">
+                                                <h6><a class="replay-comnt-name" href="#">' . Auth::user()->name . '</a></h6>
+                                                <span class="replay-time-comnt">' . Carbon::parse($storeComments->created_at)->diffForHumans() . '</span>
+                                            </div>
+                                            <p class="comment-content">' . $storeComments->comment_text . '</p>
+                                        </div>
+                                    </div>
+                                </div>';
+
+                return \response()->json([
+                    'status' => true,
+                    'success' => true,
+                    'msg' => 'Successfully Added',
+                    'data' => $html
+                ]);
+            }
+        }
     }
 
 }

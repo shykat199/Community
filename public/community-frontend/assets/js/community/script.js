@@ -1,21 +1,21 @@
-// side nav start 
+// side nav start
 $(".sidenav_bar").click(function(){
   $(".community-sidenav").toggleClass("main");
   $(this).toggleClass('active')
   if($(this).hasClass('active')){
-    $(this).find('i').addClass("fa-times").removeClass("fa-bars");    
+    $(this).find('i').addClass("fa-times").removeClass("fa-bars");
   }else{
     $(this).find('i').addClass("fa-bars").removeClass("fa-times");
   }
 });
 
 
-// mobile menu 
+// mobile menu
 $(".menu-show").click(function(){
   $(".menu_list").toggleClass("main");
 });
 
-// sidebar active 
+// sidebar active
 document.querySelectorAll(".sidebar-list li a").forEach((link) => {
     if (link.href === window.location.href) {
         link.classList.add("side-active");
@@ -57,8 +57,21 @@ $(document).on('click','.imgClose',function(){
   $(this).css("display", "none")
 })
 
+$(document).on('change','.imgInp',function(e){
+  files = this.files
+  if (files[1]) {
+    $('.status-video').css("display", "none")
+  } else {
+    let source = $('.video-status-here');
+    source[0].src = URL.createObjectURL(this.files[0]);
+    source.parent()[0].load()
+    $('.status-video').css("display", "block")
+  }
+})
 
-// online person active 
+
+
+// online person active
 $('.chat-online').slick({
   infinite: true,
   loop: true,
@@ -109,12 +122,20 @@ $('.chat-online').slick({
   ]
 });
 
-// video like 
+// video like
 $('.video-react-icon i').click(function(){
   $(this).toggleClass('active')
   if ($(this).hasClass('active')) {
     $(this).addClass('fa-heart').removeClass('fa-heart-o')
   } else {
-    $(this).removeClass('fa-heart').addClass('fa-heart-o')    
+    $(this).removeClass('fa-heart').addClass('fa-heart-o')
   }
 })
+
+
+
+// $(document).on('click','.replay-tag', function(){
+//     console.log("sjakf");
+//     $(this).parent().parent().siblings(".single-replay-comnt").children(".replay-new-comment").css("display", "block")
+// })
+

@@ -1,137 +1,26 @@
 @extends('community-frontend.layout.frontend_master')
+{{--@dd($getGroupDetails)--}}
+@php
+    $id=\Request::segment(3);
 
+     $isAdmin=\App\Models\Community\Group\CommunityUserGroupPivot::select('group_user_role')->where('user_id','=',Auth::id())
+                ->where('group_id','=',$id)->first();
+
+@endphp
 @section('group.mainProfile')
+    @include('community-frontend.layout.groupProfile',['getGroupDetails'=>$getGroupDetails,'id'=>$id])
+    {{--    <x-page-group-header-section :getGroupDetails="$getGroupDetails">--}}
+    {{--    </x-page-group-header-section>--}}
 
-    <!-- my profile start -->
-    <div class="main-profile">
-        <div class="row">
-            <div class="col-lg-12">
-                <div class="full-profile-box">
-                    <div class="full-profile-cover">
-                        <img src="{{asset("community-frontend/assets/images/community/myProfile/my-profile-cover.jpg")}}" alt="cover">
-                        <div class="edit-cover">
-                            <a href="#" data-bs-toggle="modal" data-bs-target="#coverPhotoModal">Edit Cover</a>
-                            <div class="modal fade" id="coverPhotoModal" tabindex="-1" aria-labelledby="coverPhotoModalLabel" aria-hidden="true">
-                                <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
-                                    <div class="modal-content post-modal-content">
-                                        <div class="modal-header">
-                                            <div class="post-modal-title">
-                                                <h6 class="modal-title" id="photoModalLabel">Upload Cover</h6>
-                                            </div>
-                                            <button type="button" class=" post-close" data-bs-dismiss="modal" aria-label="Close"><i class="fa fa-times" aria-hidden="true"></i></button>
-                                        </div>
-                                        <div class="modal-body post-modal-body">
-                                            <div class="upload-media">
-                                                <div class="photo-place">
-                                                    <span class="icon">
-                                                        <svg xmlns="http://www.w3.org/2000/svg" version="1.1"  x="0" y="0" viewBox="0 0 24 24" style="enable-background:new 0 0 512 512" xml:space="preserve" class=""><g><path d="m22.448 7.608-1.2 8.58a3.142 3.142 0 0 1-1.257 2.312.311.311 0 0 1-.488-.244V9.665A3.829 3.829 0 0 0 15.335 5.5H5.923c-.3 0-.307-.27-.286-.39a3.134 3.134 0 0 1 1.112-2.085 3.2 3.2 0 0 1 2.442-.473l10.561 1.48a3.211 3.211 0 0 1 2.223 1.134 3.191 3.191 0 0 1 .473 2.442zM18 9.665v8.668A2.358 2.358 0 0 1 15.335 21H4.667A2.357 2.357 0 0 1 2 18.333V9.665A2.357 2.357 0 0 1 4.667 7h10.668A2.358 2.358 0 0 1 18 9.665zM13.25 14a.75.75 0 0 0-.75-.75h-1.75V11.5a.75.75 0 0 0-1.5 0v1.75H7.5a.75.75 0 0 0 0 1.5h1.75v1.75a.75.75 0 0 0 1.5 0v-1.75h1.75a.75.75 0 0 0 .75-.75z" fill="#000000" data-original="#000000" class=""></path></g></svg>
-                                                    </span>
-                                                    <h6 class="title">Add Photos/Videos</h6>
-                                                    <p class="small-text">or drag and drop</p>
-                                                </div>
-                                                <div class="preview-file">
-                                                    <img class="previewImg" src="#" alt="">
-                                                    <button type="button"  class="imgClose"><i class="fa fa-times" aria-hidden="true"></i></button>
-                                                </div>
-                                                <div class="media-input">
-                                                    <input accept="image/*" type='file' class="imgInp" />
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="modal-footer">
-                                            <button type="submit" class="social-theme-btn post-btn">Post</button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="full-profile-info">
-                        <div class="full-profile-left">
-                            <div class="profile-img">
-                                <a href="#"><img src="{{asset("community-frontend/assets/images/community/myProfile/my-profile.jpg")}}" alt="Image">
-                                </a>
-                                <div class="replace-icon">
-                                    <a href="#" data-bs-toggle="modal" data-bs-target="#profilePhotoModal">
-                                        <svg xmlns="http://www.w3.org/2000/svg" version="1.1" x="0" y="0" viewBox="0 0 32 32" style="enable-background:new 0 0 512 512" xml:space="preserve" class=""><g><path d="M27.348 7h-4.294l-.5-1.5A3.645 3.645 0 0 0 19.089 3h-6.178a3.646 3.646 0 0 0-3.464 2.5L8.946 7H4.652A3.656 3.656 0 0 0 1 10.652v14.7A3.656 3.656 0 0 0 4.652 29h22.7A3.656 3.656 0 0 0 31 25.348v-14.7A3.656 3.656 0 0 0 27.348 7ZM29 25.348A1.654 1.654 0 0 1 27.348 27H4.652A1.654 1.654 0 0 1 3 25.348v-14.7A1.654 1.654 0 0 1 4.652 9h5.015a1 1 0 0 0 .948-.684l.729-2.187A1.65 1.65 0 0 1 12.911 5h6.178a1.649 1.649 0 0 1 1.567 1.13l.729 2.186a1 1 0 0 0 .948.684h5.015A1.654 1.654 0 0 1 29 10.652Z" fill="#000000" data-original="#000000"></path><path d="M16 10a7.5 7.5 0 1 0 7.5 7.5A7.508 7.508 0 0 0 16 10Zm0 13a5.5 5.5 0 1 1 5.5-5.5A5.506 5.506 0 0 1 16 23Z" fill="#000000" data-original="#000000"></path><circle cx="26" cy="12" r="1" fill="#000000" data-original="#000000"></circle></g></svg>
-                                    </a>
-                                    <div class="modal fade" id="profilePhotoModal" tabindex="-1" aria-labelledby="profilePhotoModalLabel" aria-hidden="true">
-                                        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
-                                            <div class="modal-content post-modal-content">
-                                                <div class="modal-header">
-                                                    <div class="post-modal-title">
-                                                        <h6 class="modal-title" id="photoModalLabel">Upload Profile</h6>
-                                                    </div>
-                                                    <button type="button" class=" post-close" data-bs-dismiss="modal" aria-label="Close"><i class="fa fa-times" aria-hidden="true"></i></button>
-                                                </div>
-                                                <div class="modal-body post-modal-body">
-                                                    <div class="upload-media">
-                                                        <div class="photo-place">
-                                                            <span class="icon">
-                                                                <svg xmlns="http://www.w3.org/2000/svg" version="1.1"  x="0" y="0" viewBox="0 0 24 24" style="enable-background:new 0 0 512 512" xml:space="preserve" class=""><g><path d="m22.448 7.608-1.2 8.58a3.142 3.142 0 0 1-1.257 2.312.311.311 0 0 1-.488-.244V9.665A3.829 3.829 0 0 0 15.335 5.5H5.923c-.3 0-.307-.27-.286-.39a3.134 3.134 0 0 1 1.112-2.085 3.2 3.2 0 0 1 2.442-.473l10.561 1.48a3.211 3.211 0 0 1 2.223 1.134 3.191 3.191 0 0 1 .473 2.442zM18 9.665v8.668A2.358 2.358 0 0 1 15.335 21H4.667A2.357 2.357 0 0 1 2 18.333V9.665A2.357 2.357 0 0 1 4.667 7h10.668A2.358 2.358 0 0 1 18 9.665zM13.25 14a.75.75 0 0 0-.75-.75h-1.75V11.5a.75.75 0 0 0-1.5 0v1.75H7.5a.75.75 0 0 0 0 1.5h1.75v1.75a.75.75 0 0 0 1.5 0v-1.75h1.75a.75.75 0 0 0 .75-.75z" fill="#000000" data-original="#000000" class=""></path></g></svg>
-                                                            </span>
-                                                            <h6 class="title">Add Photos/Videos</h6>
-                                                            <p class="small-text">or drag and drop</p>
-                                                        </div>
-                                                        <div class="preview-file">
-                                                            <img class="previewImg" src="#" alt="">
-                                                            <button type="button"  class="imgClose"><i class="fa fa-times" aria-hidden="true"></i></button>
-                                                        </div>
-                                                        <div class="media-input">
-                                                            <input accept="image/*" type='file' class="imgInp" />
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="modal-footer">
-                                                    <button type="submit" class="social-theme-btn post-btn">Post</button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="profile-name">
-                                <h6><a href="#">Matthew Turner</a></h6>
-                                <span class="locaiton">Washington</span>
-                                <p style="width: 60%; font-size: 12px; color: #091727;">Lorem ipsum is placeholder text commonly used in the graphic, print, and publishing industries for previewing layouts and visual mockups.</p>
-                            </div>
-                        </div>
-                        <ul class="profile-statistics">
-                            <li><a href="#">
-                                    <p class="statics-count">59862</p>
-                                    <p class="statics-name">Likes</p>
-                                </a></li>
-                            <li><a href="#">
-                                    <p class="statics-count">8591</p>
-                                    <p class="statics-name">Following</p>
-                                </a></li>
-                            <li><a href="#">
-                                    <p class="statics-count">784514</p>
-                                    <p class="statics-name">Followers</p>
-                                </a></li>
-                        </ul>
-                    </div>
-
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- my profile end -->
 @endsection
 @section('frontend.content')
 
     <div class="col-lg-3">
 
-        @php
-            $id=\Request::segment(3);
 
-             $isAdmin=\App\Models\Community\Group\CommunityUserGroupPivot::select('group_user_role')->where('user_id','=',Auth::id())
-                        ->where('group_id','=',$id)->first();
-
-        @endphp
         <div class="news-feed-left">
 
-{{--            @include('community-frontend.layout.groupProfile')--}}
+            {{--            @include('community-frontend.layout.groupProfile')--}}
 
             @if(!empty($isAdmin->group_user_role) && isset($isAdmin->group_user_role) && $isAdmin->group_user_role == 1)
                 @include('community-frontend.layout.groupUserInvitation',['id'=>$id])
@@ -281,9 +170,10 @@
             </form>
 
         </div>
-        {{--                                        @dd($groupPosts)--}}
+{{--                                                @dd($groupPosts)--}}
         @foreach($groupPosts as $post)
             <div class="main-content posted-content">
+
                 <div class="post-autore d-flex justify-content-between align-items-center">
                     <div class="authore-title d-flex align-items-center">
                         <a href="#">
@@ -542,34 +432,12 @@
                         </li>
 
                     </ul>
-                    {{--                    <ul class="post-comment-list">--}}
-                    {{--                        <li class="single-comment">--}}
-                    {{--                            <div class="comment-img">--}}
-                    {{--                                <a href="#">--}}
-                    {{--                                    <img--}}
-                    {{--                                        src="{{asset("community-frontend/assets/images/community/home/news-post/comment01.jpg")}}"--}}
-                    {{--                                        alt="image">--}}
-                    {{--                                </a>--}}
-                    {{--                            </div>--}}
-                    {{--                            <div class="comment-details">--}}
-                    {{--                                <div class="coment-info">--}}
-                    {{--                                    <h6><a href="#">David Moore</a></h6>--}}
-                    {{--                                    <span class="comment-time">10 Mint Ago</span>--}}
-                    {{--                                </div>--}}
-                    {{--                                <p class="comment-content">Donec rutrum congue leo eget malesuada nulla quis lorem--}}
-                    {{--                                    ut libero malesuada feugiat donec rutrum congue leo eget malesuada donec rutrum--}}
-                    {{--                                    congue leo eget malesuada. Praesent sapien massa convallis a pellentesque non--}}
-                    {{--                                    nisi curabitur non nulla sit amet nisl tempus convallis lectus.</p>--}}
-                    {{--                                <ul class="coment-react">--}}
-                    {{--                                    <li class="comment-like"><a href="#">Like(2)</a></li>--}}
-                    {{--                                    <li><a href="#">Replay</a></li>--}}
-                    {{--                                </ul>--}}
-                    {{--                            </div>--}}
-                    {{--                        </li>--}}
+                    <ul class="post-comment-list">
 
-                    {{--                    </ul>--}}
+                        {{--All Comments List--}}
+                    </ul>
                     <div class="more-comment">
-                        <a href="#">More Comments+</a>
+                        <a class="checkCmt" data-postIdd="{{$post->grpPostId}}">More Comments+</a>
                     </div>
 
                     <form action="#" class="new-comment">
@@ -586,7 +454,7 @@
                         </a>
 
                         <div class="new-comment-input">
-                            <input type="text" placeholder="Write a comment....">
+                            <input type="text" data-postId="{{$post->grpPostId}}" class="postComments" placeholder="Write a comment....">
                             <div class="attached-icon">
                                 <a href="#"><i class="fa fa-camera" aria-hidden="true"></i></a>
                             </div>
@@ -669,6 +537,52 @@
                 })
             }
         })
+
+
+        $('.postComments').keydown(function (e) {
+            if (e.keyCode === 13) {
+                e.preventDefault();
+                let comment = e.target.value;
+                let postId = $(this).attr('data-postId');
+                $(this).val('');
+                // let htmlData = $(this).parents('.posted-content').find('.post-comment-list')
+                let htmlData = $(this).parents('.main-content').find('.post-comment-list');
+                // console.log($(this));
+                // return false;
+                // console.log(comment,postId);
+                if (comment !== '' && postId !== '') {
+                    $.ajax({
+                        url: '{{route('community.store.user.group.post.comment')}}',
+                        type: 'POST',
+                        data: {
+                            postId: postId,
+                            postComment: comment,
+                            '_token': '{{csrf_token()}}'
+                        },
+                        success: function (response) {
+                            // console.log(response);
+
+                            if (response.success === true) {
+                                toastr.success(response.msg);
+                                // console.log($(this),'this')
+                                $(this).val('');
+                                console.log(response.data,'datat');
+                                htmlData.html(response.data);
+                                // console.log(response.data);
+
+                            } else {
+                                toastr.error(response.msg);
+                            }
+                        },
+                        error: function (err) {
+
+                            toastr.error("Error with AJAX callback !");
+                        }
+                    })
+                }
+            }
+        })
+
     })
 
 </script>
@@ -724,4 +638,79 @@
             }
         })
     });
+</script>
+<script>
+    $(document).on('click', '.replay-tag', function () {
+
+        $(this).parents('.comment-details').find('.replay-new-comment').css('display', 'block');
+    })
+
+
+{{--    $(document).keypress('.cmtText', function (e) {--}}
+{{--        let cmtId = e.target.dataset.cmtid;--}}
+{{--        let group_post_id = e.target.dataset.userpostid;--}}
+{{--        let cmtText = e.target.value;--}}
+{{--        let key = e.which;--}}
+{{--        // console.log(user_post_id);--}}
+{{--// return false;--}}
+{{--        if (key === 13) {--}}
+{{--            // console.log(cmtText);--}}
+
+{{--            $.ajax({--}}
+{{--                url: "{{route('community.user.store.group.commentsOfComments')}}",--}}
+{{--                type: 'POST',--}}
+{{--                data: {--}}
+{{--                    cmtId: cmtId,--}}
+{{--                    cmtText: cmtText,--}}
+{{--                    group_post_id: group_post_id,--}}
+{{--                    '_token': '{{csrf_token()}}'--}}
+{{--                },--}}
+{{--                success: function (response) {--}}
+{{--                    // console.log(response);--}}
+
+{{--                    if (response.success === true) {--}}
+{{--                        toastr.success(response.msg);--}}
+{{--                        $('.cmtText').val('');--}}
+{{--                        $('.comment-parent-'+cmtId).append(response.data);--}}
+{{--                    } else {--}}
+{{--                        toastr.error(response.msg);--}}
+{{--                    }--}}
+{{--                },--}}
+{{--                error: function (err) {--}}
+
+{{--                    toastr.error("Error with AJAX callback !");--}}
+{{--                }--}}
+{{--            })--}}
+{{--        }--}}
+
+
+{{--    })--}}
+
+</script>
+
+<script>
+    $(document).on('click','.checkCmt',function (){
+        let gPostId=$(this).attr('data-postIdd')
+        let htmlData = $(this).parents('.posted-content').find('.post-comment-list')
+        console.log(gPostId);
+        $.ajax({
+            url:'{{route('users.get-all-comments')}}',
+            type:'GET',
+            data:{
+                gPostId:gPostId,
+                reqTyp:'grpCmt'
+            },
+            success: function (response) {
+
+                if (response.status === true) {
+
+                    // console.log(response.html,'cmt');
+                    // $('.postComments').val('');
+                    htmlData.html(response.html);
+                }
+
+
+            },
+        })
+    })
 </script>
