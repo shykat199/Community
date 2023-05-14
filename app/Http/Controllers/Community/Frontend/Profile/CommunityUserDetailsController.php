@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Community\Frontend\Profile;
 use App\Http\Controllers\Controller;
 use App\Models\Community\User\CommunityUserBan;
 use App\Models\Community\User\CommunityUserDetails;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class CommunityUserDetailsController extends Controller
@@ -40,6 +41,12 @@ class CommunityUserDetailsController extends Controller
         return view('admin.community-page.allUsers', $data);
     }
 
+    public function allUsers(){
+        $allUsers=User::where('id','!=',ADMIN_ROLE)->get();
+
+        return view('admin.community-page.allUsersWithOutDetails',compact('allUsers'));
+    }
+
     public function show(string $id)
     {
 
@@ -65,6 +72,14 @@ class CommunityUserDetailsController extends Controller
         } else {
             return redirect()->back()->with('error', 'Something Wrong');
         }
+
+    }
+    public function userDlt($id){
+
+//        $dltUser=User::find($id)->delete();
+//        if ($dltUser){
+//            return redirect()->back()->with('success','Deleted Successfully')
+//        }
 
     }
 

@@ -78,9 +78,12 @@
                 <div class="collapse" id="communityUser">
                     <ul class="side-nav-second-level">
 
+                        <li>
+                            <a href="{{route('community.all.user')}}">All Users</a>
+                        </li>
 
                         <li>
-                            <a href="{{route('community.user')}}">All Users</a>
+                            <a href="{{route('community.user')}}">All Users with details</a>
                         </li>
 
                         <li>

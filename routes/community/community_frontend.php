@@ -20,6 +20,7 @@ Route::middleware(['user'])->group(function (){
     Route::post('/user/post/update',[CommunityFrontendController::class,'updatePost'])->name('community.user.post.update');
     Route::post('/user/post/comments',[CommunityFrontendController::class,'storeComment'])->name('community.user.post.comment');
     Route::get('get/user/post/comments',[CommunityFrontendController::class,'showComments'])->name('user.post.comment');
+    Route::get('get/user/post/child-comments',[CommunityFrontendController::class,'showChildComments'])->name('user.load.child.comment');
 
     //user details
     Route::post('/user-friend/accept_request',[CommunityUserFriendRequestController::class,'acceptRequest'])->name('community.user.acceptRequest');
@@ -91,7 +92,7 @@ Route::middleware(['user'])->group(function (){
     Route::post('/user/group/upload-cover-photo',[CommunityUserGroupController::class,'storeGroupCoverPhoto'])->name('user.group.cover.upload');
     Route::post('/user/group/upload-profile-photo',[CommunityUserGroupController::class,'storeGroupProfilePhoto'])->name('user.group.profile.upload');
     Route::post('/user/group/store/post-commentOfComment',[CommunityUserGroupController::class,'storeGroupPostCommentOfComment'])->name('community.user.store.group.commentsOfComments');
-    Route::post('/user/group/store/post-commentOfComment',[CommunityUserGroupController::class,'storeGroupPostComment'])->name('community.store.user.group.post.comment');
+    Route::post('/user/group/store/post-comment',[CommunityUserGroupController::class,'storeGroupPostComment'])->name('community.store.user.group.post.comment');
 
 
 
@@ -106,6 +107,8 @@ Route::middleware(['user'])->group(function (){
     Route::post('/user/page/post/reaction',[CommunityUserPageController::class,'storeUserPagePostReaction'])->name('user.page.post.reaction');
     Route::post('/user/page/upload-profile-photo',[CommunityUserPageController::class,'storePageProfilePhoto'])->name('user.page.profile.upload');
     Route::post('/user/page/upload-cover-photo',[CommunityUserPageController::class,'storePageCoverPhoto'])->name('user.page.cover.upload');
+    Route::post('/user/page/store/post-comments',[CommunityUserPageController::class,'storePagePostComment'])->name('community.store.user.page.post.comment');
+    Route::post('/user/page/store/post-commentOfComment',[CommunityUserPageController::class,'storePagePostCommentOfComment'])->name('community.user.store.page.commentsOfComments');
 
 
     //get all Comments........

@@ -377,7 +377,7 @@ class CommunityUserGroupController extends Controller
 
                                                     <div class="new-comment replay-new-comment">
                                                             <a class="new-comment-img replay-comment-img" href="#"><img src="http://127.0.0.1:8000/storage/community/profile-picture/331aa50b-a371-3ae3-8252-d13c68e08399.png" alt="image"></a><div class="new-comment-input replay-commnt-input">
-                                                            <input data-cmtid="2" class="cmtText" type="text" name="cmttext" data-userpostid="9" placeholder="Write a comment....">
+                                                            <input data-cmtid="' . $storeGrpPostCmt->id . '" class="cmtText" type="text" name="cmttext" data-userpostid="' . $storeGrpPostCmt->group_post_id . '" placeholder="Write a comment....">
                                                                 <div class="attached-icon">
                                                                     <a href="#"><i class="fa fa-camera" aria-hidden="true"></i></a>
                                                                 </div>

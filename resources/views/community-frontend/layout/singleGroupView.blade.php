@@ -488,7 +488,9 @@
 @endsection
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.4/jquery.min.js"
         integrity="sha512-pumBsjNRGGqkPzKHndZMaAG+bir374sORyzM3uulLV14lN5LyykqNk8eEeUlUkB3U0M4FApyaHraT65ihJhDpQ=="
-        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+        crossorigin="anonymous" referrerpolicy="no-referrer">
+
+</script>
 <script>
     $(document).ready(function () {
         $('.reaction').on('click', function () {
@@ -547,9 +549,7 @@
                 $(this).val('');
                 // let htmlData = $(this).parents('.posted-content').find('.post-comment-list')
                 let htmlData = $(this).parents('.main-content').find('.post-comment-list');
-                // console.log($(this));
-                // return false;
-                // console.log(comment,postId);
+
                 if (comment !== '' && postId !== '') {
                     $.ajax({
                         url: '{{route('community.store.user.group.post.comment')}}',
@@ -646,45 +646,45 @@
     })
 
 
-{{--    $(document).keypress('.cmtText', function (e) {--}}
-{{--        let cmtId = e.target.dataset.cmtid;--}}
-{{--        let group_post_id = e.target.dataset.userpostid;--}}
-{{--        let cmtText = e.target.value;--}}
-{{--        let key = e.which;--}}
-{{--        // console.log(user_post_id);--}}
-{{--// return false;--}}
-{{--        if (key === 13) {--}}
-{{--            // console.log(cmtText);--}}
+    $(document).keypress('.cmtText', function (e) {
+        let cmtId = e.target.dataset.cmtid;
+        let group_post_id = e.target.dataset.userpostid;
+        let cmtText = e.target.value;
+        let key = e.which;
+        // console.log(user_post_id);
+// return false;
+        if (key === 13) {
+            // console.log(cmtText);
 
-{{--            $.ajax({--}}
-{{--                url: "{{route('community.user.store.group.commentsOfComments')}}",--}}
-{{--                type: 'POST',--}}
-{{--                data: {--}}
-{{--                    cmtId: cmtId,--}}
-{{--                    cmtText: cmtText,--}}
-{{--                    group_post_id: group_post_id,--}}
-{{--                    '_token': '{{csrf_token()}}'--}}
-{{--                },--}}
-{{--                success: function (response) {--}}
-{{--                    // console.log(response);--}}
+            $.ajax({
+                url: "{{route('community.user.store.group.commentsOfComments')}}",
+                type: 'POST',
+                data: {
+                    cmtId: cmtId,
+                    cmtText: cmtText,
+                    group_post_id: group_post_id,
+                    '_token': '{{csrf_token()}}'
+                },
+                success: function (response) {
+                    // console.log(response);
 
-{{--                    if (response.success === true) {--}}
-{{--                        toastr.success(response.msg);--}}
-{{--                        $('.cmtText').val('');--}}
-{{--                        $('.comment-parent-'+cmtId).append(response.data);--}}
-{{--                    } else {--}}
-{{--                        toastr.error(response.msg);--}}
-{{--                    }--}}
-{{--                },--}}
-{{--                error: function (err) {--}}
+                    if (response.success === true) {
+                        toastr.success(response.msg);
+                        $('.cmtText').val('');
+                        $('.comment-parent-'+cmtId).append(response.data);
+                    } else {
+                        toastr.error(response.msg);
+                    }
+                },
+                error: function (err) {
 
-{{--                    toastr.error("Error with AJAX callback !");--}}
-{{--                }--}}
-{{--            })--}}
-{{--        }--}}
+                    toastr.error("Error with AJAX callback !");
+                }
+            })
+        }
 
 
-{{--    })--}}
+    })
 
 </script>
 
