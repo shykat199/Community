@@ -118,7 +118,7 @@ class CommunityUserPageController extends Controller
 
 //        return $getPageDetails;
 
-        $pagePosts = CommunityPagePost::with('users.userProfileImages')
+        $pagePosts = CommunityPagePost::with(['users.userProfileImages', 'comments.replies'])
             ->join('community_pages as communityPages', function ($q) use ($id) {
                 $q->on('communityPages.id', '=', 'community_page_posts.page_id');
                 $q->where('community_page_posts.page_id', '=', $id);
@@ -134,8 +134,16 @@ class CommunityUserPageController extends Controller
             users.name as userName,userPagePostFileType.post_comment_caption,userPagePostFileType.post_image_video,
             community_page_posts.created_at,community_page_posts.id as pagePostId,postReaction.reaction_type')
             ->orderBy('community_page_posts.id', 'DESC')
-//            ->groupBy('users.id')
-            ->get();
+            ->get()->map(function ($q) {
+                $q->setRelation('comments', $q->comments->take(2));
+                return $q;
+            });
+
+        $pagePosts = $pagePosts->each(function ($item) {
+            $item->comments->each(function ($comment) {
+                $comment->load('users.userProfileImages');
+            });
+        });
 
 //        return $pagePosts;
 
@@ -476,41 +484,101 @@ class CommunityUserPageController extends Controller
             if ($storePagePostCmt) {
 //                dd($storePagePostCmt);
 
-                $userProfileImages = $storePagePostCmt->users->userProfileImages[0]->user_profile;
+                $html .= '
+                         <li class="single-comment">
+                                <!-- parent comment start  -->
+                                <div class="parent-comment">
+                                    <div class="comment-img">';
+                if (!empty($storePagePostCmt->users->userProfileImages[0]) && isset($storePagePostCmt->users->userProfileImages[0]) ? $storePagePostCmt->users->userProfileImages[0]->user_profile : '') {
 
+                    if (!empty($storePagePostCmt->users->userProfileImages[0]) && isset($storePagePostCmt->users->userProfileImages[0]) ? $storePagePostCmt->users->userProfileImages[0]->user_profile : '') {
 
-                $html .= '<li class="single-comment">
-                            <div class="comment-img">
-                                <a href="#">';
-                if ($userProfileImages) {
-                    $html .= ' <img src="' . asset("storage/community/profile-picture/$userProfileImages") . '" alt="image">';
-                } else {
-                    $html .= '<img src="' . asset("community-frontend/assets/images/community/home/news-post/comment01.jpg") . '"alt="image">';
+                        $html .= '<a href=""><img
+                                                        src="' . asset("storage/community/profile-picture/" . $storePagePostCmt->users->userProfileImages[0]->user_profile) . '"
+                                                        alt="image"></a>';
+                    }
+
                 }
-                $html .= '</a>
-                            </div>
-                            <div class="comment-details">
-                                <div class="coment-info">
-                                    <h6><a href="#">' . Auth::user()->name . '</a></h6>
-                                    <span class="comment-time">' . Carbon::parse($storePagePostCmt->created_at)->diffForHumans() . '</span>
-                                </div>
-                                <p class="comment-content">' . $storePagePostCmt->comment_text . '</p>
-                                <ul class="coment-react">
-                                    <li class="comment-like"><a href="#">Like(2)</a></li>
-                                    <li><a href="javascript:void(0)" class="replay-tag">Replay</a></li>
-                                </ul>
-                                <div class="comment-parent">
 
-                                                    <div class="new-comment replay-new-comment">
-                                                            <a class="new-comment-img replay-comment-img" href="#"><img src="http://127.0.0.1:8000/storage/community/profile-picture/331aa50b-a371-3ae3-8252-d13c68e08399.png" alt="image"></a><div class="new-comment-input replay-commnt-input">
-                                                            <input data-cmtid="' . $storePagePostCmt->id . '" class="cmtText" type="text" name="cmttext" data-userpostid="' . $storePagePostCmt->page_post_id . '" placeholder="Write a comment....">
-                                                                <div class="attached-icon">
-                                                                    <a href="#"><i class="fa fa-camera" aria-hidden="true"></i></a>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        </div>
-                                                        </li>';
+                $html .= '</div>
+                                    <div class="comment-details">
+                                        <div class="coment-info">
+                                            <div class="coment-authore-div">
+                                                <h6><a href="#">' . $storePagePostCmt->users->name . '</a></h6>
+                                                <span
+                                                    class="comment-time">' . \Carbon\Carbon::parse($storePagePostCmt->created_at)->diffForHumans() . '</span>
+                                            </div>
+                                            <div class="comment-option">
+                                                <button type="button" class="dropdown-toggle comment-option-btn"
+                                                        id="dropdownMenuButton1" data-bs-toggle="dropdown"
+                                                        aria-expanded="false"><i class="fa fa-ellipsis-h"
+                                                                                 aria-hidden="true"></i></button>
+                                                <ul class="dropdown-menu comment-option-dropdown"
+                                                    aria-labelledby="dropdownMenuButton1">
+                                                    <li class="post-option-item" id="editComment"><i
+                                                            class="fa fa-pencil-square-o" aria-hidden="true"></i> Edit
+                                                        comment
+                                                    </li>
+                                                    <li class="post-option-item"><i class="fa fa-trash-o"
+                                                                                    aria-hidden="true"></i> Delete
+                                                        comment
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                        <div class="comment-div">
+                                            <p class="comment-content">' . $storePagePostCmt->comment_text . '</p>
+                                            <button id="textarea_btn" type="submit"><i class="fa fa-paper-plane"
+                                                                                       aria-hidden="true"></i>
+                                            </button>
+                                        </div>
+                                        <ul class="coment-react">
+                                            <li class="comment-like"><a href="#">Like(2)</a></li>
+                                            <li><a href="javascript:void(0)" class="replay-tag">Replay</a></li>
+                                        </ul>
+                                    </div>
+                                    <!-- child comment start  -->
+                                    <div class="child-comment">
+                                                            <div class="single-replay-comnt nested-comment-'.$storePagePostCmt->id.'">
+
+                                                                                </div>';
+
+
+                if (count($storePagePostCmt->replies) > 0) {
+                    $html .= '<div class="more-comment">
+                                                <a class="loadChildCmt" data-postIdd="'.$storePagePostCmt->page_post_id.'" data-commentId="'.$storePagePostCmt->id.'">More+</a>
+                                            </div>';
+                }
+
+
+                $html .= ' <div class="new-comment replay-new-comment">';
+
+                if (!empty($storePagePostCmt->users->userProfileImages[0]) && isset($storePagePostCmt->users->userProfileImages[0]) ? $storePagePostCmt->users->userProfileImages[0] : '') {
+
+                    if (!empty($storePagePostCmt->users->userProfileImages[0]) && isset($storePagePostCmt->users->userProfileImages[0]) ? $storePagePostCmt->users->userProfileImages[0] : '') {
+
+                        $html .= '<a class="new-comment-img replay-comment-img"><img
+                                                        src="' . asset("storage/community/profile-picture/" . $storePagePostCmt->users->userProfileImages[0]->user_profile) . '"
+                                                        alt="image"></a>';
+                    }
+
+                }
+
+
+
+                $html.=' <div class="new-comment-input replay-commnt-input">
+                                                <input data-cmtId="'.$storePagePostCmt->id.'" class="cmtText" type="text"
+                                                       name="cmttext"
+                                                       data-userPostId="'.$storePagePostCmt->page_post_id.'"
+                                                       placeholder="Write a comment....">
+                                                <div class="attached-icon">
+                                                    <a href="#"><i class="fa fa-camera" aria-hidden="true"></i></a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </li>';
 
                 return \response()->json([
                     'status' => true,

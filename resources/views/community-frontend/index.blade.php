@@ -385,9 +385,41 @@
                         <li class="post-react like-react">
                             <a href="#">
                                 <div class="react-icon">
-                                    <img class="like"
-                                         src="{{asset("community-frontend/assets/images/community/home/news-post/like.png")}}"
-                                         alt="">
+
+                                    @if ($post->reaction_type=='like')
+                                        <img
+                                            src="{{asset("community-frontend/assets/images/community/home/news-post/react-1.png")}}"
+                                            alt="React">
+                                    @elseif($post->reaction_type=='love')
+                                        <img
+                                            src="{{asset("community-frontend/assets/images/community/home/news-post/react-2.png")}}"
+                                            alt="React">
+                                    @elseif($post->reaction_type=='haha')
+                                        <img
+                                            src="{{asset("community-frontend/assets/images/community/home/news-post/react-4.png")}}"
+                                            alt="React">
+                                    @elseif($post->reaction_type=='sad')
+                                        <img
+                                            src="{{asset("community-frontend/assets/images/community/home/news-post/react-6.png")}}"
+                                            alt="React">
+                                    @elseif($post->reaction_type=='angry')
+                                        <img
+                                            src="{{asset("community-frontend/assets/images/community/home/news-post/react-7.png")}}"
+                                            alt="React">
+                                    @elseif($post->reaction_type=='care')
+                                        <img
+                                            src="{{asset("community-frontend/assets/images/community/home/news-post/react-3.png")}}"
+                                            alt="React">
+                                    @elseif($post->reaction_type=='wow')
+                                        <img
+                                            src="{{asset("community-frontend/assets/images/community/home/news-post/react-5.png")}}"
+                                            alt="React">
+                                    @else
+                                        <img class="like"
+                                             src="{{asset("community-frontend/assets/images/community/home/news-post/like.png")}}"
+                                             alt="">
+                                    @endif
+
                                 </div>
                                 <span class="react-name">
                                     @if($post->reaction_type=='like')
@@ -412,50 +444,40 @@
                                 </span>
                                 {{--                                @dd( countComments())--}}
                                 <span
-                                    class="react-count">{{getUserTimeLinePostReactionCount($post->postId)}}</span>
+                                    class="react-count">{{getUserTimeLinePostReactionCount($post->post_id)}}</span>
                             </a>
 
                             <ul class="react-option">
-                                {{--                                {{ dd($post->reaction_type) }}--}}
+{{--                                @dd($post)--}}
+
                                 <li class="reaction {{$post->reaction_type=='like'?'active':''}}"
-                                    data-reaction_type="like" data-gId="{{$post->grpPostId}}">
-                                    @if ($post->reaction_type=='like')
-                                        <img
-                                            src="{{asset("community-frontend/assets/images/community/home/news-post/react-1.png")}}"
-                                            alt="React">
-                                    @elseif($post->reaction_type=='love')
-                                        <img
-                                            src="{{asset("community-frontend/assets/images/community/home/news-post/react-2.png")}}"
-                                            alt="React">
-                                    @elseif($post->reaction_type=='love')
-                                        <img
-                                            src="{{asset("community-frontend/assets/images/community/home/news-post/react-2.png")}}"
-                                            alt="React">
-                                    @endif
+                                    data-reaction_type="like" data-pId="{{$post->post_id}}"><img
+                                        src="{{asset("community-frontend/assets/images/community/home/news-post/react-1.png")}}"
+                                        alt="React">
                                 </li>
-                                {{--                                @dd($post)--}}
                                 <li class="reaction {{$post->reaction_type=='love'?'active':''}}"
-                                    data-reaction_type="love" data-gId="{{$post->grpPostId}}"><img
+                                    data-reaction_type="love" data-pId="{{$post->post_id}}"><img
                                         src="{{asset("community-frontend/assets/images/community/home/news-post/react-2.png")}}"
-                                        alt="React"></li>
+                                        alt="React">
+                                </li>
                                 <li class="reaction {{$post->reaction_type=='care'?'active':''}}"
-                                    data-reaction_type="care" data-gId="{{$post->grpPostId}}"><img
+                                    data-reaction_type="care" data-pId="{{$post->post_id}}"><img
                                         src="{{asset("community-frontend/assets/images/community/home/news-post/react-3.png")}}"
                                         alt="React"></li>
                                 <li class="reaction {{$post->reaction_type=='haha'?'active':''}}"
-                                    data-reaction_type="haha" data-gId="{{$post->grpPostId}}"><img
+                                    data-reaction_type="haha" data-pId="{{$post->post_id}}"><img
                                         src="{{asset("community-frontend/assets/images/community/home/news-post/react-4.png")}}"
                                         alt="React"></li>
                                 <li class="reaction {{$post->reaction_type=='wow'?'active':''}}"
-                                    data-reaction_type="wow" data-gId="{{$post->grpPostId}}"><img
+                                    data-reaction_type="wow" data-pId="{{$post->post_id}}"><img
                                         src="{{asset("community-frontend/assets/images/community/home/news-post/react-5.png")}}"
                                         alt="React"></li>
                                 <li class="reaction {{$post->reaction_type=='sad'?'active':''}}"
-                                    data-reaction_type="sad" data-gId="{{$post->grpPostId}}"><img
+                                    data-reaction_type="sad" data-pId="{{$post->post_id}}"><img
                                         src="{{asset("community-frontend/assets/images/community/home/news-post/react-6.png")}}"
                                         alt="React"></li>
                                 <li class="reaction {{$post->reaction_type=='angry'?'active':''}}"
-                                    data-reaction_type="care" data-gId="{{$post->grpPostId}}"><img
+                                    data-reaction_type="care" data-pId="{{$post->post_id}}"><img
                                         src="{{asset("community-frontend/assets/images/community/home/news-post/react-7.png")}}"
                                         alt="React"></li>
                             </ul>
@@ -480,7 +502,7 @@
                                 </div>
                                 <span class="react-name">Comment</span>
                                 <span
-                                    class="react-count">{{getUserTimeLinePostCommentCount($post->postId)}}</span>
+                                    class="react-count">{{getUserTimeLinePostCommentCount($post->post_id)}}</span>
                                 {{--                                <span class="react-count">{{countComments($post->post_id)->commentCount}}</span>--}}
                             </a>
                         </li>
@@ -563,71 +585,21 @@
                                             <li><a href="javascript:void(0)" class="replay-tag">Replay</a></li>
                                         </ul>
                                     </div>
-{{--                                    @dd($postComment->id)--}}
+                                    {{--                                    @dd($postComment->id)--}}
 
 
                                     <!-- child comment start  -->
                                     <div class="child-comment">
-                                                                                <div class="single-replay-comnt nested-comment-{{$postComment->id}}">
-{{--                                                                                    <div class="replay-coment-box comment-details">--}}
-{{--                                                                                        <div class="replay-comment-img">--}}
-{{--                                                                                            @if(!empty($postComment->users->userProfileImages[0]) && isset($postComment->users->userProfileImages[0])?$postComment->users->userProfileImages[0]:'')--}}
+                                        <div class="single-replay-comnt nested-comment-{{$postComment->id}}">
 
-{{--                                                                                                @if(!empty($postComment->users->userProfileImages[0]) && isset($postComment->users->userProfileImages[0])?$postComment->users->userProfileImages[0]:'')--}}
-{{--                                                                                                    <a href=""><img--}}
-{{--                                                                                                            src="{{asset("storage/community/profile-picture/".$postComment->users->userProfileImages[0]->user_profile)}}"--}}
-{{--                                                                                                            alt="image"></a>--}}
-{{--                                                                                                @else--}}
-{{--                                                                                                    <a href=""><img--}}
-{{--                                                                                                            src="{{asset("community-frontend/assets/images/community/home/news-post/Athore01.jpg")}}"--}}
-{{--                                                                                                            alt="image">--}}
-{{--                                                                                                    </a>--}}
-{{--                                                                                                @endif--}}
-{{--                                                                                            @endif--}}
-{{--                                                                                        </div>--}}
-{{--                                                                                        <div class="replay-comment-details comment-details">--}}
-{{--                                                                                            <div class="replay-coment-info coment-info">--}}
-{{--                                                                                                <div>--}}
-{{--                                                                                                    <h6><a class="replay-comnt-name" href="#">Karen Williams</a>--}}
-{{--                                                                                                    </h6>--}}
-{{--                                                                                                    <span class="replay-time-comnt">3 Mint Ago</span>--}}
-{{--                                                                                                </div>--}}
-{{--                                                                                                <div class="comment-option">--}}
-{{--                                                                                                    <button type="button"--}}
-{{--                                                                                                            class="dropdown-toggle comment-option-btn"--}}
-{{--                                                                                                            id="dropdownMenuButton1" data-bs-toggle="dropdown"--}}
-{{--                                                                                                            aria-expanded="false"><i class="fa fa-ellipsis-h"--}}
-{{--                                                                                                                                     aria-hidden="true"></i>--}}
-{{--                                                                                                    </button>--}}
-{{--                                                                                                    <ul class="dropdown-menu comment-option-dropdown"--}}
-{{--                                                                                                        aria-labelledby="dropdownMenuButton1">--}}
-{{--                                                                                                        <li class="post-option-item" id="editComment"><i--}}
-{{--                                                                                                                class="fa fa-pencil-square-o"--}}
-{{--                                                                                                                aria-hidden="true"></i> Edit comment--}}
-{{--                                                                                                        </li>--}}
-{{--                                                                                                        <li class="post-option-item"><i class="fa fa-trash-o"--}}
-{{--                                                                                                                                        aria-hidden="true"></i>--}}
-{{--                                                                                                            Delete comment--}}
-{{--                                                                                                        </li>--}}
-{{--                                                                                                    </ul>--}}
-{{--                                                                                                </div>--}}
-{{--                                                                                            </div>--}}
-{{--                                                                                            <div class="comment-div">--}}
-{{--                                                                                                <p class="comment-content">Donec rutrum congue leo eget--}}
-{{--                                                                                                    malesuada nulla quis lorem ut libero malesuada feugiat donec--}}
-{{--                                                                                                    rutrum congue leo eget.</p>--}}
-{{--                                                                                                <button id="textarea_btn" type="submit"><i--}}
-{{--                                                                                                        class="fa fa-paper-plane" aria-hidden="true"></i>--}}
-{{--                                                                                                </button>--}}
-{{--                                                                                            </div>--}}
-{{--                                                                                        </div>--}}
-{{--                                                                                    </div>--}}
-                                                                                </div>
+
+                                        </div>
 
 
                                         @if( count($postComment->replies)>0)
                                             <div class="more-comment">
-                                                <a class="loadChildCmt" data-postIdd="{{$post->postId}}" data-commentId="{{$postComment->id}}">More+</a>
+                                                <a class="loadChildCmt" data-postIdd="{{$post->postId}}"
+                                                   data-commentId="{{$postComment->id}}">More+</a>
                                             </div>
                                         @endif
 
@@ -733,8 +705,10 @@
             $('.reaction').removeClass('active');
             $(this).addClass('active');
 
-            let getReaction = $(this).attr('data-reaction_type');
-            let grpPostId = $(this).attr('data-gId');
+            let postReaction = $(this).attr('data-reaction_type');
+            let postId = $(this).attr('data-pId');
+            console.log(postId);
+            console.log(postReaction);
 
             let img_src = $(this).find('img').attr('src')
             $(this).parents('.like-react').find('.react-icon img').attr('src', img_src)
@@ -744,28 +718,26 @@
             // console.log(img_src,'img_src');
             // return false;
 
-            if (getReaction !== '' && grpPostId !== '') {
+            if (postReaction !== '' && postId !== '') {
                 $.ajax({
-                    url: '{{route('user.group.post.reaction')}}',
+                    url: '{{route('user.post-all.reaction')}}',
                     type: 'POST',
                     data: {
-                        getReaction: getReaction,
-                        grpPostId: grpPostId,
+                        postReaction: postReaction,
+                        postId: postId,
+                        reqType: 'storePostReaction',
                         '_token': '{{csrf_token()}}'
                     },
                     success: function (response) {
-                        console.log(response);
-                        console.log(response.data);
+
                         if (response.success === true) {
-
-                            toastr.success(response.msg);
-
-                            // let img_src = $(this).find('img').attr('src');
-                            // console.log(img_src,'img_src');
-                            // $(this).parents('.like-react').find('.react-icon img').attr('src', img_src);
+                            console.log(response);
+                            console.log(response.data);
+                            // toastr.success(response.msg);
+                            console.log(response.postComments);
 
                         } else {
-                            toastr.error(response.msg);
+                            // toastr.error(response.msg);
                         }
                     },
                     error: function (err) {
@@ -918,7 +890,7 @@
 
                     // console.log(response.html,'cmt');
                     $('.cmtText').val('');
-                    $('.nested-comment-'+ cmtId).append(response.html);
+                    $('.nested-comment-' + cmtId).append(response.html);
 
                 }
 
@@ -963,7 +935,7 @@
                     if (response.success === true) {
                         // toastr.success(response.msg);
                         $('.cmtText').val('');
-                        $('.nested-comment-'+ cmtId).append(response.data);
+                        $('.nested-comment-' + cmtId).append(response.data);
                         // nestedCmtHtml.append(response.data);
                     } else {
                         toastr.error(response.msg);
@@ -978,7 +950,6 @@
 
 
     })
-
 
 
 </script>

@@ -11,6 +11,7 @@ use App\Http\Controllers\Community\Frontend\Group\CommunityUserGroupController;
 use App\Http\Controllers\Community\Frontend\Page\CommunityUserPageController;
 use App\Http\Controllers\Community\Frontend\Video\VideoController;
 use App\Http\Controllers\Community\Frontend\GetCommentController;
+use App\Http\Controllers\Community\Frontend\AllReactionController;
 
 Route::middleware(['user'])->group(function (){
 
@@ -21,6 +22,7 @@ Route::middleware(['user'])->group(function (){
     Route::post('/user/post/comments',[CommunityFrontendController::class,'storeComment'])->name('community.user.post.comment');
     Route::get('get/user/post/comments',[CommunityFrontendController::class,'showComments'])->name('user.post.comment');
     Route::get('get/user/post/child-comments',[CommunityFrontendController::class,'showChildComments'])->name('user.load.child.comment');
+    Route::get('user/post/reaction',[CommunityFrontendController::class,'storeReaction'])->name('user.post.reaction');
 
     //user details
     Route::post('/user-friend/accept_request',[CommunityUserFriendRequestController::class,'acceptRequest'])->name('community.user.acceptRequest');
@@ -113,6 +115,7 @@ Route::middleware(['user'])->group(function (){
 
     //get all Comments........
     Route::get('/user/get-all-comments',[GetCommentController::class,'getAllComments'])->name('users.get-all-comments');
+    Route::post('/user/store-all-reactions',[AllReactionController::class,'storeReaction'])->name('user.post-all.reaction');
 
 });
 

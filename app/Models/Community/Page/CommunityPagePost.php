@@ -26,7 +26,7 @@ class CommunityPagePost extends Model
 
     public function comments(): \Illuminate\Database\Eloquent\Relations\HasMany
     {
-        return $this->hasMany(CommunityPagePostComment::class,'page_post_id');
+        return $this->hasMany(CommunityPagePostComment::class,'page_post_id','pId');
     }
 
 }
