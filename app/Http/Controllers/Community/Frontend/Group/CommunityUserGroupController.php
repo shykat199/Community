@@ -135,7 +135,7 @@ class CommunityUserGroupController extends Controller
             ->first();
 
 
-        $groupPosts = CommunityUserGroupPost::with('users.userProfileImages')
+        $groupPosts = CommunityUserGroupPost::with(['users.userProfileImages', 'comments.replies'])
             ->join('community_user_groups as communityGroups', function ($q) use ($id) {
                 $q->on('communityGroups.id', '=', 'community_user_group_posts.group_id');
                 $q->where('community_user_group_posts.group_id', '=', $id);
@@ -152,7 +152,16 @@ class CommunityUserGroupController extends Controller
             community_user_group_posts.created_at,community_user_group_posts.id as grpPostId,postReaction.reaction_type')
             ->orderBy('community_user_group_posts.id', 'DESC')
 //            ->groupBy('users.id')
-            ->get();
+            ->get()->map(function ($q) {
+                $q->setRelation('comments', $q->comments->take(2));
+                return $q;
+            });
+
+        $groupPosts = $groupPosts->each(function ($item) {
+            $item->comments->each(function ($comment) {
+                $comment->load('users.userProfileImages');
+            });
+        });
 
 //        return $groupPosts;
 
@@ -241,64 +250,67 @@ class CommunityUserGroupController extends Controller
     }
 
 
-    public function storeGroupCoverPhoto(Request $request){
-        $fileName=null;
-        if ($request->hasFile('grpCover')){
+    public function storeGroupCoverPhoto(Request $request)
+    {
+        $fileName = null;
+        if ($request->hasFile('grpCover')) {
 
             $fileName = Uuid::uuid() . '.' . $request->file('grpCover')->getClientOriginalExtension();
             $file = Storage::put('/public/community/group-post/cover/' . $fileName, file_get_contents($request->file('grpCover')));
 
         }
-        $storeCoverPicture=CommunityUserGroupCoverPhoto::updateOrCreate([
-            'group_id'=>$request->get('grpId'),
+        $storeCoverPicture = CommunityUserGroupCoverPhoto::updateOrCreate([
+            'group_id' => $request->get('grpId'),
         ],
             [
-                'cover_photo'=>$fileName,
+                'cover_photo' => $fileName,
             ]);
 
-        if ($storeCoverPicture){
-            return \redirect()->back()->with('success','Cover photo has uploaded');
-        }else{
-            return  \redirect()->back()->with('error','Something error');
+        if ($storeCoverPicture) {
+            return \redirect()->back()->with('success', 'Cover photo has uploaded');
+        } else {
+            return \redirect()->back()->with('error', 'Something error');
         }
     }
 
-    public function storeGroupProfilePhoto(Request $request){
+    public function storeGroupProfilePhoto(Request $request)
+    {
 
 //        dd($request->all());
-        $fileName=null;
-        if ($request->hasFile('grpProfile')){
+        $fileName = null;
+        if ($request->hasFile('grpProfile')) {
 
             $fileName = Uuid::uuid() . '.' . $request->file('grpProfile')->getClientOriginalExtension();
             $file = Storage::put('/public/community/group-post/profile/' . $fileName, file_get_contents($request->file('grpProfile')));
 
         }
-        $storeProfilePicture=CommunityUserGroupProfilePhoto::updateOrCreate([
-            'group_id'=>$request->get('grpId'),
+        $storeProfilePicture = CommunityUserGroupProfilePhoto::updateOrCreate([
+            'group_id' => $request->get('grpId'),
         ],
             [
-                'group_profile_photo'=>$fileName,
+                'group_profile_photo' => $fileName,
             ]);
 
-        if ($storeProfilePicture){
-            return \redirect()->back()->with('success','Profile photo has uploaded');
-        }else{
-            return  \redirect()->back()->with('error','Something error');
+        if ($storeProfilePicture) {
+            return \redirect()->back()->with('success', 'Profile photo has uploaded');
+        } else {
+            return \redirect()->back()->with('error', 'Something error');
         }
     }
 
 
-    public function storeGroupPostCommentOfComment(Request $request){
+    public function storeGroupPostCommentOfComment(Request $request)
+    {
 
-        if ($request->ajax()){
-            $storeCmtOfCmt=CommunityUserGroupPostComment::create([
-                'user_id'=>Auth::id(),
-                'group_post_id'=>$request->get('group_post_id'),
-                'group_post_comment_id'=>$request->get('cmtId'),
-                'comment_text'=>$request->get('cmtText'),
+        if ($request->ajax()) {
+            $storeCmtOfCmt = CommunityUserGroupPostComment::create([
+                'user_id' => Auth::id(),
+                'group_post_id' => $request->get('group_post_id'),
+                'group_post_comment_id' => $request->get('cmtId'),
+                'comment_text' => $request->get('cmtText'),
             ]);
 
-            $html='';
+            $html = '';
             if ($storeCmtOfCmt) {
 //                dd($storeComments->users->userProfileImages[0]->user_profile);
                 $userProfileImages = $storeCmtOfCmt->users->userProfileImages[0]->user_profile;
@@ -314,7 +326,7 @@ class CommunityUserGroupController extends Controller
                 }
 
                 $html .= '</a>
-                                        </div>
+                                      </div>
                                         <div class="replay-comment-details">
                                             <div class="replay-coment-info">
                                                 <h6><a class="replay-comnt-name" href="#">' . Auth::user()->name . '</a></h6>
@@ -325,66 +337,128 @@ class CommunityUserGroupController extends Controller
                                     </div>
                                 </div>';
 
-                return \response()->json([
-                    'status' => true,
-                    'success' => true,
-                    'msg' => 'Successfully Added',
-                    'data' => $html
-                ]);
+
             }
+
+            return \response()->json([
+                'status' => true,
+                'msg' => 'Successfully Added',
+                'data' => $html
+            ]);
 
         }
 
     }
 
 
-    public function storeGroupPostComment(Request $request){
-        if ($request->ajax()){
-            $storeGrpPostCmt=CommunityUserGroupPostComment::create([
-                'user_id'=>Auth::id(),
-                'group_post_id'=>$request->get('postId'),
+    public function storeGroupPostComment(Request $request)
+    {
+        if ($request->ajax()) {
+            $storeGrpPostCmt = CommunityUserGroupPostComment::create([
+                'user_id' => Auth::id(),
+                'group_post_id' => $request->get('postId'),
 //                'group_post_comment_id'=>0,
-            'comment_text'=>$request->get('postComment')
+                'comment_text' => $request->get('postComment')
             ]);
 
-            $html='';
-            if ($storeGrpPostCmt){
+            $html = '';
+            if ($storeGrpPostCmt) {
+//                dd($storePagePostCmt);
 
-                $userProfileImages = $storeGrpPostCmt->users->userProfileImages[0]->user_profile;
+                $html .= '
+                         <li class="single-comment">
+                                <!-- parent comment start  -->
+                                <div class="parent-comment">
+                                    <div class="comment-img">';
+                if (!empty($storeGrpPostCmt->users->userProfileImages[0]) && isset($storeGrpPostCmt->users->userProfileImages[0]) ? $storeGrpPostCmt->users->userProfileImages[0]->user_profile : '') {
 
+                    if (!empty($storeGrpPostCmt->users->userProfileImages[0]) && isset($storeGrpPostCmt->users->userProfileImages[0]) ? $storeGrpPostCmt->users->userProfileImages[0]->user_profile : '') {
 
-                $html.='<li class="single-comment">
-                            <div class="comment-img">
-                                <a href="#">';
-                if ($userProfileImages){
-                    $html .= ' <img src="' . asset("storage/community/profile-picture/$userProfileImages") . '" alt="image">';
-                }else{
-                    $html .= '<img src="' . asset("community-frontend/assets/images/community/home/news-post/comment01.jpg") . '"alt="image">';
+                        $html .= '<a href=""><img
+                                                        src="' . asset("storage/community/profile-picture/" . $storeGrpPostCmt->users->userProfileImages[0]->user_profile) . '"
+                                                        alt="image"></a>';
+                    }
+
                 }
-                $html.='</a>
-                            </div>
-                            <div class="comment-details">
-                                <div class="coment-info">
-                                    <h6><a href="#">'.Auth::user()->name.'</a></h6>
-                                    <span class="comment-time">'.Carbon::parse($storeGrpPostCmt->created_at)->diffForHumans().'</span>
-                                </div>
-                                <p class="comment-content">'.$storeGrpPostCmt->comment_text.'</p>
-                                <ul class="coment-react">
-                                    <li class="comment-like"><a href="#">Like(2)</a></li>
-                                    <li><a href="javascript:void(0)" class="replay-tag">Replay</a></li>
-                                </ul>
-                                <div class="comment-parent">
 
-                                                    <div class="new-comment replay-new-comment">
-                                                            <a class="new-comment-img replay-comment-img" href="#"><img src="http://127.0.0.1:8000/storage/community/profile-picture/331aa50b-a371-3ae3-8252-d13c68e08399.png" alt="image"></a><div class="new-comment-input replay-commnt-input">
-                                                            <input data-cmtid="' . $storeGrpPostCmt->id . '" class="cmtText" type="text" name="cmttext" data-userpostid="' . $storeGrpPostCmt->group_post_id . '" placeholder="Write a comment....">
-                                                                <div class="attached-icon">
-                                                                    <a href="#"><i class="fa fa-camera" aria-hidden="true"></i></a>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        </div>
-                                                        </li>';
+                $html .= '</div>
+                                    <div class="comment-details">
+                                        <div class="coment-info">
+                                            <div class="coment-authore-div">
+                                                <h6><a href="#">' . $storeGrpPostCmt->users->name . '</a></h6>
+                                                <span
+                                                    class="comment-time">' . \Carbon\Carbon::parse($storeGrpPostCmt->created_at)->diffForHumans() . '</span>
+                                            </div>
+                                            <div class="comment-option">
+                                                <button type="button" class="dropdown-toggle comment-option-btn"
+                                                        id="dropdownMenuButton1" data-bs-toggle="dropdown"
+                                                        aria-expanded="false"><i class="fa fa-ellipsis-h"
+                                                                                 aria-hidden="true"></i></button>
+                                                <ul class="dropdown-menu comment-option-dropdown"
+                                                    aria-labelledby="dropdownMenuButton1">
+                                                    <li class="post-option-item" id="editComment"><i
+                                                            class="fa fa-pencil-square-o" aria-hidden="true"></i> Edit
+                                                        comment
+                                                    </li>
+                                                    <li class="post-option-item"><i class="fa fa-trash-o"
+                                                                                    aria-hidden="true"></i> Delete
+                                                        comment
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                        <div class="comment-div">
+                                            <p class="comment-content">' . $storeGrpPostCmt->comment_text . '</p>
+                                            <button id="textarea_btn" type="submit"><i class="fa fa-paper-plane"
+                                                                                       aria-hidden="true"></i>
+                                            </button>
+                                        </div>
+                                        <ul class="coment-react">
+                                            <li class="comment-like"><a href="#">Like(2)</a></li>
+                                            <li><a href="javascript:void(0)" class="replay-tag">Replay</a></li>
+                                        </ul>
+                                    </div>
+                                    <!-- child comment start  -->
+                                    <div class="child-comment">
+                                                            <div class="single-replay-comnt nested-comment-' . $storeGrpPostCmt->id . '">
+
+                                                                                </div>';
+
+
+                if (count($storeGrpPostCmt->replies) > 0) {
+                    $html .= '<div class="more-comment">
+                                                <a class="loadChildCmt" data-postIdd="' . $storeGrpPostCmt->page_post_id . '" data-commentId="' . $storeGrpPostCmt->id . '">More+</a>
+                                            </div>';
+                }
+
+
+                $html .= ' <div class="new-comment replay-new-comment">';
+
+                if (!empty($storeGrpPostCmt->users->userProfileImages[0]) && isset($storeGrpPostCmt->users->userProfileImages[0]) ? $storeGrpPostCmt->users->userProfileImages[0] : '') {
+
+                    if (!empty($storeGrpPostCmt->users->userProfileImages[0]) && isset($storeGrpPostCmt->users->userProfileImages[0]) ? $storeGrpPostCmt->users->userProfileImages[0] : '') {
+
+                        $html .= '<a class="new-comment-img replay-comment-img"><img
+                                                        src="' . asset("storage/community/profile-picture/" . $storeGrpPostCmt->users->userProfileImages[0]->user_profile) . '"
+                                                        alt="image"></a>';
+                    }
+
+                }
+
+
+                $html .= ' <div class="new-comment-input replay-commnt-input">
+                                                <input data-cmtId="' . $storeGrpPostCmt->id . '" class="cmtText" type="text"
+                                                       name="cmttext"
+                                                       data-userPostId="' . $storeGrpPostCmt->group_post_id . '"
+                                                       placeholder="Write a comment....">
+                                                <div class="attached-icon">
+                                                    <a href="#"><i class="fa fa-camera" aria-hidden="true"></i></a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </li>';
 
                 return \response()->json([
                     'status' => true,
@@ -393,7 +467,6 @@ class CommunityUserGroupController extends Controller
                     'data' => $html
                 ]);
             }
-
         }
     }
 
