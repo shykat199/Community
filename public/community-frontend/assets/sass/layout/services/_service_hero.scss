@@ -1,0 +1,83 @@
+.service-hero {
+    background: #F4EDE6;
+}
+.service-hero-wrap {
+    height: 670px;
+    display: flex;
+    align-items: center;
+    @media (max-width: 1200px) {
+        height: 430px;
+    }
+    @media (max-width: 991px) {
+        height: 670px;
+        flex-direction: column;
+        row-gap: 50px;
+        justify-content: center;
+    }    
+    .service-hero-text {
+        flex-basis: 50%;
+        @media (max-width: 991px) {
+            order: 2;
+            flex-basis: auto;
+        } 
+        .service-hero-head {
+            font-size: 18px;
+            color: $theme-font;
+            line-height: 26px;
+            font-weight: 600;
+        }
+        .service-hero-title {
+            font-size: 60px;
+            color: $theme-font;
+            font-weight: 600;
+            line-height: 80px;
+            margin: 15px 0;
+            span {
+                color: $theme-color;
+            }
+            @media (max-width: 1200px) {
+                font-size: 45px;
+                line-height: 60px;
+            }
+            @media (max-width: 768px) {
+                font-size: 40px;
+                line-height: 50px;
+            }
+        }
+        .reservation-btn {
+            @media (max-width: 1200px) {
+                display: block;
+                margin-bottom: 15px;
+            }
+        }
+        .about-btn {
+            background: $theme-font;
+            color: $white;
+            border: 1px solid $theme-font;
+            margin: 0 20px;
+            @media (max-width: 1200px) {
+                display: block;
+                margin: 0;
+            }            
+        }
+    }
+    .hero-img {
+        flex-basis: 50%;
+        text-align: center;
+        @media (max-width:991px) {
+            flex-basis: auto;
+        }
+        img {
+            max-width: 500px;
+            max-height: 400px;
+            object-fit: contain;
+            clip-path: polygon(50% 0%, 80% 10%, 100% 35%, 100% 70%, 80% 90%, 50% 100%, 20% 90%, 0% 70%, 0% 35%, 20% 10%);
+            @media (max-width: 1200px) {
+                max-width: 450px;
+            }
+            @media (max-width: 576px) {
+                max-width: 300px;
+            }
+        }
+       }
+}

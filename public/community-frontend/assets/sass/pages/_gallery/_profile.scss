@@ -1,0 +1,207 @@
+//profile cover
+.profile-hero {
+    margin: 30px 0 140px;
+}
+
+.profile-hero-content {
+    position: relative;
+
+}
+
+.gallery-profile-cover {
+    width: 100%;
+    min-height: 500px;
+    max-height: 500px;
+    height: 100%;
+    object-fit: cover;
+
+    @media (max-width: 768px) {
+        min-height: 380px;
+        max-height: 380px;
+    }
+
+    @media (max-width: 576px) {
+        min-height: 300px;
+        max-height: 300px;
+    }
+}
+
+.profile-hero-info {
+    display: flex;
+    align-items: center;
+    column-gap: 20px;
+    position: absolute;
+    bottom: -75px;
+    left: 5%;
+    @media (max-width: 768px) {
+        bottom: -50px;
+      } 
+    @media (max-width: 576px) {
+        column-gap: 10px;
+      } 
+}
+
+.profile-img-part {
+    border: 5px solid $primary-bg;
+    width: fit-content;
+    // background: linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,1) 70%);
+
+}
+
+.profile-img {
+    min-width: 150px;
+    max-width: 150px;
+    width: 100%;
+    min-height: 150px;
+    max-height: 150px;
+    height: 100%;
+    object-fit: cover;
+
+    @media (max-width: 768px) {
+        min-width: 120px;
+        max-width: 120px;
+        min-height: 100px;
+        max-height: 100px;
+    }
+    @media (max-width: 576px) {
+        min-width: 80px;
+        max-width: 80px;
+        min-height: 80px;
+        max-height: 80px;
+    }
+}
+
+.profile-details {
+    h6 {
+        @media (max-width: 768px) {
+            font-size: 16px;
+        }
+        @media (max-width: 576px) {
+            font-size: 14px;
+        }
+    }
+
+    .profile-details-bottom {
+        padding-top: 15px;
+
+        @media (max-width: 768px) {
+            padding-top: 10px;
+        }
+
+        @media (max-width: 576px) {
+            padding-top: 8px;
+        }
+        @media (max-width: 400px) {
+            padding-top: 0px;
+        }
+
+        a,
+        span {
+            @media (max-width: 768px) {
+                font-size: 14px;
+            }
+            @media (max-width: 576px) {
+                font-size: 12px;
+            }
+            @media (max-width: 340px) {
+                font-size: 10px;
+            }
+        }
+    }
+}
+
+.profile-social {
+    position: absolute;
+    bottom: 20px;
+    right: 20px;
+    display: flex;
+    column-gap: 10px;
+
+    @media (max-width: 768px) {
+        flex-direction: column;
+        row-gap: 10px;
+    }
+
+    .profile-social-link {
+        width: 40px;
+        height: 40px;
+        // background-color: $theme-color;
+        color: white;
+        border-radius: 5px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.3s ease-in-out;
+
+        @media (max-width: 768px) {
+            width: 30px;
+            height: 30px;
+            font-size: 14px;
+        }
+
+        &:hover {
+            background-color: $primary-bg;
+            color: $theme-color;
+        }
+    }
+    .facebook-bg{
+        background-color: #3b5998;
+    }
+    .twitter-bg{
+        background-color: #00acee;
+    }
+    .youtube-bg{
+        background-color: #c4302b;
+    }
+    .google-plus-bg{
+        background-color: #db4a39;
+    }
+}
+
+// profile tab css
+.profile-tab-part {
+    margin: 70px 0;
+
+    .profile-tab-part-list {
+        .nav-item {
+            .nav-link {
+                color: $theme-font;
+                opacity: 0.4;
+                font-weight: 700;
+
+                @media (max-width: 576px) {
+                    font-size: 12px;
+                    padding: 5px 8px;
+                }
+            }
+
+            .nav-link.active {
+                opacity: 1;
+                background-color: #fff;
+                border-color: #dee2e6 #dee2e6 #fff;
+                border-bottom: 3px solid $theme-color;
+            }
+        }
+    }
+
+    .profile-tab-videos-content {
+        .video-gallery-single-card {
+            video {
+                @media (min-width: 991px) {
+                    height: 200px;
+                    object-fit: cover;
+                }
+
+                @media (max-width: 991px) {
+                    height: 180px;
+                    object-fit: cover;
+                }
+
+                @media (max-width: 768px) {
+                    height: 200px;
+                    object-fit: cover;
+                }
+            }
+        }
+    }
+}

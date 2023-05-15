@@ -4,15 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\AdminLogin;
 use App\Http\Requests\AdminRequest;
+use App\Models\Community\User\CommunityUserBan;
 use App\Models\User;
 use Carbon\Carbon;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Redirect;
-use JetBrains\PhpStorm\NoReturn;
-use function MongoDB\BSON\toRelaxedExtendedJSON;
-use const http\Client\Curl\AUTH_ANY;
 
 class AuthController extends Controller
 {
@@ -22,9 +19,11 @@ class AuthController extends Controller
         if (Auth::check() && Auth::user()) {
 
             if (Auth::user()->role === ADMIN_ROLE) {
-                return to_route('admin.dashboard')->with('success','admin Login Successfully.');
+
+                return to_route('admin.dashboard')->with('success', 'Admin Login Successfully.');
+
             } elseif (Auth::user()->role === USER_ROLE) {
-                //return view();
+                return to_route('community.index');
             } else {
                 return "Unauthorized User";
             }
@@ -40,10 +39,12 @@ class AuthController extends Controller
 
         if (Auth::check() && Auth::user()) {
             if (Auth::user()->role === ADMIN_ROLE) {
-                return to_route('admin.dashboard')->with('success','admin Login Successfully.');
+
+                return to_route('admin.dashboard')->with('success', 'Admin Login Successfully.');
+
             }
             if (Auth::user()->role === USER_ROLE) {
-                return "User Dashboard";
+                return to_route('community.index');
             }
         }
         return view('admin.auth.register');
@@ -57,19 +58,43 @@ class AuthController extends Controller
 
         $check = $request->all();
 
-        //dd($check);
+//        dd($check);
+//        $banUserCheck = CommunityUserBan::join('users', 'users.id', '=', 'community_user_bans.user_id')
+////            ->where('community_user_bans.user_ban', '=', '1')
+//            ->where('community_user_bans.user_id', '=', Auth::id())
+//            ->selectRaw('community_user_bans.user_id,community_user_bans.user_ban')
+//            ->get();
+
+//        dd($banUserCheck);
+
+//        $getLoggedUserDetails = User::where('email', '=', $check['email'])->select('email', 'password')->first();
+////        dd($getLoggedUserDetails);
+//        if ($check['email'] === $getLoggedUserDetails->email && $check['password'] === Hash::check('plain-text', $getLoggedUserDetails->password)) {
+//            dd('check pass');
+//        }
 
         if (Auth::attempt([
             'email' => $check['email'],
             'password' => $check['password']
         ])) {
+//            $userAccountStatus=User::where('email','=',$request->get('email'))
+//                ->where('password','=',$request->get('password'))->first();
+//            $userAccountStatus=$userAccountStatus->update([
+//                'account_status'=>1,
+//            ]);
+//            $userAccountStatus=$userAccountStatus->toSql;
+//            dd($userAccountStatus);
 
             if (Auth::user()->role === ADMIN_ROLE) {
-                return to_route('admin.dashboard')->with('success','admin Login Successfully.');
+
+                return to_route('admin.dashboard')->with('success', 'Admin Login Successfully.');
+
             } elseif (Auth::user()->role === USER_ROLE) {
-                return "User Dashboard";
-            } elseif (Auth::user()->role === SERVICE_PROVIDER_ROLE) {
-                return to_route('admin.dashboard');
+
+
+                return to_route('community.index')->with('success', 'LogIn Successfully');
+
+
             } else {
                 return "Invalid User";
             }

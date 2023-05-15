@@ -1,0 +1,89 @@
+
+
+@import "abstracts/Variables";
+
+@import "base/animations";
+@import "base/base";
+@import "base/typography";
+@import "base/typography";
+@import "base/utilities";
+
+@import "components/button";
+@import "components/section-title";
+@import "components/card";
+@import "components/pagination";
+@import "components/select";
+@import "components/checkbox";
+@import "components/range";
+@import "components/accordion";
+@import "components/form";
+@import "components/form-check";
+
+@import "layout/ecommarce_header-joy";
+@import "layout/hero-slider";
+@import "layout/footer";
+@import "layout/main-header";
+@import "layout/main_footer";
+
+
+// for community
+@import "layout/community/communityHeader";
+@import "layout/community/communitySideNav";
+@import "layout/community/communityFooter";
+
+@import "components/community/communityBtn";
+
+@import "pages/community/communityHome";
+@import "pages/community/myProfile";
+@import "pages/community/settings";
+
+// services 
+@import "layout/services/serviceHeader";
+@import "layout/services/service_hero";
+@import "components/services/serviceCard";
+@import "components/services/servicePaginate";
+@import "pages/services/serviceHome";
+
+
+
+
+
+
+//page
+@import "pages/_ecommarce/ecommarce_home";
+@import "pages/_ecommarce/ecommarce_shopPage";
+@import "pages/_ecommarce/ecommarce_shop_item-details";
+@import "pages/_ecommarce/ecommarce_cart";
+@import "pages/_ecommarce/wishlist";
+@import "pages/_ecommarce/checkout";
+@import "pages/_ecommarce/orders";
+@import "pages/_ecommarce/order_details";
+@import "pages/_ecommarce/shipping";
+
+// gallery page
+@import "pages/_gallery/header";
+@import "pages/_gallery/home";
+@import "pages/_gallery/photo_page";
+@import "pages/_gallery/video_page";
+@import "pages/_gallery/video_single_page";
+@import "pages/_gallery/profile";
+@import "pages/_gallery/add_file";
+@import "pages/_gallery/album_category";
+@import "pages/_gallery/album_photo";
+@import "pages/_gallery/gallery_dashboard";
+@import "pages/_gallery/dashboard_personal_profile";
+@import "pages/_gallery/dashboard_all_photo";
+@import "pages/_gallery/dashboard_all_video";
+
+
+
+
+
+
+
+
+
+
+
+
+

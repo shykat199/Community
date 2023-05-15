@@ -1,0 +1,95 @@
+.main-footer-area {
+    background: #091727;
+    padding: 50px 0;
+}
+.main-footer-left{
+    @media (max-width: 991px) {
+        border-bottom: 1px solid rgba(255, 255, 255, 0.5);
+        padding-bottom: 30px;
+    }
+    p{
+        max-width: 400px;
+        width: 100%;
+        line-height: 30px;
+        @media (max-width: 991px) {
+            max-width: unset;
+        }
+    }
+}
+.social {
+    display: flex;
+    align-items: center;
+    padding-top: 40px;
+    @media (max-width: 991px) {
+        padding-top: 20px;
+    }
+
+    ul {
+        display: flex;
+        align-items: center;
+
+        li {
+            margin-right: 22px;
+            color: $white;
+
+            @media (max-width: 991px) {
+                margin-right: 12px;
+            }
+
+            a {
+                color: $white;
+                transition: all 0.2s ease-in-out;
+                position: relative;
+
+                &:hover {
+                    color: rgba(255, 255, 255, 0.5);
+                }
+
+                .tooltiptext {
+                    visibility: hidden;
+                    background-color: $white;
+                    color: $black;
+                    text-align: center;
+                    padding: 5px 10px;
+                    font-size: 12px;
+
+                    /* Position the tooltip */
+                    position: absolute;
+                    z-index: 1;
+                    top: 120%;
+                    left: 100%;
+
+                    @media (max-width: 991px) {
+                        padding: 5px 4px;
+                        font-size: 10px;
+                        left: 10%;
+                    }
+
+                    // transition: all 0.8s ease-in;
+                    // margin-left: -60px;
+                }
+
+
+                &:hover .tooltiptext {
+                    transition-delay: 1s;
+                    visibility: visible;
+                }
+            }
+
+
+        }
+    }
+}
+.footer-category-link{
+  font-size: 14px;
+  font-weight: 400;
+  color: white;
+  transition: all 0.3s ease-in-out;
+  &:hover{
+    color: $theme-color;
+  }
+}
+.main-footer-border-bottom{
+    border-bottom: 1px solid rgba(255, 255, 255, 0.5);
+    // width: 100px;
+}

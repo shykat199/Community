@@ -1,0 +1,89 @@
+// hero title
+.hero-title{
+    font-size: 40px;
+    font-weight: 700;
+    @media (max-width: 991px) {
+        font-size: 35px;
+    }
+
+    @media (max-width: 768px) {
+        font-size: 28px;
+    }
+}
+// section title
+.section-title {
+    font-size: 32px;
+    font-weight: 700;
+    padding-bottom: 30px;
+
+    @media (max-width: 991px) {
+        font-size: 30px;
+    }
+
+    @media (max-width: 768px) {
+        font-size: 25px;
+    }
+}
+.section-subtitle {
+    font-size: 24px;
+    font-weight: 700;
+    padding-bottom: 30px;
+
+    @media (max-width: 991px) {
+        font-size: 20px;
+    }
+
+    @media (max-width: 768px) {
+        font-size: 18px;
+    }
+    @media (max-width: 576px) {
+        padding-bottom: 15px;
+        font-size: 18px;
+    }
+}
+.shop-main-content{
+    margin-top: 40px;
+}
+
+.f-12{
+    font-size: 12px;
+}
+.f-13{
+    font-size: 13px;
+}
+.f-14{
+    font-size: 14px;
+}
+.f-15{
+    font-size: 15px;
+}
+.f-16{
+    font-size: 16px;
+}
+.f-16-title{
+    font-size: 16px;
+    font-weight: 700;
+    @media (max-width: 576px) {
+        font-size: 14px;
+    }
+}
+.f-18{
+    font-size: 18px;
+}
+.f-20{
+    font-size: 20px;
+}
+.footer-category-title{
+    font-size: 18px;
+    font-weight: 700;
+    color: white;
+}
+.price-title{
+    
+}
+.fw-400{
+    font-weight: 400;
+}
+.fw-500{
+    font-weight: 500;
+}

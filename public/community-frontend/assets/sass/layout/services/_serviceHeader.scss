@@ -1,0 +1,124 @@
+
+
+.service-head-wrap {
+    display: flex;
+    justify-content: space-between ;
+    position: relative;
+    padding: 30px 0;
+    .service-logo {
+        a {
+            img {
+                @media (max-width: 475px) {
+                    width: 80%;
+                }
+            }
+        }
+    }
+}
+.service-head-right {
+    display: flex;
+    align-items:center;
+    align-items: center;
+}
+.service-responsive-menu {
+    display: flex;
+    z-index: 11;
+    li {
+        font-size: 16px;
+        color: $theme-font;
+        margin-right: 30px;
+        a {
+            color: $theme-font;
+            transition: all .3s ease;
+            &:hover{
+                color: $theme-color;
+            }
+        }
+        @media (max-width: 1200px) {
+            margin-right: 15px;
+            a {
+                font-size: 14px;
+            }
+        }
+    }   
+    @media (max-width:991px) {
+        position: absolute;
+        left: 0;
+        top: 100%;
+        flex-direction: column;
+        text-align: end;
+        width: 100%;
+        padding: 5px 0;
+        border-radius: 5px;
+        background: $theme-color;
+        transition: all .4s ease;
+        visibility: hidden;
+        opacity: 0;
+        transform: scaleY(0);
+        transform-origin: top;
+        &.active {
+            visibility: visible;
+            opacity: 1;
+            transform: scaleY(1);
+        }
+        li {
+            padding: 5px 0;
+            a {
+                color: $white;
+                &:hover{
+                    color: $white;
+                }
+            }
+        }      
+    }
+}
+.mobile-btn {
+    i {
+        font-size: 20px;
+        padding: 5px;
+        color: #fd6136;
+        background: $white;
+        border-radius: 4px;
+    }
+    display: none;
+    @media (max-width: 991px){
+        display: inline-block;
+        margin-left: 30px;
+    }  
+    @media (max-width: 425px){
+        display: inline-block;
+        margin-left: 15px;
+    }  
+}
+.service-singup {
+    a {
+        height: 50px;
+        line-height: 50px;
+        padding: 0 20px;
+        border: 1px solid $theme-font;
+        border-radius: 5px;
+        display: block;
+        font-size: 16px;
+        color: $theme-font;
+        transition: all .3s ease;
+        &:hover{
+            color: $white;
+            background: $theme-color;
+            border: 1px solid $theme-color;
+        }
+        @media (max-width: 1200px) {
+            height: 40px;
+            line-height: 40px;
+            font-size: 14px;
+        }
+        @media (max-width: 375px) {
+            padding: 0 5px;
+            font-size: 12px;
+        }
+    }
+}
+
+.service-section-padding {
+    padding-top: 100px;
+    padding-bottom: 50px;
+}

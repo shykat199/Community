@@ -1,0 +1,5 @@
+.form-control:focus {
+    border-color: $theme-font;
+    // box-shadow: 0 0 0 0.2rem rgba($theme-color,0.5);
+    box-shadow: none;
+} 
