@@ -170,7 +170,7 @@
             </form>
 
         </div>
-{{--                                                @dd($groupPosts)--}}
+        {{--                                                @dd($groupPosts)--}}
         @foreach($groupPosts as $post)
             <div class="main-content posted-content">
 
@@ -435,9 +435,122 @@
                     <ul class="post-comment-list">
 
                         {{--All Comments List--}}
+
+
+                        @foreach($post->comments as $postComment)
+
+                            <li class="single-comment">
+                                <!-- parent comment start  -->
+                                <div class="parent-comment">
+                                    <div class="comment-img">
+                                        @if(!empty($postComment->users->userProfileImages[0]) && isset($postComment->users->userProfileImages[0])?$postComment->users->userProfileImages[0]:'')
+
+                                            @if(!empty($postComment->users->userProfileImages[0]) && isset($postComment->users->userProfileImages[0])?$postComment->users->userProfileImages[0]:'')
+                                                <a href=""><img
+                                                        src="{{asset("storage/community/profile-picture/".$postComment->users->userProfileImages[0]->user_profile)}}"
+                                                        alt="image"></a>
+                                            @else
+                                                <a href=""><img
+                                                        src="{{asset("community-frontend/assets/images/community/home/news-post/Athore01.jpg")}}"
+                                                        alt="image">
+                                                </a>
+                                            @endif
+                                        @else
+                                            <a href=""><img
+                                                    src="{{asset("community-frontend/assets/images/community/home/news-post/Athore01.jpg")}}"
+                                                    alt="image">
+                                            </a>
+                                        @endif
+                                    </div>
+                                    <div class="comment-details">
+                                        <div class="coment-info">
+                                            <div class="coment-authore-div">
+                                                <h6><a href="#">{{$postComment->users->name}}</a></h6>
+                                                <span
+                                                    class="comment-time">{{\Carbon\Carbon::parse($postComment->created_at)->diffForHumans()}}</span>
+                                            </div>
+                                            <div class="comment-option">
+                                                <button type="button" class="dropdown-toggle comment-option-btn"
+                                                        id="dropdownMenuButton1" data-bs-toggle="dropdown"
+                                                        aria-expanded="false"><i class="fa fa-ellipsis-h"
+                                                                                 aria-hidden="true"></i></button>
+                                                <ul class="dropdown-menu comment-option-dropdown"
+                                                    aria-labelledby="dropdownMenuButton1">
+                                                    <li class="post-option-item" id="editComment"><i
+                                                            class="fa fa-pencil-square-o" aria-hidden="true"></i> Edit
+                                                        comment
+                                                    </li>
+                                                    <li class="post-option-item"><i class="fa fa-trash-o"
+                                                                                    aria-hidden="true"></i> Delete
+                                                        comment
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                        <div class="comment-div">
+                                            <p class="comment-content">{{$postComment->comment_text}}</p>
+                                            <button id="textarea_btn" type="submit"><i class="fa fa-paper-plane"
+                                                                                       aria-hidden="true"></i>
+                                            </button>
+                                        </div>
+                                        <ul class="coment-react">
+                                            <li class="comment-like"><a href="#">Like(2)</a></li>
+                                            <li><a href="javascript:void(0)" class="replay-tag">Replay</a></li>
+                                        </ul>
+                                    </div>
+
+
+                                    <!-- child comment start  -->
+                                    <div class="child-comment">
+                                        <div class="single-replay-comnt nested-comment-{{$postComment->id}}">
+
+
+                                        </div>
+
+                                        {{--                                                                                @dd($postComment)--}}
+                                        @if( count($postComment->replies)>0)
+                                            <div class="more-comment">
+                                                <a class="loadChildCmt" data-postIdd="{{$post->gId}}"
+                                                   data-commentId="{{$postComment->id}}">More+</a>
+                                            </div>
+                                        @endif
+
+                                        <div class="new-comment replay-new-comment">
+
+                                            @if(!empty($postComment->users->userProfileImages[0]) && isset($postComment->users->userProfileImages[0])?$postComment->users->userProfileImages[0]:'')
+
+                                                @if(!empty($postComment->users->userProfileImages[0]) && isset($postComment->users->userProfileImages[0])?$postComment->users->userProfileImages[0]:'')
+                                                    <a href="" class="new-comment-img replay-comment-img"><img
+                                                            src="{{asset("storage/community/profile-picture/".$postComment->users->userProfileImages[0]->user_profile)}}"
+                                                            alt="image"></a>
+                                                @else
+                                                    <a href=""><img
+                                                            src="{{asset("community-frontend/assets/images/community/home/news-post/Athore01.jpg")}}"
+                                                            alt="image">
+                                                    </a>
+                                                @endif
+                                            @endif
+                                            {{--                                            @dd($postComment)--}}
+                                            <div class="new-comment-input replay-commnt-input">
+                                                <input data-cmtId="{{$postComment->id}}" class="cmtText" type="text"
+                                                       name="cmttext"
+                                                       data-userPostId="{{$postComment->group_post_id}}"
+                                                       placeholder="Write a comment....">
+                                                <div class="attached-icon">
+                                                    <a href="#"><i class="fa fa-camera" aria-hidden="true"></i></a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </li>
+
+                        @endforeach
+
+
                     </ul>
                     <div class="more-comment">
-                        <a class="checkCmt" data-postIdd="{{$post->grpPostId}}">More Comments+</a>
+                        <a class="checkCmt" data-postIdd="{{$post->gId}}">More Comments+</a>
                     </div>
 
                     <form action="#" class="new-comment">
@@ -454,7 +567,8 @@
                         </a>
 
                         <div class="new-comment-input">
-                            <input type="text" data-postId="{{$post->grpPostId}}" class="postComments" placeholder="Write a comment....">
+                            <input type="text" data-postId="{{$post->gId}}" class="postComments"
+                                   placeholder="Write a comment....">
                             <div class="attached-icon">
                                 <a href="#"><i class="fa fa-camera" aria-hidden="true"></i></a>
                             </div>
@@ -488,7 +602,9 @@
 @endsection
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.4/jquery.min.js"
         integrity="sha512-pumBsjNRGGqkPzKHndZMaAG+bir374sORyzM3uulLV14lN5LyykqNk8eEeUlUkB3U0M4FApyaHraT65ihJhDpQ=="
-        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+        crossorigin="anonymous" referrerpolicy="no-referrer">
+
+</script>
 <script>
     $(document).ready(function () {
         $('.reaction').on('click', function () {
@@ -547,9 +663,7 @@
                 $(this).val('');
                 // let htmlData = $(this).parents('.posted-content').find('.post-comment-list')
                 let htmlData = $(this).parents('.main-content').find('.post-comment-list');
-                // console.log($(this));
-                // return false;
-                // console.log(comment,postId);
+
                 if (comment !== '' && postId !== '') {
                     $.ajax({
                         url: '{{route('community.store.user.group.post.comment')}}',
@@ -566,8 +680,8 @@
                                 toastr.success(response.msg);
                                 // console.log($(this),'this')
                                 $(this).val('');
-                                console.log(response.data,'datat');
-                                htmlData.html(response.data);
+                                // console.log(response.data, 'datat');
+                                htmlData.append(response.data);
                                 // console.log(response.data);
 
                             } else {
@@ -646,59 +760,89 @@
     })
 
 
-{{--    $(document).keypress('.cmtText', function (e) {--}}
-{{--        let cmtId = e.target.dataset.cmtid;--}}
-{{--        let group_post_id = e.target.dataset.userpostid;--}}
-{{--        let cmtText = e.target.value;--}}
-{{--        let key = e.which;--}}
-{{--        // console.log(user_post_id);--}}
-{{--// return false;--}}
-{{--        if (key === 13) {--}}
-{{--            // console.log(cmtText);--}}
+    $(document).keypress('.cmtText', function (e) {
+        let cmtId = e.target.dataset.cmtid;
+        let group_post_id = e.target.dataset.userpostid;
+        let cmtText = e.target.value;
+        let key = e.which;
+        // console.log(user_post_id);
+// return false;
+        if (key === 13) {
 
-{{--            $.ajax({--}}
-{{--                url: "{{route('community.user.store.group.commentsOfComments')}}",--}}
-{{--                type: 'POST',--}}
-{{--                data: {--}}
-{{--                    cmtId: cmtId,--}}
-{{--                    cmtText: cmtText,--}}
-{{--                    group_post_id: group_post_id,--}}
-{{--                    '_token': '{{csrf_token()}}'--}}
-{{--                },--}}
-{{--                success: function (response) {--}}
-{{--                    // console.log(response);--}}
+            $.ajax({
+                url: "{{route('community.user.store.group.commentsOfComments')}}",
+                type: 'POST',
+                data: {
+                    cmtId: cmtId,
+                    cmtText: cmtText,
+                    group_post_id: group_post_id,
+                    '_token': '{{csrf_token()}}'
+                },
+                success: function (response) {
+                    // console.log(response);
 
-{{--                    if (response.success === true) {--}}
-{{--                        toastr.success(response.msg);--}}
-{{--                        $('.cmtText').val('');--}}
-{{--                        $('.comment-parent-'+cmtId).append(response.data);--}}
-{{--                    } else {--}}
-{{--                        toastr.error(response.msg);--}}
-{{--                    }--}}
-{{--                },--}}
-{{--                error: function (err) {--}}
+                    if (response.status === true) {
+                        // toastr.success(response.msg);
+                        $('.cmtText').val('');
+                        $('.nested-comment-'+ cmtId).append(response.data);
+                    } else {
+                        toastr.error(response.msg);
+                    }
+                },
+                error: function (err) {
 
-{{--                    toastr.error("Error with AJAX callback !");--}}
-{{--                }--}}
-{{--            })--}}
-{{--        }--}}
+                    toastr.error("Error with AJAX callback !");
+                }
+            })
+        }
 
 
-{{--    })--}}
+    })
+
+
+    $(document).on('click', '.loadChildCmt', function () {
+        let postId = $(this).attr('data-postIdd');
+
+        let cmtId = $(this).attr('data-commentId');
+        $(this).hide();
+        console.log(postId);
+        let htmlData = $(this).parents('.posted-content').find('.post-comment-list')
+        $.ajax({
+            url: "{{route('users.get-all-comments')}}",
+            post: "GET",
+            data: {
+                postId: postId,
+                cmtId: cmtId,
+                reqType: 'groupPostChildCmt',
+            },
+            success: function (response) {
+
+                if (response.status === true) {
+
+                    // console.log(response.html,'cmt');
+                    $('.cmtText').val('');
+                    $('.nested-comment-'+cmtId).append(response.html);
+                }
+
+
+            },
+        })
+
+    })
 
 </script>
 
 <script>
-    $(document).on('click','.checkCmt',function (){
-        let gPostId=$(this).attr('data-postIdd')
+    $(document).on('click', '.checkCmt', function () {
+        let gPostId = $(this).attr('data-postIdd')
         let htmlData = $(this).parents('.posted-content').find('.post-comment-list')
         console.log(gPostId);
         $.ajax({
-            url:'{{route('users.get-all-comments')}}',
-            type:'GET',
-            data:{
-                gPostId:gPostId,
-                reqTyp:'grpCmt'
+            url: '{{route('users.get-all-comments')}}',
+            type: 'GET',
+            data: {
+                gPostId: gPostId,
+                reqTyp: 'grpCmt'
             },
             success: function (response) {
 

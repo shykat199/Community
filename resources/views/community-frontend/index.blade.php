@@ -211,21 +211,9 @@
 
         </div>
 
-        {{--                        @dd($allUserPosts)--}}
+
         @foreach($allUserPosts as $post)
-
-            {{--            @php--}}
-
-            {{--                $postDescription=explode(',',$post->postDescription);--}}
-            {{--                $created_at=explode(',',$post->created_at);--}}
-            {{--                $post_id=explode(',',$post->post_id);--}}
-            {{--                $userPostMedia=explode(',',$post->userPostMedia);--}}
-            {{--                $caption=explode(',',$post->caption);--}}
-            {{--                $user_profile=explode(',',$post->user_profile);--}}
-
-            {{--            @endphp--}}
-
-
+            {{--            @dd($post)--}}
 
             <div class="main-content posted-content">
                 <div class="post-autore d-flex justify-content-between align-items-center">
@@ -397,9 +385,41 @@
                         <li class="post-react like-react">
                             <a href="#">
                                 <div class="react-icon">
-                                    <img class="like"
-                                         src="{{asset("community-frontend/assets/images/community/home/news-post/like.png")}}"
-                                         alt="">
+
+                                    @if ($post->reaction_type=='like')
+                                        <img
+                                            src="{{asset("community-frontend/assets/images/community/home/news-post/react-1.png")}}"
+                                            alt="React">
+                                    @elseif($post->reaction_type=='love')
+                                        <img
+                                            src="{{asset("community-frontend/assets/images/community/home/news-post/react-2.png")}}"
+                                            alt="React">
+                                    @elseif($post->reaction_type=='haha')
+                                        <img
+                                            src="{{asset("community-frontend/assets/images/community/home/news-post/react-4.png")}}"
+                                            alt="React">
+                                    @elseif($post->reaction_type=='sad')
+                                        <img
+                                            src="{{asset("community-frontend/assets/images/community/home/news-post/react-6.png")}}"
+                                            alt="React">
+                                    @elseif($post->reaction_type=='angry')
+                                        <img
+                                            src="{{asset("community-frontend/assets/images/community/home/news-post/react-7.png")}}"
+                                            alt="React">
+                                    @elseif($post->reaction_type=='care')
+                                        <img
+                                            src="{{asset("community-frontend/assets/images/community/home/news-post/react-3.png")}}"
+                                            alt="React">
+                                    @elseif($post->reaction_type=='wow')
+                                        <img
+                                            src="{{asset("community-frontend/assets/images/community/home/news-post/react-5.png")}}"
+                                            alt="React">
+                                    @else
+                                        <img class="like"
+                                             src="{{asset("community-frontend/assets/images/community/home/news-post/like.png")}}"
+                                             alt="">
+                                    @endif
+
                                 </div>
                                 <span class="react-name">
                                     @if($post->reaction_type=='like')
@@ -424,39 +444,40 @@
                                 </span>
                                 {{--                                @dd( countComments())--}}
                                 <span
-                                    class="react-count">{{getUserTimeLinePostReactionCount($post->postId)}}</span>
+                                    class="react-count">{{getUserTimeLinePostReactionCount($post->post_id)}}</span>
                             </a>
 
                             <ul class="react-option">
+{{--                                @dd($post)--}}
+
                                 <li class="reaction {{$post->reaction_type=='like'?'active':''}}"
-                                    data-reaction_type="like" data-gId="{{$post->grpPostId}}">
-                                    <img
+                                    data-reaction_type="like" data-pId="{{$post->post_id}}"><img
                                         src="{{asset("community-frontend/assets/images/community/home/news-post/react-1.png")}}"
                                         alt="React">
                                 </li>
-                                {{--                                @dd($post)--}}
                                 <li class="reaction {{$post->reaction_type=='love'?'active':''}}"
-                                    data-reaction_type="love" data-gId="{{$post->grpPostId}}"><img
+                                    data-reaction_type="love" data-pId="{{$post->post_id}}"><img
                                         src="{{asset("community-frontend/assets/images/community/home/news-post/react-2.png")}}"
-                                        alt="React"></li>
+                                        alt="React">
+                                </li>
                                 <li class="reaction {{$post->reaction_type=='care'?'active':''}}"
-                                    data-reaction_type="care" data-gId="{{$post->grpPostId}}"><img
+                                    data-reaction_type="care" data-pId="{{$post->post_id}}"><img
                                         src="{{asset("community-frontend/assets/images/community/home/news-post/react-3.png")}}"
                                         alt="React"></li>
                                 <li class="reaction {{$post->reaction_type=='haha'?'active':''}}"
-                                    data-reaction_type="haha" data-gId="{{$post->grpPostId}}"><img
+                                    data-reaction_type="haha" data-pId="{{$post->post_id}}"><img
                                         src="{{asset("community-frontend/assets/images/community/home/news-post/react-4.png")}}"
                                         alt="React"></li>
                                 <li class="reaction {{$post->reaction_type=='wow'?'active':''}}"
-                                    data-reaction_type="wow" data-gId="{{$post->grpPostId}}"><img
+                                    data-reaction_type="wow" data-pId="{{$post->post_id}}"><img
                                         src="{{asset("community-frontend/assets/images/community/home/news-post/react-5.png")}}"
                                         alt="React"></li>
                                 <li class="reaction {{$post->reaction_type=='sad'?'active':''}}"
-                                    data-reaction_type="sad" data-gId="{{$post->grpPostId}}"><img
+                                    data-reaction_type="sad" data-pId="{{$post->post_id}}"><img
                                         src="{{asset("community-frontend/assets/images/community/home/news-post/react-6.png")}}"
                                         alt="React"></li>
                                 <li class="reaction {{$post->reaction_type=='angry'?'active':''}}"
-                                    data-reaction_type="care" data-gId="{{$post->grpPostId}}"><img
+                                    data-reaction_type="care" data-pId="{{$post->post_id}}"><img
                                         src="{{asset("community-frontend/assets/images/community/home/news-post/react-7.png")}}"
                                         alt="React"></li>
                             </ul>
@@ -481,7 +502,7 @@
                                 </div>
                                 <span class="react-name">Comment</span>
                                 <span
-                                    class="react-count">{{getUserTimeLinePostCommentCount($post->postId)}}</span>
+                                    class="react-count">{{getUserTimeLinePostCommentCount($post->post_id)}}</span>
                                 {{--                                <span class="react-count">{{countComments($post->post_id)->commentCount}}</span>--}}
                             </a>
                         </li>
@@ -505,8 +526,113 @@
 
                     <ul class="post-comment-list">
 
-                    {{--All Comments List--}}
+                        {{--All Comments List--}}
 
+                        {{--                        @dd($post)--}}
+                        @foreach($post->comments as $postComment)
+
+                            <li class="single-comment">
+                                <!-- parent comment start  -->
+                                <div class="parent-comment">
+                                    <div class="comment-img">
+                                        @if(!empty($postComment->users->userProfileImages[0]) && isset($postComment->users->userProfileImages[0])?$postComment->users->userProfileImages[0]:'')
+
+                                            @if(!empty($postComment->users->userProfileImages[0]) && isset($postComment->users->userProfileImages[0])?$postComment->users->userProfileImages[0]:'')
+                                                <a href=""><img
+                                                        src="{{asset("storage/community/profile-picture/".$postComment->users->userProfileImages[0]->user_profile)}}"
+                                                        alt="image"></a>
+                                            @else
+                                                <a href=""><img
+                                                        src="{{asset("community-frontend/assets/images/community/home/news-post/Athore01.jpg")}}"
+                                                        alt="image">
+                                                </a>
+                                            @endif
+                                        @endif
+                                    </div>
+                                    <div class="comment-details">
+                                        <div class="coment-info">
+                                            <div class="coment-authore-div">
+                                                <h6><a href="#">{{$postComment->users->name}}</a></h6>
+                                                <span
+                                                    class="comment-time">{{\Carbon\Carbon::parse($postComment->created_at)->diffForHumans()}}</span>
+                                            </div>
+                                            <div class="comment-option">
+                                                <button type="button" class="dropdown-toggle comment-option-btn"
+                                                        id="dropdownMenuButton1" data-bs-toggle="dropdown"
+                                                        aria-expanded="false"><i class="fa fa-ellipsis-h"
+                                                                                 aria-hidden="true"></i></button>
+                                                <ul class="dropdown-menu comment-option-dropdown"
+                                                    aria-labelledby="dropdownMenuButton1">
+                                                    <li class="post-option-item" id="editComment"><i
+                                                            class="fa fa-pencil-square-o" aria-hidden="true"></i> Edit
+                                                        comment
+                                                    </li>
+                                                    <li class="post-option-item"><i class="fa fa-trash-o"
+                                                                                    aria-hidden="true"></i> Delete
+                                                        comment
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                        <div class="comment-div">
+                                            <p class="comment-content">{{$postComment->comment_text}}</p>
+                                            <button id="textarea_btn" type="submit"><i class="fa fa-paper-plane"
+                                                                                       aria-hidden="true"></i>
+                                            </button>
+                                        </div>
+                                        <ul class="coment-react">
+                                            <li class="comment-like"><a href="#">Like(2)</a></li>
+                                            <li><a href="javascript:void(0)" class="replay-tag">Replay</a></li>
+                                        </ul>
+                                    </div>
+                                    {{--                                    @dd($postComment->id)--}}
+
+
+                                    <!-- child comment start  -->
+                                    <div class="child-comment">
+                                        <div class="single-replay-comnt nested-comment-{{$postComment->id}}">
+
+
+                                        </div>
+
+
+                                        @if( count($postComment->replies)>0)
+                                            <div class="more-comment">
+                                                <a class="loadChildCmt" data-postIdd="{{$post->postId}}"
+                                                   data-commentId="{{$postComment->id}}">More+</a>
+                                            </div>
+                                        @endif
+
+                                        <div class="new-comment replay-new-comment">
+
+                                            @if(!empty($postComment->users->userProfileImages[0]) && isset($postComment->users->userProfileImages[0])?$postComment->users->userProfileImages[0]:'')
+
+                                                @if(!empty($postComment->users->userProfileImages[0]) && isset($postComment->users->userProfileImages[0])?$postComment->users->userProfileImages[0]:'')
+                                                    <a href="" class="new-comment-img replay-comment-img"><img
+                                                            src="{{asset("storage/community/profile-picture/".$postComment->users->userProfileImages[0]->user_profile)}}"
+                                                            alt="image"></a>
+                                                @else
+                                                    <a href=""><img
+                                                            src="{{asset("community-frontend/assets/images/community/home/news-post/Athore01.jpg")}}"
+                                                            alt="image">
+                                                    </a>
+                                                @endif
+                                            @endif
+                                            <div class="new-comment-input replay-commnt-input">
+                                                <input data-cmtId="{{$postComment->id}}" class="cmtText" type="text"
+                                                       name="cmttext"
+                                                       data-userPostId="{{$postComment->user_post_id}}"
+                                                       placeholder="Write a comment....">
+                                                <div class="attached-icon">
+                                                    <a href="#"><i class="fa fa-camera" aria-hidden="true"></i></a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </li>
+
+                        @endforeach
                     </ul>
                     <div class="more-comment">
                         <a class="checkCmt" data-postIdd="{{$post->postId}}">More Comments+</a>
@@ -514,7 +640,6 @@
 
                     <div class="new-comment">
 
-                        {{--                        <input type="hidden" class="postId" name="postId" value="{{$post->postId}}">--}}
                         <a href="#" class="new-comment-img">
 
                             @if(!empty($post->users->userProfileImages[0]) && isset($post->users->userProfileImages[0])?$post->users->userProfileImages[0]:'')
@@ -528,6 +653,7 @@
                             @endif
 
                         </a>
+
                         <div class="new-comment-input">
 
                             <input type="text" data-postId="{{$post->postId}}" class="postComments" name="postComment"
@@ -540,6 +666,7 @@
                             {{--                                <a href="#"><i class="fa fa-camera" aria-hidden="true"></i></a>--}}
                             {{--                            </div>--}}
                         </div>
+
                     </div>
 
                 </div>
@@ -578,8 +705,10 @@
             $('.reaction').removeClass('active');
             $(this).addClass('active');
 
-            let getReaction = $(this).attr('data-reaction_type');
-            let grpPostId = $(this).attr('data-gId');
+            let postReaction = $(this).attr('data-reaction_type');
+            let postId = $(this).attr('data-pId');
+            console.log(postId);
+            console.log(postReaction);
 
             let img_src = $(this).find('img').attr('src')
             $(this).parents('.like-react').find('.react-icon img').attr('src', img_src)
@@ -589,28 +718,26 @@
             // console.log(img_src,'img_src');
             // return false;
 
-            if (getReaction !== '' && grpPostId !== '') {
+            if (postReaction !== '' && postId !== '') {
                 $.ajax({
-                    url: '{{route('user.group.post.reaction')}}',
+                    url: '{{route('user.post-all.reaction')}}',
                     type: 'POST',
                     data: {
-                        getReaction: getReaction,
-                        grpPostId: grpPostId,
+                        postReaction: postReaction,
+                        postId: postId,
+                        reqType: 'storePostReaction',
                         '_token': '{{csrf_token()}}'
                     },
                     success: function (response) {
-                        console.log(response);
-                        console.log(response.data);
+
                         if (response.success === true) {
-
-                            toastr.success(response.msg);
-
-                            // let img_src = $(this).find('img').attr('src');
-                            // console.log(img_src,'img_src');
-                            // $(this).parents('.like-react').find('.react-icon img').attr('src', img_src);
+                            console.log(response);
+                            console.log(response.data);
+                            // toastr.success(response.msg);
+                            console.log(response.postComments);
 
                         } else {
-                            toastr.error(response.msg);
+                            // toastr.error(response.msg);
                         }
                     },
                     error: function (err) {
@@ -624,12 +751,11 @@
 
         $('.postComments').keydown(function (e) {
             if (e.keyCode === 13) {
+                let htmlData = $(this).parents('.posted-content').find('.post-comment-list')
                 let comment = e.target.value;
                 let postId = $(this).attr('data-postId');
                 $(this).val('');
-                // console.log($(this));
-                // return false;
-                // console.log(comment,postId);
+
                 if (comment !== '' && postId !== '') {
                     $.ajax({
                         url: '{{route('community.user.post.comment')}}',
@@ -642,14 +768,15 @@
                         success: function (response) {
                             // console.log(response);
 
-                            if (response.success === true) {
-                                toastr.success(response.msg);
+                            if (response.status === true) {
                                 // console.log($(this),'this')
                                 $(this).val('');
+                                // console.log(response.html,'kkkk');
+                                htmlData.append(response.html);
                                 // console.log(response.data);
 
                             } else {
-                                toastr.error(response.msg);
+                                // toastr.error(response.msg);
                             }
                         },
                         error: function (err) {
@@ -743,6 +870,35 @@
         })
 
     })
+
+
+    $(document).on('click', '.loadChildCmt', function () {
+        let postId = $(this).attr('data-postIdd');
+        let cmtId = $(this).attr('data-commentId');
+        console.log(postId);
+        let htmlData = $(this).parents('.posted-content').find('.post-comment-list')
+        $.ajax({
+            url: "{{route('user.load.child.comment')}}",
+            post: "GET",
+            data: {
+                postId: postId,
+                cmtId: cmtId,
+            },
+            success: function (response) {
+
+                if (response.status == true) {
+
+                    // console.log(response.html,'cmt');
+                    $('.cmtText').val('');
+                    $('.nested-comment-' + cmtId).append(response.html);
+
+                }
+
+
+            },
+        })
+
+    })
 </script>
 
 <script>
@@ -755,8 +911,11 @@
         let cmtId = e.target.dataset.cmtid;
         let user_post_id = e.target.dataset.userpostid;
         let cmtText = e.target.value;
+        let nestedCmtHtml = $(this).parents('.posted-content').find('.child-comment')
         let key = e.which;
-        // console.log(user_post_id);
+        console.log(nestedCmtHtml);
+
+
 // return false;
         if (key === 13) {
             // console.log(cmtText);
@@ -774,9 +933,10 @@
                     // console.log(response);
 
                     if (response.success === true) {
-                        toastr.success(response.msg);
+                        // toastr.success(response.msg);
                         $('.cmtText').val('');
-                        $('.comment-parent-'+cmtId).append(response.data);
+                        $('.nested-comment-' + cmtId).append(response.data);
+                        // nestedCmtHtml.append(response.data);
                     } else {
                         toastr.error(response.msg);
                     }
@@ -790,4 +950,6 @@
 
 
     })
+
+
 </script>

@@ -34,9 +34,7 @@
                                 <th>#ID</th>
                                 <th>User Name</th>
                                 <th>User Email</th>
-                                <th>User Image</th>
-                                <th>User Date Of Birth</th>
-                                <th>User Gender</th>
+                                <th>Role</th>
                                 <th>Action</th>
                             </tr>
                             </thead>
@@ -44,34 +42,15 @@
 
                             <tbody>
 {{--                            @dd($allUserDetails)--}}
-                            @foreach($allUserDetails as $user)
+                            @foreach($allUsers as $user)
                                 <tr>
                                     <td>{{$idx++}}</td>
                                     <td>{{$user->name}}</td>
                                     <td>{{$user->email}}</td>
+                                    <td>User</td>
                                     <td>
-                                        @if(!empty($postComment->users->userProfileImages[0]) && isset($postComment->users->userProfileImages[0])?$postComment->users->userProfileImages[0]:'')
-
-                                            @if(!empty($postComment->users->userProfileImages[0]) && isset($postComment->users->userProfileImages[0])?$postComment->users->userProfileImages[0]:'')
-                                                <a href="" class="new-comment-img replay-comment-img"><img
-                                                        src="{{asset("storage/community/profile-picture/".$postComment->users->userProfileImages[0]->user_profile)}}"
-                                                        alt="image"></a>
-                                            @else
-                                                <a href=""><img
-                                                        src="{{asset("community-frontend/assets/images/community/home/news-post/Athore01.jpg")}}"
-                                                        alt="image">
-                                                </a>
-                                            @endif
-                                        @endif
-                                    </td>
-                                    <td>{{$user->dob}}</td>
-                                    <td>{{$user->gender}}</td>
-                                    <td>
-                                        <a href="{{route('community.user.show',$user->uId)}}" class="btn btn-warning">
-                                            <i class="fa-solid fa-eye"></i></a>
-
-                                        <a href="{{route('community.user.ban',$user->uId)}}" data-uId="{{$user->uId}}" class="btn btn-danger banUser">
-                                            <i class="fa-solid fa-ban"></i></a>
+                                        <a data-uId="{{$user->uId}}" class="btn btn-danger dltUser">
+                                            <i class="fa-solid fa-trash"></i></a>
                                     </td>
                                 </tr>
                             @endforeach
@@ -99,20 +78,20 @@
         {{--console.log({{route('community.user.post.delete')}}+postId);--}}
         // return false;
         Swal.fire({
-            title: 'Do you want to ban this user?',
+            title: 'Do you want to delete this user? This will delete all information regarding this user !!!',
             showDenyButton: true,
             showCancelButton: false,
             confirmButtonColor: "#DD6B55",
             denyButtonColor: '#8CD4F5',
-            confirmButtonText: `Ban User`,
-            denyButtonText: `Don't Ban`,
+            confirmButtonText: `Delete User`,
+            denyButtonText: `Don't Delete`,
         }).then((result) => {
             /* Read more about isConfirmed, isDenied below */
             if (result.isConfirmed) {
-                let url = '{{ route("community.user.ban", ":slug") }}';
+                let url = '{{ route("community.user.delete", ":slug") }}';
                 url = url.replace(':slug', uId);
                 window.location.href = url
-                Swal.fire('Saved!', '', 'success')
+                Swal.fire('Deleted!', '', 'success')
             } else if (result.isDenied) {
                 Swal.fire('Changes are not saved', '', 'info')
             }

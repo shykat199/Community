@@ -35,8 +35,12 @@
                 </li>
                 <li class="nav-item" role="presentation">
                     <button class="nav-link" id="edu-tab" data-bs-toggle="tab" data-bs-target="#edu-tab-pane"
-                            type="button" role="tab" aria-controls="edu-tab-pane" aria-selected="false">Education & Work
-                        Information
+                            type="button" role="tab" aria-controls="edu-tab-pane" aria-selected="false">Education
+                    </button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="work-tab" data-bs-toggle="tab" data-bs-target="#work-tab-pane"
+                            type="button" role="tab" aria-controls="work-tab-pane" aria-selected="false">Work Information
                     </button>
                 </li>
 
@@ -85,6 +89,7 @@
 
             <div class="setting-tab-content">
                 <div class="tab-content" id="myTabContent">
+
                     <div class="tab-pane fade show active" id="home-tab-pane" role="tabpanel" aria-labelledby="home-tab"
                          tabindex="0">
                         {{--                        @dd($userInfo)--}}
@@ -346,6 +351,10 @@
                                 </div>
                             </div>
                         </form>
+                    </div>
+
+                    <div class="tab-pane fade" id="work-tab-pane" role="tabpanel" aria-labelledby="work-tab"
+                         tabindex="0">
 
                         <form class="setting-form-wrapper profile-information"
                               action="{{route('user.my-profile.profile.work')}}" method="post">

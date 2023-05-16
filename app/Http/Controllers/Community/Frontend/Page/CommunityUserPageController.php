@@ -18,6 +18,7 @@ use App\Models\Community\Page\CommunityPagePostFileType;
 use App\Models\Community\Page\CommunityPagePostReaction;
 use App\Models\Community\Page\CommunityPageProfilePhoto;
 use App\Models\Community\Page\UsersPage;
+use Carbon\Carbon;
 use Faker\Provider\Uuid;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -117,7 +118,7 @@ class CommunityUserPageController extends Controller
 
 //        return $getPageDetails;
 
-        $pagePosts = CommunityPagePost::with('users.userProfileImages')
+        $pagePosts = CommunityPagePost::with(['users.userProfileImages', 'comments.replies'])
             ->join('community_pages as communityPages', function ($q) use ($id) {
                 $q->on('communityPages.id', '=', 'community_page_posts.page_id');
                 $q->where('community_page_posts.page_id', '=', $id);
@@ -133,8 +134,16 @@ class CommunityUserPageController extends Controller
             users.name as userName,userPagePostFileType.post_comment_caption,userPagePostFileType.post_image_video,
             community_page_posts.created_at,community_page_posts.id as pagePostId,postReaction.reaction_type')
             ->orderBy('community_page_posts.id', 'DESC')
-//            ->groupBy('users.id')
-            ->get();
+            ->get()->map(function ($q) {
+                $q->setRelation('comments', $q->comments->take(2));
+                return $q;
+            });
+
+        $pagePosts = $pagePosts->each(function ($item) {
+            $item->comments->each(function ($comment) {
+                $comment->load('users.userProfileImages');
+            });
+        });
 
 //        return $pagePosts;
 
@@ -405,58 +414,233 @@ class CommunityUserPageController extends Controller
     }
 
 
-
-    public function storePageProfilePhoto(Request $request){
+    public function storePageProfilePhoto(Request $request)
+    {
 
 
 //        dd($request->all());
-        $fileName=null;
-        if ($request->hasFile('grpProfile')){
+        $fileName = null;
+        if ($request->hasFile('grpProfile')) {
 
             $fileName = Uuid::uuid() . '.' . $request->file('grpProfile')->getClientOriginalExtension();
             $file = Storage::put('/public/community/page-post/profile/' . $fileName, file_get_contents($request->file('grpProfile')));
 
         }
-        $storeProfilePicture=CommunityPageProfilePhoto::updateOrCreate([
-            'page_id'=>$request->get('pageId'),
+        $storeProfilePicture = CommunityPageProfilePhoto::updateOrCreate([
+            'page_id' => $request->get('pageId'),
         ],
-        [
-            'page_profile_photo'=>$fileName,
-        ]);
+            [
+                'page_profile_photo' => $fileName,
+            ]);
 
-        if ($storeProfilePicture){
-            return \redirect()->back()->with('success','Profile has uploaded');
+        if ($storeProfilePicture) {
+            return \redirect()->back()->with('success', 'Profile has uploaded');
         }
 
 
     }
 
 
-    public function storePageCoverPhoto(Request $request){
+    public function storePageCoverPhoto(Request $request)
+    {
 
 
 //        dd($request->all());
-        $fileName=null;
-        if ($request->hasFile('grpCover')){
+        $fileName = null;
+        if ($request->hasFile('grpCover')) {
 
             $fileName = Uuid::uuid() . '.' . $request->file('grpCover')->getClientOriginalExtension();
             $file = Storage::put('/public/community/page-post/cover/' . $fileName, file_get_contents($request->file('grpCover')));
 
         }
-        $storeCoverPicture=CommunityPageCoverPhoto::updateOrCreate([
-            'page_id'=>$request->get('pageId'),
+        $storeCoverPicture = CommunityPageCoverPhoto::updateOrCreate([
+            'page_id' => $request->get('pageId'),
         ],
-        [
-            'page_cover_photo'=>$fileName,
-        ]);
+            [
+                'page_cover_photo' => $fileName,
+            ]);
 
-        if ($storeCoverPicture){
-            return \redirect()->back()->with('success','Cover photo has uploaded');
-        }else{
-            return  \redirect()->back()->with('error','Something error');
+        if ($storeCoverPicture) {
+            return \redirect()->back()->with('success', 'Cover photo has uploaded');
+        } else {
+            return \redirect()->back()->with('error', 'Something error');
         }
 
 
+    }
+
+    public function storePagePostComment(Request $request)
+    {
+
+        if ($request->ajax()) {
+
+            $storePagePostCmt = CommunityPagePostComment::create([
+                'user_id' => Auth::id(),
+                'page_post_id' => $request->get('postId'),
+                'comment_text' => $request->get('postComment')
+            ]);
+//            dd($storePagePostCmt);
+            $html = '';
+            if ($storePagePostCmt) {
+//                dd($storePagePostCmt);
+
+                $html .= '
+                         <li class="single-comment">
+                                <!-- parent comment start  -->
+                                <div class="parent-comment">
+                                    <div class="comment-img">';
+                if (!empty($storePagePostCmt->users->userProfileImages[0]) && isset($storePagePostCmt->users->userProfileImages[0]) ? $storePagePostCmt->users->userProfileImages[0]->user_profile : '') {
+
+                    if (!empty($storePagePostCmt->users->userProfileImages[0]) && isset($storePagePostCmt->users->userProfileImages[0]) ? $storePagePostCmt->users->userProfileImages[0]->user_profile : '') {
+
+                        $html .= '<a href=""><img
+                                                        src="' . asset("storage/community/profile-picture/" . $storePagePostCmt->users->userProfileImages[0]->user_profile) . '"
+                                                        alt="image"></a>';
+                    }
+
+                }
+
+                $html .= '</div>
+                                    <div class="comment-details">
+                                        <div class="coment-info">
+                                            <div class="coment-authore-div">
+                                                <h6><a href="#">' . $storePagePostCmt->users->name . '</a></h6>
+                                                <span
+                                                    class="comment-time">' . \Carbon\Carbon::parse($storePagePostCmt->created_at)->diffForHumans() . '</span>
+                                            </div>
+                                            <div class="comment-option">
+                                                <button type="button" class="dropdown-toggle comment-option-btn"
+                                                        id="dropdownMenuButton1" data-bs-toggle="dropdown"
+                                                        aria-expanded="false"><i class="fa fa-ellipsis-h"
+                                                                                 aria-hidden="true"></i></button>
+                                                <ul class="dropdown-menu comment-option-dropdown"
+                                                    aria-labelledby="dropdownMenuButton1">
+                                                    <li class="post-option-item" id="editComment"><i
+                                                            class="fa fa-pencil-square-o" aria-hidden="true"></i> Edit
+                                                        comment
+                                                    </li>
+                                                    <li class="post-option-item"><i class="fa fa-trash-o"
+                                                                                    aria-hidden="true"></i> Delete
+                                                        comment
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                        <div class="comment-div">
+                                            <p class="comment-content">' . $storePagePostCmt->comment_text . '</p>
+                                            <button id="textarea_btn" type="submit"><i class="fa fa-paper-plane"
+                                                                                       aria-hidden="true"></i>
+                                            </button>
+                                        </div>
+                                        <ul class="coment-react">
+                                            <li class="comment-like"><a href="#">Like(2)</a></li>
+                                            <li><a href="javascript:void(0)" class="replay-tag">Replay</a></li>
+                                        </ul>
+                                    </div>
+                                    <!-- child comment start  -->
+                                    <div class="child-comment">
+                                                            <div class="single-replay-comnt nested-comment-'.$storePagePostCmt->id.'">
+
+                                                                                </div>';
+
+
+                if (count($storePagePostCmt->replies) > 0) {
+                    $html .= '<div class="more-comment">
+                                                <a class="loadChildCmt" data-postIdd="'.$storePagePostCmt->page_post_id.'" data-commentId="'.$storePagePostCmt->id.'">More+</a>
+                                            </div>';
+                }
+
+
+                $html .= ' <div class="new-comment replay-new-comment">';
+
+                if (!empty($storePagePostCmt->users->userProfileImages[0]) && isset($storePagePostCmt->users->userProfileImages[0]) ? $storePagePostCmt->users->userProfileImages[0] : '') {
+
+                    if (!empty($storePagePostCmt->users->userProfileImages[0]) && isset($storePagePostCmt->users->userProfileImages[0]) ? $storePagePostCmt->users->userProfileImages[0] : '') {
+
+                        $html .= '<a class="new-comment-img replay-comment-img"><img
+                                                        src="' . asset("storage/community/profile-picture/" . $storePagePostCmt->users->userProfileImages[0]->user_profile) . '"
+                                                        alt="image"></a>';
+                    }
+
+                }
+
+
+
+                $html.=' <div class="new-comment-input replay-commnt-input">
+                                                <input data-cmtId="'.$storePagePostCmt->id.'" class="cmtText" type="text"
+                                                       name="cmttext"
+                                                       data-userPostId="'.$storePagePostCmt->page_post_id.'"
+                                                       placeholder="Write a comment....">
+                                                <div class="attached-icon">
+                                                    <a href="#"><i class="fa fa-camera" aria-hidden="true"></i></a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </li>';
+
+                return \response()->json([
+                    'status' => true,
+                    'success' => true,
+                    'msg' => 'Successfully Added',
+                    'data' => $html
+                ]);
+            }
+
+        }
+
+    }
+
+
+    public function storePagePostCommentOfComment(Request $request)
+    {
+        if ($request->ajax()) {
+            if ($request->ajax()) {
+                $storeCmtOfCmt = CommunityPagePostComment::create([
+                    'user_id' => Auth::id(),
+                    'page_post_id' => $request->get('page_post_id'),
+                    'page_post_comment_id' => $request->get('cmtId'),
+                    'comment_text' => $request->get('cmtText'),
+                ]);
+
+                $html = '';
+                if ($storeCmtOfCmt) {
+//                dd($storeComments->users->userProfileImages[0]->user_profile);
+                    $userProfileImages = $storeCmtOfCmt->users->userProfileImages[0]->user_profile;
+                    $html .= '<div class="single-replay-comnt">
+                                    <div class="replay-coment-box">
+                                        <div class="replay-comment-img">
+                                            <a href="#">';
+
+                    if (isset($storeCmtOfCmt->users->userProfileImages)) {
+                        $html .= ' <img src="' . asset("storage/community/profile-picture/$userProfileImages") . '" alt="image">';
+                    } else {
+                        $html .= '<img src="' . asset("community-frontend/assets/images/community/home/news-post/comment01.jpg") . '"alt="image">';
+                    }
+
+                    $html .= '</a>
+                                        </div>
+                                        <div class="replay-comment-details">
+                                            <div class="replay-coment-info">
+                                                <h6><a class="replay-comnt-name" href="#">' . Auth::user()->name . '</a></h6>
+                                                <span class="replay-time-comnt">' . Carbon::parse($storeCmtOfCmt->created_at)->diffForHumans() . '</span>
+                                            </div>
+                                            <p class="comment-content">' . $storeCmtOfCmt->comment_text . '</p>
+                                        </div>
+                                    </div>
+                                </div>';
+
+                    return \response()->json([
+                        'status' => true,
+                        'success' => true,
+                        'msg' => 'Successfully Added',
+                        'data' => $html
+                    ]);
+                }
+
+            }
+        }
     }
 
 }

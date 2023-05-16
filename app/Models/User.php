@@ -7,6 +7,8 @@ use App\Models\Community\Group\CommunityUserGroup;
 use App\Models\Community\Group\CommunityUserGroupPost;
 use App\Models\Community\Group\CommunityUserGroupPostComment;
 use App\Models\Community\Page\CommunityPage;
+use App\Models\Community\Page\CommunityPagePost;
+use App\Models\Community\Page\CommunityPagePostComment;
 use App\Models\Community\Page\UsersPage;
 use App\Models\Community\User_Post\CommunityUserPostComment;
 use App\Models\Community\User_Profile\CommunityUserProfileLanguage;
@@ -77,6 +79,10 @@ class User extends Authenticatable
     {
         return $this->hasMany(CommunityUserGroupPost::class, 'user_id');
     }
+    public function pagePosts(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(CommunityPagePost::class, 'user_id');
+    }
 
     public  function  communityUserPost(): \Illuminate\Database\Eloquent\Relations\HasMany
     {
@@ -91,6 +97,10 @@ class User extends Authenticatable
     public function userGroupPostComments(): \Illuminate\Database\Eloquent\Relations\HasMany
     {
         return $this->hasMany(CommunityUserGroupPostComment::class,'user_id');
+    }
+    public function userPagePostComments(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(CommunityPagePostComment::class,'user_id');
     }
 
 
