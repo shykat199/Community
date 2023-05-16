@@ -1,21 +1,21 @@
-// side nav start 
+// side nav start
 $(".sidenav_bar").click(function(){
   $(".community-sidenav").toggleClass("main");
   $(this).toggleClass('active')
   if($(this).hasClass('active')){
-    $(this).find('i').addClass("fa-times").removeClass("fa-bars");    
+    $(this).find('i').addClass("fa-times").removeClass("fa-bars");
   }else{
     $(this).find('i').addClass("fa-bars").removeClass("fa-times");
   }
 });
 
 
-// mobile menu 
+// mobile menu
 $(".menu-show").click(function(){
   $(".menu_list").toggleClass("main");
 });
 
-// sidebar active 
+// sidebar active
 document.querySelectorAll(".sidebar-list li a").forEach((link) => {
     if (link.href === window.location.href) {
         link.classList.add("side-active");
@@ -23,24 +23,7 @@ document.querySelectorAll(".sidebar-list li a").forEach((link) => {
     }
 });
 
-// prevew media
 
-// let imgCloseBtn = document.getElementsByClassName('imgClose');
-// const imgInp = document.getElementsByClassName('imgInp')
-// imgInp.onchange = evt => {
-//   const [file] = imgInp.files
-//   let imgCloseBtn = document.getElementsByClassName('imgClose');
-//   if (file) {
-//     imgCloseBtn.style.display = "block"
-//     previewImg.src = URL.createObjectURL(file)
-//   }
-//   imgCloseBtn.addEventListener("click", function() {
-//     if (file) {
-//       previewImg.src = URL.revokeObjectURL(null)
-//       imgCloseBtn.style.display = "none"
-//     }
-//   });
-// }
 
 let files
 $(document).on('change','.imgInp', function(e){
@@ -80,7 +63,7 @@ $(document).on('click','.imgClose',function(){
   $(sourcess).css("display", "none")
 })
 
-// online person active 
+// online person active
 $('.chat-online').slick({
   infinite: true,
   loop: true,
@@ -131,27 +114,27 @@ $('.chat-online').slick({
   ]
 });
 
-// video like 
+// video like
 $('.video-react-icon i').click(function(){
   $(this).toggleClass('active')
   if ($(this).hasClass('active')) {
     $(this).addClass('fa-heart').removeClass('fa-heart-o')
   } else {
-    $(this).removeClass('fa-heart').addClass('fa-heart-o')    
+    $(this).removeClass('fa-heart').addClass('fa-heart-o')
   }
 })
 
-// comment replay inbox show 
+// comment replay inbox show
 $(document).on('click', '.replay-tag', function() {
   $(this).parents(".parent-comment").find(".replay-new-comment").css("display", "block")
 })
 
-// comment edit start 
+// comment edit start
 $(document).on("click", "#editComment", function() {
   let comment_para = $(this).parents(".comment-details").find('.comment-content');
-  comment_para.replaceWith($(`<textarea class="comment-content" 
-  onmouseover='this.style.height = "";this.style.height = this.scrollHeight 
-   + "px"' oninput='this.style.height = "";this.style.height = this.scrollHeight 
+  comment_para.replaceWith($(`<textarea class="comment-content"
+  onmouseover='this.style.height = "";this.style.height = this.scrollHeight
+   + "px"' oninput='this.style.height = "";this.style.height = this.scrollHeight
    + "px"'>${comment_para[0].innerHTML}</textarea>`))
    $(this).parents(".comment-details").find('#textarea_btn').css('display', 'block')
 })
@@ -165,7 +148,7 @@ $(document).on("click", "#textarea_btn", function() {
 })
 
 
-// reaction active 
+// reaction active
 $(document).on("click", ".react-option li img", function() {
   let react = $(this).attr('src');
   $(this).parents('.like-react').find('.react-icon img').attr('src', react)
@@ -173,4 +156,10 @@ $(document).on("click", ".react-option li img", function() {
 $(document).on("click", ".react-option li", function() {
   $('.react-option li').removeClass('active')
   $(this).addClass('active')
-})
+});
+
+
+// comment like active class add
+$(".comment-like").on("click", function(){
+    $(this).toggleClass("acitve");
+  });

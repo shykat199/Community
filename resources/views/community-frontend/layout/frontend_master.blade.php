@@ -22,7 +22,7 @@
 
 <body>
 <!-- community header area start  -->
-@include('sweetalert::alert')
+{{-- @include('sweetalert::alert') --}}
 
 <header class="community-header-area">
     <div class="main-header">
