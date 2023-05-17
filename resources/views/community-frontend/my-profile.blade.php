@@ -215,7 +215,7 @@
                             </li>
                         </ul>
                         {{--                        @dd($userSocialLinks)--}}
-                        <ul class="profile-social">
+                        <ul class="community-profile-social">
                             @if($userSocialLinks['facebook'])
                                 <li>
                                     <a href="{{$userSocialLinks['facebook']}}">

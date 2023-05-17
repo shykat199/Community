@@ -10,7 +10,7 @@
         padding-right: 190px;
     }
 }
-// left sidet start 
+// left sidet start
 .news-feed-left {
     @media (max-width: 991px) {
         display: none;
@@ -53,7 +53,7 @@
         margin-top: 15px;
         @media (max-width: 1400px) {
             margin-top: 10px;
-        }           
+        }
         h6 {
             a {
                 font-size: 18px;
@@ -111,12 +111,12 @@
             top: 0;
             right: -14px;
         }
-        
+
         &:last-child{
             &::after{
                 display: none;
             }
-        }    
+        }
     }
 }
 .profile-likes {
@@ -125,7 +125,7 @@
         font-size: 14px;
         color: $theme-font;
         text-align: center;
-    } 
+    }
     .recent-likes-person {
         display: flex;
         justify-content: center;
@@ -183,7 +183,7 @@
                 img {
                     max-width: 55px;
                     max-height: 55px;
-                    border-radius: 50%;                    
+                    border-radius: 50%;
                 }
             }
         }
@@ -213,7 +213,7 @@
     }
 }
 .suggested-option {
-    li {        
+    li {
         .gropu-img {
             a {
                 img {
@@ -232,8 +232,8 @@
         }
     }
 }
-// end of left side css 
-// main content start 
+// end of left side css
+// main content start
 .main-content {
     background: $white;
     padding: 20px;
@@ -458,8 +458,8 @@
         }
         .search_box {
             width: 100%;
-            margin-bottom: 20px;            
-        }      
+            margin-bottom: 20px;
+        }
         .small-title {
             font-size: 14px;
             color: #65676B;
@@ -490,7 +490,7 @@
                     font-size: 14px;
                     color: $theme-font;
                     font-weight: 500;
-                }               
+                }
             }
         }
     }
@@ -503,7 +503,7 @@
         margin-right: 10px;
         .post-btn {
             width: 100%;
-            
+
         }
     }
 }
@@ -541,10 +541,10 @@
                         transition: all .3s ease;
                         &:hover {
                             color: $theme-color
-                        }                        
+                        }
                     }
                 }
-            }            
+            }
         }
         .post-option {
             position: relative;
@@ -609,6 +609,10 @@
         img {
             border-radius: 5px;
         }
+        video {
+            width: 100%;
+            border-radius: 5px;
+        }
     }
     .more-comment {
         text-align: center;
@@ -629,7 +633,7 @@
                 max-width: 60px;
                 border-radius: 50%;
                 @media (max-width:576px) {
-                    max-width: 55px;                    
+                    max-width: 55px;
                 }
             }
         }
@@ -743,6 +747,7 @@
             transform-origin: bottom;
             transform: scaleY(0);
             transition: all .3s ease;
+            min-width: 240px;
             li {
                 padding: 5px;
                 img {
@@ -767,7 +772,7 @@
                 transform: scale(1);
             }
         }
-    } 
+    }
 }
 .post-comment-list {
     padding-top: 25px;
@@ -787,10 +792,17 @@
             >a {
                 display: block;
                 img {
-                    max-width: 70px;
+                    width: 70px;
                     border-radius: 50%;
+                    object-fit: cover;
+                    height: 70px;
+                    @media (max-width: 768px) {
+                        width: 50px;
+                        height: 50px;
+                    }
                     @media (max-width: 576px) {
-                        max-width: 40px;
+                        width: 40px;
+                        height: 40px;
                     }
                 }
             }
@@ -862,7 +874,7 @@
                                 color: $white;
                                 background: $theme-color;
                             }
-                        }       
+                        }
                     }
                 }
             }
@@ -921,6 +933,11 @@
                 }
                 .comment-like {
                     a {
+                        color: $theme-font;
+                    }
+                }
+                .comment-like.acitve{
+                    a{
                         color: $theme-color;
                     }
                 }
@@ -999,7 +1016,7 @@
         }
     }
 }
-// right side 
+// right side
 .news-feed-right {
     @media (max-width: 991px) {
         display: none;
@@ -1044,7 +1061,7 @@
     }
 }
 
-// live chat and contact section start 
+// live chat and contact section start
 .contact-wrap {
     background: #fff;
     padding: 5px;

@@ -574,7 +574,7 @@
                                             </button>
                                         </div>
                                         <ul class="coment-react">
-                                            <li class="comment-like"><a href="#">Like(2)</a></li>
+                                            <li class="comment-like"><a href="javascript:void(0)">Like(2)</a></li>
                                             <li><a href="javascript:void(0)" class="replay-tag">Replay</a></li>
                                         </ul>
                                     </div>

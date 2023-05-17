@@ -21,20 +21,30 @@
         position: absolute;
         bottom: 20px;
         right: 20px;
-        padding: 5px 10px;
-        background: $white;
-        transition: all .3s ease;
-        border-radius: 5px;
-        a {
+        button {
             font-size: 14px;
             color: $theme-font;
             transition: all .3s ease;
+            outline: none;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 5px;
         }
         &:hover{
-            background: $theme-color;
-            a {
+            button {
+                background: $theme-color;
                 color: $white;
             }
+        }
+    }
+    .group-add-btn {
+        position: absolute;
+        bottom: 25px;
+        right: 25px;
+        @media (max-width:576px) {
+            bottom: 10px;
+            right: unset;
+            left: 15px;
         }
     }
 }
@@ -61,7 +71,7 @@
         }
         // @media (max-width: 715px) {
         //     width: 100%;
-        // }        
+        // }
     }
 }
 .full-profile-left {
@@ -134,7 +144,7 @@
         }
         .locaiton {
             font-size: 13px;
-            
+
         }
     }
 }
@@ -145,13 +155,13 @@
     padding: 45px 50px;
     @media (max-width:900px) and (min-width: 768px) {
         flex-direction: column;
-        padding: 25px;        
+        padding: 25px;
     }
     @media (max-width: 690px) {
         flex-direction: column;
         padding: 25px;
     }
-    .profile-social {
+    .community-profile-social {
         display: flex;
         align-items: center;
         column-gap: 10px;
@@ -167,7 +177,7 @@
         border-bottom: none;
         @media (max-width:900px) and (min-width: 768px) {
             order: 2;
-            margin: 15px 0;       
+            margin: 15px 0;
         }
         @media (max-width: 690px) {
             order: 2;
@@ -232,7 +242,7 @@
         @media (max-width: 1024px) {
             font-size: 15px;
         }
-    }    
+    }
 }
 .profile-personal-information {
     li {
@@ -240,6 +250,7 @@
         color: #6B7C8F;
         margin: 10px 0;
         line-height: 26px;
+        word-wrap: break-word;
         @media (max-width: 1490px) and (min-width: 1399px) {
             font-size: 13px;
         }
@@ -252,6 +263,7 @@
         }
         a {
             color: #6B7C8F;
+            word-wrap: break-word;
         }
     }
 }
@@ -315,7 +327,7 @@
 }
 
 
-// friends tab content 
+// friends tab content
 .friends-tab-wrap {
     .friends-title {
         display: flex;
@@ -424,7 +436,7 @@
                 background: $theme-color;
             }
         }
-    } 
+    }
     .profile-statistics{
         padding: 25px 0;
     }

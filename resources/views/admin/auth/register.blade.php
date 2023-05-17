@@ -36,16 +36,15 @@
                     <input type="password" name="password">
                     <label>Password</label>
                 </div>
-                <div class="login-box">
-                    <input type="password">
-                    <label>Confirm Password</label>
-                </div>
-                <div class="remember-box">
-                    <span>
-                        <input type="checkbox" id="remember">
-                        <label for="remember">I Accept</label>
-                    </span>
-                    <a href="#" class="forgot-pass">Privacy</a>
+                @error('password')
+                <span class="text-danger">{{$message}}</span>
+                @enderror
+            </div>
+
+            <div class="mb-3">
+                <div class="form-check">
+                    <input type="checkbox" class="form-check-input" id="checkbox-signup">
+                    <label class="form-check-label" for="checkbox-signup">I accept <a href="#" class="text-muted">Terms and Conditions</a></label>
                 </div>
                 <div class="login-btn-list">
                     <button type="submit" class="social-theme-btn">Register</button>
