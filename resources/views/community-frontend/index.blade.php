@@ -243,12 +243,6 @@
 //                            dd($isOwner);
                     @endphp
 
-                    {{--                    @dd($post)--}}
-                    {{--                    <form action="{{ route('orders.destroy', $row->id) }}" method="post"--}}
-                    {{--                          class="d-inline">@csrf@method('DELETE')--}}
-                    {{--                        <button type="button" class="btn btn-sm btn-danger confirm-delete"><i class="fas fa-times"></i>--}}
-                    {{--                        </button>--}}
-                    {{--                    </form>--}}
 
 
                     <div class="post-option">
@@ -528,7 +522,6 @@
 
                         {{--All Comments List--}}
 
-                        {{--                        @dd($post)--}}
                         @foreach($post->comments as $postComment)
 
                             <li class="single-comment">
@@ -633,6 +626,8 @@
                             </li>
 
                         @endforeach
+
+
                     </ul>
                     <div class="more-comment">
                         <a class="checkCmt" data-postIdd="{{$post->postId}}">More Comments+</a>
@@ -847,22 +842,23 @@
 <script>
 
     $(document).on('click', '.checkCmt', function () {
-        let postId = $(this).attr('data-postIdd');
-        console.log(postId);
+        let pPostId = $(this).attr('data-postIdd');
+        // console.log(postId);
+        // $(this).hide();
         let htmlData = $(this).parents('.posted-content').find('.post-comment-list')
         $.ajax({
-            url: "{{route('user.post.comment')}}",
+            url: '{{route('users.get-all-comments')}}',
             post: "GET",
             data: {
-                postId: postId
+                pPostId: pPostId,
+                reqTyp: 'userAllCmt'
             },
             success: function (response) {
 
-                if (response.status == true) {
+                if (response.status === true) {
 
-                    // console.log(response.html,'cmt');
                     $('.cmtText').val('');
-                    htmlData.html(response.html);
+                    htmlData.append(response.html);
                 }
 
 
@@ -875,8 +871,11 @@
     $(document).on('click', '.loadChildCmt', function () {
         let postId = $(this).attr('data-postIdd');
         let cmtId = $(this).attr('data-commentId');
-        console.log(postId);
+        // $(this).hide();
+        // console.log(postId);
+        // console.log(cmtId);
         let htmlData = $(this).parents('.posted-content').find('.post-comment-list')
+        // return false;
         $.ajax({
             url: "{{route('user.load.child.comment')}}",
             post: "GET",
@@ -886,18 +885,17 @@
             },
             success: function (response) {
 
-                if (response.status == true) {
+                if (response.status === true) {
 
-                    // console.log(response.html,'cmt');
+                    // console.log($(document).find('.nested-comment-' + cmtId),'cmt');
                     $('.cmtText').val('');
-                    $('.nested-comment-' + cmtId).append(response.html);
+                    $(document).find('.nested-comment-' + cmtId).append(response.html);
 
                 }
 
 
             },
         })
-
     })
 </script>
 
@@ -913,10 +911,7 @@
         let cmtText = e.target.value;
         let nestedCmtHtml = $(this).parents('.posted-content').find('.child-comment')
         let key = e.which;
-        console.log(nestedCmtHtml);
 
-
-// return false;
         if (key === 13) {
             // console.log(cmtText);
 

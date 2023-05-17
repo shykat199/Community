@@ -350,44 +350,101 @@
                         {{--                            <img src="{{asset("storage/community/group-post/".$post->group_post_file)}}" alt="">--}}
                         {{--                        </div>--}}
                     @endif
-
+{{--                    @dd($post)--}}
                     <ul class="post-react-widget">
                         <li class="post-react like-react">
                             <a href="Javascript:void(0)">
                                 <div class="react-icon" id="react-icon">
 
-                                    <img class="like"
-                                         src="{{asset("community-frontend/assets/images/community/home/news-post/like.png")}}"
-                                         alt="">
+                                    @if ($post->reaction_type=='like')
+                                        <img
+                                            src="{{asset("community-frontend/assets/images/community/home/news-post/react-1.png")}}"
+                                            alt="React">
+                                    @elseif($post->reaction_type=='love')
+                                        <img
+                                            src="{{asset("community-frontend/assets/images/community/home/news-post/react-2.png")}}"
+                                            alt="React">
+                                    @elseif($post->reaction_type=='haha')
+                                        <img
+                                            src="{{asset("community-frontend/assets/images/community/home/news-post/react-4.png")}}"
+                                            alt="React">
+                                    @elseif($post->reaction_type=='sad')
+                                        <img
+                                            src="{{asset("community-frontend/assets/images/community/home/news-post/react-6.png")}}"
+                                            alt="React">
+                                    @elseif($post->reaction_type=='angry')
+                                        <img
+                                            src="{{asset("community-frontend/assets/images/community/home/news-post/react-7.png")}}"
+                                            alt="React">
+                                    @elseif($post->reaction_type=='care')
+                                        <img
+                                            src="{{asset("community-frontend/assets/images/community/home/news-post/react-3.png")}}"
+                                            alt="React">
+                                    @elseif($post->reaction_type=='wow')
+                                        <img
+                                            src="{{asset("community-frontend/assets/images/community/home/news-post/react-5.png")}}"
+                                            alt="React">
+                                    @else
+                                        <img class="like"
+                                             src="{{asset("community-frontend/assets/images/community/home/news-post/like.png")}}"
+                                             alt="">
+                                    @endif
                                 </div>
 
-                                <span class="react-name">Like</span>
+                                <span class="react-name">
+                                    @if($post->reaction_type=='like')
+                                        Like
+                                    @elseif($post->reaction_type=='love')
+                                        Love
+                                    @elseif($post->reaction_type=='care')
+                                        Care
+                                    @elseif($post->reaction_type=='haha')
+                                        Haha
+                                    @elseif($post->reaction_type=='wow')
+                                        Wow
+                                    @elseif($post->reaction_type=='sad')
+                                        Sad
+                                    @elseif($post->reaction_type=='angry')
+                                        Angry
+                                    @else
+                                        Like
+                                    @endif
+
+                                </span>
                                 <span
                                     class="react-count">{{getGroupPostReactionCount($post->grpPostId)}}</span>
                             </a>
                             <ul class="react-option">
-                                <li class="reaction" data-reaction_type="like" data-gId="{{$post->grpPostId}}">
-                                    <img
+                                {{--                                @dd($post)--}}
+
+                                <li class="reaction {{$post->reaction_type=='like'?'active':''}}"
+                                    data-reaction_type="like" data-pId="{{$post->grpPostId}}"><img
                                         src="{{asset("community-frontend/assets/images/community/home/news-post/react-1.png")}}"
                                         alt="React">
                                 </li>
-                                {{--                                @dd($post)--}}
-                                <li class="reaction" data-reaction_type="love" data-gId="{{$post->grpPostId}}"><img
+                                <li class="reaction {{$post->reaction_type=='love'?'active':''}}"
+                                    data-reaction_type="love" data-pId="{{$post->grpPostId}}"><img
                                         src="{{asset("community-frontend/assets/images/community/home/news-post/react-2.png")}}"
-                                        alt="React"></li>
-                                <li class="reaction" data-reaction_type="care" data-gId="{{$post->grpPostId}}"><img
+                                        alt="React">
+                                </li>
+                                <li class="reaction {{$post->reaction_type=='care'?'active':''}}"
+                                    data-reaction_type="care" data-pId="{{$post->grpPostId}}"><img
                                         src="{{asset("community-frontend/assets/images/community/home/news-post/react-3.png")}}"
                                         alt="React"></li>
-                                <li class="reaction" data-reaction_type="haha" data-gId="{{$post->grpPostId}}"><img
+                                <li class="reaction {{$post->reaction_type=='haha'?'active':''}}"
+                                    data-reaction_type="haha" data-pId="{{$post->grpPostId}}"><img
                                         src="{{asset("community-frontend/assets/images/community/home/news-post/react-4.png")}}"
                                         alt="React"></li>
-                                <li class="reaction" data-reaction_type="wow" data-gId="{{$post->grpPostId}}"><img
+                                <li class="reaction {{$post->reaction_type=='wow'?'active':''}}"
+                                    data-reaction_type="wow" data-pId="{{$post->grpPostId}}"><img
                                         src="{{asset("community-frontend/assets/images/community/home/news-post/react-5.png")}}"
                                         alt="React"></li>
-                                <li class="reaction" data-reaction_type="sad" data-gId="{{$post->grpPostId}}"><img
+                                <li class="reaction {{$post->reaction_type=='sad'?'active':''}}"
+                                    data-reaction_type="sad" data-pId="{{$post->grpPostIdd}}"><img
                                         src="{{asset("community-frontend/assets/images/community/home/news-post/react-6.png")}}"
                                         alt="React"></li>
-                                <li class="reaction" data-reaction_type="care" data-gId="{{$post->grpPostId}}"><img
+                                <li class="reaction {{$post->reaction_type=='angry'?'active':''}}"
+                                    data-reaction_type="care" data-pId="{{$post->grpPostId}}"><img
                                         src="{{asset("community-frontend/assets/images/community/home/news-post/react-7.png")}}"
                                         alt="React"></li>
                             </ul>
@@ -549,9 +606,14 @@
 
 
                     </ul>
-                    <div class="more-comment">
-                        <a class="checkCmt" data-postIdd="{{$post->gId}}">More Comments+</a>
-                    </div>
+
+                    @if(count($post->comments)>0)
+                        <div class="more-comment">
+                            <a class="checkCmt" data-postIdd="{{$post->gId}}">More Comments+</a>
+                        </div>
+                    @endif
+
+
 
                     <form action="#" class="new-comment">
                         <a href="#" class="new-comment-img">
@@ -612,8 +674,10 @@
             $('.reaction').removeClass('active');
             $(this).addClass('active');
 
-            let getReaction = $(this).attr('data-reaction_type');
-            let grpPostId = $(this).attr('data-gId');
+            let postReaction = $(this).attr('data-reaction_type');
+            let postId = $(this).attr('data-pId');
+            // console.log(postId);
+            // console.log(postReaction);
 
             let img_src = $(this).find('img').attr('src')
             $(this).parents('.like-react').find('.react-icon img').attr('src', img_src)
@@ -621,29 +685,28 @@
             // console.log(parests_data, 'parests_data')
             // let img_src = $(this).find('img').attr('src');
             // console.log(img_src,'img_src');
+            // return false;
 
-            if (getReaction !== '' && grpPostId !== '') {
+            if (postReaction !== '' && postId !== '') {
                 $.ajax({
-                    url: '{{route('user.group.post.reaction')}}',
+                    url: '{{route('user.post-all.reaction')}}',
                     type: 'POST',
                     data: {
-                        getReaction: getReaction,
-                        grpPostId: grpPostId,
+                        postReaction: postReaction,
+                        postId: postId,
+                        reqType: 'storeGroupPostReaction',
                         '_token': '{{csrf_token()}}'
                     },
                     success: function (response) {
-                        console.log(response);
-                        console.log(response.data);
+
                         if (response.success === true) {
-
-                            toastr.success(response.msg);
-
-                            // let img_src = $(this).find('img').attr('src');
-                            // console.log(img_src,'img_src');
-                            // $(this).parents('.like-react').find('.react-icon img').attr('src', img_src);
+                            console.log(response);
+                            console.log(response.data);
+                            // toastr.success(response.msg);
+                            console.log(response.postComments);
 
                         } else {
-                            toastr.error(response.msg);
+                            // toastr.error(response.msg);
                         }
                     },
                     error: function (err) {
@@ -836,7 +899,8 @@
     $(document).on('click', '.checkCmt', function () {
         let gPostId = $(this).attr('data-postIdd')
         let htmlData = $(this).parents('.posted-content').find('.post-comment-list')
-        console.log(gPostId);
+        // console.log(gPostId);
+            $(this).hide();
         $.ajax({
             url: '{{route('users.get-all-comments')}}',
             type: 'GET',
@@ -850,7 +914,7 @@
 
                     // console.log(response.html,'cmt');
                     // $('.postComments').val('');
-                    htmlData.html(response.html);
+                    htmlData.append(response.html);
                 }
 
 
