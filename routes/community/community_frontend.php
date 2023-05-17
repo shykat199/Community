@@ -116,7 +116,7 @@ Route::middleware(['user'])->group(function (){
 
     //get all Comments........
     Route::get('/user/get-all-comments',[GetCommentController::class,'getAllComments'])->name('users.get-all-comments');
-    Route::post('/user/store-all-reactions',[AllReactionController::class,'storeReaction'])->name('user.post-all.reaction');
+    Route::post('/user/store-all-reactions',[AllReactionController::class,'allAjax'])->name('user.post-all.reaction');
 
 });
 

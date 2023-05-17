@@ -207,7 +207,7 @@ class CommunityFrontendController extends Controller
                 $userName = $comment->userPosts->users->name;
                 $comments = $comment->comment_text;
                 $commentId = $comment->id;
-                $userProfilePicture = $comment->users->userProfileImages[0]->user_profile;
+                $userProfilePicture = isset($comment->users->userProfileImages[0])?$comment->users->userProfileImages[0]->user_profile:'';
 
                 $html .= '<div class="single-replay-comnt nested-comment-' . $comment->id . '">
                                                 <div class="replay-coment-box comment-details">
@@ -225,18 +225,21 @@ class CommunityFrontendController extends Controller
                                                             <div>
                                                                 <h6><a class="replay-comnt-name" href="#">' . $userName . '</a></h6>
                                                                 <span class="replay-time-comnt">' . $date . '</span>
-                                                            </div>
-                                                            <div class="comment-option">
-                                                                <button type="button" class="dropdown-toggle comment-option-btn" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false"><i class="fa fa-ellipsis-h" aria-hidden="true"></i></button>
-                                                                <ul class="dropdown-menu comment-option-dropdown" aria-labelledby="dropdownMenuButton1">
-                                                                    <li class="post-option-item" id="editComment"><i class="fa fa-pencil-square-o" aria-hidden="true"></i>  Edit comment</li>
-                                                                    <li class="post-option-item"><i class="fa fa-trash-o" aria-hidden="true"></i>  Delete comment</li>
-                                                                </ul>
-                                                            </div>
-                                                        </div>
+                                                            </div>';
+                                                            if ($comment->user_id === Auth::id()){
+                            $html .= '<div class="comment-option">
+                                                    <button type="button" class="dropdown-toggle comment-option-btn" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false"><i class="fa fa-ellipsis-h" aria-hidden="true"></i></button>
+                                                    <ul class="dropdown-menu comment-option-dropdown" aria-labelledby="dropdownMenuButton1">
+                                                        <li class="post-option-item" id="editComment"><i class="fa fa-pencil-square-o" aria-hidden="true"></i>  Edit comment</li>
+                                                        <li class="post-option-item"><i class="fa fa-trash-o" aria-hidden="true"></i>  Delete comment</li>
+                                                    </ul>
+                                                </div>';
+                        }
+                $html .= ' </div>
                                                         <div class="comment-div">
                                                             <p class="comment-content">' . $comments . '</p>
-                                                            <button id="textarea_btn" type="submit"><i class="fa fa-paper-plane" aria-hidden="true"></i>
+                                                            <button id="textarea_btn" type="submit">
+                                                            <i class="fa fa-paper-plane" data-commentText="'.$comments.'" data-cmtId="'.$commentId.'" data-postId="'.$comment->user_post_id.'" aria-hidden="true"></i>
                                                             </button>
                                                         </div>
                                                     </div>
@@ -338,8 +341,9 @@ class CommunityFrontendController extends Controller
                                         </div>
                                         <div class="comment-div">
                                             <p class="comment-content">' . $postComment->comment_text . '</p>
-                                            <button id="textarea_btn" type="submit"><i class="fa fa-paper-plane"
-                                                                                       aria-hidden="true"></i>
+                                            <button id="textarea_btn" type="submit">
+                                            <i class="fa fa-paper-plane" data-commentText="'.$postComment->comment_text.'" data-cmtId="'.$postComment->id.'" data-postId="'.$postComment->user_post_id.'" aria-hidden="true"></i>
+
                                             </button>
                                         </div>
                                         <ul class="coment-react">

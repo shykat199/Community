@@ -240,9 +240,10 @@
                     @php
                         $isOwner=\App\Models\Community\User\CommunityUserPost::select('id','user_id')->where('user_id','=',Auth::id())
                        ->get();
-//                            dd($isOwner);
-                    @endphp
 
+//                        dd($isOwner);
+
+                    @endphp
 
 
                     <div class="post-option">
@@ -442,7 +443,7 @@
                             </a>
 
                             <ul class="react-option">
-{{--                                @dd($post)--}}
+                                {{--                                @dd($post)--}}
 
                                 <li class="reaction {{$post->reaction_type=='like'?'active':''}}"
                                     data-reaction_type="like" data-pId="{{$post->post_id}}"><img
@@ -524,6 +525,8 @@
 
                         @foreach($post->comments as $postComment)
 
+{{--                            @dd($postComment)--}}
+
                             <li class="single-comment">
                                 <!-- parent comment start  -->
                                 <div class="parent-comment">
@@ -550,36 +553,59 @@
                                                     class="comment-time">{{\Carbon\Carbon::parse($postComment->created_at)->diffForHumans()}}</span>
                                             </div>
                                             <div class="comment-option">
-                                                <button type="button" class="dropdown-toggle comment-option-btn"
-                                                        id="dropdownMenuButton1" data-bs-toggle="dropdown"
-                                                        aria-expanded="false"><i class="fa fa-ellipsis-h"
-                                                                                 aria-hidden="true"></i></button>
-                                                <ul class="dropdown-menu comment-option-dropdown"
-                                                    aria-labelledby="dropdownMenuButton1">
-                                                    <li class="post-option-item" id="editComment"><i
-                                                            class="fa fa-pencil-square-o" aria-hidden="true"></i> Edit
-                                                        comment
-                                                    </li>
-                                                    <li class="post-option-item"><i class="fa fa-trash-o"
-                                                                                    aria-hidden="true"></i> Delete
-                                                        comment
-                                                    </li>
-                                                </ul>
+
+
+                                                {{--                                                @dd($postComment)--}}
+
+{{--                                                @php--}}
+{{--                                                    $commentedUsers=\App\Models\Community\User_Post\CommunityUserPostComment::select('id','user_id')--}}
+{{--                                                ->where('user_id','=',Auth::id())->get();--}}
+{{--//                                                    dd($postComment);--}}
+{{--                                                @endphp--}}
+
+                                                {{--                                                @dd($postComment)--}}
+{{--                                                @foreach($commentedUsers as $user)--}}
+                                                    @if($postComment->user_id === Auth::id())
+
+                                                        <button type="button" class="dropdown-toggle comment-option-btn"
+                                                                id="dropdownMenuButton1" data-bs-toggle="dropdown"
+                                                                aria-expanded="false"><i class="fa fa-ellipsis-h"
+                                                                                         aria-hidden="true"></i>
+                                                        </button>
+                                                        <ul class="dropdown-menu comment-option-dropdown"
+                                                            aria-labelledby="dropdownMenuButton1">
+                                                            <li class="post-option-item" id="editComment">
+                                                                <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                                                                Edit Comment
+                                                            </li>
+                                                            <li class="post-option-item"><i class="fa fa-trash-o"
+                                                                                            aria-hidden="true"></i>
+                                                                Delete comment
+                                                            </li>
+                                                        </ul>
+                                                    @endif
+{{--                                                @endforeach--}}
+
+
                                             </div>
                                         </div>
                                         <div class="comment-div">
                                             <p class="comment-content">{{$postComment->comment_text}}</p>
-                                            <button id="textarea_btn" type="submit"><i class="fa fa-paper-plane"
-                                                                                       aria-hidden="true"></i>
+
+                                            <button id="textarea_btn" type="submit">
+                                                <i class="fa fa-paper-plane"
+                                                   data-commentText="{{$postComment->comment_text}}"
+                                                   data-cmtId="{{$postComment->id}}"
+                                                   data-postId="{{$postComment->user_post_id}}" aria-hidden="true"></i>
                                             </button>
                                         </div>
+
                                         <ul class="coment-react">
                                             <li class="comment-like"><a href="javascript:void(0)">Like(2)</a></li>
                                             <li><a href="javascript:void(0)" class="replay-tag">Replay</a></li>
                                         </ul>
                                     </div>
                                     {{--                                    @dd($postComment->id)--}}
-
 
                                     <!-- child comment start  -->
                                     <div class="child-comment">
@@ -629,9 +655,12 @@
 
 
                     </ul>
-                    <div class="more-comment">
-                        <a class="checkCmt" data-postIdd="{{$post->postId}}">More Comments+</a>
-                    </div>
+
+                    @if(count($post->comments)>0)
+                        <div class="more-comment">
+                            <a class="checkCmt" data-postIdd="{{$post->postId}}">More Comments+</a>
+                        </div>
+                    @endif
 
                     <div class="new-comment">
 
@@ -807,6 +836,33 @@
             $('.postMedia').attr('src', `{{asset("storage/community/post/")}}` + "/" + postMedia);
 
         }
+
+    })
+
+    $(document).on('click', '.fa-paper-plane', function () {
+        // let postText = $(this).attr("data-commentText");
+        let cmtId = $(this).attr("data-cmtId");
+        let postId = $(this).attr("data-postId");
+        let postText = $(this).closest('.comment-div').find('.comment-content').val();
+        // let postText=$(this).parents('.post-comment-list').find('.comment-content').val();
+        // console.log(postText,'.....');
+        // return false;
+        $.ajax({
+            url: "{{route('user.post-all.reaction')}}",
+            type: "POST",
+            data: {
+                postText: postText,
+                cmtId: cmtId,
+                postId: postId,
+                reqType: "editUserNewsFeedComment",
+                '_token': '{{csrf_token()}}'
+            },
+            success: function (response) {
+                // let oldText=$(this).parents('.post-comment-list').find('.comment-content').text();
+
+            }
+        })
+
 
     })
 </script>

@@ -546,8 +546,9 @@
                                         </div>
                                         <div class="comment-div">
                                             <p class="comment-content">{{$postComment->comment_text}}</p>
-                                            <button id="textarea_btn" type="submit"><i class="fa fa-paper-plane"
-                                                                                       aria-hidden="true"></i>
+{{--                                            @dd($postComment)--}}
+                                            <button id="textarea_btn" type="submit">
+                                                <i class="fa fa-paper-plane" aria-hidden="true" data-commentText="{{$postComment->comment_text}}" data-cmtId="{{$postComment->id}}" data-postId="{{$postComment->group_post_id}}"></i>
                                             </button>
                                         </div>
                                         <ul class="coment-react">
@@ -760,6 +761,34 @@
             }
         })
 
+
+        $(document).on('click', '.fa-paper-plane', function () {
+            // let postText = $(this).attr("data-commentText");
+            let cmtId = $(this).attr("data-cmtId");
+            let postId = $(this).attr("data-postId");
+            let postText=$(this).closest('.comment-div').find('.comment-content').val();
+            // let postText=$(this).parents('.post-comment-list').find('.comment-content').val();
+            // console.log(postText,'.....');
+            // return false;
+            $.ajax({
+                url:"{{route('user.post-all.reaction')}}",
+                type:"POST",
+                data:{
+                    postText:postText,
+                    cmtId:cmtId,
+                    postId:postId,
+                    reqType:"editGroupNewsFeedComment",
+                    '_token': '{{csrf_token()}}'
+                },
+                success:function (response){
+                    // let oldText=$(this).parents('.post-comment-list').find('.comment-content').text();
+
+                }
+            })
+
+
+        })
+
     })
 
 </script>
@@ -816,6 +845,7 @@
         })
     });
 </script>
+
 <script>
     $(document).on('click', '.replay-tag', function () {
 

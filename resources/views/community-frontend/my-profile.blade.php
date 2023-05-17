@@ -746,26 +746,32 @@
                                                                     class="comment-time">{{\Carbon\Carbon::parse($postComment->created_at)->diffForHumans()}}</span>
                                                             </div>
                                                             <div class="comment-option">
-                                                                <button type="button"
-                                                                        class="dropdown-toggle comment-option-btn"
-                                                                        id="dropdownMenuButton1"
-                                                                        data-bs-toggle="dropdown"
-                                                                        aria-expanded="false"><i
-                                                                        class="fa fa-ellipsis-h"
-                                                                        aria-hidden="true"></i></button>
-                                                                <ul class="dropdown-menu comment-option-dropdown"
-                                                                    aria-labelledby="dropdownMenuButton1">
-                                                                    <li class="post-option-item" id="editComment"><i
-                                                                            class="fa fa-pencil-square-o"
-                                                                            aria-hidden="true"></i> Edit
-                                                                        comment
-                                                                    </li>
-                                                                    <li class="post-option-item"><i
-                                                                            class="fa fa-trash-o"
-                                                                            aria-hidden="true"></i> Delete
-                                                                        comment
-                                                                    </li>
-                                                                </ul>
+{{--                                                                @dd($postComment)--}}
+                                                                @if($postComment->user_id===Auth::id())
+                                                                    <button type="button"
+                                                                            class="dropdown-toggle comment-option-btn"
+                                                                            id="dropdownMenuButton1"
+                                                                            data-bs-toggle="dropdown"
+                                                                            aria-expanded="false"><i
+                                                                            class="fa fa-ellipsis-h"
+                                                                            aria-hidden="true"></i>
+                                                                    </button>
+
+                                                                    <ul class="dropdown-menu comment-option-dropdown"
+                                                                        aria-labelledby="dropdownMenuButton1">
+                                                                        <li class="post-option-item" id="editComment"><i
+                                                                                class="fa fa-pencil-square-o"
+                                                                                aria-hidden="true"></i> Edit comment
+                                                                        </li>
+                                                                        <li class="post-option-item"><i
+                                                                                class="fa fa-trash-o"
+                                                                                aria-hidden="true"></i> Delete
+                                                                            comment
+                                                                        </li>
+                                                                    </ul>
+                                                                @endif
+
+
                                                             </div>
                                                         </div>
                                                         <div class="comment-div">
