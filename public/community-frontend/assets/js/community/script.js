@@ -136,9 +136,9 @@ $(document).on("click", "#editComment", function() {
   onmouseover='this.style.height = "";this.style.height = this.scrollHeight
    + "px"' oninput='this.style.height = "";this.style.height = this.scrollHeight
    + "px"'>${comment_para[0].innerHTML}</textarea>`))
-   $(this).parents(".comment-details").find('#textarea_btn').css('display', 'block')
+   $(this).parents(".comment-details").find('.textarea-btn').css('display', 'block')
 })
-$(document).on("click", "#textarea_btn", function() {
+$(document).on("click", ".textarea-btn", function() {
  let edit_tex = $(this).parents(".comment-details").find('.comment-content');
  console.log(edit_tex, "text");
 //  let aa = edit_tex.val()

@@ -514,10 +514,17 @@
             column-gap: 10px;
             >a {
                 img {
-                    max-width: 80px;
+                    width: 80px;
                     border-radius: 50%;
+                    height: 80px;
+                    object-fit: cover;
+                    @media (max-width:768px) {
+                        width: 60px;
+                        height: 60px;
+                    }
                     @media (max-width:425px) {
-                        max-width: 50px;
+                        width: 50px;
+                        height: 50px;
                     }
                 }
             }
@@ -618,7 +625,24 @@
         text-align: center;
         a{
             font-size: 14px;
-            color: $theme-color;
+            color: #ff5b2e;
+            display: flex;
+            align-items: center;
+            .replay-arrow {
+                width: 15px;
+                margin-right: 5px;
+                display: inline-block;
+                margin-top: -5px;
+                svg{
+                    path{
+                        fill: $theme-color;
+                        transition: all .3s ease;
+                    }
+                }
+            }
+            .count {
+                margin-left: 5px;
+            }
         }
     }
     .new-comment {
@@ -906,7 +930,7 @@
             }
             .comment-div {
                 position: relative;
-                #textarea_btn {
+                .textarea-btn {
                     position: absolute;
                     right: 5px;
                     bottom: 12px;
@@ -1001,6 +1025,7 @@
 
 .load-more {
     text-align: center;
+    cursor: pointer;
     a {
         color: $theme-color;
         font-size: 16px;

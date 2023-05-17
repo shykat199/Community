@@ -576,7 +576,7 @@
                                         </div>
                                         <div class="comment-div">
                                             <p class="comment-content">{{$postComment->comment_text}}</p>
-                                            <button id="textarea_btn" type="submit"><i class="fa fa-paper-plane"
+                                            <button  class="textarea-btn" type="submit"><i class="fa fa-paper-plane"
                                                                                        aria-hidden="true"></i>
                                             </button>
                                         </div>
@@ -597,9 +597,11 @@
 
 
                                         @if( count($postComment->replies)>0)
-                                            <div class="more-comment">
+                                            <div class="more-comment mt-2">
                                                 <a class="loadChildCmt" data-postIdd="{{$post->postId}}"
-                                                   data-commentId="{{$postComment->id}}">More+</a>
+                                                   data-commentId="{{$postComment->id}}"> <span class="replay-arrow">
+                                                    <svg x="0" y="0" viewBox="0 0 48 48" style="enable-background:new 0 0 512 512" xml:space="preserve" class=""><g><path d="m47.12 31.403-9.992-9.992a2.98 2.98 0 1 0-4.215 4.216l3.037 3.037C15.565 29.665 2.31 15.984 2.188 1.96c-.004-.507-.716-.61-.874-.144-4.922 14.579 4.03 32.89 27.427 36.201 2.266.295 4.558.519 6.868.681l-2.697 2.697a2.98 2.98 0 1 0 4.215 4.215l9.992-9.992a2.98 2.98 0 0 0 .001-4.215z" data-original="#ffcc66" class=""></path></g></svg>
+                                                    </span> Replay <span class="count">(40)</span></a>
                                             </div>
                                         @endif
 
@@ -635,7 +637,7 @@
                         @endforeach
                     </ul>
                     <div class="more-comment">
-                        <a class="checkCmt" data-postIdd="{{$post->postId}}">More Comments+</a>
+                        <a class="checkCmt justify-content-center" data-postIdd="{{$post->postId}}">More Comments+</a>
                     </div>
 
                     <div class="new-comment">

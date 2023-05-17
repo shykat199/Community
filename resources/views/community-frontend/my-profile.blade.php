@@ -90,7 +90,7 @@
                                 </a>
                                 <div class="replace-icon">
 
-                                    <button type="button" class="attachment-option-btn" data-bs-toggle="modal"
+                                    <button class="replace-btn" type="button" class="attachment-option-btn" data-bs-toggle="modal"
                                             data-bs-target="#photoModal">
 
                                         <svg xmlns="http://www.w3.org/2000/svg" version="1.1" x="0" y="0"
