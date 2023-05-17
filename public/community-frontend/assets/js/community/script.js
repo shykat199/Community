@@ -25,6 +25,7 @@ document.querySelectorAll(".sidebar-list li a").forEach((link) => {
 
 
 
+// prevew media
 let files
 $(document).on('change','.imgInp', function(e){
  files = this.files
@@ -34,7 +35,6 @@ $(document).on('change','.imgInp', function(e){
     $('.imgClose').css("display", "block")
   }
 })
-
 
 $(document).on('change','.vidInp',function(e){
   files = this.files
@@ -55,13 +55,14 @@ $(document).on('click','.imgClose',function(){
   $(this).css("display", "none")
 
 
-  let source = $('.video-status-here');
+let source = $('.video-status-here');
     source[0].src = "#"
   // let prevwVideo = $(this).parents('.upload-media').find('.status-video')
   // prevwVideo[0].src = " "
   let sourcess = $('.status-video');
   $(sourcess).css("display", "none")
 })
+
 
 // online person active
 $('.chat-online').slick({
