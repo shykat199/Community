@@ -207,7 +207,7 @@ class CommunityFrontendController extends Controller
                 $userName = $comment->userPosts->users->name;
                 $comments = $comment->comment_text;
                 $commentId = $comment->id;
-                $userProfilePicture = isset($comment->users->userProfileImages[0])?$comment->users->userProfileImages[0]->user_profile:'';
+                $userProfilePicture = isset($comment->users->userProfileImages[0]) ? $comment->users->userProfileImages[0]->user_profile : '';
 
                 $html .= '<div class="single-replay-comnt nested-comment-' . $comment->id . '">
                                                 <div class="replay-coment-box comment-details">
@@ -226,20 +226,20 @@ class CommunityFrontendController extends Controller
                                                                 <h6><a class="replay-comnt-name" href="#">' . $userName . '</a></h6>
                                                                 <span class="replay-time-comnt">' . $date . '</span>
                                                             </div>';
-                                                            if ($comment->user_id === Auth::id()){
-                            $html .= '<div class="comment-option">
+                if ($comment->user_id === Auth::id()) {
+                    $html .= '<div class="comment-option">
                                                     <button type="button" class="dropdown-toggle comment-option-btn" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false"><i class="fa fa-ellipsis-h" aria-hidden="true"></i></button>
                                                     <ul class="dropdown-menu comment-option-dropdown" aria-labelledby="dropdownMenuButton1">
                                                         <li class="post-option-item" id="editComment"><i class="fa fa-pencil-square-o" aria-hidden="true"></i>  Edit comment</li>
-                                                        <li class="post-option-item"><i class="fa fa-trash-o" aria-hidden="true"></i>  Delete comment</li>
+                                                        <li class="post-option-item dltComment" data-commentId="'.$commentId.'"><i class="fa fa-trash-o" aria-hidden="true"></i>  Delete comment</li>
                                                     </ul>
                                                 </div>';
-                        }
+                }
                 $html .= ' </div>
                                                         <div class="comment-div">
                                                             <p class="comment-content">' . $comments . '</p>
                                                             <button id="textarea_btn" type="submit">
-                                                            <i class="fa fa-paper-plane" data-commentText="'.$comments.'" data-cmtId="'.$commentId.'" data-postId="'.$comment->user_post_id.'" aria-hidden="true"></i>
+                                                            <i class="fa fa-paper-plane" data-commentText="' . $comments . '" data-cmtId="' . $commentId . '" data-postId="' . $comment->user_post_id . '" aria-hidden="true"></i>
                                                             </button>
                                                         </div>
                                                     </div>
@@ -248,12 +248,12 @@ class CommunityFrontendController extends Controller
 
             }
 
-                return \response()->json([
-                    'status' => true,
-                    'msg' => 'Successfully Added',
-                    'postComments' => json_encode($postComments),
-                    'html' => $html
-                ]);
+            return \response()->json([
+                'status' => true,
+                'msg' => 'Successfully Added',
+                'postComments' => json_encode($postComments),
+                'html' => $html
+            ]);
 
         }
     }
@@ -290,10 +290,12 @@ class CommunityFrontendController extends Controller
 //        dd($request->all());
 
         if ($request->ajax()) {
+
+//            dd($request->all());
             $postComment = CommunityUserPostComment::create([
                 'user_id' => Auth::id(),
                 'user_post_id' => $request->get('postId'),
-//                'user_post_comment_id' => 0,
+                'user_post_comment_id' => 0,
                 'comment_text' => $request->get('postComment'),
             ]);
 
@@ -342,7 +344,7 @@ class CommunityFrontendController extends Controller
                                         <div class="comment-div">
                                             <p class="comment-content">' . $postComment->comment_text . '</p>
                                             <button id="textarea_btn" type="submit">
-                                            <i class="fa fa-paper-plane" data-commentText="'.$postComment->comment_text.'" data-cmtId="'.$postComment->id.'" data-postId="'.$postComment->user_post_id.'" aria-hidden="true"></i>
+                                            <i class="fa fa-paper-plane" data-commentText="' . $postComment->comment_text . '" data-cmtId="' . $postComment->id . '" data-postId="' . $postComment->user_post_id . '" aria-hidden="true"></i>
 
                                             </button>
                                         </div>
@@ -410,7 +412,8 @@ class CommunityFrontendController extends Controller
 
     }
 
-    public function storeChildComment(Request $request){
+    public function storeChildComment(Request $request)
+    {
 
         if ($request->ajax()) {
             $storeCmtOfCmt = CommunityUserPostComment::create([

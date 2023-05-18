@@ -12,6 +12,7 @@ use App\Http\Controllers\Community\Frontend\Page\CommunityUserPageController;
 use App\Http\Controllers\Community\Frontend\Video\VideoController;
 use App\Http\Controllers\Community\Frontend\GetCommentController;
 use App\Http\Controllers\Community\Frontend\AllReactionController;
+use App\Http\Controllers\Community\Frontend\DeleteAllCommentController;
 
 Route::middleware(['user'])->group(function (){
 
@@ -32,7 +33,10 @@ Route::middleware(['user'])->group(function (){
 
 
     //User Profile
+
     Route::get('/user/my-profile',[UserProfileDetailsController::class,'index'])->name('user.my-profile');
+
+
     Route::post('/user/my-profile/upload-profile-photo',[UserProfileDetailsController::class,'uploadProfilePhoto'])->name('community.user.upload.user.profile.photo');
     Route::post('/user/my-profile/upload-cover-photo',[UserProfileDetailsController::class,'uploadCoverPhoto'])->name('community.user.upload.user.cover.photo');
 
@@ -114,9 +118,12 @@ Route::middleware(['user'])->group(function (){
     Route::post('/user/page/store/post-commentOfComment',[CommunityUserPageController::class,'storePagePostCommentOfComment'])->name('community.user.store.page.commentsOfComments');
 
 
-    //get all Comments........
+    //Ajax get all Comments........
     Route::get('/user/get-all-comments',[GetCommentController::class,'getAllComments'])->name('users.get-all-comments');
     Route::post('/user/store-all-reactions',[AllReactionController::class,'allAjax'])->name('user.post-all.reaction');
+
+    //Ajax Delete Comments
+    Route::get('/user/delete-all-comments',[DeleteAllCommentController::class,'allAjaxDelete'])->name('user.delete.comments');
 
 });
 

@@ -635,7 +635,7 @@
 
                                                 </span>
                                                 <span
-                                                    class="react-count">{{myPostReactionCount($myPost->postId)}}</span>
+                                                    class="react-count reactionCount">{{myPostReactionCount($myPost->postId)}}</span>
                                             </a>
                                             <ul class="react-option">
 {{--                                                                                @dd($myPost)--}}
@@ -691,7 +691,7 @@
                                                         </g></svg>
                                                 </div>
                                                 <span class="react-name">Comment</span>
-                                                <span class="react-count">{{myPostCommentCount($myPost->postId)}}</span>
+                                                <span class="react-count commentCount">{{myPostCommentCount($myPost->postId)}}</span>
                                             </a>
                                         </li>
 
@@ -710,7 +710,7 @@
                                                         </g></svg>
                                                 </div>
                                                 <span class="react-name">share</span>
-                                                <span class="react-count">2506</span>
+                                                <span class="react-count">0</span>
                                             </a>
                                         </li>
                                     </ul>
@@ -1445,8 +1445,10 @@
 
             let postReaction = $(this).attr('data-reaction_type');
             let postId = $(this).attr('data-pId');
-            console.log(postId);
-            console.log(postReaction);
+            // console.log(postId);
+            // console.log(postReaction);
+            let reactionCount = parseInt($(this).parents('.post-body').find('.reactionCount').text());
+            let newReactionCount = $(this).parents('.post-body').find('.reactionCount');
 
             let img_src = $(this).find('img').attr('src')
             $(this).parents('.like-react').find('.react-icon img').attr('src', img_src)
@@ -1469,10 +1471,12 @@
                     success: function (response) {
 
                         if (response.success === true) {
-                            console.log(response);
-                            console.log(response.data);
+                            // console.log(response);
+                            // console.log(response.data);
+                            newReactionCount.text(reactionCount += 1);
+
                             // toastr.success(response.msg);
-                            console.log(response.postComments);
+                            // console.log(response.postComments);
 
                         } else {
                             // toastr.error(response.msg);
@@ -1488,9 +1492,15 @@
 
 
         $('.postComments').keydown(function (e) {
+
             if (e.keyCode === 13) {
+
+                let htmlData = $(this).parents('.posted-content').find('.post-comment-list')
                 let comment = e.target.value;
                 let postId = $(this).attr('data-postId');
+
+                let commentCount = parseInt($(this).parents('.post-body').find('.commentCount').text());
+                let new_comment = $(this).parents('.post-body').find('.commentCount');
                 $(this).val('');
                 // console.log($(this));
                 // return false;
@@ -1510,17 +1520,20 @@
 
                             if (response.success === true) {
                                 toastr.success(response.msg);
+                                htmlData.append(response.html);
+                                new_comment.text(commentCount += 1)
+
                                 // console.log($(this),'this')
                                 // $(this).val('');
                                 // console.log(response.data);
 
                             } else {
-                                toastr.error(response.msg);
+                                // toastr.error(response.msg);
                             }
                         },
                         error: function (err) {
 
-                            toastr.error("Error with AJAX callback !");
+                            // toastr.error("Error with AJAX callback !");
                         }
                     })
                 }
@@ -1531,7 +1544,7 @@
             let postId = $(this).attr('data-postIdd');
             let cmtId = $(this).attr('data-commentId');
             $(this).hide();
-            console.log(postId);
+            // console.log(postId);
             let htmlData = $(this).parents('.posted-content').find('.post-comment-list')
             $.ajax({
                 url: "{{route('user.load.child.comment')}}",
@@ -1542,11 +1555,11 @@
                 },
                 success: function (response) {
 
-                    if (response.status == true) {
+                    if (response.status === true) {
 
                         // console.log(response.html,'cmt');
                         $('.cmtText').val('');
-                        $('.nested-comment-' + cmtId).append(response.html);
+                        $(document).find('.nested-comment-' + cmtId).append(response.html);
 
                     }
 
@@ -1571,7 +1584,7 @@
 
                     if (response.status === true) {
 
-                        console.log(response.html, 'cmt');
+                        // console.log(response.html, 'cmt');
                         // $('.postComments').val('');
                         htmlData.append(response.html);
                     }
@@ -1613,7 +1626,7 @@
                     },
                     error: function (err) {
 
-                        toastr.error("Error with AJAX callback !");
+                        // toastr.error("Error with AJAX callback !");
                     }
                 })
             }

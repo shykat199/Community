@@ -439,7 +439,7 @@
                                 </span>
                                 {{--                                @dd( countComments())--}}
                                 <span
-                                    class="react-count">{{getUserTimeLinePostReactionCount($post->post_id)}}</span>
+                                    class="react-count reactionCount">{{getUserTimeLinePostReactionCount($post->post_id)}}</span>
                             </a>
 
                             <ul class="react-option">
@@ -497,7 +497,7 @@
                                 </div>
                                 <span class="react-name">Comment</span>
                                 <span
-                                    class="react-count">{{getUserTimeLinePostCommentCount($post->post_id)}}</span>
+                                    class="react-count commentCount">{{getUserTimeLinePostCommentCount($post->post_id)}}</span>
                                 {{--                                <span class="react-count">{{countComments($post->post_id)->commentCount}}</span>--}}
                             </a>
                         </li>
@@ -525,7 +525,7 @@
 
                         @foreach($post->comments as $postComment)
 
-{{--                            @dd($postComment)--}}
+                            {{--                            @dd($postComment)--}}
 
                             <li class="single-comment">
                                 <!-- parent comment start  -->
@@ -552,42 +552,62 @@
                                                 <span
                                                     class="comment-time">{{\Carbon\Carbon::parse($postComment->created_at)->diffForHumans()}}</span>
                                             </div>
-                                            <div class="comment-option">
+
+                                            @if($postComment->user_id === Auth::id())
+                                                <div class="comment-option">
 
 
-                                                {{--                                                @dd($postComment)--}}
+                                                    {{--                                                @dd($postComment)--}}
 
-{{--                                                @php--}}
-{{--                                                    $commentedUsers=\App\Models\Community\User_Post\CommunityUserPostComment::select('id','user_id')--}}
-{{--                                                ->where('user_id','=',Auth::id())->get();--}}
-{{--//                                                    dd($postComment);--}}
-{{--                                                @endphp--}}
+                                                    {{--                                                @php--}}
+                                                    {{--                                                    $commentedUsers=\App\Models\Community\User_Post\CommunityUserPostComment::select('id','user_id')--}}
+                                                    {{--                                                ->where('user_id','=',Auth::id())->get();--}}
+                                                    {{--//                                                    dd($postComment);--}}
+                                                    {{--                                                @endphp--}}
 
-                                                {{--                                                @dd($postComment)--}}
-{{--                                                @foreach($commentedUsers as $user)--}}
-                                                    @if($postComment->user_id === Auth::id())
-
-                                                        <button type="button" class="dropdown-toggle comment-option-btn"
-                                                                id="dropdownMenuButton1" data-bs-toggle="dropdown"
-                                                                aria-expanded="false"><i class="fa fa-ellipsis-h"
-                                                                                         aria-hidden="true"></i>
-                                                        </button>
-                                                        <ul class="dropdown-menu comment-option-dropdown"
-                                                            aria-labelledby="dropdownMenuButton1">
-                                                            <li class="post-option-item" id="editComment">
-                                                                <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
-                                                                Edit Comment
-                                                            </li>
-                                                            <li class="post-option-item"><i class="fa fa-trash-o"
-                                                                                            aria-hidden="true"></i>
-                                                                Delete comment
-                                                            </li>
-                                                        </ul>
-                                                    @endif
-{{--                                                @endforeach--}}
+                                                    {{--                                                @dd($postComment)--}}
+                                                    {{--                                                @foreach($commentedUsers as $user)--}}
 
 
-                                            </div>
+                                                    <button type="button" class="dropdown-toggle comment-option-btn"
+                                                            id="dropdownMenuButton1" data-bs-toggle="dropdown"
+                                                            aria-expanded="false"><i class="fa fa-ellipsis-h"
+                                                                                     aria-hidden="true"></i>
+                                                    </button>
+                                                    <ul class="dropdown-menu comment-option-dropdown"
+                                                        aria-labelledby="dropdownMenuButton1">
+                                                        <li class="post-option-item" id="editComment">
+                                                            <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                                                            Edit Comment
+                                                        </li>
+                                                        <li class="post-option-item dltComment"
+                                                            data-commentId="{{$postComment->id}}">
+                                                            <i class="fa fa-trash-o" aria-hidden="true"></i>
+                                                            Delete comment
+                                                        </li>
+                                                    </ul>
+                                                    {{--                                                @endforeach--}}
+                                                </div>
+
+                                            @else
+                                                <div class="comment-option">
+
+                                                    <button type="button" class="dropdown-toggle comment-option-btn"
+                                                            id="dropdownMenuButton1" data-bs-toggle="dropdown"
+                                                            aria-expanded="false"><i class="fa fa-ellipsis-h"
+                                                                                     aria-hidden="true"></i>
+                                                    </button>
+                                                    <ul class="dropdown-menu comment-option-dropdown"
+                                                        aria-labelledby="dropdownMenuButton1">
+                                                        <li class="post-option-item"
+                                                            data-commentId="{{$postComment->id}}">
+                                                            <i class="fa fa-trash-o"
+                                                               aria-hidden="true"></i>
+                                                            Delete comment
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            @endif
                                         </div>
                                         <div class="comment-div">
                                             <p class="comment-content">{{$postComment->comment_text}}</p>
@@ -656,7 +676,9 @@
 
                     </ul>
 
-                    @if(count($post->comments)>0)
+                    {{--                    @dd($post->comments)--}}
+
+                    @if(count($post->comments)>2)
                         <div class="more-comment">
                             <a class="checkCmt" data-postIdd="{{$post->postId}}">More Comments+</a>
                         </div>
@@ -731,15 +753,19 @@
 
             let postReaction = $(this).attr('data-reaction_type');
             let postId = $(this).attr('data-pId');
-            console.log(postId);
-            console.log(postReaction);
+
+            // console.log(postId);
+            // console.log(postReaction);
 
             let img_src = $(this).find('img').attr('src')
             $(this).parents('.like-react').find('.react-icon img').attr('src', img_src)
 
-            // console.log(parests_data, 'parests_data')
-            // let img_src = $(this).find('img').attr('src');
-            // console.log(img_src,'img_src');
+            let reactionCount = parseInt($(this).parents('.post-body').find('.reactionCount').text());
+            let newReactionCount = $(this).parents('.post-body').find('.reactionCount');
+            // let intNum = parseInt(reactionCount);
+            // intNum += 1;
+            // $(this).parents('.post-body').find('.reactionCount').text(intNum);
+
             // return false;
 
             if (postReaction !== '' && postId !== '') {
@@ -755,32 +781,89 @@
                     success: function (response) {
 
                         if (response.success === true) {
-                            console.log(response);
-                            console.log(response.data);
+                            // console.log(response);
+                            // console.log(response.data);
                             // toastr.success(response.msg);
-                            console.log(response.postComments);
+                            newReactionCount.text(reactionCount += 1);
+                            // console.log(response.postComments);
 
                         } else {
                             // toastr.error(response.msg);
                         }
-                    },
-                    error: function (err) {
-
-                        toastr.error("Error with AJAX callback !");
                     }
+                    // error: function (err) {
+                    //
+                    //     toastr.error("Error with AJAX callback !");
+                    // }
                 })
             }
         })
 
+        // Delete Comments
 
+        $(document).on('click', '.dltComment', function () {
+            // console.log(commentId);
+            // return false;
+            let commentId = $(this).attr('data-commentId');
+            console.log(commentId);
+
+            Swal.fire({
+                title: 'Do you want to delete the comment?',
+                showDenyButton: true,
+                showCancelButton: false,
+                confirmButtonColor: "#DD6B55",
+                denyButtonColor: '#8CD4F5',
+                confirmButtonText: `Delete`,
+                denyButtonText: `Don't Delete`,
+            }).then((result) => {
+                /* Read more about isConfirmed, isDenied below */
+                if (result.isConfirmed) {
+                    if (commentId !== '') {
+                        // console.log(commentId)
+                        // return false;
+                        $.ajax({
+                            url: '{{route('user.delete.comments')}}',
+                            type: 'GET',
+                            data: {
+                                commentId: commentId,
+                                reqType: 'deleteUserPostComment'
+                            },
+                            success: function (response) {
+
+                                if (response.status === true) {
+
+                                    Swal.fire('Saved!', '', 'success')
+
+                                } else {
+                                    // toastr.error(response.msg);
+                                }
+                            },
+                            // error: function (err) {
+                            //
+                            //     toastr.error("Error with AJAX callback !");
+                            // }
+                        })
+                    }
+                } else if (result.isDenied) {
+                    Swal.fire('Changes are not saved', '', 'info')
+                }
+            })
+
+        })
+
+        //Store Comments
         $('.postComments').keydown(function (e) {
             if (e.keyCode === 13) {
                 let htmlData = $(this).parents('.posted-content').find('.post-comment-list')
                 let comment = e.target.value;
                 let postId = $(this).attr('data-postId');
+                let commentCount = parseInt($(this).parents('.post-body').find('.commentCount').text());
+                let new_comment = $(this).parents('.post-body').find('.commentCount');
+                // console.log(commentCount,'fghj');
                 $(this).val('');
-
                 if (comment !== '' && postId !== '') {
+
+                    // return false;
                     $.ajax({
                         url: '{{route('community.user.post.comment')}}',
                         type: 'POST',
@@ -795,18 +878,19 @@
                             if (response.status === true) {
                                 // console.log($(this),'this')
                                 $(this).val('');
-                                // console.log(response.html,'kkkk');
                                 htmlData.append(response.html);
+                                new_comment.text(commentCount += 1)
+
                                 // console.log(response.data);
 
                             } else {
                                 // toastr.error(response.msg);
                             }
-                        },
-                        error: function (err) {
-
-                            toastr.error("Error with AJAX callback !");
                         }
+                        // error: function (err) {
+                        //
+                        //     toastr.error("Error with AJAX callback !");
+                        // }
                     })
                 }
             }
@@ -900,7 +984,7 @@
     $(document).on('click', '.checkCmt', function () {
         let pPostId = $(this).attr('data-postIdd');
         // console.log(postId);
-        // $(this).hide();
+        $(this).hide();
         let htmlData = $(this).parents('.posted-content').find('.post-comment-list')
         $.ajax({
             url: '{{route('users.get-all-comments')}}',
@@ -927,7 +1011,7 @@
     $(document).on('click', '.loadChildCmt', function () {
         let postId = $(this).attr('data-postIdd');
         let cmtId = $(this).attr('data-commentId');
-        // $(this).hide();
+        $(this).hide();
         // console.log(postId);
         // console.log(cmtId);
         let htmlData = $(this).parents('.posted-content').find('.post-comment-list')
@@ -991,11 +1075,11 @@
                     } else {
                         toastr.error(response.msg);
                     }
-                },
-                error: function (err) {
-
-                    toastr.error("Error with AJAX callback !");
                 }
+                // error: function (err) {
+                //
+                //     toastr.error("Error with AJAX callback !");
+                // }
             })
         }
 

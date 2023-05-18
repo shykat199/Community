@@ -207,8 +207,7 @@
                                 </p>
                             </div>
                             <ul class="settings-list">
-                                <li><i class="fa fa-user" aria-hidden="true"></i><a href="{{route('user.my-profile')}}">My
-                                        Profile</a></li>
+                                <li><i class="fa fa-user" aria-hidden="true"></i><a href="{{route('user.my-profile')}}">My Profile</a></li>
                                 <li><i class="fa fa-cog" aria-hidden="true"></i><a
                                         href="{{route('user.my-profile.setting')}}">Setting</a></li>
                                 <li><i class="fa fa-user-secret" aria-hidden="true"></i><a

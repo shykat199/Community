@@ -141,7 +141,9 @@ class GetCommentController extends Controller
 
                 }
 
-            } elseif ($request->get('reqType') === 'pagePostChildCmt') {
+            }
+
+            elseif ($request->get('reqType') === 'pagePostChildCmt') {
 
                 $postComments = CommunityPagePostComment::with(['userPosts.users.userProfileImages', 'replies.users'])
                     ->where('page_post_id', '=', $request->get('postId'))
@@ -210,7 +212,9 @@ class GetCommentController extends Controller
 
                 }
 
-            } elseif ($request->get('reqType') === 'groupPostChildCmt') {
+            }
+
+            elseif ($request->get('reqType') === 'groupPostChildCmt') {
 
                 $postComments = CommunityUserGroupPostComment::with(['userPosts.users.userProfileImages', 'replies.users'])
                     ->where('group_post_id', '=', $request->get('postId'))
@@ -280,7 +284,9 @@ class GetCommentController extends Controller
 
                 }
 
-            } elseif ($request->get('reqTyp') === 'pageCmt') {
+            }
+
+            elseif ($request->get('reqTyp') === 'pageCmt') {
 
                 $postComment = CommunityPagePostComment::with(['userPosts.users.userProfileImages', 'replies.users'])
                     ->where('page_post_id', '=', $request->get('pPostId'))
@@ -556,7 +562,9 @@ class GetCommentController extends Controller
                                                     <button type="button" class="dropdown-toggle comment-option-btn" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false"><i class="fa fa-ellipsis-h" aria-hidden="true"></i></button>
                                                     <ul class="dropdown-menu comment-option-dropdown" aria-labelledby="dropdownMenuButton1">
                                                         <li class="post-option-item" id="editComment"><i class="fa fa-pencil-square-o" aria-hidden="true"></i>  Edit comment</li>
-                                                        <li class="post-option-item"><i class="fa fa-trash-o" aria-hidden="true"></i>  Delete comment</li>
+                                                        <li class="post-option-item dltComment" data-commentId="'.$commentId.'">
+                                                        <i class="fa fa-trash-o " aria-hidden="true"></i>  Delete comment
+                                                        </li>
                                                     </ul>
                                                 </div>';
                         }
