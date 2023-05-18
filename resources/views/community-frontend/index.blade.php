@@ -102,7 +102,7 @@
                                                                         fill="#000000" data-original="#000000"
                                                                         class=""></path></g></svg>
                                                         </span>
-                                                <h6 class="title">Add Photos/Videos</h6>
+                                                <h6 class="title">Add Photos</h6>
                                                 <p class="small-text">or drag and drop</p>
                                             </div>
                                             <div class="preview-file">
@@ -124,23 +124,54 @@
                         </div>
                     </li>
                     <li>
-                        <button type="button" class="attachment-option-btn" data-bs-toggle="modal"
-                                data-bs-target="#photoModal">
+                        <button type="button" class="attachment-option-btn" data-bs-toggle="modal" data-bs-target="#videoModalopen">
                             <div class="attachment-icon vido-icon">
-                                <svg xmlns="http://www.w3.org/2000/svg" version="1.1" x="0" y="0" viewBox="0 0 512 512"
-                                     style="enable-background:new 0 0 512 512" xml:space="preserve" class=""><g>
-                                        <g fill-rule="evenodd">
-                                            <path
-                                                d="M440.59 206.676H99.418l327.7-94.93a10.018 10.018 0 0 0 5.976-4.781 9.989 9.989 0 0 0 .847-7.606L416.793 40.16C409.941 16.516 387.926 0 363.253 0c-5.198 0-10.378.738-15.401 2.191L40.176 91.321c-14.23 4.12-26.024 13.581-33.215 26.632-7.188 13.05-8.875 28.078-4.754 42.305l16.754 57.836v238.254C18.96 487.035 43.926 512 74.609 512h120.164c5.524 0 10-4.477 10-10s-4.476-10-10-10H74.613c-19.66 0-35.652-15.992-35.652-35.652V320.262H430.589v136.086c0 19.66-15.991 35.652-35.651 35.652H274.773c-5.52 0-10 4.477-10 10s4.48 10 10 10h120.165c30.687 0 55.652-24.965 55.652-55.652V216.676c0-5.524-4.477-10-10-10zm-176.332 93.586 42.488-73.586h55.262l-42.485 73.586zm-78.36 0 42.489-73.586h55.261l-42.484 73.586zm-78.355 0 42.484-73.586h55.266l-42.488 73.586zm37.18-129.457-71.149-68.336 53.309-15.442a9.92 9.92 0 0 0 1.312 1.543l71.149 68.336-53.309 15.442a9.951 9.951 0 0 0-1.312-1.543zm134-125.84L349.87 113.3l-53.308 15.441a9.742 9.742 0 0 0-1.313-1.543l-71.148-68.336 53.308-15.441a9.92 9.92 0 0 0 1.313 1.543zM203.457 66.77l71.148 68.332-53.308 15.445a9.742 9.742 0 0 0-1.313-1.543l-71.148-68.336 53.309-15.441c.378.543.816 1.062 1.312 1.543zm149.961-45.368c3.21-.93 6.52-1.402 9.836-1.402 15.824 0 29.937 10.578 34.328 25.727l14.367 49.59-40.12 11.62a10.165 10.165 0 0 0-1.317-1.542l-71.145-68.333zM24.48 127.602c4.61-8.372 12.16-14.434 21.262-17.07l5.875-1.704a10.17 10.17 0 0 0 1.313 1.543l71.148 68.336-88.293 25.578-14.367-49.59c-2.637-9.097-1.547-18.718 3.062-27.093zm14.48 99.074h87.974l-42.485 73.586H38.961zm303.657 73.586 42.485-73.586h45.488v73.586zm0 0"
-                                                fill="#000000" data-original="#000000" class=""></path>
-                                            <path
-                                                d="M303.922 405.113a9.997 9.997 0 0 0-5-8.66l-87.856-50.723a10.006 10.006 0 0 0-10 0 9.997 9.997 0 0 0-5 8.66v101.446a9.995 9.995 0 0 0 5 8.656 9.983 9.983 0 0 0 10 0l87.856-50.719a9.997 9.997 0 0 0 5-8.66zm-87.856 33.403V371.71l57.856 33.402zM234.773 492c-5.507 0-10 4.492-10 10s4.493 10 10 10c5.512 0 10-4.492 10-10s-4.488-10-10-10zm0 0"
-                                                fill="#000000" data-original="#000000" class=""></path>
-                                        </g>
-                                    </g></svg>
+                                <svg xmlns="http://www.w3.org/2000/svg" version="1.1" x="0" y="0" viewBox="0 0 512 512" style="enable-background:new 0 0 512 512" xml:space="preserve" class=""><g><g fill-rule="evenodd"><path d="M440.59 206.676H99.418l327.7-94.93a10.018 10.018 0 0 0 5.976-4.781 9.989 9.989 0 0 0 .847-7.606L416.793 40.16C409.941 16.516 387.926 0 363.253 0c-5.198 0-10.378.738-15.401 2.191L40.176 91.321c-14.23 4.12-26.024 13.581-33.215 26.632-7.188 13.05-8.875 28.078-4.754 42.305l16.754 57.836v238.254C18.96 487.035 43.926 512 74.609 512h120.164c5.524 0 10-4.477 10-10s-4.476-10-10-10H74.613c-19.66 0-35.652-15.992-35.652-35.652V320.262H430.589v136.086c0 19.66-15.991 35.652-35.651 35.652H274.773c-5.52 0-10 4.477-10 10s4.48 10 10 10h120.165c30.687 0 55.652-24.965 55.652-55.652V216.676c0-5.524-4.477-10-10-10zm-176.332 93.586 42.488-73.586h55.262l-42.485 73.586zm-78.36 0 42.489-73.586h55.261l-42.484 73.586zm-78.355 0 42.484-73.586h55.266l-42.488 73.586zm37.18-129.457-71.149-68.336 53.309-15.442a9.92 9.92 0 0 0 1.312 1.543l71.149 68.336-53.309 15.442a9.951 9.951 0 0 0-1.312-1.543zm134-125.84L349.87 113.3l-53.308 15.441a9.742 9.742 0 0 0-1.313-1.543l-71.148-68.336 53.308-15.441a9.92 9.92 0 0 0 1.313 1.543zM203.457 66.77l71.148 68.332-53.308 15.445a9.742 9.742 0 0 0-1.313-1.543l-71.148-68.336 53.309-15.441c.378.543.816 1.062 1.312 1.543zm149.961-45.368c3.21-.93 6.52-1.402 9.836-1.402 15.824 0 29.937 10.578 34.328 25.727l14.367 49.59-40.12 11.62a10.165 10.165 0 0 0-1.317-1.542l-71.145-68.333zM24.48 127.602c4.61-8.372 12.16-14.434 21.262-17.07l5.875-1.704a10.17 10.17 0 0 0 1.313 1.543l71.148 68.336-88.293 25.578-14.367-49.59c-2.637-9.097-1.547-18.718 3.062-27.093zm14.48 99.074h87.974l-42.485 73.586H38.961zm303.657 73.586 42.485-73.586h45.488v73.586zm0 0" fill="#000000" data-original="#000000" class=""></path><path d="M303.922 405.113a9.997 9.997 0 0 0-5-8.66l-87.856-50.723a10.006 10.006 0 0 0-10 0 9.997 9.997 0 0 0-5 8.66v101.446a9.995 9.995 0 0 0 5 8.656 9.983 9.983 0 0 0 10 0l87.856-50.719a9.997 9.997 0 0 0 5-8.66zm-87.856 33.403V371.71l57.856 33.402zM234.773 492c-5.507 0-10 4.492-10 10s4.493 10 10 10c5.512 0 10-4.492 10-10s-4.488-10-10-10zm0 0" fill="#000000" data-original="#000000" class=""></path></g></g></svg>
                             </div>
                             Video
                         </button>
+                        <div class="modal fade" id="videoModalopen" tabindex="-1" aria-labelledby="videoModalLabel" aria-hidden="true" onclick="document.getElementById('uploadingVideo').pause();">
+                            <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+                              <div class="modal-content post-modal-content">
+                                <div class="modal-header">
+                                    <div class="post-modal-title">
+                                        <h6 class="modal-title" id="photoModalLabel">Create Post</h6>
+                                    </div>
+                                  <button type="button" class=" post-close" data-bs-dismiss="modal" aria-label="Close" onclick="document.getElementById('uploadingVideo').pause();"><i class="fa fa-times" aria-hidden="true"></i></button>
+                                </div>
+                                <div class="modal-body post-modal-body">
+                                    <div class="my-profile">
+                                        <div class="my-profile-img"><a href="#"><img src="../assets/images/community/home/right/birthday01.jpg" alt="img"></a></div>
+                                        <div class="my-profile-name">Lolita Benally</div>
+                                    </div>
+                                    <div class="post-text">
+                                        <textarea id="postArea" placeholder="Write Something here..."></textarea>
+                                    </div>
+                                    <div class="upload-media">
+                                        <div class="photo-place">
+                                            <span class="icon">
+                                                <svg xmlns="http://www.w3.org/2000/svg" version="1.1"  x="0" y="0" viewBox="0 0 24 24" style="enable-background:new 0 0 512 512" xml:space="preserve" class=""><g><path d="m22.448 7.608-1.2 8.58a3.142 3.142 0 0 1-1.257 2.312.311.311 0 0 1-.488-.244V9.665A3.829 3.829 0 0 0 15.335 5.5H5.923c-.3 0-.307-.27-.286-.39a3.134 3.134 0 0 1 1.112-2.085 3.2 3.2 0 0 1 2.442-.473l10.561 1.48a3.211 3.211 0 0 1 2.223 1.134 3.191 3.191 0 0 1 .473 2.442zM18 9.665v8.668A2.358 2.358 0 0 1 15.335 21H4.667A2.357 2.357 0 0 1 2 18.333V9.665A2.357 2.357 0 0 1 4.667 7h10.668A2.358 2.358 0 0 1 18 9.665zM13.25 14a.75.75 0 0 0-.75-.75h-1.75V11.5a.75.75 0 0 0-1.5 0v1.75H7.5a.75.75 0 0 0 0 1.5h1.75v1.75a.75.75 0 0 0 1.5 0v-1.75h1.75a.75.75 0 0 0 .75-.75z" fill="#000000" data-original="#000000" class=""></path></g></svg>
+                                            </span>
+                                            <h6 class="title">Add Videos</h6>
+                                            <p class="small-text">or drag and drop</p>
+                                        </div>
+                                        <div class="preview-file">
+                                            <video controls class="status-video" id="uploadingVideo">
+                                                <source src="#" class="video-status-here">
+                                              </video>
+                                            <button type="button" class="imgClose" onclick="document.getElementById('uploadingVideo').pause();"><i class="fa fa-times" aria-hidden="true"></i></button>
+                                        </div>
+                                        <div class="media-input">
+                                            <input type='file' class="vidInp" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="submit" class="social-theme-btn post-btn">Post</button>
+                                </div>
+                              </div>
+                            </div>
+                        </div>
                     </li>
                     <li>
                         <button type="button" class="attachment-option-btn" data-bs-toggle="modal"
@@ -240,10 +271,15 @@
                     @php
                         $isOwner=\App\Models\Community\User\CommunityUserPost::select('id','user_id')->where('user_id','=',Auth::id())
                        ->get();
-
-//                        dd($isOwner);
-
+//                            dd($isOwner);
                     @endphp
+
+                    {{--                    @dd($post)--}}
+                    {{--                    <form action="{{ route('orders.destroy', $row->id) }}" method="post"--}}
+                    {{--                          class="d-inline">@csrf@method('DELETE')--}}
+                    {{--                        <button type="button" class="btn btn-sm btn-danger confirm-delete"><i class="fas fa-times"></i>--}}
+                    {{--                        </button>--}}
+                    {{--                    </form>--}}
 
 
                     <div class="post-option">
@@ -416,6 +452,7 @@
                                     @endif
 
                                 </div>
+
                                 <span class="react-name">
                                     @if($post->reaction_type=='like')
                                         Like
@@ -443,7 +480,7 @@
                             </a>
 
                             <ul class="react-option">
-                                {{--                                @dd($post)--}}
+{{--                                @dd($post)--}}
 
                                 <li class="reaction {{$post->reaction_type=='like'?'active':''}}"
                                     data-reaction_type="like" data-pId="{{$post->post_id}}"><img
@@ -521,13 +558,10 @@
 
                     <ul class="post-comment-list">
 
-                        {{--All Comments List--}}
-
                         @foreach($post->comments as $postComment)
 
-                            {{--                            @dd($postComment)--}}
 
-                            <li class="single-comment">
+                            <li class="single-comment post-Comment-{{$postComment->id}}">
                                 <!-- parent comment start  -->
                                 <div class="parent-comment">
                                     <div class="comment-img">
@@ -552,6 +586,7 @@
                                                 <span
                                                     class="comment-time">{{\Carbon\Carbon::parse($postComment->created_at)->diffForHumans()}}</span>
                                             </div>
+
 
                                             @if($postComment->user_id === Auth::id())
                                                 <div class="comment-option">
@@ -599,7 +634,7 @@
                                                     </button>
                                                     <ul class="dropdown-menu comment-option-dropdown"
                                                         aria-labelledby="dropdownMenuButton1">
-                                                        <li class="post-option-item"
+                                                        <li class="post-option-item dltComment"
                                                             data-commentId="{{$postComment->id}}">
                                                             <i class="fa fa-trash-o"
                                                                aria-hidden="true"></i>
@@ -608,24 +643,22 @@
                                                     </ul>
                                                 </div>
                                             @endif
+
                                         </div>
                                         <div class="comment-div">
                                             <p class="comment-content">{{$postComment->comment_text}}</p>
-
-                                            <button id="textarea_btn" type="submit">
-                                                <i class="fa fa-paper-plane"
-                                                   data-commentText="{{$postComment->comment_text}}"
-                                                   data-cmtId="{{$postComment->id}}"
-                                                   data-postId="{{$postComment->user_post_id}}" aria-hidden="true"></i>
+                                            <button  class="textarea-btn" type="submit"><i class="fa fa-paper-plane"
+                                                                                       aria-hidden="true"></i>
                                             </button>
+                                            <button class="textarea-cancel-btn">Cancel</button>
                                         </div>
-
                                         <ul class="coment-react">
                                             <li class="comment-like"><a href="javascript:void(0)">Like(2)</a></li>
                                             <li><a href="javascript:void(0)" class="replay-tag">Replay</a></li>
                                         </ul>
                                     </div>
                                     {{--                                    @dd($postComment->id)--}}
+
 
                                     <!-- child comment start  -->
                                     <div class="child-comment">
@@ -636,9 +669,12 @@
 
 
                                         @if( count($postComment->replies)>0)
-                                            <div class="more-comment">
+                                            <div class="more-comment mt-2">
                                                 <a class="loadChildCmt" data-postIdd="{{$post->postId}}"
-                                                   data-commentId="{{$postComment->id}}">More+</a>
+                                                   data-commentId="{{$postComment->id}}">
+                                                   <span class="replay-arrow">
+                                                    <svg x="0" y="0" viewBox="0 0 48 48" style="enable-background:new 0 0 512 512" xml:space="preserve" class=""><g><path d="m47.12 31.403-9.992-9.992a2.98 2.98 0 1 0-4.215 4.216l3.037 3.037C15.565 29.665 2.31 15.984 2.188 1.96c-.004-.507-.716-.61-.874-.144-4.922 14.579 4.03 32.89 27.427 36.201 2.266.295 4.558.519 6.868.681l-2.697 2.697a2.98 2.98 0 1 0 4.215 4.215l9.992-9.992a2.98 2.98 0 0 0 .001-4.215z" data-original="#ffcc66" class=""></path></g></svg>
+                                                    </span> Replay <span class="count">(40)</span></a>
                                             </div>
                                         @endif
 
@@ -672,17 +708,16 @@
                             </li>
 
                         @endforeach
-
-
                     </ul>
 
                     {{--                    @dd($post->comments)--}}
 
-                    @if(count($post->comments)>2)
+                    @if(count($post->comments)>0)
                         <div class="more-comment">
                             <a class="checkCmt" data-postIdd="{{$post->postId}}">More Comments+</a>
                         </div>
                     @endif
+
 
                     <div class="new-comment">
 
@@ -805,7 +840,12 @@
             // console.log(commentId);
             // return false;
             let commentId = $(this).attr('data-commentId');
-            console.log(commentId);
+            // console.log(commentId);
+
+            let hideDivChildCmt=$(this).parents('.nested-comment-'+commentId).hide();
+            let hideDivParentCmt=$(this).parents('.post-Comment-'+commentId).hide();
+
+            // return false;
 
             Swal.fire({
                 title: 'Do you want to delete the comment?',
@@ -816,6 +856,8 @@
                 confirmButtonText: `Delete`,
                 denyButtonText: `Don't Delete`,
             }).then((result) => {
+
+                // return false;
                 /* Read more about isConfirmed, isDenied below */
                 if (result.isConfirmed) {
                     if (commentId !== '') {
@@ -859,7 +901,7 @@
                 let postId = $(this).attr('data-postId');
                 let commentCount = parseInt($(this).parents('.post-body').find('.commentCount').text());
                 let new_comment = $(this).parents('.post-body').find('.commentCount');
-                // console.log(commentCount,'fghj');
+
                 $(this).val('');
                 if (comment !== '' && postId !== '') {
 
@@ -922,39 +964,15 @@
         }
 
     })
-
-    $(document).on('click', '.fa-paper-plane', function () {
-        // let postText = $(this).attr("data-commentText");
-        let cmtId = $(this).attr("data-cmtId");
-        let postId = $(this).attr("data-postId");
-        let postText = $(this).closest('.comment-div').find('.comment-content').val();
-        // let postText=$(this).parents('.post-comment-list').find('.comment-content').val();
-        // console.log(postText,'.....');
-        // return false;
-        $.ajax({
-            url: "{{route('user.post-all.reaction')}}",
-            type: "POST",
-            data: {
-                postText: postText,
-                cmtId: cmtId,
-                postId: postId,
-                reqType: "editUserNewsFeedComment",
-                '_token': '{{csrf_token()}}'
-            },
-            success: function (response) {
-                // let oldText=$(this).parents('.post-comment-list').find('.comment-content').text();
-
-            }
-        })
-
-
-    })
 </script>
 
+
+{{--//dltPost--}}
 <script>
     $(document).on('click', '.dltPost', function (event) {
         event.preventDefault();
         let postId = $(this).attr("data-id");
+        // console.log(commentCount,'fghj');
         {{--console.log({{route('community.user.post.delete')}}+postId);--}}
         // return false;
         Swal.fire({
@@ -982,21 +1000,23 @@
 <script>
 
     $(document).on('click', '.checkCmt', function () {
-        let pPostId = $(this).attr('data-postIdd');
+
+        let postId = $(this).attr('data-postIdd');
         // console.log(postId);
         $(this).hide();
+
         let htmlData = $(this).parents('.posted-content').find('.post-comment-list')
         $.ajax({
-            url: '{{route('users.get-all-comments')}}',
+            url: "{{route('user.post.comment')}}",
             post: "GET",
             data: {
-                pPostId: pPostId,
-                reqTyp: 'userAllCmt'
+                postId: postId
             },
             success: function (response) {
 
                 if (response.status === true) {
 
+                    // console.log(response.html,'cmt');
                     $('.cmtText').val('');
                     htmlData.append(response.html);
                 }
@@ -1014,8 +1034,8 @@
         $(this).hide();
         // console.log(postId);
         // console.log(cmtId);
+
         let htmlData = $(this).parents('.posted-content').find('.post-comment-list')
-        // return false;
         $.ajax({
             url: "{{route('user.load.child.comment')}}",
             post: "GET",
@@ -1027,15 +1047,16 @@
 
                 if (response.status === true) {
 
-                    // console.log($(document).find('.nested-comment-' + cmtId),'cmt');
+                    // console.log(response.html,'cmt');
                     $('.cmtText').val('');
-                    $(document).find('.nested-comment-' + cmtId).append(response.html);
+                    $('.nested-comment-' + cmtId).append(response.html);
 
                 }
 
 
             },
         })
+
     })
 </script>
 
@@ -1051,7 +1072,10 @@
         let cmtText = e.target.value;
         let nestedCmtHtml = $(this).parents('.posted-content').find('.child-comment')
         let key = e.which;
+        console.log(nestedCmtHtml);
 
+
+// return false;
         if (key === 13) {
             // console.log(cmtText);
 

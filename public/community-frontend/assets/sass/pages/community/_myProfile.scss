@@ -81,29 +81,40 @@
         position: relative;
         margin-top: -100px;
         a {
+            display: block;
+            position: relative;
             img {
-                max-height: 250px;
-                max-width: 250px;
-                width: 100%;
+                height: 180px;
+                width: 150px;
                 border-radius: 5px;
+                object-fit: cover;
+                @media (max-width: 991px) {
+                    height: 160px;
+                    width: 140px;
+                }
                 @media (max-width: 576px) {
-                    max-height: 170px;
-                    max-width: 170px;
+                    height: 130px;
+                    width: 120px;
                 }
             }
         }
         .replace-icon {
             position: absolute;
-            bottom: 20px;
+            bottom: -15px;
             right: 20px;
             width: 35px;
             height: 35px;
             border-radius: 50%;
             background: $white;
             text-align: center;
-            line-height: 32px;
             transition: all .3s ease;
-            a {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            .replace-btn {
+                border: none;
+                outline: none;
+                background: transparent;
                 svg {
                     width: 18px;
                     path {
@@ -114,7 +125,7 @@
             }
             &:hover{
                 background: $theme-color;
-                a {
+                .replace-btn {
                     svg {
                         path {
                             fill: $white;

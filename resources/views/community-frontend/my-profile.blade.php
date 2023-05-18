@@ -90,7 +90,7 @@
                                 </a>
                                 <div class="replace-icon">
 
-                                    <button type="button" class="attachment-option-btn" data-bs-toggle="modal"
+                                    <button class="replace-btn" type="button" class="attachment-option-btn" data-bs-toggle="modal"
                                             data-bs-target="#photoModal">
 
                                         <svg xmlns="http://www.w3.org/2000/svg" version="1.1" x="0" y="0"
@@ -720,7 +720,7 @@
 
                                         @foreach($myPost->newsFeedComments as $postComment)
                                             {{--                                            @dd($postComment)--}}
-                                            <li class="single-comment">
+                                            <li class="single-comment post-Comment-{{$postComment->id}}">
                                                 <!-- parent comment start  -->
                                                 <div class="parent-comment">
                                                     <div class="comment-img">
@@ -763,10 +763,9 @@
                                                                                 class="fa fa-pencil-square-o"
                                                                                 aria-hidden="true"></i> Edit comment
                                                                         </li>
-                                                                        <li class="post-option-item"><i
+                                                                        <li class="post-option-item dltComment" data-commentid="{{$postComment->id}}"><i
                                                                                 class="fa fa-trash-o"
-                                                                                aria-hidden="true"></i> Delete
-                                                                            comment
+                                                                                aria-hidden="true"></i> Delete Comment
                                                                         </li>
                                                                     </ul>
                                                                 @endif
@@ -1631,6 +1630,59 @@
                 })
             }
 
+
+        })
+
+        $(document).on('click', '.dltComment', function () {
+            // console.log(commentId);
+            // return false;
+            let commentId = $(this).attr('data-commentId');
+            let hideDivChildCmt=$(this).parents('.nested-comment-'+commentId).hide();
+            let hideDivParentCmt=$(this).parents('.post-Comment-'+commentId).hide();
+            // console.log(commentId);
+
+            // return false;
+            Swal.fire({
+                title: 'Do you want to delete the comment?',
+                showDenyButton: true,
+                showCancelButton: false,
+                confirmButtonColor: "#DD6B55",
+                denyButtonColor: '#8CD4F5',
+                confirmButtonText: `Delete`,
+                denyButtonText: `Don't Delete`,
+            }).then((result) => {
+                /* Read more about isConfirmed, isDenied below */
+                if (result.isConfirmed) {
+                    if (commentId !== '') {
+                        // console.log(commentId)
+                        // return false;
+                        $.ajax({
+                            url: '{{route('user.delete.comments')}}',
+                            type: 'GET',
+                            data: {
+                                commentId: commentId,
+                                reqType: 'deleteUserPostComment'
+                            },
+                            success: function (response) {
+
+                                if (response.status === true) {
+
+                                    Swal.fire('Saved!', '', 'success')
+
+                                } else {
+                                    // toastr.error(response.msg);
+                                }
+                            },
+                            // error: function (err) {
+                            //
+                            //     toastr.error("Error with AJAX callback !");
+                            // }
+                        })
+                    }
+                } else if (result.isDenied) {
+                    Swal.fire('Changes are not saved', '', 'info')
+                }
+            })
 
         })
 

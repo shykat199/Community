@@ -412,7 +412,7 @@
 
                                 </span>
                                 <span
-                                    class="react-count">{{getGroupPostReactionCount($post->grpPostId)}}</span>
+                                    class="react-count reactionCount">{{getGroupPostReactionCount($post->grpPostId)}}</span>
                             </a>
                             <ul class="react-option">
                                 {{--                                @dd($post)--}}
@@ -467,7 +467,7 @@
                                         </g></svg>
                                 </div>
                                 <span class="react-name">Comment</span>
-                                <span class="react-count">{{getGroupPostCommentCount($post->grpPostId)}}</span>
+                                <span class="react-count commentCount">{{getGroupPostCommentCount($post->grpPostId)}}</span>
                             </a>
                         </li>
 
@@ -496,7 +496,7 @@
 
                         @foreach($post->comments as $postComment)
 
-                            <li class="single-comment">
+                            <li class="single-comment post-Comment-{{$postComment->id}}">
                                 <!-- parent comment start  -->
                                 <div class="parent-comment">
                                     <div class="comment-img">
@@ -537,9 +537,10 @@
                                                             class="fa fa-pencil-square-o" aria-hidden="true"></i> Edit
                                                         comment
                                                     </li>
-                                                    <li class="post-option-item"><i class="fa fa-trash-o"
-                                                                                    aria-hidden="true"></i> Delete
-                                                        comment
+                                                    <li class="post-option-item dltComment"
+                                                        data-commentId="{{$postComment->id}}">
+                                                        <i class="fa fa-trash-o"
+                                                         aria-hidden="true"></i> Delete Comment
                                                     </li>
                                                 </ul>
                                             </div>
@@ -666,7 +667,6 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.4/jquery.min.js"
         integrity="sha512-pumBsjNRGGqkPzKHndZMaAG+bir374sORyzM3uulLV14lN5LyykqNk8eEeUlUkB3U0M4FApyaHraT65ihJhDpQ=="
         crossorigin="anonymous" referrerpolicy="no-referrer">
-
 </script>
 <script>
     $(document).ready(function () {
@@ -677,6 +677,9 @@
 
             let postReaction = $(this).attr('data-reaction_type');
             let postId = $(this).attr('data-pId');
+
+            let reactionCount = parseInt($(this).parents('.post-body').find('.reactionCount').text());
+            let newReactionCount = $(this).parents('.post-body').find('.reactionCount');
             // console.log(postId);
             // console.log(postReaction);
 
@@ -701,10 +704,7 @@
                     success: function (response) {
 
                         if (response.success === true) {
-                            console.log(response);
-                            console.log(response.data);
-                            // toastr.success(response.msg);
-                            console.log(response.postComments);
+                            newReactionCount.text(reactionCount += 1);
 
                         } else {
                             // toastr.error(response.msg);
@@ -727,6 +727,8 @@
                 $(this).val('');
                 // let htmlData = $(this).parents('.posted-content').find('.post-comment-list')
                 let htmlData = $(this).parents('.main-content').find('.post-comment-list');
+                let commentCount = parseInt($(this).parents('.post-body').find('.commentCount').text());
+                let new_comment = $(this).parents('.post-body').find('.commentCount');
 
                 if (comment !== '' && postId !== '') {
                     $.ajax({
@@ -746,6 +748,7 @@
                                 $(this).val('');
                                 // console.log(response.data, 'datat');
                                 htmlData.append(response.data);
+                                new_comment.text(commentCount += 1)
                                 // console.log(response.data);
 
                             } else {
@@ -786,6 +789,59 @@
                 }
             })
 
+
+        })
+
+        $(document).on('click', '.dltComment', function () {
+            // console.log(commentId);
+            // return false;
+            let commentId = $(this).attr('data-commentId');
+            console.log(commentId);
+            let hideDivChildCmt=$(this).parents('.nested-comment-'+commentId).hide();
+            let hideDivParentCmt=$(this).parents('.post-Comment-'+commentId).hide();
+
+            // return false;
+            Swal.fire({
+                title: 'Do you want to delete the comment?',
+                showDenyButton: true,
+                showCancelButton: false,
+                confirmButtonColor: "#DD6B55",
+                denyButtonColor: '#8CD4F5',
+                confirmButtonText: `Delete`,
+                denyButtonText: `Don't Delete`,
+            }).then((result) => {
+                /* Read more about isConfirmed, isDenied below */
+                if (result.isConfirmed) {
+                    if (commentId !== '') {
+                        // console.log(commentId)
+                        // return false;
+                        $.ajax({
+                            url: '{{route('user.delete.comments')}}',
+                            type: 'GET',
+                            data: {
+                                commentId: commentId,
+                                reqType: 'deleteGroupPostComment'
+                            },
+                            success: function (response) {
+
+                                if (response.status === true) {
+
+                                    Swal.fire('Saved!', '', 'success')
+
+                                } else {
+                                    // toastr.error(response.msg);
+                                }
+                            },
+                            // error: function (err) {
+                            //
+                            //     toastr.error("Error with AJAX callback !");
+                            // }
+                        })
+                    }
+                } else if (result.isDenied) {
+                    Swal.fire('Changes are not saved', '', 'info')
+                }
+            })
 
         })
 

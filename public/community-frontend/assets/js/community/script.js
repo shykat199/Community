@@ -25,6 +25,7 @@ document.querySelectorAll(".sidebar-list li a").forEach((link) => {
 
 
 
+// prevew media
 let files
 $(document).on('change','.imgInp', function(e){
  files = this.files
@@ -34,7 +35,6 @@ $(document).on('change','.imgInp', function(e){
     $('.imgClose').css("display", "block")
   }
 })
-
 
 $(document).on('change','.vidInp',function(e){
   files = this.files
@@ -55,13 +55,14 @@ $(document).on('click','.imgClose',function(){
   $(this).css("display", "none")
 
 
-  let source = $('.video-status-here');
+let source = $('.video-status-here');
     source[0].src = "#"
   // let prevwVideo = $(this).parents('.upload-media').find('.status-video')
   // prevwVideo[0].src = " "
   let sourcess = $('.status-video');
   $(sourcess).css("display", "none")
 })
+
 
 // online person active
 $('.chat-online').slick({
@@ -136,16 +137,26 @@ $(document).on("click", "#editComment", function() {
   onmouseover='this.style.height = "";this.style.height = this.scrollHeight
    + "px"' oninput='this.style.height = "";this.style.height = this.scrollHeight
    + "px"'>${comment_para[0].innerHTML}</textarea>`))
-   $(this).parents(".comment-details").find('#textarea_btn').css('display', 'block')
+   $(this).parents(".comment-details").find('.textarea-btn').css('display', 'block')
+   $(this).parents(".comment-details").find('.textarea-cancel-btn').css('display', 'block')
 })
-$(document).on("click", "#textarea_btn", function() {
+$(document).on("click", ".textarea-btn", function() {
  let edit_tex = $(this).parents(".comment-details").find('.comment-content');
- console.log(edit_tex, "text");
-//  let aa = edit_tex.val()
 
  edit_tex.replaceWith($(`<p class="comment-content">${edit_tex.val()}</p>`))
  $(this).css('display', 'none')
+ $(this).parent(".comment-details").find('.textarea-cancel-btn').css('display', 'none')
 })
+$(document).on("click", ".textarea-cancel-btn", function() {
+ let edit_tex = $(this).parents(".comment-details").find('.comment-content');
+
+ edit_tex.replaceWith($(`<p class="comment-content">${edit_tex.val()}</p>`))
+ $(this).css('display', 'none')
+ let textareaBtn = $(this).parents(".comment-details").find('.textarea-btn')
+    console.log(textareaBtn, "textarea btn");
+    textareaBtn.css('display', 'none')
+})
+
 
 
 // reaction active

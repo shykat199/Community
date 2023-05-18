@@ -175,7 +175,7 @@
             </div>
         @endif
 
-{{--@dd($pagePosts)--}}
+        {{--@dd($pagePosts)--}}
         @foreach($pagePosts as $post)
             <div class="main-content posted-content">
                 <div class="post-autore d-flex justify-content-between align-items-center">
@@ -409,7 +409,7 @@
 
                         @foreach($post->comments as $postComment)
 
-                            <li class="single-comment">
+                            <li class="single-comment post-Comment-{{$postComment->id}}">
                                 <!-- parent comment start  -->
                                 <div class="parent-comment">
                                     <div class="comment-img">
@@ -444,15 +444,37 @@
                                                     <ul class="dropdown-menu comment-option-dropdown"
                                                         aria-labelledby="dropdownMenuButton1">
                                                         <li class="post-option-item" id="editComment"><i
-                                                                class="fa fa-pencil-square-o" aria-hidden="true"></i> Edit
-                                                            comment
+                                                                class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                                                            Edit comment
                                                         </li>
-                                                        <li class="post-option-item"><i class="fa fa-trash-o"
-                                                                                        aria-hidden="true"></i> Delete
-                                                            comment
+                                                        <li class="post-option-item dltComment"
+                                                            data-commentId="{{$postComment->id}}">
+                                                            <i class="fa fa-trash-o" aria-hidden="true"></i> Delete
+                                                            Comment
                                                         </li>
                                                     </ul>
                                                 </div>
+
+                                            @else
+
+                                                <div class="comment-option">
+
+                                                    <button type="button" class="dropdown-toggle comment-option-btn"
+                                                            id="dropdownMenuButton1" data-bs-toggle="dropdown"
+                                                            aria-expanded="false"><i class="fa fa-ellipsis-h"
+                                                                                     aria-hidden="true"></i>
+                                                    </button>
+                                                    <ul class="dropdown-menu comment-option-dropdown"
+                                                        aria-labelledby="dropdownMenuButton1">
+                                                        <li class="post-option-item dltComment"
+                                                            data-commentId="{{$postComment->id}}">
+                                                            <i class="fa fa-trash-o"
+                                                               aria-hidden="true"></i>
+                                                            Delete comment
+                                                        </li>
+                                                    </ul>
+                                                </div>
+
                                             @endif
 
 
@@ -460,7 +482,10 @@
                                         <div class="comment-div">
                                             <p class="comment-content">{{$postComment->comment_text}}</p>
                                             <button id="textarea_btn" type="submit">
-                                                <i class="fa fa-paper-plane" data-commentText="{{$postComment->comment_text}}" data-cmtId="{{$postComment->id}}" data-postId="{{$postComment->page_post_id}}" aria-hidden="true"></i>
+                                                <i class="fa fa-paper-plane"
+                                                   data-commentText="{{$postComment->comment_text}}"
+                                                   data-cmtId="{{$postComment->id}}"
+                                                   data-postId="{{$postComment->page_post_id}}" aria-hidden="true"></i>
                                             </button>
                                         </div>
                                         <ul class="coment-react">
@@ -475,13 +500,13 @@
                                         <div class="single-replay-comnt nested-comment-{{$postComment->id}}">
 
 
-
                                         </div>
 
-{{--                                        @dd($postComment)--}}
+                                        {{--                                        @dd($postComment)--}}
                                         @if( count($postComment->replies)>0)
                                             <div class="more-comment">
-                                                <a class="loadChildCmt" data-postIdd="{{$post->pId}}" data-commentId="{{$postComment->id}}">More+</a>
+                                                <a class="loadChildCmt" data-postIdd="{{$post->pId}}"
+                                                   data-commentId="{{$postComment->id}}">More+</a>
                                             </div>
                                         @endif
 
@@ -500,7 +525,7 @@
                                                     </a>
                                                 @endif
                                             @endif
-{{--                                            @dd($postComment)--}}
+                                            {{--                                            @dd($postComment)--}}
                                             <div class="new-comment-input replay-commnt-input">
                                                 <input data-cmtId="{{$postComment->id}}" class="cmtText" type="text"
                                                        name="cmttext"
@@ -528,24 +553,25 @@
 
                     <div class="new-comment">
 
-                            <a href="#" class="new-comment-img">
-                        @if(!empty($post->users->userProfileImages[0]) && isset($post->users->userProfileImages[0]) ? $post->users->userProfileImages[0]:'')
-                            <img
-                                src="{{asset("storage/community/profile-picture/".$post->users->userProfileImages[0]->user_profile)}}"
-                                alt="image" style="height: 60px; width: 60px">
-                        @else
-                            <img
-                                src="{{asset("community-frontend/assets/images/community/home/news-post/Athore01.jpg")}}"
-                                alt="image">
-                        @endif
-                    </a>
+                        <a href="#" class="new-comment-img">
+                            @if(!empty($post->users->userProfileImages[0]) && isset($post->users->userProfileImages[0]) ? $post->users->userProfileImages[0]:'')
+                                <img
+                                    src="{{asset("storage/community/profile-picture/".$post->users->userProfileImages[0]->user_profile)}}"
+                                    alt="image" style="height: 60px; width: 60px">
+                            @else
+                                <img
+                                    src="{{asset("community-frontend/assets/images/community/home/news-post/Athore01.jpg")}}"
+                                    alt="image">
+                            @endif
+                        </a>
 
-                            <div class="new-comment-input">
-                                <input type="text" data-postId="{{$post->pId}}" class="postComments" placeholder="Write a comment....">
-                                <div class="attached-icon">
-                                    <a href="#"><i class="fa fa-camera" aria-hidden="true"></i></a>
-                                </div>
+                        <div class="new-comment-input">
+                            <input type="text" data-postId="{{$post->pId}}" class="postComments"
+                                   placeholder="Write a comment....">
+                            <div class="attached-icon">
+                                <a href="#"><i class="fa fa-camera" aria-hidden="true"></i></a>
                             </div>
+                        </div>
 
                     </div>
                 </div>
@@ -767,26 +793,78 @@
             // let postText = $(this).attr("data-commentText");
             let cmtId = $(this).attr("data-cmtId");
             let postId = $(this).attr("data-postId");
-            let postText=$(this).closest('.comment-div').find('.comment-content').val();
+            let postText = $(this).closest('.comment-div').find('.comment-content').val();
             // let postText=$(this).parents('.post-comment-list').find('.comment-content').val();
             // console.log(postText,'.....');
             // return false;
             $.ajax({
-                url:"{{route('user.post-all.reaction')}}",
-                type:"POST",
-                data:{
-                    postText:postText,
-                    cmtId:cmtId,
-                    postId:postId,
-                    reqType:"editPageNewsFeedComment",
+                url: "{{route('user.post-all.reaction')}}",
+                type: "POST",
+                data: {
+                    postText: postText,
+                    cmtId: cmtId,
+                    postId: postId,
+                    reqType: "editPageNewsFeedComment",
                     '_token': '{{csrf_token()}}'
                 },
-                success:function (response){
+                success: function (response) {
                     // let oldText=$(this).parents('.post-comment-list').find('.comment-content').text();
 
                 }
             })
 
+
+        })
+
+        $(document).on('click', '.dltComment', function () {
+            // console.log(commentId);
+            // return false;
+            let commentId = $(this).attr('data-commentId');
+            // console.log(commentId);
+            let hideDivChildCmt=$(this).parents('.nested-comment-'+commentId).hide();
+            let hideDivParentCmt=$(this).parents('.post-Comment-'+commentId).hide();
+
+            Swal.fire({
+                title: 'Do you want to delete the comment?',
+                showDenyButton: true,
+                showCancelButton: false,
+                confirmButtonColor: "#DD6B55",
+                denyButtonColor: '#8CD4F5',
+                confirmButtonText: `Delete`,
+                denyButtonText: `Don't Delete`,
+            }).then((result) => {
+                /* Read more about isConfirmed, isDenied below */
+                if (result.isConfirmed) {
+                    if (commentId !== '') {
+                        // console.log(commentId)
+                        // return false;
+                        $.ajax({
+                            url: '{{route('user.delete.comments')}}',
+                            type: 'GET',
+                            data: {
+                                commentId: commentId,
+                                reqType: 'deletePagePostComment'
+                            },
+                            success: function (response) {
+
+                                if (response.status === true) {
+
+                                    Swal.fire('Saved!', '', 'success')
+
+                                } else {
+                                    // toastr.error(response.msg);
+                                }
+                            },
+                            // error: function (err) {
+                            //
+                            //     toastr.error("Error with AJAX callback !");
+                            // }
+                        })
+                    }
+                } else if (result.isDenied) {
+                    Swal.fire('Changes are not saved', '', 'info')
+                }
+            })
 
         })
     })
@@ -800,67 +878,67 @@
     })
 
 
-        $(document).keypress('.cmtText', function (e) {
-            let cmtId = e.target.dataset.cmtid;
-            let page_post_id = e.target.dataset.userpostid;
-            let cmtText = e.target.value;
-            let key = e.which;
-            // console.log(user_post_id);
-    // return false;
-            if (key === 13) {
-                // console.log(cmtText);
+    $(document).keypress('.cmtText', function (e) {
+        let cmtId = e.target.dataset.cmtid;
+        let page_post_id = e.target.dataset.userpostid;
+        let cmtText = e.target.value;
+        let key = e.which;
+        // console.log(user_post_id);
+        // return false;
+        if (key === 13) {
+            // console.log(cmtText);
 
-                $.ajax({
-                    url: "{{route('community.user.store.page.commentsOfComments')}}",
-                    type: 'POST',
-                    data: {
-                        cmtId: cmtId,
-                        cmtText: cmtText,
-                        page_post_id: page_post_id,
-                        '_token': '{{csrf_token()}}'
-                    },
-                    success: function (response) {
-                        // console.log(response);
+            $.ajax({
+                url: "{{route('community.user.store.page.commentsOfComments')}}",
+                type: 'POST',
+                data: {
+                    cmtId: cmtId,
+                    cmtText: cmtText,
+                    page_post_id: page_post_id,
+                    '_token': '{{csrf_token()}}'
+                },
+                success: function (response) {
+                    // console.log(response);
 
-                        if (response.success === true) {
-                            // toastr.success(response.msg);
-                            $('.cmtText').val('');
-                            $('.nested-comment-'+cmtId).append(response.data);
-                            // $('.loadChildCmt').hide();
-                        } else {
-                            toastr.error(response.msg);
-                        }
-                    },
-                    error: function (err) {
-
-                        toastr.error("Error with AJAX callback !");
+                    if (response.success === true) {
+                        // toastr.success(response.msg);
+                        $('.cmtText').val('');
+                        $('.nested-comment-' + cmtId).append(response.data);
+                        // $('.loadChildCmt').hide();
+                    } else {
+                        toastr.error(response.msg);
                     }
-                })
-            }
+                },
+                error: function (err) {
+
+                    toastr.error("Error with AJAX callback !");
+                }
+            })
+        }
 
 
-        })
+    })
 
 </script>
 
 <script>
-    $(document).on('click','.checkCmt',function (){
-        let pPostId=$(this).attr('data-postIdd')
+    $(document).on('click', '.checkCmt', function () {
+        let pPostId = $(this).attr('data-postIdd')
         let htmlData = $(this).parents('.posted-content').find('.post-comment-list');
         $(this).hide();
         // console.log(pPostId);
         $.ajax({
-            url:'{{route('users.get-all-comments')}}',
-            type:'GET',
-            data:{
-                pPostId:pPostId,
-                reqTyp:'pageCmt'
+            url: '{{route('users.get-all-comments')}}',
+            type: 'GET',
+            data: {
+                pPostId: pPostId,
+                reqTyp: 'pageCmt'
             },
             success: function (response) {
 
                 if (response.status === true) {
 
-                    console.log(response.html,'cmt');
+                    console.log(response.html, 'cmt');
                     // $('.postComments').val('');
                     htmlData.append(response.html);
                 }
@@ -891,7 +969,7 @@
 
                     // console.log(response.html,'cmt');
                     $('.cmtText').val('');
-                    $('.nested-comment-'+cmtId).append(response.html);
+                    $('.nested-comment-' + cmtId).append(response.html);
                 }
 
 
