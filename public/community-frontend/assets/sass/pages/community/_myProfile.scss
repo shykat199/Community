@@ -81,6 +81,8 @@
         position: relative;
         margin-top: -100px;
         a {
+            display: block;
+            position: relative;
             img {
                 height: 180px;
                 width: 150px;
@@ -98,7 +100,7 @@
         }
         .replace-icon {
             position: absolute;
-            bottom: 20px;
+            bottom: -15px;
             right: 20px;
             width: 35px;
             height: 35px;

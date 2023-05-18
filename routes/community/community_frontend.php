@@ -20,6 +20,7 @@ Route::middleware(['user'])->group(function (){
     Route::get('/user/post/delete/{id}',[CommunityFrontendController::class,'destroy'])->name('community.user.post.delete');
     Route::post('/user/post/update',[CommunityFrontendController::class,'updatePost'])->name('community.user.post.update');
     Route::post('/user/post/comments',[CommunityFrontendController::class,'storeComment'])->name('community.user.post.comment');
+    Route::post('/user/post/child-comments',[CommunityFrontendController::class,'storeChildComment'])->name('community.user.post.child.comment');
     Route::get('get/user/post/comments',[CommunityFrontendController::class,'showComments'])->name('user.post.comment');
     Route::get('get/user/post/child-comments',[CommunityFrontendController::class,'showChildComments'])->name('user.load.child.comment');
     Route::get('user/post/reaction',[CommunityFrontendController::class,'storeReaction'])->name('user.post.reaction');
@@ -115,7 +116,7 @@ Route::middleware(['user'])->group(function (){
 
     //get all Comments........
     Route::get('/user/get-all-comments',[GetCommentController::class,'getAllComments'])->name('users.get-all-comments');
-    Route::post('/user/store-all-reactions',[AllReactionController::class,'storeReaction'])->name('user.post-all.reaction');
+    Route::post('/user/store-all-reactions',[AllReactionController::class,'allAjax'])->name('user.post-all.reaction');
 
 });
 

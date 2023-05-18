@@ -478,6 +478,8 @@
 
                         {{--                        @dd(getMyPostTimeLine())--}}
                         @foreach(getMyPostTimeLine() as $myPost)
+
+                            {{--                            @dd($myPost)--}}
                             <div class="main-content posted-content">
                                 <div class="post-autore d-flex justify-content-between align-items-center">
                                     <div class="authore-title d-flex align-items-center">
@@ -506,37 +508,35 @@
                 //                            dd($isOwner);
                                     @endphp
 
-                                    {{--                    @dd($post)--}}
-                                    {{--                    <form action="{{ route('orders.destroy', $row->id) }}" method="post"--}}
-                                    {{--                          class="d-inline">@csrf@method('DELETE')--}}
-                                    {{--                        <button type="button" class="btn btn-sm btn-danger confirm-delete"><i class="fas fa-times"></i>--}}
-                                    {{--                        </button>--}}
-                                    {{--                    </form>--}}
-
 
                                     <div class="post-option">
 
                                         @foreach($isOwner as $owner)
                                             @if($myPost->postId==$owner->id)
                                                 <button type="button" class="dropdown-toggle" id="dropdownMenuButton1"
-                                                        data-bs-toggle="dropdown" aria-expanded="false"><i class="fa fa-ellipsis-h"
-                                                                                                           aria-hidden="true"></i>
+                                                        data-bs-toggle="dropdown" aria-expanded="false"><i
+                                                        class="fa fa-ellipsis-h"
+                                                        aria-hidden="true"></i>
                                                 </button>
 
                                                 <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
                                                     <li>
                                                         <a href="#" data-mediaDetails="{{$myPost->userPostMedia}}"
-                                                           data-postDetails="{{$myPost->postDescription}}" data-postId="{{$myPost->postId}}"
+                                                           data-postDetails="{{$myPost->postDescription}}"
+                                                           data-postId="{{$myPost->postId}}"
                                                            data-bs-toggle="modal"
-                                                           data-bs-target="#photoModal1" class="post-option-item btnEdit"><i
+                                                           data-bs-target="#photoModal1"
+                                                           class="post-option-item btnEdit"><i
                                                                 class="fa fa-pencil-square-o"
                                                                 aria-hidden="true"></i> Edit Post
                                                         </a>
                                                     </li>
-                                                    <li><a href="{{route('community.user.post.delete',$myPost->postId)}}"
+                                                    <li>
+                                                        <a href="{{route('community.user.post.delete',$myPost->postId)}}"
                                                            data-id="{{$myPost->postId}}"
                                                            class="post-option-item dltPost"><i class="fa fa-trash-o"
-                                                                                               aria-hidden="true"></i> Delete Post</a>
+                                                                                               aria-hidden="true"></i>
+                                                            Delete Post</a>
                                                     </li>
 
                                                     @endif
@@ -577,44 +577,97 @@
                                         <li class="post-react like-react">
                                             <a href="#">
                                                 <div class="react-icon">
-                                                    <img class="like"
-                                                         src="{{asset("community-frontend/assets/images/community/home/news-post/like.png")}}"
-                                                         alt="">
+
+                                                    @if ($myPost->reaction_type=='like')
+                                                        <img
+                                                            src="{{asset("community-frontend/assets/images/community/home/news-post/react-1.png")}}"
+                                                            alt="React">
+                                                    @elseif($myPost->reaction_type=='love')
+                                                        <img
+                                                            src="{{asset("community-frontend/assets/images/community/home/news-post/react-2.png")}}"
+                                                            alt="React">
+                                                    @elseif($myPost->reaction_type=='haha')
+                                                        <img
+                                                            src="{{asset("community-frontend/assets/images/community/home/news-post/react-4.png")}}"
+                                                            alt="React">
+                                                    @elseif($myPost->reaction_type=='sad')
+                                                        <img
+                                                            src="{{asset("community-frontend/assets/images/community/home/news-post/react-6.png")}}"
+                                                            alt="React">
+                                                    @elseif($myPost->reaction_type=='angry')
+                                                        <img
+                                                            src="{{asset("community-frontend/assets/images/community/home/news-post/react-7.png")}}"
+                                                            alt="React">
+                                                    @elseif($myPost->reaction_type=='care')
+                                                        <img
+                                                            src="{{asset("community-frontend/assets/images/community/home/news-post/react-3.png")}}"
+                                                            alt="React">
+                                                    @elseif($myPost->reaction_type=='wow')
+                                                        <img
+                                                            src="{{asset("community-frontend/assets/images/community/home/news-post/react-5.png")}}"
+                                                            alt="React">
+                                                    @else
+                                                        <img class="like"
+                                                             src="{{asset("community-frontend/assets/images/community/home/news-post/like.png")}}"
+                                                             alt="">
+                                                    @endif
+
                                                 </div>
-                                                <span class="react-name">Like</span>
+                                                <span class="react-name">
+                                                    @if($myPost->reaction_type=='like')
+                                                        Like
+                                                    @elseif($myPost->reaction_type=='love')
+                                                        Love
+                                                    @elseif($myPost->reaction_type=='care')
+                                                        Care
+                                                    @elseif($myPost->reaction_type=='haha')
+                                                        Haha
+                                                    @elseif($myPost->reaction_type=='wow')
+                                                        Wow
+                                                    @elseif($myPost->reaction_type=='sad')
+                                                        Sad
+                                                    @elseif($myPost->reaction_type=='angry')
+                                                        Angry
+                                                    @else
+                                                        Like
+                                                    @endif
+
+
+                                                </span>
                                                 <span
                                                     class="react-count">{{myPostReactionCount($myPost->postId)}}</span>
                                             </a>
                                             <ul class="react-option">
+{{--                                                                                @dd($myPost)--}}
+
                                                 <li class="reaction {{$myPost->reaction_type=='like'?'active':''}}"
-                                                    data-reaction_type="like" data-gId="{{$myPost->postId}}">
-                                                    <img
+                                                    data-reaction_type="like" data-pId="{{$myPost->postId}}"><img
                                                         src="{{asset("community-frontend/assets/images/community/home/news-post/react-1.png")}}"
                                                         alt="React">
                                                 </li>
-                                                {{--                                @dd($post)--}}
                                                 <li class="reaction {{$myPost->reaction_type=='love'?'active':''}}"
-                                                    data-reaction_type="love" data-gId="{{$myPost->postId}}"><img
+                                                    data-reaction_type="love" data-pId="{{$myPost->postId}}"><img
                                                         src="{{asset("community-frontend/assets/images/community/home/news-post/react-2.png")}}"
-                                                        alt="React"></li>
+                                                        alt="React">
+                                                </li>
                                                 <li class="reaction {{$myPost->reaction_type=='care'?'active':''}}"
-                                                    data-reaction_type="care" data-gId="{{$myPost->postId}}"><img
+                                                    data-reaction_type="care" data-pId="{{$myPost->postId}}"><img
                                                         src="{{asset("community-frontend/assets/images/community/home/news-post/react-3.png")}}"
                                                         alt="React"></li>
                                                 <li class="reaction {{$myPost->reaction_type=='haha'?'active':''}}"
-                                                    data-reaction_type="haha" data-gId="{{$myPost->postId}}"><img
+                                                    data-reaction_type="haha" data-pId="{{$myPost->postId}}"><img
                                                         src="{{asset("community-frontend/assets/images/community/home/news-post/react-4.png")}}"
                                                         alt="React"></li>
                                                 <li class="reaction {{$myPost->reaction_type=='wow'?'active':''}}"
-                                                    data-reaction_type="wow" data-gId="{{$myPost->postId}}"><img
+                                                    data-reaction_type="wow" data-pId="{{$myPost->postId}}"><img
                                                         src="{{asset("community-frontend/assets/images/community/home/news-post/react-5.png")}}"
                                                         alt="React"></li>
                                                 <li class="reaction {{$myPost->reaction_type=='sad'?'active':''}}"
-                                                    data-reaction_type="sad" data-gId="{{$myPost->postId}}"><img
+                                                    data-reaction_type="sad" data-pId="{{$myPost->postId}}"><img
                                                         src="{{asset("community-frontend/assets/images/community/home/news-post/react-6.png")}}"
                                                         alt="React"></li>
                                                 <li class="reaction {{$myPost->reaction_type=='angry'?'active':''}}"
-                                                    data-reaction_type="care" data-gId="{{$myPost->postId}}"><img
+                                                    data-reaction_type="care" data-pId="{{$myPost->postId}}"><img
                                                         src="{{asset("community-frontend/assets/images/community/home/news-post/react-7.png")}}"
                                                         alt="React"></li>
                                             </ul>
@@ -641,6 +694,8 @@
                                                 <span class="react-count">{{myPostCommentCount($myPost->postId)}}</span>
                                             </a>
                                         </li>
+
+
                                         <li class="post-react">
                                             <a href="#">
                                                 <div class="react-icon">
@@ -660,76 +715,166 @@
                                         </li>
                                     </ul>
 
-                                    {{--                                    <ul class="post-comment-list">--}}
-                                    {{--                                        <li class="single-comment">--}}
-                                    {{--                                            <div class="comment-img">--}}
-                                    {{--                                                <a href="#">--}}
-                                    {{--                                                    <img src="{{asset("community-frontend/assets/images/community/home/news-post/comment01.jpg")}}"--}}
-                                    {{--                                                         alt="image">--}}
-                                    {{--                                                </a>--}}
-                                    {{--                                            </div>--}}
-                                    {{--                                            <div class="comment-details">--}}
-                                    {{--                                                <div class="coment-info">--}}
-                                    {{--                                                    <h6><a href="#">David Moore</a></h6>--}}
-                                    {{--                                                    <span class="comment-time">10 Mint Ago</span>--}}
-                                    {{--                                                </div>--}}
-                                    {{--                                                <p class="comment-content">Donec rutrum congue leo eget malesuada nulla quis--}}
-                                    {{--                                                    lorem ut libero malesuada feugiat donec rutrum congue leo eget malesuada--}}
-                                    {{--                                                    donec rutrum congue leo eget malesuada. Praesent sapien massa convallis--}}
-                                    {{--                                                    a pellentesque non nisi curabitur non nulla sit amet nisl tempus--}}
-                                    {{--                                                    convallis lectus.</p>--}}
-                                    {{--                                                <ul class="coment-react">--}}
-                                    {{--                                                    <li class="comment-like"><a href="#">Like(2)</a></li>--}}
-                                    {{--                                                    <li><a href="#">Replay</a></li>--}}
-                                    {{--                                                </ul>--}}
-                                    {{--                                            </div>--}}
-                                    {{--                                        </li>--}}
-                                    {{--                                        <li class="single-comment">--}}
-                                    {{--                                            <div class="comment-img">--}}
-                                    {{--                                                <a href="#">--}}
-                                    {{--                                                    <img src="{{asset("community-frontend/assets/images/community/home/news-post/coment02.jpg")}}"--}}
-                                    {{--                                                         alt="image">--}}
-                                    {{--                                                </a>--}}
-                                    {{--                                            </div>--}}
-                                    {{--                                            <div class="comment-details">--}}
-                                    {{--                                                <div class="coment-info">--}}
-                                    {{--                                                    <h6><a href="#">Claire P. Toy</a></h6>--}}
-                                    {{--                                                    <span class="comment-time">5 Mint Ago</span>--}}
-                                    {{--                                                </div>--}}
-                                    {{--                                                <p class="comment-content">Donec rutrum congue leo eget malesuada praesent--}}
-                                    {{--                                                    sapien massa convallis a pellentesque nec egestas non nisi curabitur non--}}
-                                    {{--                                                    nulla sit amet nisl tempus convallis quis ac lectus.</p>--}}
-                                    {{--                                                <ul class="coment-react">--}}
-                                    {{--                                                    <li class="comment-like"><a href="#">Like(2)</a></li>--}}
-                                    {{--                                                    <li><a href="#">Replay</a></li>--}}
-                                    {{--                                                </ul>--}}
-                                    {{--                                            </div>--}}
-                                    {{--                                        </li>--}}
+                                    {{--                                    @dd($myPost)--}}
+                                    <ul class="post-comment-list">
 
-                                    {{--                                    </ul>--}}
-                                    {{--                                    <div class="more-comment">--}}
-                                    {{--                                        <a href="#">More Comments+</a>--}}
-                                    {{--                                    </div>--}}
-                                    <form action="#" class="new-comment">
-                                        <a class="new-comment-img" href="#">
+                                        @foreach($myPost->newsFeedComments as $postComment)
+                                            {{--                                            @dd($postComment)--}}
+                                            <li class="single-comment">
+                                                <!-- parent comment start  -->
+                                                <div class="parent-comment">
+                                                    <div class="comment-img">
+                                                        @if(!empty($postComment->users->userProfileImages[0]) && isset($postComment->users->userProfileImages[0])?$postComment->users->userProfileImages[0]:'')
+
+                                                            @if(!empty($postComment->users->userProfileImages[0]) && isset($postComment->users->userProfileImages[0])?$postComment->users->userProfileImages[0]:'')
+                                                                <a href=""><img
+                                                                        src="{{asset("storage/community/profile-picture/".$postComment->users->userProfileImages[0]->user_profile)}}"
+                                                                        alt="image"></a>
+                                                            @else
+                                                                <a href=""><img
+                                                                        src="{{asset("community-frontend/assets/images/community/home/news-post/Athore01.jpg")}}"
+                                                                        alt="image">
+                                                                </a>
+                                                            @endif
+                                                        @endif
+                                                    </div>
+                                                    <div class="comment-details">
+                                                        <div class="coment-info">
+                                                            <div class="coment-authore-div">
+                                                                <h6><a href="#">{{$postComment->users->name}}</a></h6>
+                                                                <span
+                                                                    class="comment-time">{{\Carbon\Carbon::parse($postComment->created_at)->diffForHumans()}}</span>
+                                                            </div>
+                                                            <div class="comment-option">
+{{--                                                                @dd($postComment)--}}
+                                                                @if($postComment->user_id===Auth::id())
+                                                                    <button type="button"
+                                                                            class="dropdown-toggle comment-option-btn"
+                                                                            id="dropdownMenuButton1"
+                                                                            data-bs-toggle="dropdown"
+                                                                            aria-expanded="false"><i
+                                                                            class="fa fa-ellipsis-h"
+                                                                            aria-hidden="true"></i>
+                                                                    </button>
+
+                                                                    <ul class="dropdown-menu comment-option-dropdown"
+                                                                        aria-labelledby="dropdownMenuButton1">
+                                                                        <li class="post-option-item" id="editComment"><i
+                                                                                class="fa fa-pencil-square-o"
+                                                                                aria-hidden="true"></i> Edit comment
+                                                                        </li>
+                                                                        <li class="post-option-item"><i
+                                                                                class="fa fa-trash-o"
+                                                                                aria-hidden="true"></i> Delete
+                                                                            comment
+                                                                        </li>
+                                                                    </ul>
+                                                                @endif
+
+
+                                                            </div>
+                                                        </div>
+                                                        <div class="comment-div">
+                                                            <p class="comment-content">{{$postComment->comment_text}}</p>
+                                                            <button id="textarea_btn" type="submit"><i
+                                                                    class="fa fa-paper-plane"
+                                                                    aria-hidden="true"></i>
+                                                            </button>
+                                                        </div>
+                                                        <ul class="coment-react">
+                                                            <li class="comment-like"><a href="#">Like(2)</a></li>
+                                                            <li><a href="javascript:void(0)"
+                                                                   class="replay-tag">Replay</a></li>
+                                                        </ul>
+                                                    </div>
+
+
+                                                    <!-- child comment start  -->
+                                                    {{--                                                    @dd($postComment)--}}
+                                                    <div class="child-comment">
+                                                        <div
+                                                            class="single-replay-comnt nested-comment-{{$postComment->id}}">
+
+
+                                                        </div>
+
+                                                        {{--                                        @dd($postComment)--}}
+                                                        @if( count($postComment->replies)>0)
+                                                            <div class="more-comment">
+                                                                <a class="loadChildCmt"
+                                                                   data-postIdd="{{$postComment->user_post_id}}"
+                                                                   data-commentId="{{$postComment->id}}">More+</a>
+                                                            </div>
+                                                        @endif
+
+                                                        <div class="new-comment replay-new-comment">
+
+                                                            @if(!empty($postComment->users->userProfileImages[0]) && isset($postComment->users->userProfileImages[0])?$postComment->users->userProfileImages[0]:'')
+
+                                                                @if(!empty($postComment->users->userProfileImages[0]) && isset($postComment->users->userProfileImages[0])?$postComment->users->userProfileImages[0]:'')
+                                                                    <a href=""
+                                                                       class="new-comment-img replay-comment-img"><img
+                                                                            src="{{asset("storage/community/profile-picture/".$postComment->users->userProfileImages[0]->user_profile)}}"
+                                                                            alt="image"></a>
+                                                                @else
+                                                                    <a href=""><img
+                                                                            src="{{asset("community-frontend/assets/images/community/home/news-post/Athore01.jpg")}}"
+                                                                            alt="image">
+                                                                    </a>
+                                                                @endif
+                                                            @endif
+                                                            {{--                                            @dd($postComment)--}}
+                                                            <div class="new-comment-input replay-commnt-input">
+                                                                <input data-cmtId="{{$postComment->id}}" class="cmtText"
+                                                                       type="text"
+                                                                       name="cmttext"
+                                                                       data-userPostId="{{$postComment->user_post_id}}"
+                                                                       placeholder="Write a comment....">
+                                                                <div class="attached-icon">
+                                                                    <a href="#"><i class="fa fa-camera"
+                                                                                   aria-hidden="true"></i></a>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </li>
+
+                                        @endforeach
+
+{{--                                        @dd($myPost)--}}
+
+                                    </ul>
+
+                                    @if(count($myPost->newsFeedComments)>0)
+                                        <div class="more-comment">
+                                            <a class="checkCmt" data-postIdd="{{$myPost->postId}}">More Comments+</a>
+                                        </div>
+                                    @endif
+
+                                    <div class="new-comment">
+
+                                        <a href="#" class="new-comment-img">
                                             @if(!empty($myPost->users->userProfileImages[0]) && isset($myPost->users->userProfileImages[0]) ? $myPost->users->userProfileImages[0]:'')
                                                 <img
                                                     src="{{asset("storage/community/profile-picture/".$myPost->users->userProfileImages[0]->user_profile)}}"
-                                                    alt="image">
+                                                    alt="image" style="height: 60px; width: 60px">
                                             @else
                                                 <img
                                                     src="{{asset("community-frontend/assets/images/community/home/news-post/Athore01.jpg")}}"
                                                     alt="image">
                                             @endif
                                         </a>
+
                                         <div class="new-comment-input">
                                             <input type="text" data-postId="{{$myPost->postId}}" class="postComments"
-                                                   name="postComment" placeholder="Write a comment....">
+                                                   placeholder="Write a comment....">
                                             <div class="attached-icon">
                                                 <a href="#"><i class="fa fa-camera" aria-hidden="true"></i></a>
                                             </div>
                                         </div>
-                                    </form>
+
+                                    </div>
                                 </div>
                             </div>
                         @endforeach
@@ -1298,8 +1443,10 @@
             $('.reaction').removeClass('active');
             $(this).addClass('active');
 
-            let getReaction = $(this).attr('data-reaction_type');
-            let grpPostId = $(this).attr('data-gId');
+            let postReaction = $(this).attr('data-reaction_type');
+            let postId = $(this).attr('data-pId');
+            console.log(postId);
+            console.log(postReaction);
 
             let img_src = $(this).find('img').attr('src')
             $(this).parents('.like-react').find('.react-icon img').attr('src', img_src)
@@ -1309,28 +1456,26 @@
             // console.log(img_src,'img_src');
             // return false;
 
-            if (getReaction !== '' && grpPostId !== '') {
+            if (postReaction !== '' && postId !== '') {
                 $.ajax({
-                    url: '{{route('user.group.post.reaction')}}',
+                    url: '{{route('user.post-all.reaction')}}',
                     type: 'POST',
                     data: {
-                        getReaction: getReaction,
-                        grpPostId: grpPostId,
+                        postReaction: postReaction,
+                        postId: postId,
+                        reqType: 'storePostReaction',
                         '_token': '{{csrf_token()}}'
                     },
                     success: function (response) {
-                        console.log(response);
-                        console.log(response.data);
+
                         if (response.success === true) {
-
-                            toastr.success(response.msg);
-
-                            // let img_src = $(this).find('img').attr('src');
-                            // console.log(img_src,'img_src');
-                            // $(this).parents('.like-react').find('.react-icon img').attr('src', img_src);
+                            console.log(response);
+                            console.log(response.data);
+                            // toastr.success(response.msg);
+                            console.log(response.postComments);
 
                         } else {
-                            toastr.error(response.msg);
+                            // toastr.error(response.msg);
                         }
                     },
                     error: function (err) {
@@ -1380,6 +1525,100 @@
                     })
                 }
             }
+        })
+
+        $(document).on('click', '.loadChildCmt', function () {
+            let postId = $(this).attr('data-postIdd');
+            let cmtId = $(this).attr('data-commentId');
+            $(this).hide();
+            console.log(postId);
+            let htmlData = $(this).parents('.posted-content').find('.post-comment-list')
+            $.ajax({
+                url: "{{route('user.load.child.comment')}}",
+                post: "GET",
+                data: {
+                    postId: postId,
+                    cmtId: cmtId,
+                },
+                success: function (response) {
+
+                    if (response.status == true) {
+
+                        // console.log(response.html,'cmt');
+                        $('.cmtText').val('');
+                        $('.nested-comment-' + cmtId).append(response.html);
+
+                    }
+
+
+                },
+            })
+        })
+
+        $(document).on('click', '.checkCmt', function () {
+            let pPostId = $(this).attr('data-postIdd')
+            $(this).hide();
+            let htmlData = $(this).parents('.posted-content').find('.post-comment-list')
+            console.log(pPostId);
+            $.ajax({
+                url: '{{route('users.get-all-comments')}}',
+                type: 'GET',
+                data: {
+                    pPostId: pPostId,
+                    reqTyp: 'userAllCmt'
+                },
+                success: function (response) {
+
+                    if (response.status === true) {
+
+                        console.log(response.html, 'cmt');
+                        // $('.postComments').val('');
+                        htmlData.append(response.html);
+                    }
+
+
+                },
+            })
+        })
+
+        $(document).keypress('.cmtText', function (e) {
+            let cmtId = e.target.dataset.cmtid;
+            let user_post_id = e.target.dataset.userpostid;
+            let cmtText = e.target.value;
+            let key = e.which;
+            // $(this).hide();
+            // console.log(user_post_id);
+            // return false;
+            if (key === 13) {
+                // console.log(cmtText);
+
+                $.ajax({
+                    url: "{{route('community.user.post.child.comment')}}",
+                    type: 'POST',
+                    data: {
+                        cmtId: cmtId,
+                        cmtText: cmtText,
+                        user_post_id: user_post_id,
+                        '_token': '{{csrf_token()}}'
+                    },
+                    success: function (response) {
+                        // console.log(response);
+
+                        if (response.status === true) {
+                            $('.cmtText').val('');
+                            $('.nested-comment-' + cmtId).append(response.data);
+                        } else {
+                            toastr.error(response.msg);
+                        }
+                    },
+                    error: function (err) {
+
+                        toastr.error("Error with AJAX callback !");
+                    }
+                })
+            }
+
+
         })
 
     })

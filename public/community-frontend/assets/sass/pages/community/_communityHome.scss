@@ -945,6 +945,21 @@
                     border-radius: 5px;
                     background: transparent;
                 }
+                .textarea-cancel-btn {
+                    font-size: 12px;
+                    color: $theme-color;
+                    border: none;
+                    outline: none;
+                    background: transparent;
+                    position: absolute;
+                    right: 5px;
+                    bottom: -11px;
+                    transition: all .3s ease;
+                    display: none;
+                    &:hover{
+                        text-decoration: underline;
+                    }
+                }
             }
             .coment-react {
                 display: flex;

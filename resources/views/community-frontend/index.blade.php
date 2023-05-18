@@ -610,6 +610,7 @@
                                             <button  class="textarea-btn" type="submit"><i class="fa fa-paper-plane"
                                                                                        aria-hidden="true"></i>
                                             </button>
+                                            <button class="textarea-cancel-btn">Cancel</button>
                                         </div>
                                         <ul class="coment-react">
                                             <li class="comment-like"><a href="javascript:void(0)">Like(2)</a></li>

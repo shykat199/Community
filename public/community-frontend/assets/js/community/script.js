@@ -138,15 +138,25 @@ $(document).on("click", "#editComment", function() {
    + "px"' oninput='this.style.height = "";this.style.height = this.scrollHeight
    + "px"'>${comment_para[0].innerHTML}</textarea>`))
    $(this).parents(".comment-details").find('.textarea-btn').css('display', 'block')
+   $(this).parents(".comment-details").find('.textarea-cancel-btn').css('display', 'block')
 })
 $(document).on("click", ".textarea-btn", function() {
  let edit_tex = $(this).parents(".comment-details").find('.comment-content');
- console.log(edit_tex, "text");
-//  let aa = edit_tex.val()
 
  edit_tex.replaceWith($(`<p class="comment-content">${edit_tex.val()}</p>`))
  $(this).css('display', 'none')
+ $(this).parent(".comment-details").find('.textarea-cancel-btn').css('display', 'none')
 })
+$(document).on("click", ".textarea-cancel-btn", function() {
+ let edit_tex = $(this).parents(".comment-details").find('.comment-content');
+
+ edit_tex.replaceWith($(`<p class="comment-content">${edit_tex.val()}</p>`))
+ $(this).css('display', 'none')
+ let textareaBtn = $(this).parents(".comment-details").find('.textarea-btn')
+    console.log(textareaBtn, "textarea btn");
+    textareaBtn.css('display', 'none')
+})
+
 
 
 // reaction active

@@ -5,6 +5,7 @@ use App\Models\Community\Page\CommunityPage;
 use App\Models\User;
 use App\Models\Community\User\CommunityUserFollowing;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 
@@ -251,7 +252,7 @@ function allCountries()
     return $countries;
 }
 
-function allPages($id=null)
+function allPages($id = null)
 {
 
 
@@ -526,7 +527,7 @@ function getUpComingBirthday()
 
 function getMyPostTimeLine()
 {
-    $allMyPosts = \App\Models\Community\User\CommunityUserPost::with('users.userProfileImages')
+    $allMyPosts = \App\Models\Community\User\CommunityUserPost::with(['users.userProfileImages', 'newsFeedComments.replies'])
         ->join('users', function ($q) {
             $q->on('users.id', '=', 'community_user_posts.user_id');
             $q->where('users.id', '!=', ADMIN_ROLE);
@@ -541,14 +542,25 @@ function getMyPostTimeLine()
         ->leftJoin('users as taggedUser', function ($q) {
             $q->on('taggedUser.id', '=', 'userTag.tag_user_id');
         })
-//        ->leftJoin('community_user_profile_photos as userProfile', function ($q) {
-//            $q->on('userProfile.user_id', '=', 'users.id');
-//            $q->where('userProfile.user_id', '=', Auth::id());
-//        })
+        ->leftJoin('community_user_post_reactions as userPostReaction', function ($q) {
+            $q->on('userPostReaction.user_post_id', '=', 'community_user_posts.id');
+            $q->where('userPostReaction.user_id', '=', Auth::id());
+        })
         ->selectRaw('users.id as user_id,users.name as userName,community_user_posts.id as postId,community_user_posts.post_description as postDescription,community_user_posts.created_at,
         postMedia.post_image_video as postMediaFile, postMedia.caption as postMediaFileCaption,userTag.tag_user_id as taggedUser,
+        userPostReaction.reaction_type,userPostReaction.id as reactionId,
         taggedUser.name as taggedUserName')
-        ->get();
+        ->latest()
+        ->get()->map(function ($q) {
+            $q->setRelation('newsFeedComments', $q->newsFeedComments->take(2));
+            return $q;
+        });
+
+    $allMyPosts = $allMyPosts->each(function ($item) {
+        $item->newsFeedComments->each(function ($comment) {
+            $comment->load('users.userProfileImages');
+        });
+    });
 
     return $allMyPosts;
 }
@@ -716,23 +728,25 @@ function getUserTimeLinePostCommentCount($id)
     return $getUserPostReactionCount;
 }
 
-function pageLikeCount($id){
+function pageLikeCount($id)
+{
 //    dd($id);
-    $pageLikeCount=CommunityPage::leftJoin('community_page_follow_likes as likes', function ($q) use ($id) {
-            $q->on('likes.page_id', '=', 'community_pages.id');
-            $q->whereRaw("likes.page_id = $id");
-            $q->whereRaw('likes.page_like = 1');
-        })
+    $pageLikeCount = CommunityPage::leftJoin('community_page_follow_likes as likes', function ($q) use ($id) {
+        $q->on('likes.page_id', '=', 'community_pages.id');
+        $q->whereRaw("likes.page_id = $id");
+        $q->whereRaw('likes.page_like = 1');
+    })
         ->groupBy('community_pages.id')
         ->count();
     return $pageLikeCount;
 }
 
-function pageFollowCount($id){
-    $pageFollowCount=\App\Models\Community\Page\CommunityPageFollowLike::leftJoin('community_pages',function ($q)use($id){
-        $q->on('community_pages.id','=','community_page_follow_likes.page_id');
-        $q->where('community_page_follow_likes.page_follow','!=',0);
-        $q->where('community_page_follow_likes.page_id','=',$id);
+function pageFollowCount($id)
+{
+    $pageFollowCount = \App\Models\Community\Page\CommunityPageFollowLike::leftJoin('community_pages', function ($q) use ($id) {
+        $q->on('community_pages.id', '=', 'community_page_follow_likes.page_id');
+        $q->where('community_page_follow_likes.page_follow', '!=', 0);
+        $q->where('community_page_follow_likes.page_id', '=', $id);
     })
         ->groupBy('community_pages.id')
         ->count();
