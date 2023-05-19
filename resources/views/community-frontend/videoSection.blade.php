@@ -181,11 +181,14 @@
                             </a>
                         </li>
                     </ul>
-                    <form action="#" class="vido-coment">
+
+{{--                    @dd($video)--}}
+                    <div  class="vido-coment" >
                         <input type="text" placeholder="Write Comment">
-                        <button type="submit" class="vido-coment-send"><i class="fa fa-paper-plane-o"
-                                                                          aria-hidden="true"></i></button>
-                    </form>
+                        <button type="submit" class="vido-coment-send">
+                            <i class="fa fa-paper-plane-o" aria-hidden="true" data-postId="{{$video->pId}}"></i>
+                        </button>
+                    </div>
                 </div>
             </div>
         @endforeach
@@ -282,5 +285,24 @@
             let v = document.getElementById('comunityVideoPause');
             v.load();
         })
+
+        $(document).on('click','.fa-paper-plane-o',function (){
+            let postId=$(this).attr('data-postId');
+            console.log(postId);
+
+            $.ajax({
+                url:'{{route('community.user.post.comment')}}',
+                type:"POST",
+                data:{
+                    postId:postId,
+                    '_token': '{{csrf_token()}}'
+                },
+                success:function (response){
+                    console.log(response.msg);
+                }
+            })
+
+        })
+
     })
 </script>
