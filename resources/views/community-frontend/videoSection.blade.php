@@ -219,33 +219,33 @@
                             <source class="source" src="" type="video/mp4">
                         </video>
 
-                        {{--                        <div class="vido-cm-div video-coment-list">--}}
-                        {{--                            <ul class="post-comment-list ">--}}
-                        {{--                                <li class="single-comment">--}}
-                        {{--                                    <div class="comment-img">--}}
-                        {{--                                        <a href="#">--}}
-                        {{--                                            <img src="../assets/images/community/home/news-post/comment01.jpg"--}}
-                        {{--                                                 alt="image">--}}
-                        {{--                                        </a>--}}
-                        {{--                                    </div>--}}
-                        {{--                                    <div class="comment-details">--}}
-                        {{--                                        <div class="coment-info">--}}
-                        {{--                                            <h6><a href="#">David Moore</a></h6>--}}
-                        {{--                                            <span class="comment-time">10 Mint Ago</span>--}}
-                        {{--                                        </div>--}}
-                        {{--                                        <p class="comment-content">Praesent sapien massa convallis a pellentesque non--}}
-                        {{--                                            nisi curabitur non nulla sit amet nisl tempus convallis lectus.</p>--}}
-                        {{--                                        <ul class="coment-react">--}}
-                        {{--                                            <li class="comment-like"><a href="#">Like(2)</a></li>--}}
-                        {{--                                            <li><a href="#">Replay</a></li>--}}
-                        {{--                                        </ul>--}}
-                        {{--                                    </div>--}}
-                        {{--                                </li>--}}
-                        {{--                            </ul>--}}
-                        {{--                            <div class="more-comment">--}}
-                        {{--                                <a href="#">More Comments+</a>--}}
-                        {{--                            </div>--}}
-                        {{--                        </div>--}}
+                        <div class="vido-cm-div video-coment-list">
+                            <ul class="post-comment-list ">
+                                <li class="single-comment">
+                                    <div class="comment-img">
+                                        <a href="#">
+                                            <img src="{{asset("community-frontend/assets/images/community/home/news-post/comment01.jpg")}}"
+                                                 alt="image">
+                                        </a>
+                                    </div>
+                                    <div class="comment-details">
+                                        <div class="coment-info">
+                                            <h6><a href="#">David Moore</a></h6>
+                                            <span class="comment-time">10 Mint Ago</span>
+                                        </div>
+                                        <p class="comment-content">Praesent sapien massa convallis a pellentesque non
+                                            nisi curabitur non nulla sit amet nisl tempus convallis lectus.</p>
+                                        <ul class="coment-react">
+                                            <li class="comment-like"><a href="#">Like(2)</a></li>
+                                            <li><a href="#">Replay</a></li>
+                                        </ul>
+                                    </div>
+                                </li>
+                            </ul>
+                            <div class="more-comment">
+                                <a href="#">More Comments+</a>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
