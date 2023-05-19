@@ -90,7 +90,8 @@
                                 </a>
                                 <div class="replace-icon">
 
-                                    <button class="replace-btn" type="button" class="attachment-option-btn" data-bs-toggle="modal"
+                                    <button class="replace-btn" type="button" class="attachment-option-btn"
+                                            data-bs-toggle="modal"
                                             data-bs-target="#photoModal">
 
                                         <svg xmlns="http://www.w3.org/2000/svg" version="1.1" x="0" y="0"
@@ -638,7 +639,7 @@
                                                     class="react-count reactionCount">{{myPostReactionCount($myPost->postId)}}</span>
                                             </a>
                                             <ul class="react-option">
-{{--                                                                                @dd($myPost)--}}
+                                                {{--                                                                                @dd($myPost)--}}
 
                                                 <li class="reaction {{$myPost->reaction_type=='like'?'active':''}}"
                                                     data-reaction_type="like" data-pId="{{$myPost->postId}}"><img
@@ -691,7 +692,8 @@
                                                         </g></svg>
                                                 </div>
                                                 <span class="react-name">Comment</span>
-                                                <span class="react-count commentCount">{{myPostCommentCount($myPost->postId)}}</span>
+                                                <span
+                                                    class="react-count commentCount">{{myPostCommentCount($myPost->postId)}}</span>
                                             </a>
                                         </li>
 
@@ -746,7 +748,7 @@
                                                                     class="comment-time">{{\Carbon\Carbon::parse($postComment->created_at)->diffForHumans()}}</span>
                                                             </div>
                                                             <div class="comment-option">
-{{--                                                                @dd($postComment)--}}
+                                                                {{--                                                                @dd($postComment)--}}
                                                                 @if($postComment->user_id===Auth::id())
                                                                     <button type="button"
                                                                             class="dropdown-toggle comment-option-btn"
@@ -763,7 +765,8 @@
                                                                                 class="fa fa-pencil-square-o"
                                                                                 aria-hidden="true"></i> Edit comment
                                                                         </li>
-                                                                        <li class="post-option-item dltComment" data-commentid="{{$postComment->id}}"><i
+                                                                        <li class="post-option-item dltComment"
+                                                                            data-commentid="{{$postComment->id}}"><i
                                                                                 class="fa fa-trash-o"
                                                                                 aria-hidden="true"></i> Delete Comment
                                                                         </li>
@@ -779,7 +782,8 @@
                                                                 <i class="fa fa-paper-plane"
                                                                    data-commentText="{{$postComment->comment_text}}"
                                                                    data-cmtId="{{$postComment->id}}"
-                                                                   data-postId="{{$postComment->user_post_id}}" aria-hidden="true"></i>
+                                                                   data-postId="{{$postComment->user_post_id}}"
+                                                                   aria-hidden="true"></i>
                                                             </button>
                                                         </div>
                                                         <ul class="coment-react">
@@ -843,7 +847,7 @@
 
                                         @endforeach
 
-{{--                                        @dd($myPost)--}}
+                                        {{--                                        @dd($myPost)--}}
 
                                     </ul>
 
@@ -1639,8 +1643,8 @@
             // console.log(commentId);
             // return false;
             let commentId = $(this).attr('data-commentId');
-            let hideDivChildCmt=$(this).parents('.nested-comment-'+commentId).hide();
-            let hideDivParentCmt=$(this).parents('.post-Comment-'+commentId).hide();
+            let hideDivChildCmt = $(this).parents('.nested-comment-' + commentId).hide();
+            let hideDivParentCmt = $(this).parents('.post-Comment-' + commentId).hide();
             // console.log(commentId);
 
             // return false;
