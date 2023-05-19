@@ -393,7 +393,11 @@ class CommunityFrontendController extends Controller
                     'msg' => 'Successfully Added.',
                     'html' => $html
                 ]);
-            } else {
+            }
+
+            else {
+
+
                 return \response()->json([
                     'status' => true,
 //                'success' => false,
