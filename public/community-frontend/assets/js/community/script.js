@@ -145,7 +145,7 @@ $(document).on("click", ".textarea-btn", function() {
 
  edit_tex.replaceWith($(`<p class="comment-content">${edit_tex.val()}</p>`))
  $(this).css('display', 'none')
- $(this).parent(".comment-details").find('.textarea-cancel-btn').css('display', 'none')
+ $(this).parents(".comment-details").find('.textarea-cancel-btn').css('display', 'none')
 })
 $(document).on("click", ".textarea-cancel-btn", function() {
  let edit_tex = $(this).parents(".comment-details").find('.comment-content');

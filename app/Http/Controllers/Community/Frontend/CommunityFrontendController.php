@@ -238,9 +238,11 @@ class CommunityFrontendController extends Controller
                 $html .= ' </div>
                                                         <div class="comment-div">
                                                             <p class="comment-content">' . $comments . '</p>
-                                                            <button id="textarea_btn" type="submit">
+                                                            <button  class="textarea-btn" type="submit">
                                                             <i class="fa fa-paper-plane" data-commentText="' . $comments . '" data-cmtId="' . $commentId . '" data-postId="' . $comment->user_post_id . '" aria-hidden="true"></i>
                                                             </button>
+                                                            <button class="textarea-cancel-btn">Cancel</button>
+
                                                         </div>
                                                     </div>
                                                 </div>
@@ -343,10 +345,12 @@ class CommunityFrontendController extends Controller
                                         </div>
                                         <div class="comment-div">
                                             <p class="comment-content">' . $postComment->comment_text . '</p>
-                                            <button id="textarea_btn" type="submit">
-                                            <i class="fa fa-paper-plane" data-commentText="' . $postComment->comment_text . '" data-cmtId="' . $postComment->id . '" data-postId="' . $postComment->user_post_id . '" aria-hidden="true"></i>
 
+
+                                            <button  class="textarea-btn" type="submit">
+                                            <i class="fa fa-paper-plane" data-commentText="' . $postComment->comment_text . '" data-cmtId="' . $postComment->id . '" data-postId="' . $postComment->user_post_id . '" aria-hidden="true"></i>
                                             </button>
+                                            <button class="textarea-cancel-btn">Cancel</button>
                                         </div>
                                         <ul class="coment-react">
                                             <li class="comment-like"><a href="#">Like(2)</a></li>
@@ -539,9 +543,14 @@ class CommunityFrontendController extends Controller
                     $html .= ' </div>
                                             <div class="comment-div">
                                                 <p class="comment-content">' . $comments . '</p>
-                                            <button id="textarea_btn" type="submit">
+
+
+                                            <button  class="textarea-btn" type="submit">
                                             <i class="fa fa-paper-plane" data-commentText="' . $comments . '" data-cmtId="' . $commentId . '" data-postId="' . $comment->user_post_id . '" aria-hidden="true"></i>
                                             </button>
+                                            <button class="textarea-cancel-btn">Cancel</button>
+
+
                                             </div>
                                             <ul class="coment-react">
                                                 <li class="comment-like"><a href="#">Like(2)</a></li>
