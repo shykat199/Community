@@ -98,40 +98,60 @@ class CommunityUserPostController extends Controller
             ]);
 
             if ($storeComments) {
-//                dd($storeComments->users->userProfileImages[0]->user_profile);
-//                $userProfileImages = $storeComments->users->userProfileImages[0]->user_profile;
-                $html .= '       <div class="single-replay-comnt nested-comment-'.$storeComments->id.'">
+//
+                $html .= '<div class="single-replay-comnt ' . $storeComments->id . '">
                                                 <div class="replay-coment-box comment-details">
                                                     <div class="replay-comment-img">';
-
+//
                 if (!empty($storeComments->users->userProfileImages[0]) && isset($storeComments->users->userProfileImages[0]) ? $storeComments->users->userProfileImages[0]->user_profile : '') {
                     if (!empty($storeComments->users->userProfileImages[0]) && isset($storeComments->users->userProfileImages[0]) ? $storeComments->users->userProfileImages[0]->user_profile : '') {
                         $html .= '<a href=""><img src="' . asset("storage/community/profile-picture/" . $storeComments->users->userProfileImages[0]->user_profile) . '"
                                                                           alt="image"></a>';
                     }
 
+                } else {
+                    $html .= '<img src="' . asset("community-frontend/assets/images/community/home/news-post/comment01.jpg") . '"alt="image">';
+
                 }
 
-
-                        $html .= '</div>
-                                            <div class="replay-comment-details comment-details">
+                $html .= '</div>
+                                                    <div class="replay-comment-details comment-details">
                                                         <div class="replay-coment-info coment-info">
                                                             <div>
                                                                 <h6><a class="replay-comnt-name" href="#">' . Auth::user()->name . '</a></h6>
                                                                 <span class="replay-time-comnt">' . \Carbon\Carbon::parse($storeComments->created_at)->diffForHumans() . '</span>
-                                                            </div>
-                                                            <div class="comment-option">
-                                                                <button type="button" class="dropdown-toggle comment-option-btn" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false"><i class="fa fa-ellipsis-h" aria-hidden="true"></i></button>
-                                                                <ul class="dropdown-menu comment-option-dropdown" aria-labelledby="dropdownMenuButton1">
-                                                                    <li class="post-option-item" id="editComment"><i class="fa fa-pencil-square-o" aria-hidden="true"></i>  Edit comment</li>
-                                                                    <li class="post-option-item"><i class="fa fa-trash-o" aria-hidden="true"></i>  Delete comment</li>
-                                                                </ul>
-                                                            </div>
-                                                        </div>
+                                                            </div>';
+
+                if ($storeComments->user_id === Auth::id()) {
+                    $html .= '<div class="comment-option">
+                                                    <button type="button" class="dropdown-toggle comment-option-btn" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                                                    <i class="fa fa-ellipsis-h" aria-hidden="true"></i>
+                                                    </button>
+                                                    <ul class="dropdown-menu comment-option-dropdown" aria-labelledby="dropdownMenuButton1" style="">
+                                                        <li class="post-option-item" id="editComment"><i class="fa fa-pencil-square-o" aria-hidden="true"></i>  Edit comment</li>
+                                                        <li class="post-option-item dltComment" data-commentId="' . $storeComments->id . '"><i class="fa fa-trash-o" aria-hidden="true"></i>  Delete comment</li>
+                                                    </ul>
+                                                </div> ';
+                } else {
+                    $html .= '<div class="comment-option">
+                                                    <button type="button" class="dropdown-toggle comment-option-btn" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                                                    <i class="fa fa-ellipsis-h" aria-hidden="true"></i>
+                                                    </button>
+                                                    <ul class="dropdown-menu comment-option-dropdown" aria-labelledby="dropdownMenuButton1" style="">
+                                                        <li class="post-option-item dltComment" data-commentId="' . $storeComments->id . '"><i class="fa fa-trash-o" aria-hidden="true"></i>  Delete comment</li>
+                                                    </ul>
+                                                </div> ';
+                }
+
+
+                $html .= ' </div>
                                                         <div class="comment-div">
-                                                            <p class="comment-content">' . $storeComments->comment_text . '</p>
-                                                            <button id="textarea_btn" type="submit"><i class="fa fa-paper-plane" aria-hidden="true"></i>
+                                                            <p class="comment-content">'.$storeComments->comment_text.'</p>
+                                                            <button class="textarea-btn" type="submit" style="display: none;">
+                                                            <i class="fa fa-paper-plane" data-commenttext="check Child" data-cmtid="9" data-postid="7" aria-hidden="true"></i>
                                                             </button>
+                                                            <button class="textarea-cancel-btn" style="display: none;">Cancel</button>
+
                                                         </div>
                                                     </div>
                                                 </div>
