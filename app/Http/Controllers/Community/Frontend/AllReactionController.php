@@ -10,6 +10,7 @@ use App\Models\Community\Page\CommunityPagePostReaction;
 use App\Models\Community\User_Post\CommunityUserPostComment;
 use App\Models\Community\User_Post\CommunityUserPostReaction;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class AllReactionController extends Controller
 {
@@ -21,6 +22,8 @@ class AllReactionController extends Controller
         if ($request->ajax()) {
 //            dd($request->all());
             if ($request->get('reqType') === 'storePostReaction') {
+
+//                dd($request->all());
                 $storePostReaction = CommunityUserPostReaction::create([
                     'user_post_id' => $request->get('postId'),
                     'user_id' => \Auth::id(),
@@ -32,10 +35,11 @@ class AllReactionController extends Controller
                     $returnResult = [
                         'status' => true,
                         'msg' => 'Successfully Added',
-                        'postComments' => json_encode($storePostReaction)
+                        'postComments' => $storePostReaction
                     ];
                 }
             }
+
             elseif ($request->get('reqType') === 'storePagePostReaction') {
                 $storePostReaction = CommunityPagePostReaction::create([
                     'page_post_id' => $request->get('postId'),
@@ -52,6 +56,7 @@ class AllReactionController extends Controller
                     ];
                 }
             }
+
             elseif ($request->get('reqType') === 'storeGroupPostReaction') {
 
 //                dd($request->all());
@@ -109,7 +114,6 @@ class AllReactionController extends Controller
 
             }
 
-
             elseif ($request->get('reqType') === 'editPageNewsFeedComment') {
 
 //                dd($request->all());
@@ -128,6 +132,32 @@ class AllReactionController extends Controller
                 }
 
             }
+
+
+
+
+            elseif ($request->get('reqType') === 'removePostReaction') {
+
+//                dd($request->all());
+                $dltPostReaction = CommunityUserPostReaction::where('id', '=', $request->get('reactionId'))->where('user_id', '=', Auth::id())
+                    ->where('user_post_id', '=', $request->get('postId'))
+                    ->delete();
+
+                if ($dltPostReaction) {
+//                    $getUpdatedData = CommunityUserPostComment::where('id', '=', $request->get('cmtId'))->where('user_post_id', '=', $request->get('postId'))->first();
+
+                    $returnResult = [
+                        'status' => true,
+                        'msg' => 'Successfully Added',
+                        'postComments' => $dltPostReaction
+                    ];
+                }
+
+            }
+
+
+
+
         }
 
         return response()->json(

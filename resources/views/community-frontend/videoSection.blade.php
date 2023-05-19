@@ -91,7 +91,7 @@
 @section('frontend.others')
 
     <div class="row">
-        {{--        @dd($allVideos)--}}
+        {{--                @dd($allVideos)--}}
         @foreach($allVideos as $video)
             {{--                        @dd($video)--}}
             <div class="col-lg-3 col-md-6 col-12">
@@ -127,6 +127,7 @@
                          data-userNmae="{{$video->name}}"
                          data-date="{{\Carbon\Carbon::parse( $video->created_at)->format('d M, Y')}}"
                          data-postImg="{{$video->postMedia}}"
+
                          data-userImg="{{$video->users->userProfileImages[0]->user_profile}}">
                         <video class="community-video-poster">
                             <source src="{{asset('storage/community/post/videos/'.$video->postMedia)}}"
@@ -136,14 +137,20 @@
                             <i class="fa fa-youtube-play" aria-hidden="true"></i>
                         </div>
                     </div>
-
+                    {{--                                        @dd($video)--}}
                     <ul class="post-react-widget">
                         <li class="post-react like-react">
                             <a href="javascript:void(0)">
                                 <div class="react-icon video-react-icon">
-                                    <i class="fa fa-heart-o" aria-hidden="true"></i>
+                                    <i class="reactionLike fa {{$video->reaction_type=='love' && $video->user_id==Auth::id() ?'active fa-heart':'fa-heart-o'}}"
+                                       aria-hidden="true" data-postIdd="{{$video->pId}}"
+                                       data-reactionId="{{$video->reactionId}}"
+
+
+                                    ></i>
                                 </div>
-                                <span class="react-count">{{getUserTimeLinePostReactionCount($video->pId)}}</span>
+                                <span
+                                    class="react-count reactionCount">{{getUserTimeLinePostReactionCount($video->pId)}}</span>
                             </a>
                         </li>
                         <li class="post-react">
@@ -162,7 +169,8 @@
                                             </g>
                                         </g></svg>
                                 </div>
-                                <span class="react-count">{{getUserTimeLinePostCommentCount($video->pId)}}</span>
+                                <span
+                                    class="react-count commentCount">{{getUserTimeLinePostCommentCount($video->pId)}}</span>
                             </a>
                         </li>
                         <li class="post-react">
@@ -182,9 +190,9 @@
                         </li>
                     </ul>
 
-{{--                    @dd($video)--}}
-                    <div  class="vido-coment" >
-                        <input type="text" placeholder="Write Comment">
+                    {{--                    @dd($video)--}}
+                    <div class="vido-coment">
+                        <input type="text" class="commentedText" placeholder="Write Comment">
                         <button type="submit" class="vido-coment-send">
                             <i class="fa fa-paper-plane-o" aria-hidden="true" data-postId="{{$video->pId}}"></i>
                         </button>
@@ -209,8 +217,8 @@
                                                                     alt="img"></a>
                             </div>
                             <div class="page-title">
-                                <a href="#">Lolita Benally</a>
-                                <span class="date">Published: 10 July, 2021</span>
+                                <a href="#"></a>
+                                <span class="date"></span>
                             </div>
                         </div>
                         <div class="uploaded-video-status">
@@ -224,29 +232,30 @@
 
                         <div class="vido-cm-div video-coment-list">
                             <ul class="post-comment-list ">
-                                <li class="single-comment">
-                                    <div class="comment-img">
-                                        <a href="#">
-                                            <img src="{{asset("community-frontend/assets/images/community/home/news-post/comment01.jpg")}}"
-                                                 alt="image">
-                                        </a>
-                                    </div>
-                                    <div class="comment-details">
-                                        <div class="coment-info">
-                                            <h6><a href="#">David Moore</a></h6>
-                                            <span class="comment-time">10 Mint Ago</span>
-                                        </div>
-                                        <p class="comment-content">Praesent sapien massa convallis a pellentesque non
-                                            nisi curabitur non nulla sit amet nisl tempus convallis lectus.</p>
-                                        <ul class="coment-react">
-                                            <li class="comment-like"><a href="#">Like(2)</a></li>
-                                            <li><a href="#">Replay</a></li>
-                                        </ul>
-                                    </div>
-                                </li>
+                                {{--                                <li class="single-comment">--}}
+                                {{--                                    <div class="comment-img">--}}
+                                {{--                                        <a href="#">--}}
+                                {{--                                            <img--}}
+                                {{--                                                src="{{asset("community-frontend/assets/images/community/home/news-post/comment01.jpg")}}"--}}
+                                {{--                                                alt="image">--}}
+                                {{--                                        </a>--}}
+                                {{--                                    </div>--}}
+                                {{--                                    <div class="comment-details">--}}
+                                {{--                                        <div class="coment-info">--}}
+                                {{--                                            <h6><a href="#">David Moore</a></h6>--}}
+                                {{--                                            <span class="comment-time">10 Mint Ago</span>--}}
+                                {{--                                        </div>--}}
+                                {{--                                        <p class="comment-content">Praesent sapien massa convallis a pellentesque non--}}
+                                {{--                                            nisi curabitur non nulla sit amet nisl tempus convallis lectus.</p>--}}
+                                {{--                                        <ul class="coment-react">--}}
+                                {{--                                            <li class="comment-like"><a href="#">Like(2)</a></li>--}}
+                                {{--                                            <li><a href="#">Replay</a></li>--}}
+                                {{--                                        </ul>--}}
+                                {{--                                    </div>--}}
+                                {{--                                </li>--}}
                             </ul>
                             <div class="more-comment">
-                                <a href="#">More Comments+</a>
+                                <a href="#" class="loadVideoCmt" data-videoId="">Show Comments+</a>
                             </div>
                         </div>
                     </div>
@@ -254,7 +263,6 @@
             </div>
         </div>
         <!-- video show modal end -->
-
 
     </div>
 @endsection
@@ -265,17 +273,18 @@
         crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script>
     $(document).ready(function () {
-        $('.video-img').on('click', function () {
+        $(document).on('click', '.video-img', function () {
             let userName = $(this).attr('data-userNmae');
             let postId = $(this).attr('data-postId');
             let postDescription = $(this).attr('data-postDescription');
             let postTime = $(this).attr('data-date');
             let postMedia = $(this).attr('data-postImg');
             let userImag = $(this).attr('data-userImg');
+            // let postComment=$(this).attr('data-videoComment');
 
-            console.log(userImag)
-            console.log(postMedia)
-
+            // console.log(postComment,'fghjk')
+            // console.log(postMedia)
+            $('.loadVideoCmt').attr('data-videoId', postId);
             console.log(`{{asset("storage/community/post/videos")}}` + '/' + postMedia)
             $('.userName').text(userName);
             $('.date').text(postTime);
@@ -286,21 +295,162 @@
             v.load();
         })
 
-        $(document).on('click','.fa-paper-plane-o',function (){
-            let postId=$(this).attr('data-postId');
-            console.log(postId);
-
+        $(document).on('click', '.loadVideoCmt', function () {
+            let postId = $(this).attr('data-videoId');
+            let htmlData = $(this).parents('.video-coment-list').find('.post-comment-list');
+            // console.log(htmlData);
+            // return false;
             $.ajax({
-                url:'{{route('community.user.post.comment')}}',
-                type:"POST",
-                data:{
-                    postId:postId,
+                url: "{{route('user.post.comment')}}",
+                type: "GET",
+                data: {
+                    postId: postId,
+                    reqType: "videoComments"
+                },
+                success: function (response) {
+
+                    if (response.status === true) {
+
+                        // console.log(response.html,'cmt');
+                        // $('.cmtText').val('');
+                        htmlData.append(response.html);
+                    }
+
+
+                },
+            })
+
+        })
+
+        $(document).on('click', '.loadChildCmt', function () {
+            let postId = $(this).attr('data-postIdd');
+            let cmtId = $(this).attr('data-commentId');
+            console.log(postId);
+            let htmlData = $(this).parents('.posted-content').find('.post-comment-list')
+            $.ajax({
+                url: "{{route('user.load.child.comment')}}",
+                post: "GET",
+                data: {
+                    postId: postId,
+                    cmtId: cmtId,
+                },
+                success: function (response) {
+
+                    if (response.status === true) {
+
+                        // console.log(response.html,'cmt');
+                        $('.cmtText').val('');
+                        $('.nested-comment-' + cmtId).append(response.html);
+
+                    }
+
+
+                },
+            })
+
+        })
+
+        $(document).on('click', '.fa-paper-plane-o', function () {
+            let postId = $(this).attr('data-postId');
+            let cmtTex = $(this).parents('.vido-coment').find('.commentedText').val();
+            let commentCount = parseInt($(this).parents('.single-upload-video').find('.commentCount').text());
+            let new_comment = $(this).parents('.single-upload-video').find('.commentCount');
+            // console.log(cmtTex);
+            // return false;
+            $.ajax({
+                url: '{{route('community.user.post.comment')}}',
+                type: "POST",
+                data: {
+                    postId: postId,
+                    postComment: cmtTex,
                     '_token': '{{csrf_token()}}'
                 },
-                success:function (response){
+                success: function (response) {
                     console.log(response.msg);
+                    new_comment.text(commentCount += 1)
+
                 }
             })
+
+        })
+
+        $(document).on('click', '.reactionLike', function () {
+
+            let loveReact = $(this).find('.reactionLike');
+
+            if ($(this).hasClass('active fa-heart')) {
+
+                let postId = $(this).attr('data-postIdd');
+
+                let reactionCount = parseInt($(this).closest('.like-react').find('.reactionCount').text());
+                let new_comment = $(this).closest('.like-react').find('.reactionCount');
+                // new_comment.text(reactionCount += 1);
+                // return false;
+                // return false;
+                if (postId !== '') {
+                    $.ajax({
+                        url: '{{route('user.post-all.reaction')}}',
+                        type: 'POST',
+                        data: {
+                            postReaction: 'love',
+                            postId: postId,
+                            reqType: 'storePostReaction',
+                            '_token': '{{csrf_token()}}'
+                        },
+                        success: function (response) {
+
+                            if (response.status === true) {
+                                // newReactionCount.text(reactionCount += 1);
+                                new_comment.text(reactionCount += 1);
+
+                            } else {
+                                // toastr.error(response.msg);
+                            }
+                        },
+                        error: function (err) {
+
+                            // toastr.error("Error with AJAX callback !");
+                        }
+                    })
+                }
+            } else {
+
+                let postId = $(this).attr('data-postIdd');
+                let reactionId = $(this).attr('data-reactionId');
+
+                let reactionCount = parseInt($(this).closest('.like-react').find('.reactionCount').text());
+                let new_comment = $(this).closest('.like-react').find('.reactionCount');
+                // new_comment.text(reactionCount -= 1);
+
+                // return false;
+                if (postId !== '') {
+                    $.ajax({
+                        url: '{{route('user.remove.post.reaction')}}',
+                        type: 'POST',
+                        data: {
+                            postId: postId,
+                            reactionId: reactionId,
+                            reqType: 'removePostReaction',
+                            '_token': '{{csrf_token()}}'
+                        },
+                        success: function (response) {
+
+                            if (response.status === true) {
+                                // newReactionCount.text(reactionCount += 1);
+                                new_comment.text(reactionCount -= 1);
+
+                            } else {
+                                // toastr.error(response.msg);
+                            }
+                        },
+                        error: function (err) {
+
+                            // toastr.error("Error with AJAX callback !");
+                        }
+                    })
+                }
+
+            }
 
         })
 

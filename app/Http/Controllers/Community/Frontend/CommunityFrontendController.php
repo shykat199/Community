@@ -324,25 +324,50 @@ class CommunityFrontendController extends Controller
                                                 <h6><a href="#">' . $postComment->users->name . '</a></h6>
                                                 <span
                                                     class="comment-time">' . \Carbon\Carbon::parse($postComment->created_at)->diffForHumans() . '</span>
-                                            </div>
-                                            <div class="comment-option">
-                                                <button type="button" class="dropdown-toggle comment-option-btn"
-                                                        id="dropdownMenuButton1" data-bs-toggle="dropdown"
-                                                        aria-expanded="false"><i class="fa fa-ellipsis-h"
-                                                                                 aria-hidden="true"></i></button>
-                                                <ul class="dropdown-menu comment-option-dropdown"
-                                                    aria-labelledby="dropdownMenuButton1">
-                                                    <li class="post-option-item" id="editComment"><i
-                                                            class="fa fa-pencil-square-o" aria-hidden="true"></i> Edit
-                                                        comment
-                                                    </li>
-                                                    <li class="post-option-item"><i class="fa fa-trash-o"
-                                                                                    aria-hidden="true"></i> Delete
-                                                        comment
-                                                    </li>
-                                                </ul>
-                                            </div>
-                                        </div>
+                                            </div>';
+
+
+                if ($postComment->user_id === Auth::id()) {
+                    $html .= ' <div class="comment-option">
+                                                    <button type="button" class="dropdown-toggle comment-option-btn"
+                                                            id="dropdownMenuButton1" data-bs-toggle="dropdown"
+                                                            aria-expanded="false"><i class="fa fa-ellipsis-h"
+                                                                                     aria-hidden="true"></i>
+                                                    </button>
+                                                    <ul class="dropdown-menu comment-option-dropdown"
+                                                        aria-labelledby="dropdownMenuButton1">
+                                                        <li class="post-option-item" id="editComment">
+                                                            <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                                                            Edit Comment
+                                                        </li>
+                                                        <li class="post-option-item dltComment"
+                                                            data-commentId="'.$postComment->id.'">
+                                                            <i class="fa fa-trash-o" aria-hidden="true"></i>
+                                                            Delete comment
+                                                        </li>
+                                                    </ul>
+                                                </div>';
+                } else {
+                    $html .= ' <div class="comment-option">
+
+                                                    <button type="button" class="dropdown-toggle comment-option-btn"
+                                                            id="dropdownMenuButton1" data-bs-toggle="dropdown"
+                                                            aria-expanded="false"><i class="fa fa-ellipsis-h"
+                                                                                     aria-hidden="true"></i>
+                                                    </button>
+                                                    <ul class="dropdown-menu comment-option-dropdown"
+                                                        aria-labelledby="dropdownMenuButton1">
+                                                        <li class="post-option-item dltComment"
+                                                            data-commentId="'.$postComment->id.'">
+                                                            <i class="fa fa-trash-o"
+                                                               aria-hidden="true"></i>
+                                                            Delete comment
+                                                        </li>
+                                                    </ul>
+                                                </div>';
+                }
+
+                $html .= '</div>
                                         <div class="comment-div">
                                             <p class="comment-content">' . $postComment->comment_text . '</p>
 
@@ -397,9 +422,7 @@ class CommunityFrontendController extends Controller
                     'msg' => 'Successfully Added.',
                     'html' => $html
                 ]);
-            }
-
-            else {
+            } else {
 
 
                 return \response()->json([
@@ -477,46 +500,222 @@ class CommunityFrontendController extends Controller
 
         if ($request->ajax()) {
 
+            $returnResult = [];
 
-            $postComments = CommunityUserPostComment::with(['userPosts.users.userProfileImages', 'replies.users'])
-                ->where('user_post_id', '=', $request->get('postId'))
-                ->where('user_post_comment_id', '=', 0)
-                ->get();
+            if ($request->get('reqType') === "videoComments") {
+//                dd('1');
+                $postComments = CommunityUserPostComment::with(['userPosts.users.userProfileImages', 'replies.users'])
+                    ->where('user_post_id', '=', $request->get('postId'))
+                    ->where('user_post_comment_id', '=', 0)
+                    ->get();
 
-            $postComments = count($postComments);
-            $postComments = CommunityUserPostComment::with(['userPosts.users.userProfileImages', 'replies.users'])
-                ->where('user_post_id', '=', $request->get('postId'))
-                ->where('user_post_comment_id', '=', 0)
-                ->limit($postComments - 2)->offset(2)->get();
+                $html = '';
 
-//            dd($postComments);
-            $html = '';
-
-            if ($postComments) {
+                if ($postComments) {
 
 //                    dd($postComment);
-                foreach ($postComments as $comment) {
+                    foreach ($postComments as $comment) {
 //                        dd($comment);
-                    $date = Carbon::parse($comment->created_at)->diffForHumans();
-                    $userName = $comment->userPosts->users->name;
-                    $comments = $comment->comment_text;
-                    $commentId = $comment->id;
-                    $html .= '<li class="single-comment post-Comment-' . $commentId . '">
-                                    <!-- parent comment start  -->
-                                    <div class="parent-comment">
-                                        <div class="comment-img">';
-                    if (!empty($comment->users->userProfileImages[0]) && isset($comment->users->userProfileImages[0]) ? $comment->users->userProfileImages[0]->user_profile : '') {
+                        $date = Carbon::parse($comment->created_at)->diffForHumans();
+                        $userName = $comment->userPosts->users->name;
+                        $comments = $comment->comment_text;
+                        $commentId = $comment->id;
+
+
+                        $html .= '<li class="single-comment">
+                                <!-- parent comment start  -->
+                                <div class="parent-comment">
+                                    <div class="comment-img">';
 
                         if (!empty($comment->users->userProfileImages[0]) && isset($comment->users->userProfileImages[0]) ? $comment->users->userProfileImages[0]->user_profile : '') {
 
-                            $html .= '<a href=""><img
+                            if (!empty($comment->users->userProfileImages[0]) && isset($comment->users->userProfileImages[0]) ? $comment->users->userProfileImages[0]->user_profile : '') {
+
+                                $html .= '<a href=""><img
                                                         src="' . asset("storage/community/profile-picture/" . $comment->users->userProfileImages[0]->user_profile) . '"
                                                         alt="image"></a>';
+                            }
+
+                        }
+                        $html .= '</div>
+                                    <div class="comment-details">
+                                        <div class="coment-info">
+                                            <div class="coment-authore-div">
+                                                <h6><a href="#">' . $userName . '</a></h6>
+                                                <span class="comment-time">' . $date . '</span>
+                                            </div>';
+
+                        if ($comment->user_id === Auth::id()) {
+                            $html .= ' <div class="comment-option">
+                                                <button type="button" class="dropdown-toggle comment-option-btn" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false"><i class="fa fa-ellipsis-h" aria-hidden="true"></i></button>
+                                                <ul class="dropdown-menu comment-option-dropdown" aria-labelledby="dropdownMenuButton1">
+                                                    <li class="post-option-item" id="editComment"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Edit
+                                                        comment
+                                                    </li>
+                                                    <li class="post-option-item dltComment" data-commentId="' . $commentId . '"><i class="fa fa-trash-o" aria-hidden="true"></i> Delete
+                                                        comment
+                                                    </li>
+                                                </ul>
+                                            </div>';
+
+                        } else {
+                            $html .= ' <div class="comment-option">
+                                                <button type="button" class="dropdown-toggle comment-option-btn" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false"><i class="fa fa-ellipsis-h" aria-hidden="true"></i></button>
+                                                <ul class="dropdown-menu comment-option-dropdown" aria-labelledby="dropdownMenuButton1">
+                                                    <li class="post-option-item" id="editComment"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Edit
+                                                        comment
+                                                    </li>
+                                                    <li class="post-option-item dltComment" data-commentId="' . $commentId . '"><i class="fa fa-trash-o" aria-hidden="true"></i> Delete
+                                                        comment
+                                                    </li>
+                                                </ul>
+                                            </div>';
                         }
 
+
+                        $html .= ' </div>
+                                        <div class="comment-div">
+                                            <p class="comment-content">' . $comments . '</p>
+                                            <button class="textarea-btn" type="submit">
+                                            <i class="fa fa-paper-plane" data-commentText="' . $comments . '" data-cmtId="' . $commentId . '" data-postId="' . $comment->user_post_id . '"  aria-hidden="true"></i>
+                                            </button>
+                                            <button class="textarea-cancel-btn">Cancel
+                                            </button>
+                                        </div>
+
+
+                                        <ul class="coment-react">
+                                            <li class="comment-like"><a href="javascript:void(0)">Like(0)</a></li>
+                                            <li><a href="javascript:void(0)" class="replay-tag">Replay</a></li>
+                                        </ul>
+                                    </div>
+
+                                    <!-- child comment start  -->
+                                    <div class="child-comment">
+                                        <div class="single-replay-comnt nested-comment-' . $comment->id . '">
+
+
+                                        </div>';
+
+                        if (count($comment->replies) > 0) {
+                            $html .= '<div class="more-comment mt-2">
+                                                <a class="loadChildCmt" data-postIdd="' . $comment->user_post_id . '" data-commentId="' . $comment->id . '">
+                                                   <span class="replay-arrow">
+                                                    <svg x="0" y="0" viewBox="0 0 48 48" style="enable-background:new 0 0 512 512" xml:space="preserve" class=""><g><path d="m47.12 31.403-9.992-9.992a2.98 2.98 0 1 0-4.215 4.216l3.037 3.037C15.565 29.665 2.31 15.984 2.188 1.96c-.004-.507-.716-.61-.874-.144-4.922 14.579 4.03 32.89 27.427 36.201 2.266.295 4.558.519 6.868.681l-2.697 2.697a2.98 2.98 0 1 0 4.215 4.215l9.992-9.992a2.98 2.98 0 0 0 .001-4.215z" data-original="#ffcc66" class=""></path></g></svg>
+                                                    </span> Replay <span class="count">(40)</span></a>
+                                        </div>';
+                        }
+
+                        $html .= ' <div class="new-comment replay-new-comment">';
+                        if (!empty($comment->users->userProfileImages[0]) && isset($comment->users->userProfileImages[0]) ? $comment->users->userProfileImages[0]->user_profile : '') {
+
+                            if (!empty($comment->users->userProfileImages[0]) && isset($comment->users->userProfileImages[0]) ? $comment->users->userProfileImages[0]->user_profile : '') {
+
+                                $html .= '<a class="new-comment-img replay-comment-img"><img
+                                                        src="' . asset("storage/community/profile-picture/" . $comment->users->userProfileImages[0]->user_profile) . '"
+                                                        alt="image"></a>';
+                            }
+
+                        }
+
+                        $html .= ' <div class="new-comment-input replay-commnt-input">
+                                                <input data-cmtId="' . $comment->id . '" class="cmtText"
+                                                type="text" name="cmttext" data-userPostId="' . $comment->user_post_id . '" placeholder="Write a comment....">
+                                                <div class="attached-icon">
+                                                    <a href="#">
+                                                    <i class="fa fa-camera" aria-hidden="true"></i>
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </li>';
+
+
+                        //////////////////////////////////==================END===================///////////////////////////////
+
+//                        $html .=
+
+//                        if (count($comment->replies) > 0) {
+//
+//                            $html .= '<div class="more-comment">
+//                                        <a class="loadChildCmt" data-postIdd="' . $comment->user_post_id . '" data-commentId="' . $comment->id . '">More+</a>
+//                                    </div>';
+//                        }
+
+//                        $html .= ' <!-- child comment start  -->
+//                        <div class="child-comment">
+//
+//                        <div class="new-comment replay-new-comment">';
+//
+//                        $html .= ' <div class="new-comment-input replay-commnt-input">
+//                                                <input data-cmtId="' . $comment->id . '" class="cmtText" type="text"
+//                                                       name="cmttext"
+//                                                       data-userPostId="' . $comment->user_post_id . '"
+//                                                       placeholder="Write a comment....">
+//                                                <div class="attached-icon">
+//                                                    <a href="#"><i class="fa fa-camera" aria-hidden="true"></i></a>
+//                                                </div>
+//                                            </div>
+//                                        </div>
+//                                    </div>
+//                                </div>
+//                        </li>';
                     }
 
-                    $html .= '
+
+                    $returnResult = [
+                        'status' => true,
+                        'msg' => 'Successfully Added',
+                        'postComments' => $postComments,
+                        'html' => $html
+                    ];
+
+
+                }
+
+            } else {
+
+                $postComments = CommunityUserPostComment::with(['userPosts.users.userProfileImages', 'replies.users'])
+                    ->where('user_post_id', '=', $request->get('postId'))
+                    ->where('user_post_comment_id', '=', 0)
+                    ->get();
+
+                $postComments = count($postComments);
+                $postComments = CommunityUserPostComment::with(['userPosts.users.userProfileImages', 'replies.users'])
+                    ->where('user_post_id', '=', $request->get('postId'))
+                    ->where('user_post_comment_id', '=', 0)
+                    ->limit($postComments - 2)->offset(2)->get();
+
+//            dd($postComments);
+                $html = '';
+
+                if ($postComments) {
+
+//                    dd($postComment);
+                    foreach ($postComments as $comment) {
+//                        dd($comment);
+                        $date = Carbon::parse($comment->created_at)->diffForHumans();
+                        $userName = $comment->userPosts->users->name;
+                        $comments = $comment->comment_text;
+                        $commentId = $comment->id;
+                        $html .= '<li class="single-comment post-Comment-' . $commentId . '">
+                                    <!-- parent comment start  -->
+                                    <div class="parent-comment">
+                                        <div class="comment-img">';
+                        if (!empty($comment->users->userProfileImages[0]) && isset($comment->users->userProfileImages[0]) ? $comment->users->userProfileImages[0]->user_profile : '') {
+
+                            if (!empty($comment->users->userProfileImages[0]) && isset($comment->users->userProfileImages[0]) ? $comment->users->userProfileImages[0]->user_profile : '') {
+
+                                $html .= '<a href=""><img
+                                                        src="' . asset("storage/community/profile-picture/" . $comment->users->userProfileImages[0]->user_profile) . '"
+                                                        alt="image"></a>';
+                            }
+
+                        }
+
+                        $html .= '
                                         </div>
                                         <div class="comment-details">
                                             <div class="coment-info">
@@ -525,8 +724,8 @@ class CommunityFrontendController extends Controller
                                                     <span class="comment-time">' . $date . '</span>
                                                 </div>
                                                 </div>';
-                    if ($comment->user_id === Auth::id()) {
-                        $html .= '<div class="comment-option">
+                        if ($comment->user_id === Auth::id()) {
+                            $html .= '<div class="comment-option">
                                                     <button type="button" class="dropdown-toggle comment-option-btn" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false"><i class="fa fa-ellipsis-h" aria-hidden="true"></i></button>
                                                     <ul class="dropdown-menu comment-option-dropdown" aria-labelledby="dropdownMenuButton1">
                                                         <li class="post-option-item" id="editComment"><i class="fa fa-pencil-square-o" aria-hidden="true"></i>  Edit comment</li>
@@ -534,8 +733,8 @@ class CommunityFrontendController extends Controller
                                                             data-commentId="' . $commentId . '"><i class="fa fa-trash-o" aria-hidden="true"></i>Delete comment</li>
                                                     </ul>
                                                 </div>';
-                    } else {
-                        $html .= '<div class="comment-option">
+                        } else {
+                            $html .= '<div class="comment-option">
                                                     <button type="button" class="dropdown-toggle comment-option-btn" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false"><i class="fa fa-ellipsis-h" aria-hidden="true"></i></button>
                                                     <ul class="dropdown-menu comment-option-dropdown" aria-labelledby="dropdownMenuButton1">
                                                         <li class="post-option-item" id="editComment"><i class="fa fa-pencil-square-o" aria-hidden="true"></i>  Edit comment</li>
@@ -543,8 +742,8 @@ class CommunityFrontendController extends Controller
                                                             data-commentId="' . $commentId . '"><i class="fa fa-trash-o" aria-hidden="true"></i>  Delete comment</li>
                                                     </ul>
                                                 </div>';
-                    }
-                    $html .= ' </div>
+                        }
+                        $html .= ' </div>
                                             <div class="comment-div">
                                                 <p class="comment-content">' . $comments . '</p>
 
@@ -562,31 +761,31 @@ class CommunityFrontendController extends Controller
                                             </ul>
                                         </div>';
 
-                    if (count($comment->replies) > 0) {
+                        if (count($comment->replies) > 0) {
 
-                        $html .= '<div class="more-comment">
+                            $html .= '<div class="more-comment">
                                         <a class="loadChildCmt" data-postIdd="' . $comment->user_post_id . '" data-commentId="' . $comment->id . '">More+</a>
                                     </div>';
-                    }
+                        }
 
-                    $html .= ' <!-- child comment start  -->
+                        $html .= ' <!-- child comment start  -->
                         <div class="child-comment">
 
                         <div class="single-replay-comnt nested-comment-' . $comment->id . '"></div>
 
                         <div class="new-comment replay-new-comment">';
 
-                    if (!empty($comment->users->userProfileImages[0]) && isset($comment->users->userProfileImages[0]) ? $comment->users->userProfileImages[0]->user_profile : '') {
-
                         if (!empty($comment->users->userProfileImages[0]) && isset($comment->users->userProfileImages[0]) ? $comment->users->userProfileImages[0]->user_profile : '') {
 
-                            $html .= '<a class="new-comment-img replay-comment-img"><img
+                            if (!empty($comment->users->userProfileImages[0]) && isset($comment->users->userProfileImages[0]) ? $comment->users->userProfileImages[0]->user_profile : '') {
+
+                                $html .= '<a class="new-comment-img replay-comment-img"><img
                                                         src="' . asset("storage/community/profile-picture/" . $comment->users->userProfileImages[0]->user_profile) . '"
                                                         alt="image"></a>';
-                        }
+                            }
 
-                    }
-                    $html .= ' <div class="new-comment-input replay-commnt-input">
+                        }
+                        $html .= ' <div class="new-comment-input replay-commnt-input">
                                                 <input data-cmtId="' . $comment->id . '" class="cmtText" type="text"
                                                        name="cmttext"
                                                        data-userPostId="' . $comment->user_post_id . '"
@@ -599,16 +798,18 @@ class CommunityFrontendController extends Controller
                                     </div>
                                 </div>
                         </li>';
+                    }
+
+
+                    $returnResult = [
+                        'status' => true,
+                        'msg' => 'Successfully Added',
+                        'postComments' => $postComments,
+                        'html' => $html
+                    ];
+
+
                 }
-
-
-                $returnResult = [
-                    'status' => true,
-                    'msg' => 'Successfully Added',
-                    'postComments' => $postComments,
-                    'html' => $html
-                ];
-
 
             }
 

@@ -121,6 +121,7 @@ Route::middleware(['user'])->group(function (){
     //Ajax get all Comments........
     Route::get('/user/get-all-comments',[GetCommentController::class,'getAllComments'])->name('users.get-all-comments');
     Route::post('/user/store-all-reactions',[AllReactionController::class,'allAjax'])->name('user.post-all.reaction');
+    Route::post('/user/remove-reactions',[AllReactionController::class,'allAjax'])->name('user.remove.post.reaction');
 
     //Ajax Delete Comments
     Route::get('/user/delete-all-comments',[DeleteAllCommentController::class,'allAjaxDelete'])->name('user.delete.comments');
