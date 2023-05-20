@@ -929,6 +929,7 @@
                                     Swal.fire('Saved!', '', 'success')
                                     hideDivChildCmt.hide();
                                     hideDivParentCmt.hide();
+                                    // new_comment.text(commentCount-=1);
 
                                 } else {
                                     // toastr.error(response.msg);

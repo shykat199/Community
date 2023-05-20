@@ -124,7 +124,7 @@
                     <div class="video-img" data-bs-toggle="modal" data-bs-target="#videoShow"
                          data-postId="{{$video->pId}}"
                          data-postDescription="{{$video->post_description}}"
-                         data-userNmae="{{$video->name}}"
+                         data-userName="{{$video->name}}"
                          data-date="{{\Carbon\Carbon::parse( $video->created_at)->format('d M, Y')}}"
                          data-postImg="{{$video->postMedia}}"
 
@@ -217,7 +217,7 @@
                                                                     alt="img"></a>
                             </div>
                             <div class="page-title">
-                                <a href="#"></a>
+                                <a href="#" class="userName"></a>
                                 <span class="date"></span>
                             </div>
                         </div>
@@ -232,30 +232,10 @@
 
                         <div class="vido-cm-div video-coment-list">
                             <ul class="post-comment-list ">
-                                {{--                                <li class="single-comment">--}}
-                                {{--                                    <div class="comment-img">--}}
-                                {{--                                        <a href="#">--}}
-                                {{--                                            <img--}}
-                                {{--                                                src="{{asset("community-frontend/assets/images/community/home/news-post/comment01.jpg")}}"--}}
-                                {{--                                                alt="image">--}}
-                                {{--                                        </a>--}}
-                                {{--                                    </div>--}}
-                                {{--                                    <div class="comment-details">--}}
-                                {{--                                        <div class="coment-info">--}}
-                                {{--                                            <h6><a href="#">David Moore</a></h6>--}}
-                                {{--                                            <span class="comment-time">10 Mint Ago</span>--}}
-                                {{--                                        </div>--}}
-                                {{--                                        <p class="comment-content">Praesent sapien massa convallis a pellentesque non--}}
-                                {{--                                            nisi curabitur non nulla sit amet nisl tempus convallis lectus.</p>--}}
-                                {{--                                        <ul class="coment-react">--}}
-                                {{--                                            <li class="comment-like"><a href="#">Like(2)</a></li>--}}
-                                {{--                                            <li><a href="#">Replay</a></li>--}}
-                                {{--                                        </ul>--}}
-                                {{--                                    </div>--}}
-                                {{--                                </li>--}}
+
                             </ul>
                             <div class="more-comment">
-                                <a href="#" class="loadVideoCmt" data-videoId="">Show Comments+</a>
+                                <a href="javascript:;" class="loadVideoCmt" data-videoId="">Show Comments+</a>
                             </div>
                         </div>
                     </div>
@@ -274,7 +254,7 @@
 <script>
     $(document).ready(function () {
         $(document).on('click', '.video-img', function () {
-            let userName = $(this).attr('data-userNmae');
+            let userName = $(this).attr('data-userName');
             let postId = $(this).attr('data-postId');
             let postDescription = $(this).attr('data-postDescription');
             let postTime = $(this).attr('data-date');
@@ -282,7 +262,7 @@
             let userImag = $(this).attr('data-userImg');
             // let postComment=$(this).attr('data-videoComment');
 
-            // console.log(postComment,'fghjk')
+            console.log(userName,'fghjk')
             // console.log(postMedia)
             $('.loadVideoCmt').attr('data-videoId', postId);
             console.log(`{{asset("storage/community/post/videos")}}` + '/' + postMedia)
@@ -298,6 +278,7 @@
         $(document).on('click', '.loadVideoCmt', function () {
             let postId = $(this).attr('data-videoId');
             let htmlData = $(this).parents('.video-coment-list').find('.post-comment-list');
+            $(this).hide();
             // console.log(htmlData);
             // return false;
             $.ajax({
@@ -350,6 +331,69 @@
 
         })
 
+
+        $(document).on('click', '.dltComment', function () {
+            // console.log(commentId);
+            // return false;
+            let commentId = $(this).attr('data-commentId');
+            let hideDivChildCmt = $(this).parents('.nested-comment-' + commentId);
+            let hideDivParentCmt = $(this).parents('.post-Comment-' + commentId);
+            // console.log(commentId);
+
+            let commentCount = parseInt($(this).parents('.row').find('.commentCount').text());
+            // console.log(commentCount);
+            let new_comment = $(this).parents('.row').find('.commentCount');
+
+
+
+            // return false;
+            Swal.fire({
+                title: 'Do you want to delete the comment?',
+                showDenyButton: true,
+                showCancelButton: false,
+                confirmButtonColor: "#DD6B55",
+                denyButtonColor: '#8CD4F5',
+                confirmButtonText: `Delete`,
+                denyButtonText: `Don't Delete`,
+            }).then((result) => {
+                /* Read more about isConfirmed, isDenied below */
+                if (result.isConfirmed) {
+                    if (commentId !== '') {
+                        // console.log(commentId)
+                        // return false;
+                        $.ajax({
+                            url: '{{route('user.delete.comments')}}',
+                            type: 'GET',
+                            data: {
+                                commentId: commentId,
+                                reqType: 'deleteUserPostComment'
+                            },
+                            success: function (response) {
+
+                                if (response.status === true) {
+
+                                    Swal.fire('Saved!', '', 'success')
+                                    hideDivChildCmt.hide();
+                                    hideDivParentCmt.hide();
+                                    new_comment.text(commentCount-=1);
+
+                                } else {
+                                    // toastr.error(response.msg);
+                                }
+                            },
+                            // error: function (err) {
+                            //
+                            //     toastr.error("Error with AJAX callback !");
+                            // }
+                        })
+                    }
+                } else if (result.isDenied) {
+                    Swal.fire('Changes are not saved', '', 'info')
+                }
+            })
+
+        })
+
         $(document).on('click', '.fa-paper-plane-o', function () {
             let postId = $(this).attr('data-postId');
             let cmtTex = $(this).parents('.vido-coment').find('.commentedText').val();
@@ -384,9 +428,7 @@
 
                 let reactionCount = parseInt($(this).closest('.like-react').find('.reactionCount').text());
                 let new_comment = $(this).closest('.like-react').find('.reactionCount');
-                // new_comment.text(reactionCount += 1);
-                // return false;
-                // return false;
+
                 if (postId !== '') {
                     $.ajax({
                         url: '{{route('user.post-all.reaction')}}',
