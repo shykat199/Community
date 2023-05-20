@@ -29,7 +29,7 @@ class CommunityUserPost extends Model
     }
     public function newsFeedComments(): \Illuminate\Database\Eloquent\Relations\HasMany
     {
-        return $this->hasMany(CommunityUserPostComment::class,'user_post_id','postId');
+        return $this->hasMany(CommunityUserPostComment::class,'user_post_id','postId')->where('user_post_comment_id','=',0)->latest();
     }
 
     public function commentLimits(): \Illuminate\Database\Eloquent\Relations\HasMany

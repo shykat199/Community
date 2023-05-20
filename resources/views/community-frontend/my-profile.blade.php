@@ -720,105 +720,22 @@
                                     {{--                                    @dd($myPost)--}}
                                     <ul class="post-comment-list">
 
-                                        @foreach($myPost->newsFeedComments as $postComment)
-                                            {{--                                            @dd($postComment)--}}
-                                            <li class="single-comment post-Comment-{{$postComment->id}}">
-                                                <!-- parent comment start  -->
-                                                <div class="parent-comment">
-                                                    <div class="comment-img">
-                                                        @if(!empty($postComment->users->userProfileImages[0]) && isset($postComment->users->userProfileImages[0])?$postComment->users->userProfileImages[0]:'')
+                                            @php
+                                                $cmtIdArray=[];
+                                                foreach ($myPost->newsFeedComments as $cId){
+                                                    $cmtIdArray[]=$cId->id;
+                                                }
+                                            @endphp
+                                            @foreach($myPost->newsFeedComments as $postComment)
 
+                                                <li class="single-comment post-Comment-{{$postComment->id}}">
+                                                    <div class="parent-comment">
+                                                        <div class="comment-img">
                                                             @if(!empty($postComment->users->userProfileImages[0]) && isset($postComment->users->userProfileImages[0])?$postComment->users->userProfileImages[0]:'')
-                                                                <a href=""><img
-                                                                        src="{{asset("storage/community/profile-picture/".$postComment->users->userProfileImages[0]->user_profile)}}"
-                                                                        alt="image"></a>
-                                                            @else
-                                                                <a href=""><img
-                                                                        src="{{asset("community-frontend/assets/images/community/home/news-post/Athore01.jpg")}}"
-                                                                        alt="image">
-                                                                </a>
-                                                            @endif
-                                                        @endif
-                                                    </div>
-                                                    <div class="comment-details">
-                                                        <div class="coment-info">
-                                                            <div class="coment-authore-div">
-                                                                <h6><a href="#">{{$postComment->users->name}}</a></h6>
-                                                                <span
-                                                                    class="comment-time">{{\Carbon\Carbon::parse($postComment->created_at)->diffForHumans()}}</span>
-                                                            </div>
-                                                            <div class="comment-option">
-                                                                {{--                                                                @dd($postComment)--}}
-                                                                @if($postComment->user_id===Auth::id())
-                                                                    <button type="button"
-                                                                            class="dropdown-toggle comment-option-btn"
-                                                                            id="dropdownMenuButton1"
-                                                                            data-bs-toggle="dropdown"
-                                                                            aria-expanded="false"><i
-                                                                            class="fa fa-ellipsis-h"
-                                                                            aria-hidden="true"></i>
-                                                                    </button>
 
-                                                                    <ul class="dropdown-menu comment-option-dropdown"
-                                                                        aria-labelledby="dropdownMenuButton1">
-                                                                        <li class="post-option-item" id="editComment"><i
-                                                                                class="fa fa-pencil-square-o"
-                                                                                aria-hidden="true"></i> Edit comment
-                                                                        </li>
-                                                                        <li class="post-option-item dltComment"
-                                                                            data-commentid="{{$postComment->id}}"><i
-                                                                                class="fa fa-trash-o"
-                                                                                aria-hidden="true"></i> Delete Comment
-                                                                        </li>
-                                                                    </ul>
-                                                                @endif
-
-
-                                                            </div>
-                                                        </div>
-                                                        <div class="comment-div">
-                                                            <p class="comment-content">{{$postComment->comment_text}}</p>
-                                                            <button id="textarea_btn" type="submit">
-                                                                <i class="fa fa-paper-plane"
-                                                                   data-commentText="{{$postComment->comment_text}}"
-                                                                   data-cmtId="{{$postComment->id}}"
-                                                                   data-postId="{{$postComment->user_post_id}}"
-                                                                   aria-hidden="true"></i>
-                                                            </button>
-                                                        </div>
-                                                        <ul class="coment-react">
-                                                            <li class="comment-like"><a href="#">Like(2)</a></li>
-                                                            <li><a href="javascript:void(0)"
-                                                                   class="replay-tag">Replay</a></li>
-                                                        </ul>
-                                                    </div>
-
-
-                                                    <!-- child comment start  -->
-                                                    {{--                                                    @dd($postComment)--}}
-                                                    <div class="child-comment">
-                                                        <div
-                                                            class="single-replay-comnt nested-comment-{{$postComment->id}}">
-
-
-                                                        </div>
-
-                                                        {{--                                        @dd($postComment)--}}
-                                                        @if( count($postComment->replies)>0)
-                                                            <div class="more-comment">
-                                                                <a class="loadChildCmt"
-                                                                   data-postIdd="{{$postComment->user_post_id}}"
-                                                                   data-commentId="{{$postComment->id}}">More+</a>
-                                                            </div>
-                                                        @endif
-
-                                                        <div class="new-comment replay-new-comment">
-
-                                                            @if(!empty($postComment->users->userProfileImages[0]) && isset($postComment->users->userProfileImages[0])?$postComment->users->userProfileImages[0]:'')
 
                                                                 @if(!empty($postComment->users->userProfileImages[0]) && isset($postComment->users->userProfileImages[0])?$postComment->users->userProfileImages[0]:'')
-                                                                    <a href=""
-                                                                       class="new-comment-img replay-comment-img"><img
+                                                                    <a href=""><img
                                                                             src="{{asset("storage/community/profile-picture/".$postComment->users->userProfileImages[0]->user_profile)}}"
                                                                             alt="image"></a>
                                                                 @else
@@ -828,32 +745,142 @@
                                                                     </a>
                                                                 @endif
                                                             @endif
-                                                            {{--                                            @dd($postComment)--}}
-                                                            <div class="new-comment-input replay-commnt-input">
-                                                                <input data-cmtId="{{$postComment->id}}" class="cmtText"
-                                                                       type="text"
-                                                                       name="cmttext"
-                                                                       data-userPostId="{{$postComment->user_post_id}}"
-                                                                       placeholder="Write a comment....">
-                                                                <div class="attached-icon">
-                                                                    <a href="#"><i class="fa fa-camera"
-                                                                                   aria-hidden="true"></i></a>
+                                                        </div>
+                                                        <div class="comment-details">
+                                                            <div class="coment-info">
+                                                                <div class="coment-authore-div">
+                                                                    <h6><a href="#">{{$postComment->users->name}}</a></h6>
+                                                                    <span
+                                                                        class="comment-time">{{\Carbon\Carbon::parse($postComment->created_at)->diffForHumans()}}</span>
+                                                                </div>
+
+                                                                @if($postComment->user_id === Auth::id())
+                                                                    <div class="comment-option">
+                                                                        <button type="button" class="dropdown-toggle comment-option-btn"
+                                                                                id="dropdownMenuButton1" data-bs-toggle="dropdown"
+                                                                                aria-expanded="false"><i class="fa fa-ellipsis-h"
+                                                                                                         aria-hidden="true"></i>
+                                                                        </button>
+                                                                        <ul class="dropdown-menu comment-option-dropdown"
+                                                                            aria-labelledby="dropdownMenuButton1" style="">
+                                                                            <li class="post-option-item" id="editComment">
+                                                                                <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                                                                                Edit Comment
+                                                                            </li>
+                                                                            <li class="post-option-item dltComment"
+                                                                                data-commentId="{{$postComment->id}}">
+                                                                                <i class="fa fa-trash-o" aria-hidden="true"></i>
+                                                                                Delete comment
+                                                                            </li>
+                                                                        </ul>
+                                                                    </div>
+
+                                                                @else
+                                                                    <div class="comment-option">
+                                                                        <button type="button" class="dropdown-toggle comment-option-btn"
+                                                                                id="dropdownMenuButton1" data-bs-toggle="dropdown"
+                                                                                aria-expanded="false"><i class="fa fa-ellipsis-h"
+                                                                                                         aria-hidden="true"></i>
+                                                                        </button>
+                                                                        <ul class="dropdown-menu comment-option-dropdown"
+                                                                            aria-labelledby="dropdownMenuButton1" style="">
+                                                                            <li class="post-option-item dltComment"
+                                                                                data-commentId="{{$postComment->id}}">
+                                                                                <i class="fa fa-trash-o" aria-hidden="true"></i>
+                                                                                Delete comment
+                                                                            </li>
+                                                                        </ul>
+                                                                    </div>
+
+                                                                @endif
+
+
+                                                            </div>
+
+                                                            <div class="comment-div">
+                                                                <p class="comment-content">{{$postComment->comment_text}}</p>
+
+                                                                <button class="textarea-btn" type="submit" style="display: none;">
+                                                                    <i class="fa fa-paper-plane"
+                                                                       data-commentText="{{$postComment->comment_text}}"
+                                                                       data-cmtId="{{$postComment->id}}"
+                                                                       data-postId="{{$postComment->user_post_id}}"
+
+                                                                       aria-hidden="true"></i>
+                                                                </button>
+                                                                <button class="textarea-cancel-btn" style="display: none;">Cancel</button>
+                                                            </div>
+                                                            <ul class="coment-react">
+                                                                <li class="comment-like"><a href="#">Like(0)</a></li>
+                                                                <li><a href="javascript:void(0)" class="replay-tag">Replay</a></li>
+                                                            </ul>
+                                                        </div>
+
+                                                        <!-- child comment start  -->
+                                                        <div class="child-comment">
+
+                                                            <div class="single-replay-comnt nested-comment-{{$postComment->id}}">
+
+
+                                                            </div>
+
+
+                                                            @if( count($postComment->replies)>0)
+                                                                <div class="more-comment mt-2">
+                                                                    <a class="loadChildCmt" data-postIdd="{{$myPost->postId}}"
+                                                                       data-commentId="{{$postComment->id}}">
+                                                                                           <span class="replay-arrow">
+                                                                                            <svg x="0" y="0"
+                                                                                                 viewBox="0 0 48 48"
+                                                                                                 style="enable-background:new 0 0 512 512"
+                                                                                                 xml:space="preserve"
+                                                                                                 class=""><g><path
+                                                                                                        d="m47.12 31.403-9.992-9.992a2.98 2.98 0 1 0-4.215 4.216l3.037 3.037C15.565 29.665 2.31 15.984 2.188 1.96c-.004-.507-.716-.61-.874-.144-4.922 14.579 4.03 32.89 27.427 36.201 2.266.295 4.558.519 6.868.681l-2.697 2.697a2.98 2.98 0 1 0 4.215 4.215l9.992-9.992a2.98 2.98 0 0 0 .001-4.215z"
+                                                                                                        data-original="#ffcc66"
+                                                                                                        class=""></path></g></svg>
+                                                                                            </span> Replay <span
+                                                                            class="count">(0)</span></a>
+                                                                </div>
+                                                            @endif
+
+                                                            <div class="new-comment replay-new-comment">
+
+
+                                                                @if(!empty($postComment->users->userProfileImages[0]) && isset($postComment->users->userProfileImages[0])?$postComment->users->userProfileImages[0]:'')
+
+                                                                    @if(!empty($postComment->users->userProfileImages[0]) && isset($postComment->users->userProfileImages[0])?$postComment->users->userProfileImages[0]:'')
+                                                                        <a href="" class="new-comment-img replay-comment-img"><img
+                                                                                src="{{asset("storage/community/profile-picture/".$postComment->users->userProfileImages[0]->user_profile)}}"
+                                                                                alt="image"></a>
+                                                                    @else
+                                                                        <a href=""><img
+                                                                                src="{{asset("community-frontend/assets/images/community/home/news-post/Athore01.jpg")}}"
+                                                                                alt="image">
+                                                                        </a>
+                                                                    @endif
+                                                                @endif
+                                                                <div class="new-comment-input replay-commnt-input">
+                                                                    <input data-cmtId="{{$postComment->id}}" class="cmtText" type="text"
+                                                                           name="cmttext" data-userPostId="{{$postComment->user_post_id}}"
+                                                                           placeholder="Write a comment....">
+                                                                    <div class="attached-icon">
+                                                                        <a href="#"><i class="fa fa-camera" aria-hidden="true"></i></a>
+                                                                    </div>
                                                                 </div>
                                                             </div>
                                                         </div>
                                                     </div>
-                                                </div>
-                                            </li>
+                                                </li>
 
-                                        @endforeach
+                                            @endforeach
 
-                                        {{--                                        @dd($myPost)--}}
+
 
                                     </ul>
 
                                     @if(count($myPost->newsFeedComments)>0)
                                         <div class="more-comment">
-                                            <a class="checkCmt" data-postIdd="{{$myPost->postId}}">More Comments+</a>
+                                            <a class="checkCmt justify-content-center" data-postIdd="{{$myPost->postId}}"  data-commentid="{{json_encode($cmtIdArray)}}">More Comments+</a>
                                         </div>
                                     @endif
 
@@ -1575,6 +1602,8 @@
 
         $(document).on('click', '.checkCmt', function () {
             let pPostId = $(this).attr('data-postIdd')
+            let commentId = $(this).attr('data-commentId')
+
             $(this).hide();
             let htmlData = $(this).parents('.posted-content').find('.post-comment-list')
             console.log(pPostId);
@@ -1583,6 +1612,7 @@
                 type: 'GET',
                 data: {
                     pPostId: pPostId,
+                    commentId:commentId,
                     reqTyp: 'userAllCmt'
                 },
                 success: function (response) {
@@ -1645,6 +1675,9 @@
             let commentId = $(this).attr('data-commentId');
             let hideDivChildCmt = $(this).parents('.nested-comment-' + commentId).hide();
             let hideDivParentCmt = $(this).parents('.post-Comment-' + commentId).hide();
+
+            let commentCount=parseInt($(this).parents('.posted-content').find('.commentCount').text());
+            let newCommentCount=$(this).parents('.posted-content').find('.commentCount');
             // console.log(commentId);
 
             // return false;
@@ -1673,6 +1706,9 @@
 
                                 if (response.status === true) {
 
+                                    newCommentCount.text(commentCount-=1);
+                                    hideDivChildCmt.hide();
+                                    hideDivParentCmt.hide();
                                     Swal.fire('Saved!', '', 'success')
 
                                 } else {

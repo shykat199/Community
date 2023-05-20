@@ -324,10 +324,7 @@ class CommunityFrontendController extends Controller
                     'msg' => 'Successfully Added.',
                     'html' => $html
                 ]);
-            }
-
-
-            else {
+            } else {
 
 
                 return \response()->json([
@@ -352,7 +349,8 @@ class CommunityFrontendController extends Controller
     {
 
         if ($request->ajax()) {
-            $storeCmtOfCmt = CommunityUserPostComment::create([
+
+            $storeComments = CommunityUserPostComment::create([
                 'user_id' => Auth::id(),
                 'user_post_id' => $request->get('user_post_id'),
                 'user_post_comment_id' => $request->get('cmtId'),
@@ -360,32 +358,65 @@ class CommunityFrontendController extends Controller
             ]);
 
             $html = '';
-            if ($storeCmtOfCmt) {
-//                dd($storeComments->users->userProfileImages[0]->user_profile);
-                $userProfileImages = $storeCmtOfCmt->users->userProfileImages[0]->user_profile;
-                $html .= '<div class="single-replay-comnt">
-                                    <div class="replay-coment-box">
-                                        <div class="replay-comment-img">
-                                            <a href="#">';
+            if ($storeComments) {
+//
+                $html .= '<div class="single-replay-comnt ' . $storeComments->id . '">
+                                                <div class="replay-coment-box comment-details">
+                                                    <div class="replay-comment-img">';
+//
+                if (!empty($storeComments->users->userProfileImages[0]) && isset($storeComments->users->userProfileImages[0]) ? $storeComments->users->userProfileImages[0]->user_profile : '') {
+                    if (!empty($storeComments->users->userProfileImages[0]) && isset($storeComments->users->userProfileImages[0]) ? $storeComments->users->userProfileImages[0]->user_profile : '') {
+                        $html .= '<a href=""><img src="' . asset("storage/community/profile-picture/" . $storeComments->users->userProfileImages[0]->user_profile) . '"
+                                                                          alt="image"></a>';
+                    }
 
-                if (isset($storeCmtOfCmt->users->userProfileImages)) {
-                    $html .= ' <img src="' . asset("storage/community/profile-picture/$userProfileImages") . '" alt="image">';
                 } else {
                     $html .= '<img src="' . asset("community-frontend/assets/images/community/home/news-post/comment01.jpg") . '"alt="image">';
+
                 }
 
-                $html .= '</a>
-                                      </div>
-                                        <div class="replay-comment-details">
-                                            <div class="replay-coment-info">
-                                                <h6><a class="replay-comnt-name" href="#">' . Auth::user()->name . '</a></h6>
-                                                <span class="replay-time-comnt">' . Carbon::parse($storeCmtOfCmt->created_at)->diffForHumans() . '</span>
-                                            </div>
-                                            <p class="comment-content">' . $storeCmtOfCmt->comment_text . '</p>
-                                        </div>
-                                    </div>
-                                </div>';
+                $html .= '</div>
+                                                    <div class="replay-comment-details comment-details">
+                                                        <div class="replay-coment-info coment-info">
+                                                            <div>
+                                                                <h6><a class="replay-comnt-name" href="#">' . Auth::user()->name . '</a></h6>
+                                                                <span class="replay-time-comnt">' . \Carbon\Carbon::parse($storeComments->created_at)->diffForHumans() . '</span>
+                                                            </div>';
 
+                if ($storeComments->user_id === Auth::id()) {
+                    $html .= '<div class="comment-option">
+                                                    <button type="button" class="dropdown-toggle comment-option-btn" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                                                    <i class="fa fa-ellipsis-h" aria-hidden="true"></i>
+                                                    </button>
+                                                    <ul class="dropdown-menu comment-option-dropdown" aria-labelledby="dropdownMenuButton1" style="">
+                                                        <li class="post-option-item" id="editComment"><i class="fa fa-pencil-square-o" aria-hidden="true"></i>  Edit comment</li>
+                                                        <li class="post-option-item dltComment" data-commentId="' . $storeComments->id . '"><i class="fa fa-trash-o" aria-hidden="true"></i>  Delete comment</li>
+                                                    </ul>
+                                                </div> ';
+                } else {
+                    $html .= '<div class="comment-option">
+                                                    <button type="button" class="dropdown-toggle comment-option-btn" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                                                    <i class="fa fa-ellipsis-h" aria-hidden="true"></i>
+                                                    </button>
+                                                    <ul class="dropdown-menu comment-option-dropdown" aria-labelledby="dropdownMenuButton1" style="">
+                                                        <li class="post-option-item dltComment" data-commentId="' . $storeComments->id . '"><i class="fa fa-trash-o" aria-hidden="true"></i>  Delete comment</li>
+                                                    </ul>
+                                                </div> ';
+                }
+
+
+                $html .= ' </div>
+                                                        <div class="comment-div">
+                                                            <p class="comment-content">' . $storeComments->comment_text . '</p>
+                                                            <button class="textarea-btn" type="submit" style="display: none;">
+                                                            <i class="fa fa-paper-plane" data-commenttext="check Child" data-cmtId="' . $storeComments->id . '" data-postId="' . $storeComments->user_post_id . ' aria-hidden="true"></i>
+                                                            </button>
+                                                            <button class="textarea-cancel-btn" style="display: none;">Cancel</button>
+
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>';
 
             }
 
@@ -557,19 +588,14 @@ class CommunityFrontendController extends Controller
                 ];
 
             }
-
             else {
 
 //                $postComments = count($postComments);
                 $newPostComments = CommunityUserPostComment::with(['userPosts.users.userProfileImages', 'replies.users'])
                     ->where('user_post_id', '=', $request->get('postId'))
                     ->where('user_post_comment_id', '=', 0)
-                    ->whereNotIn('community_user_post_comments.id',(array)json_decode($request->get('commentId'), true, 512, JSON_THROW_ON_ERROR))
+                    ->whereNotIn('community_user_post_comments.id', (array)json_decode($request->get('commentId'), true, 512, JSON_THROW_ON_ERROR))
                     ->latest()->get();
-
-
-//                dd($newPostComments);
-
 
                 if ($newPostComments) {
 
@@ -656,7 +682,7 @@ class CommunityFrontendController extends Controller
                                         </div>';
 
 
-                        if (empty($comment->replies)) {
+                        if (count($comment->replies)>0) {
 
                             $html .= '<div class="more-comment mt-2">
                                                 <a class="loadChildCmt" data-postIdd="' . $comment->user_post_id . '"
