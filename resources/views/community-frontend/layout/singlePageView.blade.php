@@ -405,15 +405,22 @@
                     </ul>
 
                     <ul class="post-comment-list">
-                        {{--All Comments List--}}
+                        @php
+                            $cmtIdArray=[];
+                            foreach ($post->comments as $cId){
+                                $cmtIdArray[]=$cId->id;
+                            }
+                        @endphp
+
+
 
                         @foreach($post->comments as $postComment)
 
                             <li class="single-comment post-Comment-{{$postComment->id}}">
-                                <!-- parent comment start  -->
                                 <div class="parent-comment">
                                     <div class="comment-img">
                                         @if(!empty($postComment->users->userProfileImages[0]) && isset($postComment->users->userProfileImages[0])?$postComment->users->userProfileImages[0]:'')
+
 
                                             @if(!empty($postComment->users->userProfileImages[0]) && isset($postComment->users->userProfileImages[0])?$postComment->users->userProfileImages[0]:'')
                                                 <a href=""><img
@@ -440,36 +447,34 @@
                                                     <button type="button" class="dropdown-toggle comment-option-btn"
                                                             id="dropdownMenuButton1" data-bs-toggle="dropdown"
                                                             aria-expanded="false"><i class="fa fa-ellipsis-h"
-                                                                                     aria-hidden="true"></i></button>
+                                                                                     aria-hidden="true"></i>
+                                                    </button>
                                                     <ul class="dropdown-menu comment-option-dropdown"
-                                                        aria-labelledby="dropdownMenuButton1">
-                                                        <li class="post-option-item" id="editComment"><i
-                                                                class="fa fa-pencil-square-o" aria-hidden="true"></i>
-                                                            Edit comment
+                                                        aria-labelledby="dropdownMenuButton1" style="">
+                                                        <li class="post-option-item" id="editComment">
+                                                            <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                                                            Edit Comment
                                                         </li>
                                                         <li class="post-option-item dltComment"
                                                             data-commentId="{{$postComment->id}}">
-                                                            <i class="fa fa-trash-o" aria-hidden="true"></i> Delete
-                                                            Comment
+                                                            <i class="fa fa-trash-o" aria-hidden="true"></i>
+                                                            Delete comment
                                                         </li>
                                                     </ul>
                                                 </div>
 
                                             @else
-
                                                 <div class="comment-option">
-
                                                     <button type="button" class="dropdown-toggle comment-option-btn"
                                                             id="dropdownMenuButton1" data-bs-toggle="dropdown"
                                                             aria-expanded="false"><i class="fa fa-ellipsis-h"
                                                                                      aria-hidden="true"></i>
                                                     </button>
                                                     <ul class="dropdown-menu comment-option-dropdown"
-                                                        aria-labelledby="dropdownMenuButton1">
+                                                        aria-labelledby="dropdownMenuButton1" style="">
                                                         <li class="post-option-item dltComment"
                                                             data-commentId="{{$postComment->id}}">
-                                                            <i class="fa fa-trash-o"
-                                                               aria-hidden="true"></i>
+                                                            <i class="fa fa-trash-o" aria-hidden="true"></i>
                                                             Delete comment
                                                         </li>
                                                     </ul>
@@ -479,38 +484,55 @@
 
 
                                         </div>
+
                                         <div class="comment-div">
                                             <p class="comment-content">{{$postComment->comment_text}}</p>
-                                            <button id="textarea_btn" type="submit">
+
+                                            <button class="textarea-btn" type="submit" style="display: none;">
                                                 <i class="fa fa-paper-plane"
                                                    data-commentText="{{$postComment->comment_text}}"
                                                    data-cmtId="{{$postComment->id}}"
-                                                   data-postId="{{$postComment->page_post_id}}" aria-hidden="true"></i>
+                                                   data-postId="{{$postComment->pagePostId}}"
+
+                                                   aria-hidden="true"></i>
                                             </button>
+                                            <button class="textarea-cancel-btn" style="display: none;">Cancel</button>
                                         </div>
                                         <ul class="coment-react">
-                                            <li class="comment-like"><a href="#">Like(2)</a></li>
+                                            <li class="comment-like"><a href="#">Like(0)</a></li>
                                             <li><a href="javascript:void(0)" class="replay-tag">Replay</a></li>
                                         </ul>
                                     </div>
 
-
                                     <!-- child comment start  -->
                                     <div class="child-comment">
+
                                         <div class="single-replay-comnt nested-comment-{{$postComment->id}}">
 
 
                                         </div>
+{{--                                        @dd($post)--}}
 
-                                        {{--                                        @dd($postComment)--}}
                                         @if( count($postComment->replies)>0)
-                                            <div class="more-comment">
-                                                <a class="loadChildCmt" data-postIdd="{{$post->pId}}"
-                                                   data-commentId="{{$postComment->id}}">More+</a>
+                                            <div class="more-comment mt-2">
+                                                <a class="loadChildCmt" data-postIdd="{{$post->pagePostId}}"
+                                                   data-commentId="{{$postComment->id}}">
+                                                                                           <span class="replay-arrow">
+                                                                                            <svg x="0" y="0"
+                                                                                                 viewBox="0 0 48 48"
+                                                                                                 style="enable-background:new 0 0 512 512"
+                                                                                                 xml:space="preserve"
+                                                                                                 class=""><g><path
+                                                                                                        d="m47.12 31.403-9.992-9.992a2.98 2.98 0 1 0-4.215 4.216l3.037 3.037C15.565 29.665 2.31 15.984 2.188 1.96c-.004-.507-.716-.61-.874-.144-4.922 14.579 4.03 32.89 27.427 36.201 2.266.295 4.558.519 6.868.681l-2.697 2.697a2.98 2.98 0 1 0 4.215 4.215l9.992-9.992a2.98 2.98 0 0 0 .001-4.215z"
+                                                                                                        data-original="#ffcc66"
+                                                                                                        class=""></path></g></svg>
+                                                                                            </span> Replay <span
+                                                        class="count">(0)</span></a>
                                             </div>
                                         @endif
 
                                         <div class="new-comment replay-new-comment">
+
 
                                             @if(!empty($postComment->users->userProfileImages[0]) && isset($postComment->users->userProfileImages[0])?$postComment->users->userProfileImages[0]:'')
 
@@ -525,11 +547,9 @@
                                                     </a>
                                                 @endif
                                             @endif
-                                            {{--                                            @dd($postComment)--}}
                                             <div class="new-comment-input replay-commnt-input">
                                                 <input data-cmtId="{{$postComment->id}}" class="cmtText" type="text"
-                                                       name="cmttext"
-                                                       data-userPostId="{{$postComment->page_post_id}}"
+                                                       name="cmttext" data-userPostId="{{$postComment->page_post_id}}"
                                                        placeholder="Write a comment....">
                                                 <div class="attached-icon">
                                                     <a href="#"><i class="fa fa-camera" aria-hidden="true"></i></a>
@@ -546,7 +566,7 @@
 
                     @if(count($post->comments)>0)
                         <div class="more-comment">
-                            <a class="checkCmt" data-postIdd="{{$post->pId}}">More Comments+</a>
+                            <a class="checkCmt justify-content-center" data-postIdd="{{$post->pagePostId}}" data-commentid="{{json_encode($cmtIdArray)}}">More Comments+</a>
                         </div>
                     @endif
 
@@ -566,7 +586,7 @@
                         </a>
 
                         <div class="new-comment-input">
-                            <input type="text" data-postId="{{$post->pId}}" class="postComments"
+                            <input type="text" data-postId="{{$post->pagePostId}}" class="postComments"
                                    placeholder="Write a comment....">
                             <div class="attached-icon">
                                 <a href="#"><i class="fa fa-camera" aria-hidden="true"></i></a>
@@ -646,11 +666,7 @@
                                     <p class="small-text">or drag and drop</p>
                                 </div>
                                 <div class="preview-file">
-                                    {{--                                                                            <div class="post-img">--}}
-                                    {{--                                                                                <video width="550" height="240" controls>--}}
-                                    {{--                                                                                    <source class="videoSrc" src="#" type="video/mp4">--}}
-                                    {{--                                                                                </video>--}}
-                                    {{--                                                                            </div>--}}
+
                                     <img class="previewImg postMedia" src="" alt="">
                                     <button type="button" class="imgClose"><i class="fa fa-times"
                                                                               aria-hidden="true"></i>
@@ -752,6 +768,8 @@
                 let postId = $(this).attr('data-postId');
                 $(this).val('');
                 let htmlData = $(this).parents('.main-content').find('.post-comment-list');
+                let commentCount = parseInt($(this).parents('.post-body').find('.commentCount').text());
+                let new_comment = $(this).parents('.post-body').find('.commentCount');
                 // console.log(htmlData);
 
                 // return false;
@@ -774,6 +792,8 @@
                                 console.log(response.data);
                                 $(this).val('');
                                 htmlData.append(response.data);
+                                new_comment.text(commentCount += 1)
+
                                 // console.log(response.data);
 
                             } else {
@@ -821,8 +841,10 @@
             // return false;
             let commentId = $(this).attr('data-commentId');
             // console.log(commentId);
-            let hideDivChildCmt=$(this).parents('.nested-comment-'+commentId).hide();
-            let hideDivParentCmt=$(this).parents('.post-Comment-'+commentId).hide();
+            let hideDivChildCmt=$(this).parents('.nested-comment-'+commentId)
+            let hideDivParentCmt=$(this).parents('.post-Comment-'+commentId)
+            let commentCount=parseInt($(this).parents('.posted-content').find('.commentCount').text());
+            let newCommentCount=$(this).parents('.posted-content').find('.commentCount');
 
             Swal.fire({
                 title: 'Do you want to delete the comment?',
@@ -848,8 +870,10 @@
                             success: function (response) {
 
                                 if (response.status === true) {
-
                                     Swal.fire('Saved!', '', 'success')
+                                    newCommentCount.text(commentCount-=1);
+                                    hideDivChildCmt.hide();
+                                    hideDivParentCmt.hide();
 
                                 } else {
                                     // toastr.error(response.msg);
@@ -924,6 +948,7 @@
 <script>
     $(document).on('click', '.checkCmt', function () {
         let pPostId = $(this).attr('data-postIdd')
+        let commentId = $(this).attr('data-commentId')
         let htmlData = $(this).parents('.posted-content').find('.post-comment-list');
         $(this).hide();
         // console.log(pPostId);
@@ -932,6 +957,7 @@
             type: 'GET',
             data: {
                 pPostId: pPostId,
+                commentId:commentId,
                 reqTyp: 'pageCmt'
             },
             success: function (response) {

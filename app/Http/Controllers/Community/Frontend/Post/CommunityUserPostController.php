@@ -148,7 +148,7 @@ class CommunityUserPostController extends Controller
                                                         <div class="comment-div">
                                                             <p class="comment-content">'.$storeComments->comment_text.'</p>
                                                             <button class="textarea-btn" type="submit" style="display: none;">
-                                                            <i class="fa fa-paper-plane" data-commenttext="check Child" data-cmtid="9" data-postid="7" aria-hidden="true"></i>
+                                                            <i class="fa fa-paper-plane" data-commenttext="check Child" data-cmtId="'.$storeComments->id.'" data-postId="'.$storeComments->user_post_id.' aria-hidden="true"></i>
                                                             </button>
                                                             <button class="textarea-cancel-btn" style="display: none;">Cancel</button>
 

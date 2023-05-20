@@ -585,6 +585,14 @@
                         {{--All Comments List--}}
 
                         {{--                                                @dd($post)--}}
+
+                        @php
+                            $cmtIdArray=[];
+                            foreach ($post->comments as $cId){
+                                $cmtIdArray[]=$cId->id;
+                            }
+//                            dd($cmtIdArray);
+                        @endphp
                         @foreach($post->comments as $postComment)
 
                             <li class="single-comment post-Comment-{{$postComment->id}}">
@@ -735,9 +743,11 @@
 
                     </ul>
 
-                    <div class="more-comment">
-                        <a class="checkCmt justify-content-center" data-postIdd="{{$post->postId}}">More Comments+</a>
-                    </div>
+                    @if(count($post->comments)>0)
+                        <div class="more-comment">
+                            <a class="checkCmt justify-content-center" data-postIdd="{{$post->postId}}" data-commentid="{{json_encode($cmtIdArray)}}">More Comments+</a>
+                        </div>
+                    @endif
 
                     <div class="new-comment">
 
@@ -899,6 +909,8 @@
             let hideDivChildCmt = $(this).parents('.nested-comment-' + commentId);
             let hideDivParentCmt = $(this).parents('.post-Comment-' + commentId);
             // console.log(commentId);
+            let commentCount=parseInt($(this).parents('.posted-content').find('.commentCount').text());
+            let newCommentCount=$(this).parents('.posted-content').find('.commentCount');
 
             // return false;
             Swal.fire({
@@ -927,6 +939,8 @@
                                 if (response.status === true) {
 
                                     Swal.fire('Saved!', '', 'success')
+                                    newCommentCount.text(commentCount-=1);
+
                                     hideDivChildCmt.hide();
                                     hideDivParentCmt.hide();
                                     // new_comment.text(commentCount-=1);
@@ -1036,21 +1050,25 @@
 
     $(document).on('click', '.checkCmt', function () {
         let postId = $(this).attr('data-postIdd');
-        console.log(postId);
+        let commentId = $(this).attr('data-commentId')
+
+        // console.log(commentId);
+        // return false;
         $(this).hide();
         let htmlData = $(this).parents('.posted-content').find('.post-comment-list')
         $.ajax({
             url: "{{route('user.post.comment')}}",
             post: "GET",
             data: {
-                postId: postId
+                postId: postId,
+                commentId:commentId,
             },
             success: function (response) {
 
                 if (response.status === true) {
 
                     // console.log(response.html,'cmt');
-                    $('.cmtText').val('');
+                    // $('.cmtText').val('');
                     htmlData.append(response.html);
                 }
 

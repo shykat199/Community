@@ -24,7 +24,7 @@ class CommunityUserGroupPost extends Model
 
     public function comments(): \Illuminate\Database\Eloquent\Relations\HasMany
     {
-        return $this->hasMany(CommunityUserGroupPostComment::class,'group_post_id','gId');
+        return $this->hasMany(CommunityUserGroupPostComment::class,'group_post_id','gId')->where('group_post_comment_id','=',0)->latest();
     }
 
 }

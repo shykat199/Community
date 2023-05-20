@@ -76,120 +76,6 @@ class CommunityFrontendController extends Controller
         return view('community-frontend.index', compact('allUserPosts'));
     }
 
-
-//    public function showComments(Request $request)
-//    {
-//
-//        if ($request->ajax()) {
-//
-//            $postComments = CommunityUserPostComment::with(['userPosts.users.userProfileImages', 'replies.users'])
-//                ->where('user_post_id', '=', $request->get('postId'))
-//                ->where('user_post_comment_id', '=', 0)
-//                ->get();
-////            dd($postComments);
-//            $html = '';
-//
-//            foreach ($postComments as $comment) {
-//                $date = Carbon::parse($comment->created_at)->diffForHumans();
-//                $userName = $comment->userPosts->users->name;
-//                $comments = $comment->comment_text;
-//                $commentId = $comment->id;
-//                $userProfilePicture = $comment->users->userProfileImages[0]->user_profile;
-//                $html .= '
-//                     <li class="single-comment">
-//                            <div class="comment-img">
-//                                <a href="#">';
-//
-//                if (isset($userProfilePicture)) {
-//                    $html .= ' <img src="' . asset("storage/community/profile-picture/$userProfilePicture") . '" alt="image">
-//                                </a>';
-//                } else {
-//                    $html .= '<img src="' . asset("community-frontend/assets/images/community/home/news-post/comment01.jpg") . '"alt="image">';
-//
-//                }
-//
-//                $html .= '</a>
-//                            </div>
-//                            <div class="comment-details">
-//                                <div class="coment-info">
-//                                    <h6><a href="#">' . $userName . '</a></h6>
-//                                    <span class="comment-time">' . $date . '</span>
-//                                </div>
-//                                <p class="comment-content">' . $comments . '</p>
-//                                <ul class="coment-react">
-//                                    <li class="comment-like"><a href="#">Like(2)</a></li>
-//                                    <li><a href="javascript:void(0)" class="replay-tag">Replay</a></li>
-//                                </ul>';
-//
-//                if ($comment->replies) {
-//
-//                    $html .= '<div class="comment-parent-' . $comment->id . '">';
-//
-//                    foreach ($comment->replies as $reply) {
-//                        $html .=
-//                            '<div class="single-replay-comnt">
-//                                                        <div class="replay-coment-box">
-//                                                            <div class="replay-comment-img">
-//                                                                <a href="#">';
-//                        if (isset($userProfilePicture)) {
-//                            $html .= '<img src="' . asset("storage/community/profile-picture/$userProfilePicture") . '" alt="image">';
-//                        } else {
-//                            $html .= '<img src="' . asset("community-frontend/assets/images/community/home/news-post/comment01.jpg") . '"alt="image">';
-//                        }
-//
-//                        $html .= '</a>
-//                                                </div>
-//                                                            <div class="replay-comment-details">
-//                                                                <div class="replay-coment-info">
-//                                                                    <h6><a class="replay-comnt-name" href="#">' . $reply->users->name . '</a></h6>
-//                                                                    <span class="replay-time-comnt">' . Carbon::parse($reply->created_at)->diffForHumans() . '</span>
-//                                                                </div>
-//                                                                <p class="comment-content">' . $reply->comment_text . '</p>
-//
-//                                                            </div>
-//                                                        </div>
-//                                                    </div>';
-//                    }
-//                    $html .= '</div>';
-//
-//                    $html .= '<div class="new-comment replay-new-comment">
-//                                                            <a class="new-comment-img replay-comment-img" href="#">';
-//                    if ($userProfilePicture) {
-//                        $html .= '<img src="' . asset("storage/community/profile-picture/$userProfilePicture") . '"alt="image">';
-//                    } else {
-//                        $html .= '<img src="' . asset("community-frontend/assets/images/community/home/news-post/comment01.jpg") . '"alt="image">';
-//                    }
-//
-//                    $html .= '</a><div class="new-comment-input replay-commnt-input">
-//                                                            <input data-cmtId="' . $comment->id . '" class="cmtText" type="text" name="cmttext" data-userPostId="' . $comment->user_post_id . '" placeholder="Write a comment....">
-//                                                                <div class="attached-icon">
-//                                                                    <a href="#"><i class="fa fa-camera" aria-hidden="true"></i></a>
-//                                                                </div>
-//                                                            </div>
-//                                                        </div>';
-//
-//                }
-//                $html .= '</li>';
-//            }
-//
-////            $html=view('community-frontend.index',['postComments'=>$postComments])->render();
-//
-//            if ($postComments) {
-//
-//                return \response()->json([
-//                    'status' => true,
-//                    'msg' => 'Successfully Added',
-//                    'postComments' => json_encode($postComments),
-//                    'html' => $html
-//                ]);
-//            }
-//
-//        }
-//
-//
-////        return $postComments;
-//    }
-
     public function showChildComments(Request $request)
     {
 
@@ -438,7 +324,10 @@ class CommunityFrontendController extends Controller
                     'msg' => 'Successfully Added.',
                     'html' => $html
                 ]);
-            } else {
+            }
+
+
+            else {
 
 
                 return \response()->json([
@@ -525,10 +414,7 @@ class CommunityFrontendController extends Controller
                 ->get();
 
             if ($request->get('reqType') === "videoComments") {
-//
 
-
-//                    dd($postComment);
                 foreach ($postComments as $comment) {
 
                     $date = Carbon::parse($comment->created_at)->diffForHumans();
@@ -670,13 +556,17 @@ class CommunityFrontendController extends Controller
                     'html' => $html
                 ];
 
-            } else {
+            }
 
-                $postComments = count($postComments);
+            else {
+
+//                $postComments = count($postComments);
                 $newPostComments = CommunityUserPostComment::with(['userPosts.users.userProfileImages', 'replies.users'])
                     ->where('user_post_id', '=', $request->get('postId'))
                     ->where('user_post_comment_id', '=', 0)
-                    ->limit($postComments - 2)->offset(2)->get();
+                    ->whereNotIn('community_user_post_comments.id',(array)json_decode($request->get('commentId'), true, 512, JSON_THROW_ON_ERROR))
+                    ->latest()->get();
+
 
 //                dd($newPostComments);
 
@@ -766,7 +656,7 @@ class CommunityFrontendController extends Controller
                                         </div>';
 
 
-                        if (count($comment->replies) > 0) {
+                        if (empty($comment->replies)) {
 
                             $html .= '<div class="more-comment mt-2">
                                                 <a class="loadChildCmt" data-postIdd="' . $comment->user_post_id . '"
@@ -823,7 +713,7 @@ class CommunityFrontendController extends Controller
                 $returnResult = [
                     'status' => true,
                     'msg' => 'Successfully Added',
-                    'postComments' => $postComments,
+                    'postComments' => $newPostComments,
                     'html' => $html
                 ];
 
