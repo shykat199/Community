@@ -4,17 +4,18 @@
         <a href="{{route('user.all.pages')}}">See All</a>
     </div>
     <ul class="like-items">
-{{--        @dd($id)--}}
+        {{--        @dd($id)--}}
 
         @if(empty($id))
 
             @foreach(allPages($id=null) as $page)
 
                 <li>
-                    <div class="page-img"><a href="#"><img
-                                src="{{asset("community-frontend/assets/images/community/home/page-like/page01.jpg")}}" alt="img"></a>
+                    <div class="page-img"><a href="{{route('user.page.details',\Illuminate\Support\Facades\Crypt::encrypt($page->pId))}}"><img
+                                src="{{asset("community-frontend/assets/images/community/home/page-like/page01.jpg")}}"
+                                alt="img"></a>
                     </div>
-                    <div class="page-title"><a href="#">{{$page->page_name}}</a>
+                    <div class="page-title"><a href="{{route('user.page.details',\Illuminate\Support\Facades\Crypt::encrypt($page->pId))}}">{{$page->page_name}}</a>
                         <span>Like {{$page->likeCounts}}</span>
                     </div>
                 </li>
@@ -25,10 +26,11 @@
             @foreach(allPages($id) as $page)
 
                 <li>
-                    <div class="page-img"><a href="#"><img
-                                src="{{asset("community-frontend/assets/images/community/home/page-like/page01.jpg")}}" alt="img"></a>
+                    <div class="page-img"><a href="{{route('user.page.details',\Illuminate\Support\Facades\Crypt::encrypt($page->pId))}}"><img
+                                src="{{asset("community-frontend/assets/images/community/home/page-like/page01.jpg")}}"
+                                alt="img"></a>
                     </div>
-                    <div class="page-title"><a href="#">{{$page->page_name}}</a>
+                    <div class="page-title"><a href="{{route('user.page.details',\Illuminate\Support\Facades\Crypt::encrypt($page->pId))}}">{{$page->page_name}}</a>
                         <span>Like {{$page->likeCounts}}</span>
                     </div>
                 </li>
@@ -37,19 +39,18 @@
 
         @endif
 
-{{--        @foreach(allPages() as $page)--}}
+        {{--        @foreach(allPages() as $page)--}}
 
-{{--            <li>--}}
-{{--                <div class="page-img"><a href="#"><img--}}
-{{--                            src="{{asset("community-frontend/assets/images/community/home/page-like/page01.jpg")}}" alt="img"></a>--}}
-{{--                </div>--}}
-{{--                <div class="page-title"><a href="#">{{$page->page_name}}</a>--}}
-{{--                    <span>Like {{$page->likeCounts}}</span>--}}
-{{--                </div>--}}
-{{--            </li>--}}
+        {{--            <li>--}}
+        {{--                <div class="page-img"><a href="#"><img--}}
+        {{--                            src="{{asset("community-frontend/assets/images/community/home/page-like/page01.jpg")}}" alt="img"></a>--}}
+        {{--                </div>--}}
+        {{--                <div class="page-title"><a href="#">{{$page->page_name}}</a>--}}
+        {{--                    <span>Like {{$page->likeCounts}}</span>--}}
+        {{--                </div>--}}
+        {{--            </li>--}}
 
-{{--        @endforeach--}}
-
+        {{--        @endforeach--}}
 
 
     </ul>

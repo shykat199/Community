@@ -123,8 +123,15 @@ Route::middleware(['user'])->group(function (){
     Route::post('/user/store-all-reactions',[AllReactionController::class,'allAjax'])->name('user.post-all.reaction');
     Route::post('/user/remove-reactions',[AllReactionController::class,'allAjax'])->name('user.remove.post.reaction');
 
+    //Ajax get user image album
+    Route::get('/user/show-album',[AllReactionController::class,'allAjax'])->name('user.show.image-album');
+
     //Ajax Delete Comments
     Route::get('/user/delete-all-comments',[DeleteAllCommentController::class,'allAjaxDelete'])->name('user.delete.comments');
+
+    //Go To User Profile
+    Route::get('/user/profile/{id}',[CommunityFrontendController::class,'userProfile'])->name('user.profile');
+
 
 });
 

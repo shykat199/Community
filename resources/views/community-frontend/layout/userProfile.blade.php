@@ -29,20 +29,23 @@
 {{--    @dd(allUsersDetails())--}}
 
     <div class="profile-title d-flex align-items-center">
-        @if(!empty(allUsersDetails()->user_profile) && isset(allUsersDetails()->user_profile))
-            @if(!empty($userProfile[0]) &&  isset($userProfile[0]))
-                <img
-                    src="{{asset('storage/community/profile-picture/'.$userProfile[0])}}"
-                    alt="cover"
-                    style="height: 100px;width: 80px;">
+{{--        @dd($userProfile)--}}
+
+        @if(!empty(allUsersDetails()->userProfileImages[0]) && isset(allUsersDetails()->userProfileImages[0])?allUsersDetails()->userProfileImages[0]:'')
+
+            @if(!empty(allUsersDetails()->userProfileImages[0]) && isset(allUsersDetails()->userProfileImages[0])?allUsersDetails()->userProfileImages[0]:'')
+                <a href=""><img
+                        src="{{asset("storage/community/profile-picture/".allUsersDetails()->userProfileImages[0]->user_profile)}}"
+                        alt="image"></a>
             @else
-                <img src="{{asset('community-frontend/assets/images/community/home/user-0.jpg')}}" alt="cover">
+                <a href=""><img
+                        src="{{asset("community-frontend/assets/images/community/home/news-post/Athore01.jpg")}}"
+                        alt="image">
+                </a>
             @endif
-
-        @else
-            <img src="{{asset('community-frontend/assets/images/community/home/user-0.jpg')}}" alt="cover">
-
         @endif
+
+
         <div class="profile-name">
             <h6><a href="#">{{Auth::user()->name}}</a></h6>
             <span
@@ -51,7 +54,7 @@
     </div>
     <ul class="profile-statistics">
         <li><a href="#">
-                <p class="statics-count">59862</p>
+                <p class="statics-count">0</p>
                 <p class="statics-name">Likes</p>
             </a></li>
         <li><a href="#">

@@ -26,11 +26,11 @@ class UserProfileDetailsController extends Controller
         $userDetails = CommunityUserDetails::leftJoin('users', 'users.id', 'community_user_details.user_id')
             ->leftJoin('community_user_profile_photos as userProfilePhoto', 'userProfilePhoto.user_id', 'users.id')
             ->leftJoin('community_user_profile_covers as userCoverPhoto', 'userCoverPhoto.user_id', 'users.id')
-            ->leftJoin('community_user_profile_education as userProfileWork',function ($q){
-                $q->on('users.id','=','userProfileWork.user_id');
-                $q->where('users.id','=',Auth::id());
-                $q->where('userProfileWork.type','=','w');
-                $q->where('userProfileWork.is_present','=',1);
+            ->leftJoin('community_user_profile_education as userProfileWork', function ($q) {
+                $q->on('users.id', '=', 'userProfileWork.user_id');
+                $q->where('users.id', '=', Auth::id());
+                $q->where('userProfileWork.type', '=', 'w');
+                $q->where('userProfileWork.is_present', '=', 1);
             })
             ->where('users.id', '=', Auth::id())
             ->selectRaw('community_user_details.*,users.id as Uid,users.name,userProfilePhoto.user_profile as profilePicture,
@@ -53,17 +53,17 @@ class UserProfileDetailsController extends Controller
             ->where('type', '=', 'e')
             ->get();
 
-        $userWorkDetails= CommunityUserProfileEducation::where('user_id', '=', Auth::id())
+        $userWorkDetails = CommunityUserProfileEducation::where('user_id', '=', Auth::id())
             ->where('type', '=', 'w')
             ->get();
 
-        $userInterest=CommunityUserProfileInterest::where('user_id','=',Auth::id())
+        $userInterest = CommunityUserProfileInterest::where('user_id', '=', Auth::id())
             ->get();
 
-        $userSocialLinks=CommunityUserProfileSocialink::where('user_id',Auth::id())->pluck('link','name')->toArray();
+        $userSocialLinks = CommunityUserProfileSocialink::where('user_id', Auth::id())->pluck('link', 'name')->toArray();
 
         return view('community-frontend.my-profile', compact('userDetails', 'allUserLanguage', 'countPhoto',
-            'userEducationDetails','userWorkDetails','userInterest','userSocialLinks'));
+            'userEducationDetails', 'userWorkDetails', 'userInterest', 'userSocialLinks'));
     }
 
     public function uploadProfilePhoto(Request $request)
@@ -72,11 +72,11 @@ class UserProfileDetailsController extends Controller
 
         $name = null;
         if ($request->hasFile('userProfilePhoto')) {
-            $name = Uuid::uuid() . '.' . $request->file('userProfilePhoto')->getClientOriginalExtension();
+            $name = Uuid::uuid() . '.' . 'profile-Photo' . '.' .  $request->file('userProfilePhoto')->getClientOriginalExtension();
             $file = Storage::put('/public/community/profile-picture/' . $name, file_get_contents($request->file('userProfilePhoto')));
         }
         $uploadProfilePhoto = CommunityUserProfilePhoto::create([
-            'user_id' => Auth::id(),
+            'user_id'=>Auth::id(),
             'user_profile' => $name,
         ]);
 
@@ -93,11 +93,11 @@ class UserProfileDetailsController extends Controller
 
         $name = null;
         if ($request->hasFile('userCoverPhoto')) {
-            $name = Uuid::uuid() . '.' . $request->file('userCoverPhoto')->getClientOriginalExtension();
+            $name = Uuid::uuid() . '.' . 'cover-Photo' . '.' . $request->file('userCoverPhoto')->getClientOriginalExtension();
             $file = Storage::put('/public/community/cover-picture/' . $name, file_get_contents($request->file('userCoverPhoto')));
         }
         $uploadCoverPhoto = CommunityUserProfileCover::create([
-            'user_id' => Auth::id(),
+            'user_id'=>Auth::id(),
             'user_cover' => $name,
         ]);
 

@@ -43,10 +43,10 @@ class CommunityUserPostController extends Controller
                         $request->file('postFile')->getClientOriginalExtension() == 'avi' || $request->file('postFile')->getClientOriginalExtension() == 'mkv' ||
                         $request->file('postFile')->getClientOriginalExtension() == 'webm'
                     ) {
-                        $fileName = Uuid::uuid() . '.' . $request->file('postFile')->getClientOriginalExtension();
+                        $fileName = Uuid::uuid() . '.'.'video'. $request->file('postFile')->getClientOriginalExtension();
                         $file = Storage::put('/public/community/post/videos/' . $fileName, file_get_contents($request->file('postFile')));
                     } else {
-                        $fileName = Uuid::uuid() . '.' . $request->file('postFile')->getClientOriginalExtension();
+                        $fileName = Uuid::uuid() . '.'.'image'. $request->file('postFile')->getClientOriginalExtension();
                         $file = Storage::put('/public/community/post/' . $fileName, file_get_contents($request->file('postFile')));
                     }
 

@@ -272,7 +272,7 @@
             <div class="main-content posted-content">
                 <div class="post-autore d-flex justify-content-between align-items-center">
                     <div class="authore-title d-flex align-items-center">
-                        <a href="#">
+                        <a href="{{route('user.profile',\Illuminate\Support\Facades\Crypt::encrypt($post->user_id))}}">
 
                             @if(!empty($post->users->userProfileImages[0]) && isset($post->users->userProfileImages[0])?$post->users->userProfileImages[0]:'')
                                 <img
@@ -285,8 +285,9 @@
                             @endif
 
                         </a>
+{{--                        @dd($post)--}}
                         <div class="athore-info">
-                            <p class="athore-name"><a href="#">{{$post->name}}</a></p>
+                            <p class="athore-name"><a href="{{route('user.profile',\Illuminate\Support\Facades\Crypt::encrypt($post->user_id))}}">{{$post->name}}</a></p>
                             <p class="posted-time"><a
                                     href="#">{{\Carbon\Carbon::parse($post->created_at)->diffForHumans()}}</a></p>
                         </div>

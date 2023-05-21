@@ -23,6 +23,7 @@ use http\Env\Response;
 use Illuminate\Http\Request;
 use App\Models\Community\Group\CommunityUserGroupPivot;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Storage;
 
@@ -114,6 +115,7 @@ class CommunityUserGroupController extends Controller
 
     public function getSingleGroupView($id)
     {
+        $id=Crypt::decrypt($id);
         $getGroupDetails = CommunityUserGroup::join('community_user_group_pivots as groupUserPivot', function ($q) use ($id) {
             $q->on('groupUserPivot.group_id', '=', 'community_user_groups.id');
             $q->where('groupUserPivot.group_id', '=', $id);

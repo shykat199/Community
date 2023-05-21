@@ -22,6 +22,7 @@ use Carbon\Carbon;
 use Faker\Provider\Uuid;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Storage;
 
@@ -97,6 +98,7 @@ class CommunityUserPageController extends Controller
 
     public function getSinglePageView($id)
     {
+        $id=Crypt::decrypt($id);
         $getPageDetails = CommunityPage::join('users', function ($q) use ($id) {
             $q->on('users.id', '=', 'community_pages.user_id');
             $q->where('community_pages.id', '=', $id);

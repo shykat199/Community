@@ -5,30 +5,63 @@
     </div>
 
     <ul class="like-items">
+        @php
+$user_id=isset($user_id)?\Illuminate\Support\Facades\Crypt::decrypt($user_id):'';
+ @endphp
 
-        @foreach(allUserFollowers() as $follower)
+        @if($user_id)
 
-            <li>
-                <div class="right-wdget-img"><a href="#"><img
-                            src="{{asset("community-frontend/assets/images/community/home/right/birthday01.jpg")}}"
-                            alt="img"></a>
-                </div>
-                <div class="page-title follower-title">
-                    <a class="userName" href="#"
-                       data-id="{{$follower->uId}}">{{$follower->userName}}
-                    </a>
+            @forelse(allUserFollowers($user_id) as $follower)
 
-                    @if(!empty($follower->is_followed))
-                        <a href="#" class="following-add btnFollow">Followed</a>
-                    @else
-                        <a href="#" class="following-add btnFollow">Follow</a>
-                    @endif
-                </div>
-            </li>
+                <li>
+                    <div class="right-wdget-img"><a href="#"><img
+                                src="{{asset("community-frontend/assets/images/community/home/right/birthday01.jpg")}}"
+                                alt="img"></a>
+                    </div>
+                    <div class="page-title follower-title">
+                        <a class="userName" href="#"
+                           data-id="{{$follower->uId}}">{{$follower->userName}}
+                        </a>
 
-        @endforeach
+                        @if(!empty($follower->is_followed))
+                            <a href="#" class="following-add btnFollow">Followed</a>
+                        @else
+                            <a href="#" class="following-add btnFollow">Follow</a>
+                        @endif
+                    </div>
+                </li>
+
+            @empty
+
+                <h5>No Followers</h5>
+
+            @endforelse
 
 
+        @else
+
+            @forelse(allUserFollowers() as $follower)
+                <li>
+                    <div class="right-wdget-img"><a href="#"><img
+                                src="{{asset("community-frontend/assets/images/community/home/right/birthday01.jpg")}}"
+                                alt="img"></a>
+                    </div>
+                    <div class="page-title follower-title">
+                        <a class="userName" href="#"
+                           data-id="{{$follower->uId}}">{{$follower->userName}}
+                        </a>
+
+                        @if(!empty($follower->is_followed))
+                            <a href="#" class="following-add btnFollow">Followed</a>
+                        @else
+                            <a href="#" class="following-add btnFollow">Follow</a>
+                        @endif
+                    </div>
+                </li>
+            @empty
+                <h5>No Followers</h5>
+            @endforelse
+        @endif
     </ul>
 </div>
 

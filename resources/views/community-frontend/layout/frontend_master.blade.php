@@ -175,22 +175,24 @@
                     <a href="#" role="button" id="settingDropDown" data-bs-toggle="dropdown" aria-expanded="false">
                         <div class="logged_profil d-flex align-items-center justify-content-between">
                             <div class="menu-profile d-flex align-items-center me-3">
-                                @if(!empty(allUsersDetails()->user_profile) && isset(allUsersDetails()->user_profile))
-                                    @if(!empty($userProfile[0]) &&  isset($userProfile[0]))
+
+
+                                @if(!empty(allUsersDetails()->userProfileImages[0]) && isset(allUsersDetails()->userProfileImages[0])?allUsersDetails()->userProfileImages[0]:'')
+
+                                    @if(!empty(allUsersDetails()->userProfileImages[0]) && isset(allUsersDetails()->userProfileImages[0])?allUsersDetails()->userProfileImages[0]:'')
                                         <img
-                                            src="{{asset('storage/community/profile-picture/'.$userProfile[0])}}"
-                                            alt="cover">
+                                                src="{{asset("storage/community/profile-picture/".allUsersDetails()->userProfileImages[0]->user_profile)}}"
+                                                alt="image">
                                     @else
                                         <img
-                                            src="{{asset('community-frontend/assets/images/community/home/user-0.jpg')}}"
-                                            alt="cover">
+                                                src="{{asset("community-frontend/assets/images/community/home/news-post/Athore01.jpg")}}"
+                                                alt="image">
 
                                     @endif
-
-                                @else
-                                    <img src="{{asset('community-frontend/assets/images/community/home/user-0.jpg')}}"
-                                         alt="cover">
                                 @endif
+
+
+
                                 <p class="member_name">{{Auth::user()->name}}
                                     <span class="login-status"></span>
                                 </p>

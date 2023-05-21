@@ -11,10 +11,10 @@
             @foreach(allGroups($id=null) as $group)
                 <li>
 
-                    <div class="gropu-img"><a href="#"><img
+                    <div class="gropu-img"><a href="{{route('user.group.details',\Illuminate\Support\Facades\Crypt::encrypt($group->cGroupId))}}"><img
                                 src="{{asset("community-frontend/assets/images/community/home/suggested-group/group01.jpg")}}"
                                 alt="img"></a></div>
-                    <div class="page-title"><a href="#">{{$group->group_name}}</a>
+                    <div class="page-title"><a href="{{route('user.group.details',\Illuminate\Support\Facades\Crypt::encrypt($group->cGroupId))}}">{{$group->group_name}}</a>
                         <span>{{$group->userCount}}</span>
                         <a href="#" class="join-btn">Join community</a>
                     </div>
@@ -25,10 +25,10 @@
 
                 <li>
 
-                    <div class="gropu-img"><a href="#"><img
+                    <div class="gropu-img"><a href="{{route('user.group.details',\Illuminate\Support\Facades\Crypt::encrypt($group->cGroupId))}}"><img
                                 src="{{asset("community-frontend/assets/images/community/home/suggested-group/group01.jpg")}}"
                                 alt="img"></a></div>
-                    <div class="page-title"><a href="#">{{$group->group_name}}</a>
+                    <div class="page-title"><a href="{{route('user.group.details',\Illuminate\Support\Facades\Crypt::encrypt($group->cGroupId))}}">{{$group->group_name}}</a>
                         <span>{{$group->userCount}}</span>
                         <a href="#" class="join-btn">Join community</a>
                     </div>
