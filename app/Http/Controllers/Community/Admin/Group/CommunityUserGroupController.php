@@ -5,7 +5,10 @@ namespace App\Http\Controllers\Community\Admin\Group;
 use App\Http\Controllers\Controller;
 use App\Models\Community\Group\CommunityUserGroup;
 use App\Models\Community\User\CommunityUserDetails;
+use App\Models\Country;
+use App\Models\State;
 use App\Models\User;
+use Illuminate\Http\Request;
 
 class CommunityUserGroupController extends Controller
 {
@@ -91,5 +94,77 @@ class CommunityUserGroupController extends Controller
     public function viewSingleUserProfile($id){
         return "User Profile";
     }
+
+    public function dropdownCountry(){
+
+        $allCountries=Country::all();
+        return view('admin.dropdown.allCountry',compact('allCountries'));
+
+    }
+
+
+    public function dropdownState(){
+
+        $allCountries=Country::select('id','country')->get();
+        $allStates=State::with('countries')->get();
+        return view('admin.dropdown.allState',compact('allCountries','allStates'));
+
+    }
+
+
+    public function dropdownCity(){
+
+        $allCountries=Country::all();
+        $allStates=State::all();
+        return view('admin.dropdown.allState',compact('allCountries','allStates'));
+
+    }
+
+
+    public function storeCountry(Request $request){
+
+
+
+        $storeCountries=Country::create([
+            'country'=>$request->get('country')
+        ]);
+        if ($storeCountries){
+            return  redirect()->back()->with('success','New Country added successfully');
+        }else{
+            return  redirect()->back()->with('error','Something Wrong');
+
+        }
+    }
+
+    public function storeState(Request $request){
+
+//        dd($request->all());
+        $storeCountries=State::create([
+            'name'=>$request->get('state'),
+            'c_id'=>$request->get('country'),
+        ]);
+        if ($storeCountries){
+            return  redirect()->back()->with('success','New State added successfully');
+        }else{
+            return  redirect()->back()->with('error','Something Wrong');
+
+        }
+    }
+
+
+    public function deleteCountry($id){
+
+
+
+        $deleteCountries=Country::find($id)->delete();
+        if ($deleteCountries){
+            return  redirect()->back()->with('success','Country deleted successfully');
+        }else{
+            return  redirect()->back()->with('error','Something Wrong');
+
+        }
+    }
+
+
 
 }
