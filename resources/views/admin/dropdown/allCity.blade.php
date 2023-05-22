@@ -5,7 +5,7 @@
 
     <div class="content-page">
         <div class="content">
-            <h4 class="page-title">All States</h4>
+            <h4 class="page-title">All Cities</h4>
             <div class="">
                 <div class="card mt-2">
 
@@ -29,32 +29,28 @@
 
                         <div class="mb-2">
                             <button type="button" class="btn btn-primary" data-bs-toggle="modal"
-                                    data-bs-target="#centermodal">Add New State &nbsp; &nbsp; <i
+                                    data-bs-target="#centermodal">Add New City &nbsp; &nbsp; <i
                                     class="fa-solid fa-circle-plus"></i></button>
                         </div>
 
-                        {{--                            @dd($allCountries)--}}
-
-                        {{--Start Add Country Center Modal--}}
                         <div class="modal fade" id="centermodal" tabindex="-1" role="dialog" aria-hidden="true">
                             <div class="modal-dialog modal-dialog-centered">
                                 <div class="modal-content">
                                     <div class="modal-header">
-                                        <h4 class="modal-title" id="myCenterModalLabel">Add New State</h4>
+                                        <h4 class="modal-title" id="myCenterModalLabel">Add New City</h4>
                                         <button type="button" class="btn-close" data-bs-dismiss="modal"
                                                 aria-hidden="true"></button>
                                     </div>
                                     <div class="modal-body">
-                                        <form action="{{route('store.user.state')}}" method="post">
+                                        <form action="{{route('store.user.city')}}" method="post">
                                             @csrf
                                             <label class="form-label" for="validationCustom01">Country Name</label>
-                                            <select class="js-example-basic-single country" name="country">
+                                            <select class="js-example-basic-single country" id="country-dropdown" name="country">
                                                 <option selected value="">Select Country</option>
                                                 {{--                                                    @dd($allCountries)--}}
                                                 @foreach($allCountries as $country)
 
-                                                    <option
-                                                        value="{{$country->id}}">{{$country->country}}
+                                                    <option value="{{$country->id}}">{{$country->country}}
                                                     </option>
                                                 @endforeach
 
@@ -65,7 +61,17 @@
                                             @enderror
 
                                             <label class="form-label" for="validationCustom01">State Name</label>
-                                            <input type="text" name="state" class="form-control" id="validationCustom01"
+                                            <select class="js-example-basic-single country" id="state-dropdown" name="state">
+                                                <option selected value="">Select Country</option>
+
+                                            </select>
+
+                                            @error('country')
+                                            <span class="text-danger">{{$message}}</span>
+                                            @enderror
+
+                                            <label class="form-label" for="validationCustom01">City Name</label>
+                                            <input type="text" name="city" class="form-control" id="validationCustom01"
                                                    placeholder="State Name....">
 
                                             @error('state')
@@ -91,8 +97,9 @@
                             <thead>
                             <tr>
                                 <th>#ID</th>
-                                <th>State Name</th>
                                 <th>Country Name</th>
+                                <th>State Name</th>
+                                <th>City Name</th>
                                 <th>Action</th>
                             </tr>
                             </thead>
@@ -100,20 +107,20 @@
 
                             <tbody>
 
-{{--                            @dd($allStates)--}}
+{{--                            @dd($allCities)--}}
 
-                            @foreach($allStates as $state)
+                            @foreach($allCities as $city)
                                 <tr>
                                     <td>{{$idx++}}</td>
 
-                                    <td class="state_name" data-id="{{$state->id}}">{{$state->name}}</td>
-                                    <td class="country_id" >{{$state->countries->country}} </td>
+                                    <td class="state_name" data-id="{{$city->states->countries->id}}">{{$city->states->countries->country}}</td>
+                                    <td class="country_id" >{{$city->states->name}} </td>
+                                    <td class="city_id" >{{$city->city}} </td>
                                     <td>
-                                        <button data-cid="{{$state->countries->id}}" class="btn btn-warning btnEdit" data-bs-toggle="modal"
+                                        <button data-cid="{{$city->states->countries->id}}" data-sid="{{$city->states->id}}" class="btn btn-warning btnEdit" data-bs-toggle="modal"
                                                 data-bs-target="#centermodal1"><i
                                                 class=" fa-solid fa-pen-to-square"></i></button>
-                                        {{--                                        <a href="" class="btn btn-warning">Edit</a>--}}
-                                        <a href="{{route('user.delete.state',$state->id)}}" class="btn btn-danger">Delete</a>
+                                        <a href="{{route('user.delete.state',$city->id)}}" class="btn btn-danger">Delete</a>
                                     </td>
                                 </tr>
                             @endforeach
@@ -123,18 +130,17 @@
                                 <div class="modal-dialog modal-dialog-centered">
                                     <div class="modal-content">
                                         <div class="modal-header">
-                                            <h4 class="modal-title" id="myCenterModalLabel">Edit State</h4>
+                                            <h4 class="modal-title" id="myCenterModalLabel">Add New City</h4>
                                             <button type="button" class="btn-close" data-bs-dismiss="modal"
                                                     aria-hidden="true"></button>
                                         </div>
                                         <div class="modal-body">
-                                            <form action="{{route('updte.user.state')}}" method="post">
-                                                <input type="hidden" id="sid" value="" name="stateId">
+                                            <form action="{{route('store.user.state')}}" method="post">
                                                 @csrf
                                                 <label class="form-label" for="validationCustom01">Country Name</label>
-                                                <select class="js-example-basic-single country1" name="country">
+                                                <select class="js-example-basic-single country" name="country">
                                                     <option selected value="">Select Country</option>
-{{--                                                                                                        @dd($allCountries)--}}
+                                                    {{--                                                    @dd($allCountries)--}}
                                                     @foreach($allCountries as $country)
 
                                                         <option
@@ -149,7 +155,24 @@
                                                 @enderror
 
                                                 <label class="form-label" for="validationCustom01">State Name</label>
-                                                <input type="text" name="state" class="form-control" id="sname"
+                                                <select class="js-example-basic-single country" name="state">
+                                                    <option selected value="">Select Country</option>
+                                                    {{--                                                    @dd($allCountries)--}}
+                                                    @foreach($allCountries as $country)
+
+                                                        <option
+                                                            value="{{$country->id}}">{{$country->country}}
+                                                        </option>
+                                                    @endforeach
+
+                                                </select>
+
+                                                @error('country')
+                                                <span class="text-danger">{{$message}}</span>
+                                                @enderror
+
+                                                <label class="form-label" for="validationCustom01">City Name</label>
+                                                <input type="text" name="city" class="form-control" id="validationCustom01"
                                                        placeholder="State Name....">
 
                                                 @error('state')
@@ -194,6 +217,32 @@
                 $(".country1").val(country_id).change();
 
             })
+
+
+            $('#country-dropdown').on('change', function () {
+                let country_id = this.value;
+                // console.log(idCountry);
+                $("#state-dropdown").html('');
+                // return false;
+                $.ajax({
+                    url: "{{route('get.state.on-country-change')}}",
+                    type: "GET",
+                    data: {
+                        country_id: country_id,
+                        {{--_token: '{{csrf_token()}}'--}}
+                    },
+                    dataType: 'json',
+                    success: function (result) {
+                        $('#state-dropdown').html('<option value="">-- Select State --</option>');
+                        $.each(result.getStates, function (key, value) {
+                            $("#state-dropdown").append('<option value="' + value
+                                .id + '">' + value.name + '</option>');
+                        });
+                        // $('#city-dropdown').html('<option value="">-- Select City --</option>');
+                    }
+                });
+            });
+
         })
     </script>
 

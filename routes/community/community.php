@@ -40,9 +40,15 @@ Route::middleware(['auth','admin'])->prefix('/community')->group(function (){
     Route::get('/group/single/users/country',[CommunityUserGroupController::class,'dropdownCountry'])->name('community.user.dashboard.dropdown.country');
     Route::get('/group/single/users/state',[CommunityUserGroupController::class,'dropdownState'])->name('community.user.dashboard.dropdown.state');
     Route::get('/group/single/users/city',[CommunityUserGroupController::class,'dropdownCity'])->name('community.user.dashboard.dropdown.city');
+    Route::get('/group/single/users/country-on-state',[CommunityUserGroupController::class,'getStateAjax'])->name('get.state.on-country-change');
     Route::post('/group/single/users/store-country',[CommunityUserGroupController::class,'storeCountry'])->name('store.user.country');
+    Route::post('/group/single/users/update-country',[CommunityUserGroupController::class,'updateCountry'])->name('updte.user.country');
     Route::post('/group/single/users/store-state',[CommunityUserGroupController::class,'storeState'])->name('store.user.state');
+    Route::post('/group/single/users/update-state',[CommunityUserGroupController::class,'updateState'])->name('updte.user.state');
+    Route::post('/group/single/users/store-city',[CommunityUserGroupController::class,'storeCity'])->name('store.user.city');
     Route::get('/group/single/users/delete-country/{id}',[CommunityUserGroupController::class,'deleteCountry'])->name('user.delete.country');
+    Route::get('/group/single/users/delete-state/{id}',[CommunityUserGroupController::class,'deleteState'])->name('user.delete.state');
+    Route::get('/group/single/users/delete-state/{id}',[CommunityUserGroupController::class,'deleteState'])->name('user.delete.state');
 
 
 

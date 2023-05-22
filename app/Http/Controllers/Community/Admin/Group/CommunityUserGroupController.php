@@ -3,11 +3,13 @@
 namespace App\Http\Controllers\Community\Admin\Group;
 
 use App\Http\Controllers\Controller;
+use App\Models\City;
 use App\Models\Community\Group\CommunityUserGroup;
 use App\Models\Community\User\CommunityUserDetails;
 use App\Models\Country;
 use App\Models\State;
 use App\Models\User;
+use http\Env\Response;
 use Illuminate\Http\Request;
 
 class CommunityUserGroupController extends Controller
@@ -115,15 +117,28 @@ class CommunityUserGroupController extends Controller
     public function dropdownCity(){
 
         $allCountries=Country::all();
-        $allStates=State::all();
-        return view('admin.dropdown.allState',compact('allCountries','allStates'));
+        $allStates=State::with('countries')->get();
+        $allCities=City::with('states.countries')->get();
 
+        return view('admin.dropdown.allCity',compact('allCountries','allStates','allCities'));
+
+    }
+
+    public function getStateAjax(Request $request){
+        if ($request->ajax()){
+//            dd($request->all());
+            $getStates=State::with('countries')->where('c_id','=',$request->get('country_id'))->get();
+//            dd($getStates);
+        }
+        return \response()->json([
+            'status'=>true,
+            'getStates'=>$getStates,
+            'msg'=>'Done'
+        ]);
     }
 
 
     public function storeCountry(Request $request){
-
-
 
         $storeCountries=Country::create([
             'country'=>$request->get('country')
@@ -152,11 +167,67 @@ class CommunityUserGroupController extends Controller
     }
 
 
+    public function storeCity(Request $request){
+
+//        dd($request->all());
+        $storeCities=City::create([
+            'city'=>$request->get('city'),
+            'state_id'=>$request->get('state'),
+        ]);
+        if ($storeCities){
+            return  redirect()->back()->with('success','New City added successfully');
+        }else{
+            return  redirect()->back()->with('error','Something Wrong');
+
+        }
+    }
+
+    public function updateState(Request $request){
+//        dd($request->all());
+        $updateState=State::find($request->get('stateId'))->update([
+            'name'=>$request->get('state'),
+            'c_id'=>$request->get('country'),
+        ]);
+        if ($updateState){
+            return  redirect()->back()->with('success','New State added successfully');
+        }else{
+            return  redirect()->back()->with('error','Something Wrong');
+
+        }
+    }
+
+
+    public function updateCountry(Request $request){
+//        dd($request->all());
+        $updateState=Country::find($request->get('company_id'))->update([
+            'country'=>$request->get('bus_company'),
+
+        ]);
+        if ($updateState){
+            return  redirect()->back()->with('success','New State added successfully');
+        }else{
+            return  redirect()->back()->with('error','Something Wrong');
+
+        }
+    }
+
+
     public function deleteCountry($id){
 
 
 
         $deleteCountries=Country::find($id)->delete();
+        if ($deleteCountries){
+            return  redirect()->back()->with('success','Country deleted successfully');
+        }else{
+            return  redirect()->back()->with('error','Something Wrong');
+
+        }
+    }
+
+    public function deleteState($id){
+
+        $deleteCountries=State::find($id)->delete();
         if ($deleteCountries){
             return  redirect()->back()->with('success','Country deleted successfully');
         }else{

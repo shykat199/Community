@@ -79,10 +79,10 @@
                                 <tr>
                                     <td>{{$idx++}}</td>
 
-                                    <td class="country_name" data-id="{{$country->id}}">{{$country->country}}</td>
+                                    <td class="country_name">{{$country->country}}</td>
 {{--                                    <td>{{$country->country}}</td>--}}
                                     <td>
-                                        <button class="btn btn-warning btnEdit" data-bs-toggle="modal" data-bs-target="#centermodal1"><i class=" fa-solid fa-pen-to-square"></i></button>
+                                        <button data-id="{{$country->id}}" class="btn btn-warning btnEdit" data-bs-toggle="modal" data-bs-target="#centermodal1"><i class=" fa-solid fa-pen-to-square"></i></button>
 {{--                                        <a href="" class="btn btn-warning">Edit</a>--}}
                                         <a href="{{route('user.delete.country',$country->id)}}" class="btn btn-danger">Delete</a>
                                     </td>
@@ -98,7 +98,7 @@
                                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-hidden="true"></button>
                                         </div>
                                         <div class="modal-body">
-                                            <form action="" method="post">
+                                            <form action="{{route('updte.user.country')}}" method="post">
                                                 @csrf
 
                                                 <input type="hidden" name="company_id" id="c_id">
@@ -136,7 +136,8 @@
             $('.btnEdit').on('click',function (){
                 let currentRow=$(this).closest('tr');
                 let country_name=currentRow.find('.country_name').html();
-                let country_id=currentRow.find('.company_name').data('id');
+                let country_id=$(this).attr('data-id');
+                // console.log(country_id);
 
                 $("#c_name").val(country_name);
                 $("#c_id").val(country_id);
