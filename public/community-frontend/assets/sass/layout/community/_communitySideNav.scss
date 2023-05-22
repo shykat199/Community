@@ -1,4 +1,4 @@
-// side nav 
+// side nav
 .side-nav-wrapper {
     position: absolute;
     top: 0;
@@ -48,11 +48,13 @@
             .side-icon {
                 width: 30px;
                 height: 30px;
-                line-height: 30px;
                 text-align: center;
                 background: #ebebeb;
                 border-radius: 5px;
                 margin-right: 10px;
+                display: flex;
+                justify-content: center;
+                align-items: center;
                 svg {
                     width: 18px;
                 }
@@ -65,7 +67,7 @@
                     background: $theme-font;
                     top: 0;
                     left: -4px;
-                    transition: .3s;                    
+                    transition: .3s;
                 }
             }
             .side-title {
@@ -97,7 +99,7 @@
                 &::before{
                     background: $theme-color;
                 }
-            }            
+            }
         }
     }
 }

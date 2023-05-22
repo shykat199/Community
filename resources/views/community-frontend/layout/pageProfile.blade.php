@@ -26,7 +26,7 @@
 
                         @if($isAdmin!==null)
                             <div class="edit-cover">
-                                <a href="#" data-bs-toggle="modal" data-bs-target="#coverPhotoModal">Edit Cover</a>
+                                <button href="#" data-bs-toggle="modal" data-bs-target="#coverPhotoModal">Edit Cover</button>
 
 
                                 <div class="modal fade" id="coverPhotoModal" tabindex="-1"
@@ -56,7 +56,7 @@
                                                                             fill="#000000" data-original="#000000"
                                                                             class=""></path></g></svg>
                                                             </span>
-                                                            <h6 class="title">Add Photos/Videos</h6>
+                                                            <h6 class="title">Add Photos</h6>
                                                             <p class="small-text">or drag and drop</p>
                                                         </div>
                                                         <div class="preview-file">
@@ -79,7 +79,8 @@
 
                                         </div>
                                     </div>
-                                </div><div class="modal fade" id="coverPhotoModal" tabindex="-1"
+                                </div>
+                                <div class="modal fade" id="coverPhotoModal" tabindex="-1"
                                      aria-labelledby="coverPhotoModalLabel" aria-hidden="true">
                                     <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
 
@@ -138,7 +139,7 @@
                 </div>
 {{--                @dd($getPageDetails)--}}
 
-                <div class="full-profile-info">
+                <div class="full-profile-info p-50">
                     <div class="full-profile-left">
                         <div class="profile-img">
 
@@ -148,7 +149,7 @@
                                     <a href="#">
                                         <img
                                             src="{{asset('storage/community/page-post/profile/'.$getPageDetails->pageProfile)}}"
-                                            alt="cover" style="height: 150px;width: 150px;">
+                                            alt="cover">
                                     </a>
                                 @else
                                     <a href="#">
@@ -170,7 +171,7 @@
                             @if($isAdmin!=null)
                                 <div class="replace-icon">
 
-                                    <a href="#" data-bs-toggle="modal" data-bs-target="#profilePhotoModal">
+                                    <a href="#" class="replace-btn" data-bs-toggle="modal" data-bs-target="#profilePhotoModal">
                                         <svg xmlns="http://www.w3.org/2000/svg" version="1.1" x="0" y="0"
                                              viewBox="0 0 32 32" style="enable-background:new 0 0 512 512"
                                              xml:space="preserve" class=""><g>
@@ -212,7 +213,7 @@
                                                                             fill="#000000" data-original="#000000"
                                                                             class=""></path></g></svg>
                                                             </span>
-                                                                <h6 class="title">Add Photos/Videos</h6>
+                                                                <h6 class="title">Add Photos</h6>
                                                                 <p class="small-text">or drag and drop</p>
                                                             </div>
                                                             <div class="preview-file">

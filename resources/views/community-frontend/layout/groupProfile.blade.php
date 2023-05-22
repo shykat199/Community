@@ -33,8 +33,7 @@
                     {{--                        @dd($getGroupDetails)--}}
                     @if($isAdmin)
                         <div class="edit-cover">
-                            <a href="#" data-bs-toggle="modal" data-bs-target="#coverPhotoModal">Edit Cover</a>
-
+                            <button data-bs-toggle="modal" data-bs-target="#coverPhotoModal">Edit Cover</button>
 
                             <div class="modal fade" id="coverPhotoModal" tabindex="-1"
                                  aria-labelledby="coverPhotoModalLabel" aria-hidden="true">
@@ -65,7 +64,7 @@
                                                                     fill="#000000" data-original="#000000"
                                                                     class=""></path></g></svg>
                                                     </span>
-                                                        <h6 class="title">Add Photos/Videos</h6>
+                                                        <h6 class="title">Add Photos</h6>
                                                         <p class="small-text">or drag and drop</p>
                                                     </div>
                                                     <div class="preview-file">
@@ -94,7 +93,7 @@
 
                 </div>
 
-                <div class="full-profile-info">
+                <div class="full-profile-info p-50">
                     <div class="full-profile-left">
                         <div class="profile-img">
                             @if(!empty($getGroupDetails->groupProfile) && isset($getGroupDetails->groupProfile))
@@ -125,7 +124,7 @@
 
                             @if($isAdmin)
                                 <div class="replace-icon">
-                                    <a href="#" data-bs-toggle="modal" data-bs-target="#profilePhotoModal">
+                                    <a href="#" class="replace-btn" data-bs-toggle="modal" data-bs-target="#profilePhotoModal">
                                         <svg xmlns="http://www.w3.org/2000/svg" version="1.1" x="0" y="0"
                                              viewBox="0 0 32 32" style="enable-background:new 0 0 512 512"
                                              xml:space="preserve" class=""><g>
@@ -171,7 +170,7 @@
                                                                     fill="#000000" data-original="#000000"
                                                                     class=""></path></g></svg>
                                                     </span>
-                                                                <h6 class="title">Add Photos/Videos</h6>
+                                                                <h6 class="title">Add Photos</h6>
                                                                 <p class="small-text">or drag and drop</p>
                                                             </div>
                                                             <div class="preview-file">
