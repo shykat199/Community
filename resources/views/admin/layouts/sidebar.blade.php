@@ -125,6 +125,31 @@
             </li>
 
 
+            <li class="side-nav-item">
+                <a data-bs-toggle="collapse" href="#communityOther" aria-expanded="false"
+                   aria-controls="communityOther" class="side-nav-link">
+                    <i class="uil-store"></i>
+                    <span> Other Section </span>
+                    <span class="menu-arrow"></span>
+                </a>
+                <div class="collapse" id="communityOther">
+                    <ul class="side-nav-second-level">
+
+
+                        <li>
+                            <a href="{{route('community.user.dashboard.dropdown.country')}}">Country</a>
+                        </li>
+                        <li>
+                            <a href="{{route('community.user.dashboard.dropdown.state')}}">State</a>
+                        </li>
+                        <li>
+                            <a href="{{route('community.user.dashboard.dropdown.city')}}">City</a>
+                        </li>
+                    </ul>
+                </div>
+            </li>
+
+
         </ul>
 
 

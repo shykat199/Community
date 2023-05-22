@@ -35,6 +35,17 @@ Route::middleware(['auth','admin'])->prefix('/community')->group(function (){
     Route::get('/group/single/users/profile/{id}',[CommunityUserGroupController::class,'viewSingleUserProfile'])->name('community.groups.singleUser.profile');
 
 
+    //Community dynamic dropdown section
+
+    Route::get('/group/single/users/country',[CommunityUserGroupController::class,'dropdownCountry'])->name('community.user.dashboard.dropdown.country');
+    Route::get('/group/single/users/state',[CommunityUserGroupController::class,'dropdownState'])->name('community.user.dashboard.dropdown.state');
+    Route::get('/group/single/users/city',[CommunityUserGroupController::class,'dropdownCity'])->name('community.user.dashboard.dropdown.city');
+    Route::post('/group/single/users/store-country',[CommunityUserGroupController::class,'storeCountry'])->name('store.user.country');
+    Route::post('/group/single/users/store-state',[CommunityUserGroupController::class,'storeState'])->name('store.user.state');
+    Route::get('/group/single/users/delete-country/{id}',[CommunityUserGroupController::class,'deleteCountry'])->name('user.delete.country');
+
+
+
 
 });
 
