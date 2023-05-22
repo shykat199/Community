@@ -950,7 +950,7 @@ class CommunityFrontendController extends Controller
                 $q->on('userDetails.user_id', '=', 'users.id');
             })
             ->selectRaw('users.id as uId,users.name as userName,profilePhoto.user_id as profileUserId,profilePhoto.user_profile,
-        profileCover.user_cover,COUNT(userFollowers.id) as userFollowers,COUNT(userFollowings.id) as userFollowings,userDetails.birthplace')
+            profileCover.user_cover,COUNT(userFollowers.id) as userFollowers,COUNT(userFollowings.id) as userFollowings,userDetails.birthplace')
             ->groupBy('users.id')
             ->orderBy('users.name')
             ->get();
