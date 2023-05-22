@@ -1,6 +1,7 @@
 @extends('community-frontend.layout.frontend_master')
 @php
     $id=\Request::segment(3);
+    $id=\Illuminate\Support\Facades\Crypt::decrypt($id);
 
      $isAdmin=\App\Models\Community\Group\CommunityUserGroupPivot::select('group_user_role')->where('user_id','=',Auth::id())
                 ->where('group_id','=',$id)->first();
@@ -23,6 +24,8 @@
             {{--                @include('community-frontend.layout.groupUserInvitation',['id'=>$id])--}}
             {{--            @endif--}}
 
+{{--            @dd($id)--}}
+
             @include('community-frontend.layout.pageLike',['id'=>$id])
 
         </div>
@@ -33,7 +36,6 @@
         @php
             $isAdmin=\App\Models\Community\Page\CommunityPage::select('user_id')->where('user_id','=',Auth::id())->where('id','=',$id)->first();
 //                    @dd($isAdmin)
-//                            dd($isOwner);
         @endphp
         @if($isAdmin!=null)
             <div class="main-content create-post">
@@ -698,10 +700,6 @@
                 </a>
             </div>
 
-            {{--            @include('community-frontend.layout.birthday')--}}
-            {{--            @include('community-frontend.layout.group_user_list')--}}
-
-            {{--            @include('community-frontend.layout.followers')--}}
 
 
         </div>

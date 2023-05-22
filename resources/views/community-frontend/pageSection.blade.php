@@ -182,7 +182,7 @@
                                                         alt="cover"></a>
                                             </div>
 
-                                            <a href="{{route('user.page.details',$page->pId)}}"
+                                            <a href="{{route('user.page.details',\Illuminate\Support\Facades\Crypt::encrypt($page->pId))}}"
                                                style="text-decoration: none;color: inherit;">
                                                 <div class="profile-title d-flex align-items-center">
                                                     <img

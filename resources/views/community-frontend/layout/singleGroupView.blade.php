@@ -1,16 +1,15 @@
 @extends('community-frontend.layout.frontend_master')
 {{--@dd($getGroupDetails)--}}
 @php
-    $id=\Request::segment(3);
-
+    $id= \Request::segment(3);
+  $id=\Illuminate\Support\Facades\Crypt::decrypt($id);
+//  dd($id);
      $isAdmin=\App\Models\Community\Group\CommunityUserGroupPivot::select('group_user_role')->where('user_id','=',Auth::id())
                 ->where('group_id','=',$id)->first();
 
 @endphp
 @section('group.mainProfile')
     @include('community-frontend.layout.groupProfile',['getGroupDetails'=>$getGroupDetails,'id'=>$id])
-    {{--    <x-page-group-header-section :getGroupDetails="$getGroupDetails">--}}
-    {{--    </x-page-group-header-section>--}}
 
 @endsection
 @section('frontend.content')

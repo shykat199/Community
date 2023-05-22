@@ -178,7 +178,7 @@
                                                         alt="cover"></a>
                                             </div>
 
-                                            <a href="{{route('user.group.details',$group->gId)}}" style="text-decoration: none;color: inherit;">
+                                            <a href="{{route('user.group.details',\Illuminate\Support\Facades\Crypt::encrypt($group->gId))}}" style="text-decoration: none;color: inherit;">
                                                 <div class="profile-title d-flex align-items-center">
                                                     <img
                                                             src="{{asset("community-frontend/assets/images/community/home/user-0.jpg")}}"
