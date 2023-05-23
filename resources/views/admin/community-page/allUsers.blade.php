@@ -2,7 +2,7 @@
 
 
 @section('admin.content')
-
+{{--@dd(1)--}}
     <div class="content-page">
         <div class="content">
             <h4 class="page-title">All Users</h4>
@@ -50,28 +50,36 @@
                                     <td>{{$user->name}}</td>
                                     <td>{{$user->email}}</td>
                                     <td>
-                                        @if(!empty($postComment->users->userProfileImages[0]) && isset($postComment->users->userProfileImages[0])?$postComment->users->userProfileImages[0]:'')
+                                        @if(!empty($user->userProfileImages[0]) && isset($user->userProfileImages[0])?$user->userProfileImages[0]:'')
 
-                                            @if(!empty($postComment->users->userProfileImages[0]) && isset($postComment->users->userProfileImages[0])?$postComment->users->userProfileImages[0]:'')
+                                            @if(!empty($user->userProfileImages[0]) && isset($user->userProfileImages[0])?$user->userProfileImages[0]:'')
                                                 <a href="" class="new-comment-img replay-comment-img"><img
-                                                        src="{{asset("storage/community/profile-picture/".$postComment->users->userProfileImages[0]->user_profile)}}"
-                                                        alt="image"></a>
+                                                        src="{{asset("storage/community/profile-picture/".$user->userProfileImages[0]->user_profile)}}"
+                                                        alt="image" style="height: 50px; width: 50px;"></a>
                                             @else
                                                 <a href=""><img
                                                         src="{{asset("community-frontend/assets/images/community/home/news-post/Athore01.jpg")}}"
-                                                        alt="image">
+                                                        alt="image" style="height: 50px; width: 50px;">
                                                 </a>
                                             @endif
+                                        @else
+                                            <a href=""><img
+                                                    src="{{asset("community-frontend/assets/images/community/home/news-post/Athore01.jpg")}}"
+                                                    alt="image" style="height: 50px; width: 50px;">
+                                            </a>
                                         @endif
                                     </td>
                                     <td>{{$user->dob}}</td>
                                     <td>{{$user->gender}}</td>
                                     <td>
-                                        <a href="{{route('community.user.show',$user->uId)}}" class="btn btn-warning">
+                                        <a href="{{route('community.user.show',$user->id)}}" class="btn btn-warning">
                                             <i class="fa-solid fa-eye"></i></a>
 
-                                        <a href="{{route('community.user.ban',$user->uId)}}" data-uId="{{$user->uId}}" class="btn btn-danger banUser">
+                                        <a href="{{route('community.user.ban',$user->id)}}" data-uId="{{$user->uId}}" class="btn btn-danger banUser">
                                             <i class="fa-solid fa-ban"></i></a>
+
+                                        <a href="{{route('community.user.check-post',$user->id)}}" data-uId="{{$user->uId}}" class="btn btn-primary banUser">
+                                           Check Post</a>
                                     </td>
                                 </tr>
                             @endforeach

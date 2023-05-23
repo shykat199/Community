@@ -828,7 +828,7 @@
             // console.log(parests_data, 'parests_data')
             // let img_src = $(this).find('img').attr('src');
             // console.log(img_src,'img_src');
-            // return false;
+            return false;
 
             if (postReaction !== '' && postId !== '') {
                 $.ajax({

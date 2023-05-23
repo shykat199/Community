@@ -5,17 +5,20 @@ namespace App\Http\Controllers\Community\Admin\Group;
 use App\Http\Controllers\Controller;
 use App\Models\City;
 use App\Models\Community\Group\CommunityUserGroup;
+use App\Models\Community\Group\CommunityUserGroupPostComment;
 use App\Models\Community\User\CommunityUserDetails;
 use App\Models\Country;
 use App\Models\State;
 use App\Models\User;
 use http\Env\Response;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class CommunityUserGroupController extends Controller
 {
 
     public function commonQuery(){
+
         $allGroups=CommunityUserGroup::join('community_user_group_pivots',function ($q){
             $q->on('community_user_group_pivots.group_id','=','community_user_groups.id');
             $q->where('community_user_group_pivots.user_status','=',1);
@@ -31,7 +34,7 @@ class CommunityUserGroupController extends Controller
             ->leftJoin('community_user_group_cover_photos','community_user_group_cover_photos.group_id','community_user_groups.id')
 
             ->selectRaw('community_user_groups.id as cGroupId,community_user_groups.group_name,community_user_groups.group_details,
-            community_user_group_cover_photos.cover_photo,community_user_group_cover_photos.cover_photo,
+            community_user_group_cover_photos.cover_photo,community_user_group_profile_photos.group_profile_photo,
             users.id as uId,users.name as ownerName, COUNT(community_user_group_pivots.id) as userCount
             ')
             ->groupBy('community_user_groups.id')
@@ -96,6 +99,42 @@ class CommunityUserGroupController extends Controller
     public function viewSingleUserProfile($id){
         return "User Profile";
     }
+
+    public function viewGroupSinglePost($id){
+
+        $allGroupPost=CommunityUserGroup::join('community_user_group_posts','community_user_group_posts.group_id','=','community_user_groups.id')
+            ->where('community_user_group_posts.group_id','=',$id)
+            ->join('users','users.id','=','community_user_group_posts.user_id')
+            ->selectRaw('community_user_groups.id as gId,community_user_groups.group_name,
+            community_user_group_posts.id as gPostId,community_user_group_posts.post_description,community_user_group_posts.created_at,
+            users.id as uId,users.name
+            ')
+            ->latest()->get();
+
+
+        return view('admin.community-group.singleGroupPost',compact('allGroupPost'));
+//        return "User Profile";
+    }
+
+
+    public function viewGroupSinglePostComments($id){
+        //postId
+        $allPostComments=CommunityUserGroupPostComment::with(['users.userProfileImages', 'replies'])->where('group_post_id','=',$id)
+            ->join('users','users.id','=','community_user_group_post_comments.user_id')
+            ->where('group_post_comment_id','=',0)
+            ->selectRaw('users.id as user_id,users.name as userName,
+            community_user_group_post_comments.id,community_user_group_post_comments.comment_text,
+            community_user_group_post_comments.created_at,community_user_group_post_comments.group_post_id as groupPostId,
+            community_user_group_post_comments.group_post_comment_id as motherCmtId')
+            ->get();
+
+//        return $allPostComments;
+
+        return view('admin.community-group.commentOfPost',compact('allPostComments'));
+//        return "User Profile";
+    }
+
+
 
     public function dropdownCountry(){
 
@@ -197,6 +236,21 @@ class CommunityUserGroupController extends Controller
     }
 
 
+    public function updateCity(Request $request){
+//        dd($request->all());
+        $updateCity=City::find($request->get('cityId'))->update([
+            'city'=>$request->get('city'),
+            'state_id'=>$request->get('state'),
+        ]);
+        if ($updateCity){
+            return  redirect()->back()->with('success','State updated successfully');
+        }else{
+            return  redirect()->back()->with('error','Something Wrong');
+
+        }
+    }
+
+
     public function updateCountry(Request $request){
 //        dd($request->all());
         $updateState=Country::find($request->get('company_id'))->update([
@@ -230,6 +284,17 @@ class CommunityUserGroupController extends Controller
         $deleteCountries=State::find($id)->delete();
         if ($deleteCountries){
             return  redirect()->back()->with('success','Country deleted successfully');
+        }else{
+            return  redirect()->back()->with('error','Something Wrong');
+
+        }
+    }
+
+    public function deleteCity($id){
+
+        $deleteCity=City::find($id)->delete();
+        if ($deleteCity){
+            return  redirect()->back()->with('success','City deleted successfully');
         }else{
             return  redirect()->back()->with('error','Something Wrong');
 

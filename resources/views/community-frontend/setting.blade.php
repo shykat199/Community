@@ -135,7 +135,7 @@
                                 </div>
                                 <div class="col-lg-6">
                                     <label for="relation">Occupation</label>
-                                    <select name="occupation" id="relation">
+                                    <select name="occupation" class="js-example-basic-single" id="relation">
                                         <option value="" selected>Occupation</option>
                                         <option
                                             value="Software Developer" {{isset($userInfo[0]) && $userInfo[0]['occupation']==='Software Developer'?'selected':''}}>
@@ -161,7 +161,15 @@
                                 </div>
                                 <div class="col-lg-6">
                                     <label for="gender">Gender</label>
-                                    <select name="gender" id="gender">
+                                    <select name="" id="gender">
+                                        <option selected>Gender</option>
+                                        <option >Male</option>
+                                        <option >Female</option>
+                                    </select>
+                                </div>
+                                <div class="col-lg-6">
+                                    <label for="gender">Gender</label>
+                                    <select name="gender" class="js-example-basic-single" id="gender">
                                         <option value="" selected>Gender</option>
                                         <option
                                             value="Male" {{isset($userInfo[0])&& $userInfo[0]['gender']==='Male'?'selected':''}}>
@@ -179,7 +187,7 @@
                                 </div>
                                 <div class="col-lg-6">
                                     <label for="relation">Relation Status</label>
-                                    <select name="relation" id="relation">
+                                    <select name="relation" class="js-example-basic-single" id="relation">
                                         <option value="" selected>Relation Status</option>
                                         <option
                                             value="Married" {{isset($userInfo[0]) && $userInfo[0]['relationship']==='Married'?'selected':''}}>
@@ -193,7 +201,7 @@
                                 </div>
                                 <div class="col-lg-6">
                                     <label for="bloodGroup">Blood Group</label>
-                                    <select name="bloodGroup" id="bloodGroup">
+                                    <select name="bloodGroup" class="js-example-basic-single" id="bloodGroup">
                                         <option value="" selected>Blood Group</option>
                                         @foreach(bloodGroups() as $group)
                                             <option
@@ -202,11 +210,49 @@
 
                                     </select>
                                 </div>
+
+
                                 <div class="col-lg-6">
                                     <label for="website">Website</label>
                                     <input type="text" value="{{(isset( $userInfo[0]))?$userInfo[0]['website']:''}}"
                                            id="website" name="website" placeholder="Website">
                                 </div>
+
+                                <div class="col-lg-6">
+
+                                    <label for="country">Country</label>
+{{--                                    @dd($userInfo[0]['country'])--}}
+                                    <select class="js-example-basic-single country-dropdown" id="country-dropdown1" name="country">
+                                        <option selected value="">Select Country</option>
+                                        {{--                                                    @dd($allCountries)--}}
+                                        @foreach($allCountries as $country)
+
+                                            <option value="{{$country->country}}" {{isset($userInfo[0]['country']) && $userInfo[0]['country']===$country->country?'selected':''}}>{{$country->country}}
+                                            </option>
+                                        @endforeach
+
+                                    </select>
+
+                                </div>
+
+                                {{--                                @dd($userInfo)--}}
+                                <div class="col-lg-6">
+                                    <label for="address">Address</label>
+                                    <input type="text" id="address"
+                                           value="{{isset($userInfo[0])?$userInfo[0]['birthplace']:''}}" name="address"
+                                           placeholder="Address">
+                                </div>
+
+                                <div class="col-lg-6">
+                                    <label for="state">State</label>
+                                    <select class="js-example-basic-single state-dropdown" id="state-dropdown1" name="state">
+                                        <option selected value="">Select State</option>
+
+                                    </select>
+
+                                </div>
+
+
                                 <div class="col-lg-6">
                                     <label for="language">Language</label>
                                     @php
@@ -223,74 +269,22 @@
                                         @endforeach
                                     </select>
                                 </div>
-                                {{--                                @dd($userInfo)--}}
-                                <div class="col-lg-6">
-                                    <label for="address">Address</label>
-                                    <input type="text" id="address"
-                                           value="{{isset($userInfo[0])?$userInfo[0]['birthplace']:''}}" name="address"
-                                           placeholder="Address">
-                                </div>
+
                                 <div class="col-lg-6">
                                     <label for="city">City</label>
-                                    <select name="city" id="city">
-                                        <option selected>City</option>
-                                        <option
-                                            value="Bangladesh" {{isset($userInfo[0])&&$userInfo[0]['city']==='Bangladesh'?'selected':''}}>
-                                            Bangladesh
-                                        </option>
-                                        <option
-                                            value="Canada" {{isset($userInfo[0])&&$userInfo[0]['city']==='Canada'?'selected':''}}>
-                                            Canada
-                                        </option>
-                                        <option
-                                            value="Germany" {{isset($userInfo[0])&&$userInfo[0]['city']==='Germany'?'selected':''}}>
-                                            Germany
-                                        </option>
-                                        <option
-                                            value="Switzerland" {{isset($userInfo[0])&&$userInfo[0]['city']==='Switzerland'?'selected':''}}>
-                                            Switzerland
-                                        </option>
-                                    </select>
-                                </div>
-                                <div class="col-lg-6">
-                                    <label for="state">State</label>
-                                    <select name="state" id="state">
-                                        <option selected>State</option>
-                                        <option
-                                            value="Bangladesh" {{isset($userInfo[0])&&$userInfo[0]['state']==='Bangladesh'?'selected':''}}>
-                                            Bangladesh
-                                        </option>
-                                        <option
-                                            value="Canada" {{isset($userInfo[0])&&$userInfo[0]['state']==='Canada'?'selected':''}}>
-                                            Canada
-                                        </option>
-                                        <option
-                                            value="Germany" {{isset($userInfo[0])&&$userInfo[0]['state']==='Germany'?'selected':''}}>
-                                            Germany
-                                        </option>
-                                        <option
-                                            value="Switzerland" {{isset($userInfo[0])&&$userInfo[0]['state']==='Switzerland'?'selected':''}}>
-                                            Switzerland
-                                        </option>
-                                    </select>
-                                </div>
-                                <div class="col-lg-6">
 
-                                    <label for="country">Country</label>
-
-                                    <select class="js-example-basic-single country" name="country">
-                                        <option selected value="">Select Country</option>
-                                        @foreach(allCountries() as $country)
-                                            <option
-                                                value="{{$country}}"{{isset($userInfo[0])&& $userInfo[0]['country']===$country?'selected':''}}>{{$country}}</option>
-                                        @endforeach
+                                    <select class="js-example-basic-single city-dropdown1" id="city-dropdown1" name="city">
+                                        <option selected value="">Select City</option>
 
                                     </select>
+
                                 </div>
+
+
                                 <div class="col-lg-6">
                                     <label for="address">About Me</label>
                                     <textarea name="about_me" rows="5"
-                                              cols="38">{{$country}}"{{isset($userInfo[0])?$userInfo[0]['about_me']:''}}</textarea>
+                                              cols="38">"{{isset($userInfo[0])?$userInfo[0]['about_me']:''}}</textarea>
                                 </div>
                                 <div class="col-12 mt-2">
                                     <button type="submit" class="social-theme-btn save-btn">Save</button>
@@ -623,170 +617,7 @@
                             </div>
                         </form>
                     </div>
-                    {{--                        <div class="tab-pane fade" id="notification-tab-pane" role="tabpanel"--}}
-                    {{--                             aria-labelledby="notification-tab" tabindex="0">--}}
-                    {{--                            <div class="setting-form-wrapper profile-information">--}}
-                    {{--                                <h5 class="setting-title">Notification</h5>--}}
-                    {{--                                <div class="row">--}}
-                    {{--                                    <div class="col-lg-6">--}}
-                    {{--                                        <ul class="notification-check-list">--}}
-                    {{--                                            <li>Where You Receive Comment Notification?</li>--}}
-                    {{--                                            <li class="chek-inputs">--}}
-                    {{--                                                <input type="checkbox" class="notificatoin-chekbox" id="email">--}}
-                    {{--                                                <label for="email">Email</label>--}}
-                    {{--                                            </li>--}}
-                    {{--                                            <li class="chek-inputs">--}}
-                    {{--                                                <input type="checkbox" class="notificatoin-chekbox" id="sms">--}}
-                    {{--                                                <label for="sms">SMS</label>--}}
-                    {{--                                            </li>--}}
-                    {{--                                        </ul>--}}
-                    {{--                                        <ul class="notification-check-list">--}}
-                    {{--                                            <li>Get Notifications When You're Tagged By</li>--}}
-                    {{--                                            <li class="chek-inputs">--}}
-                    {{--                                                <input type="checkbox" class="notificatoin-chekbox" id="anyone">--}}
-                    {{--                                                <label for="anyone">Anyone</label>--}}
-                    {{--                                            </li>--}}
-                    {{--                                            <li class="chek-inputs">--}}
-                    {{--                                                <input type="checkbox" class="notificatoin-chekbox" id="friends">--}}
-                    {{--                                                <label for="friends">Friends</label>--}}
-                    {{--                                            </li>--}}
-                    {{--                                        </ul>--}}
-                    {{--                                        <ul class="notification-check-list">--}}
-                    {{--                                            <li>Get Notifications When Updates From Friends</li>--}}
-                    {{--                                            <li class="chek-inputs">--}}
-                    {{--                                                <input type="checkbox" class="notificatoin-chekbox" id="email2">--}}
-                    {{--                                                <label for="email2">Email</label>--}}
-                    {{--                                            </li>--}}
-                    {{--                                            <li class="chek-inputs">--}}
-                    {{--                                                <input type="checkbox" class="notificatoin-chekbox" id="sms2">--}}
-                    {{--                                                <label for="sms2">SMS</label>--}}
-                    {{--                                            </li>--}}
-                    {{--                                        </ul>--}}
-                    {{--                                        <h6 class="notification-title">Other Notifications</h6>--}}
-                    {{--                                        <ul class="notification-check-list">--}}
-                    {{--                                            <li class="chek-inputs">--}}
-                    {{--                                                <input type="checkbox" class="notificatoin-chekbox" id="videos">--}}
-                    {{--                                                <label for="videos">Recommended Videos</label>--}}
-                    {{--                                            </li>--}}
-                    {{--                                            <li class="chek-inputs">--}}
-                    {{--                                                <input type="checkbox" class="notificatoin-chekbox" id="games">--}}
-                    {{--                                                <label for="games">Games</label>--}}
-                    {{--                                            </li>--}}
-                    {{--                                            <li class="chek-inputs">--}}
-                    {{--                                                <input type="checkbox" class="notificatoin-chekbox" id="news">--}}
-                    {{--                                                <label for="news">Breaking News</label>--}}
-                    {{--                                            </li>--}}
-                    {{--                                            <li class="chek-inputs">--}}
-                    {{--                                                <input type="checkbox" class="notificatoin-chekbox" id="pageFollow">--}}
-                    {{--                                                <label for="pageFollow">Pages Follow Notification</label>--}}
-                    {{--                                            </li>--}}
-                    {{--                                        </ul>--}}
-                    {{--                                    </div>--}}
-                    {{--                                    <div class="col-lg-6">--}}
-                    {{--                                        <ul class="notification-check-list">--}}
-                    {{--                                            <li>Where You Receive Friend Request Notification?</li>--}}
-                    {{--                                            <li class="chek-inputs">--}}
-                    {{--                                                <input type="checkbox" class="notificatoin-chekbox" id="email3">--}}
-                    {{--                                                <label for="email3">Email</label>--}}
-                    {{--                                            </li>--}}
-                    {{--                                            <li class="chek-inputs">--}}
-                    {{--                                                <input type="checkbox" class="notificatoin-chekbox" id="sms3">--}}
-                    {{--                                                <label for="sms3">SMS</label>--}}
-                    {{--                                            </li>--}}
-                    {{--                                        </ul>--}}
-                    {{--                                        <ul class="notification-check-list">--}}
-                    {{--                                            <li>Where You Receive Birthday Notification?</li>--}}
-                    {{--                                            <li class="chek-inputs">--}}
-                    {{--                                                <input type="checkbox" class="notificatoin-chekbox" id="email4">--}}
-                    {{--                                                <label for="email4">Email</label>--}}
-                    {{--                                            </li>--}}
-                    {{--                                            <li class="chek-inputs">--}}
-                    {{--                                                <input type="checkbox" class="notificatoin-chekbox" id="sms4">--}}
-                    {{--                                                <label for="sms4">SMS</label>--}}
-                    {{--                                            </li>--}}
-                    {{--                                        </ul>--}}
-                    {{--                                        <ul class="notification-check-list">--}}
-                    {{--                                            <li>Where You Receive Groups Notification?</li>--}}
-                    {{--                                            <li class="chek-inputs">--}}
-                    {{--                                                <input type="checkbox" class="notificatoin-chekbox" id="email5">--}}
-                    {{--                                                <label for="email5">Email</label>--}}
-                    {{--                                            </li>--}}
-                    {{--                                            <li class="chek-inputs">--}}
-                    {{--                                                <input type="checkbox" class="notificatoin-chekbox" id="sms5">--}}
-                    {{--                                                <label for="sms5">SMS</label>--}}
-                    {{--                                            </li>--}}
-                    {{--                                        </ul>--}}
-                    {{--                                    </div>--}}
-                    {{--                                </div>--}}
-                    {{--                            </div>--}}
-                    {{--                        </div>--}}
-                    {{--                        <div class="tab-pane fade" id="message-tab-pane" role="tabpanel" aria-labelledby="message-tab"--}}
-                    {{--                             tabindex="0">--}}
-                    {{--                            <div class="setting-form-wrapper profile-information">--}}
-                    {{--                                <h5 class="setting-title">Messages Setting</h5>--}}
-                    {{--                                <div class="row">--}}
-                    {{--                                    <div class="col-lg-6">--}}
-                    {{--                                        <ul class="notification-check-list">--}}
-                    {{--                                            <li>Send Me Messages To My Cell Phone</li>--}}
-                    {{--                                            <li class="chek-inputs">--}}
-                    {{--                                                <input type="checkbox" class="notificatoin-chekbox" id="on">--}}
-                    {{--                                                <label for="on">ON</label>--}}
-                    {{--                                            </li>--}}
-                    {{--                                            <li class="chek-inputs">--}}
-                    {{--                                                <input type="checkbox" class="notificatoin-chekbox" id="off">--}}
-                    {{--                                                <label for="sms">OFF</label>--}}
-                    {{--                                            </li>--}}
-                    {{--                                        </ul>--}}
-                    {{--                                        <ul class="notification-check-list">--}}
-                    {{--                                            <li>General Announcement, Updates, Posts, And Videos</li>--}}
-                    {{--                                            <li class="chek-inputs">--}}
-                    {{--                                                <input type="checkbox" class="notificatoin-chekbox" id="on1">--}}
-                    {{--                                                <label for="on1">ON</label>--}}
-                    {{--                                            </li>--}}
-                    {{--                                            <li class="chek-inputs">--}}
-                    {{--                                                <input type="checkbox" class="notificatoin-chekbox" id="off1">--}}
-                    {{--                                                <label for="sms1">OFF</label>--}}
-                    {{--                                            </li>--}}
-                    {{--                                        </ul>--}}
-                    {{--                                        <ul class="notification-check-list">--}}
-                    {{--                                            <li>Messages From Activity On My Page</li>--}}
-                    {{--                                            <li class="chek-inputs">--}}
-                    {{--                                                <input type="checkbox" class="notificatoin-chekbox" id="on2">--}}
-                    {{--                                                <label for="on2">ON</label>--}}
-                    {{--                                            </li>--}}
-                    {{--                                            <li class="chek-inputs">--}}
-                    {{--                                                <input type="checkbox" class="notificatoin-chekbox" id="off2">--}}
-                    {{--                                                <label for="sms2">OFF</label>--}}
-                    {{--                                            </li>--}}
-                    {{--                                        </ul>--}}
-                    {{--                                    </div>--}}
-                    {{--                                    <div class="col-lg-6">--}}
-                    {{--                                        <ul class="notification-check-list">--}}
-                    {{--                                            <li>Page Follow Notification</li>--}}
-                    {{--                                            <li class="chek-inputs">--}}
-                    {{--                                                <input type="checkbox" class="notificatoin-chekbox" id="on3">--}}
-                    {{--                                                <label for="on3">ON</label>--}}
-                    {{--                                            </li>--}}
-                    {{--                                            <li class="chek-inputs">--}}
-                    {{--                                                <input type="checkbox" class="notificatoin-chekbox" id="off3">--}}
-                    {{--                                                <label for="sms3">OFF</label>--}}
-                    {{--                                            </li>--}}
-                    {{--                                        </ul>--}}
-                    {{--                                        <ul class="notification-check-list">--}}
-                    {{--                                            <li>Breaking News</li>--}}
-                    {{--                                            <li class="chek-inputs">--}}
-                    {{--                                                <input type="checkbox" class="notificatoin-chekbox" id="on4">--}}
-                    {{--                                                <label for="on4">ON</label>--}}
-                    {{--                                            </li>--}}
-                    {{--                                            <li class="chek-inputs">--}}
-                    {{--                                                <input type="checkbox" class="notificatoin-chekbox" id="off4">--}}
-                    {{--                                                <label for="sms4">OFF</label>--}}
-                    {{--                                            </li>--}}
-                    {{--                                        </ul>--}}
-                    {{--                                    </div>--}}
-                    {{--                                </div>--}}
-                    {{--                            </div>--}}
-                    {{--                        </div>--}}
+
                     <div class="tab-pane fade" id="closeAccount-tab-pane" role="tabpanel"
                          aria-labelledby="closeAccount-tab" tabindex="0">
                         <div class="setting-form-wrapper profile-information">
@@ -980,6 +811,73 @@
 
     <script>
         $(document).ready(function() {
+            $('.js-example-basic-multiple').select2();
+
+            $(document).on('change','.country-dropdown', function () {
+                let country_id = this.value;
+                // console.log(country_id);
+                $(".state-dropdown").html('');
+                // return false;
+                $.ajax({
+                    url: "{{route('get.frontend.state.on-country-change')}}",
+                    type: "POST",
+                    data: {
+                        country_id: country_id,
+                        _token: '{{csrf_token()}}'
+                    },
+                    dataType: 'json',
+                    success: function (result) {
+                        $('.state-dropdown').html('<option value="">-- Select State --</option>');
+                        $.each(result.getStates, function (key, value) {
+                            $(".state-dropdown").append('<option value="' + value
+                                .id + '">' + value.name + '</option>');
+                        });
+                        // $('#city-dropdown').html('<option value="">-- Select City --</option>');
+                    }
+                });
+            });
+
+            $(document).on('change','.state-dropdown', function () {
+                let state_id = this.value;
+                // console.log(country_id);
+                $(".city-dropdown1").html('');
+                // return false;
+                $.ajax({
+                    url: "{{route('get.frontend.city.on-state-change')}}",
+                    type: "POST",
+                    data: {
+                        state_id: state_id,
+                        reqTyp:'getCity',
+                        _token: '{{csrf_token()}}'
+                    },
+                    dataType: 'json',
+                    success: function (result) {
+                        console.log(result.getCity);
+                        $('.city-dropdown1').html('<option value="">-- Select State --</option>');
+                        $.each(result.getStates, function (key, value) {
+                            $(".city-dropdown1").append('<option value="' + value
+                                .id + '">' + value.city + '</option>');
+                        });
+                        // $('#city-dropdown').html('<option value="">-- Select City --</option>');
+                    }
+                });
+            });
+
+        });
+    </script>
+    <script>
+
+
+
+        $(document).ready(function () {
+            $('.js-example-basic-single').select2();
+
+            let country=$('.country-dropdown').val();
+
+            $('.country-dropdown').select2().select2('val', country);
+
+        });
+        $(document).ready(function () {
             $('.js-example-basic-multiple').select2();
         });
     </script>

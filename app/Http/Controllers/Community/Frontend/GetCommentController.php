@@ -172,7 +172,9 @@ class GetCommentController extends Controller
                     'postComments' => $newPostComments,
                     'html' => $html
                 ];
-            } elseif ($request->get('reqType') === 'pagePostChildCmt') {
+            }
+
+            elseif ($request->get('reqType') === 'pagePostChildCmt') {
 
                 $postComments = CommunityPagePostComment::with(['userPosts.users.userProfileImages', 'replies.users'])
                     ->where('page_post_id', '=', $request->get('postId'))
@@ -241,7 +243,71 @@ class GetCommentController extends Controller
 
                 }
 
-            } elseif ($request->get('reqType') === 'groupPostChildCmt') {
+            }
+
+            elseif ($request->get('reqType') === 'adminPagePostChildCmt') {
+
+                $postComments = CommunityPagePostComment::with(['userPosts.users.userProfileImages', 'replies.users'])
+                    ->where('page_post_id', '=', $request->get('postId'))
+                    ->where('page_post_comment_id', '=', $request->get('cmtId'))
+                    ->get();
+//            dd($postComments);
+                $html = '';
+//            dd($postComments);
+
+                foreach ($postComments as $comment) {
+
+                    $date = Carbon::parse($comment->created_at)->diffForHumans();
+                    $userName = $comment->userPosts->users->name;
+                    $comments = $comment->comment_text;
+                    $commentId = $comment->id;
+                    $userProfilePicture = isset($comment->users->userProfileImages[0]) ? $comment->users->userProfileImages[0]->user_profile : '';
+
+                    $html .= '<div class="media-block nested-comment1-'.$commentId.'">';
+                    if (isset($userProfilePicture)) {
+                        $html .= '<a href="#"> <img src="' . asset("storage/community/profile-picture/$userProfilePicture") . '" style="height: 40 px; width: 50px;" alt="image">
+                                </a>';
+                    } else {
+                        $html .= '<a><img src="' . asset("community-frontend/assets/images/community/home/news-post/comment01.jpg") . '"alt="image"></a>';
+
+                    }
+                    $html .= '<div class="media-body">
+                                                <div class="mar-btm">
+                                                    <a href="#" class="btn-link text-semibold media-heading box-inline">' . $userName . '</a>
+                                                    <p class="text-muted text-sm"><i class="fa fa-mobile fa-lg"></i> -
+                                                        From Mobile - ' . $date . '</p>
+                                                </div>
+                                                <p>' . $comments . '</p>
+                                                <div class="pad-ver">
+                                                    <div class="btn-group">
+                                                        <a class="btn btn-sm btn-default btn-hover-danger dltComment" data-commentId="' . $commentId . '" href="#"><i
+                                                    class="fa fa-trash text-danger"></i></a>
+                                                    </div>
+                                                    <a class="btn btn-sm btn-default btn-hover-primary"
+                                                       href="#">Report</a>
+                                                </div>
+                                                <hr>
+                                            </div>
+                                        </div>';
+
+                }
+
+                if ($postComments) {
+                    $returnResult = [
+                        'status' => true,
+                        'msg' => 'Successfully Added',
+                        'postComments' => $postComments,
+                        'html' => $html
+                    ];
+
+                }
+
+            }
+
+
+
+            elseif ($request->get('reqType') === 'groupPostChildCmt') {
+//                dd(1);
 
                 $postComments = CommunityUserGroupPostComment::with(['userPosts.users.userProfileImages', 'replies.users'])
                     ->where('group_post_id', '=', $request->get('postId'))
@@ -312,7 +378,68 @@ class GetCommentController extends Controller
 
                 }
 
-            } elseif ($request->get('reqTyp') === 'pageCmt') {
+            }
+            elseif ($request->get('reqType') === 'adminGroupPostChildCmt') {
+//                dd(1);
+
+                $postComments = CommunityUserGroupPostComment::with(['userPosts.users.userProfileImages', 'replies.users'])
+                    ->where('group_post_id', '=', $request->get('postId'))
+                    ->where('group_post_comment_id', '=', $request->get('cmtId'))
+                    ->get();
+//            dd($postComments);
+                $html = '';
+//            dd($postComments);
+
+                foreach ($postComments as $comment) {
+
+                    $date = Carbon::parse($comment->created_at)->diffForHumans();
+                    $userName = $comment->userPosts->users->name;
+                    $comments = $comment->comment_text;
+                    $commentId = $comment->id;
+                    $userProfilePicture = isset($comment->users->userProfileImages[0]) ? $comment->users->userProfileImages[0]->user_profile : '';
+
+
+                    $html .= '<div class="media-block nested-comment1-'.$commentId.'">';
+                    if (isset($userProfilePicture)) {
+                        $html .= '<a href="#"> <img src="' . asset("storage/community/profile-picture/$userProfilePicture") . '" style="height: 40 px; width: 50px;" alt="image">
+                                </a>';
+                    } else {
+                        $html .= '<a><img src="' . asset("community-frontend/assets/images/community/home/news-post/comment01.jpg") . '"alt="image"></a>';
+
+                    }
+                    $html .= '<div class="media-body">
+                                                <div class="mar-btm">
+                                                    <a href="#" class="btn-link text-semibold media-heading box-inline">' . $userName . '</a>
+                                                    <p class="text-muted text-sm"><i class="fa fa-mobile fa-lg"></i> -
+                                                        From Mobile - ' . $date . '</p>
+                                                </div>
+                                                <p>' . $comments . '</p>
+                                                <div class="pad-ver">
+                                                    <div class="btn-group">
+                                                        <a class="btn btn-sm btn-default btn-hover-danger dltComment" data-commentId="' . $commentId . '" href="#"><i
+                                                    class="fa fa-trash text-danger"></i></a>
+                                                    </div>
+                                                    <a class="btn btn-sm btn-default btn-hover-primary"
+                                                       href="#">Report</a>
+                                                </div>
+                                                <hr>
+                                            </div>
+                                        </div>';
+
+                }
+
+                if ($postComments) {
+                    $returnResult = [
+                        'status' => true,
+                        'msg' => 'Successfully Added',
+                        'postComments' => $postComments,
+                        'html' => $html
+                    ];
+
+                }
+
+            }
+            elseif ($request->get('reqTyp') === 'pageCmt') {
 
                 $postComment = CommunityPagePostComment::with(['userPosts.users.userProfileImages', 'replies.users'])
                     ->where('page_post_id', '=', $request->get('pPostId'))
@@ -472,7 +599,6 @@ class GetCommentController extends Controller
                 }
 
             }
-
             elseif ($request->get('reqTyp') === 'userAllCmt') {
 
                 $newPostComments = CommunityUserPostComment::with(['userPosts.users.userProfileImages', 'replies.users'])
@@ -568,7 +694,7 @@ class GetCommentController extends Controller
                                         </div>';
 
 
-                        if (count($comment->replies)>0) {
+                        if (count($comment->replies) > 0) {
 
                             $html .= '<div class="more-comment mt-2">
                                                 <a class="loadChildCmt" data-postIdd="' . $comment->user_post_id . '"

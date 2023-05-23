@@ -8,6 +8,7 @@ use App\Models\Community\User_Profile\CommunityUserProfileEducation;
 use App\Models\Community\User_Profile\CommunityUserProfileInterest;
 use App\Models\Community\User_Profile\CommunityUserProfileLanguage;
 use App\Models\Community\User_Profile\CommunityUserProfileSocialink;
+use App\Models\Country;
 use App\Models\SightSetting;
 use App\Models\User;
 use App\Rules\MatchOldPassword;
@@ -22,6 +23,8 @@ class UserProfileSettingController extends Controller
 {
     public function index()
     {
+
+        $data['allCountries'] = Country::all();
         $data['userInfo'] = CommunityUserDetails::all()->toArray();
         $data['userLanguage'] = User::with('languages')
             ->where('id', '=', Auth::id())

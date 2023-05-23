@@ -1,8 +1,10 @@
 @extends('admin.layouts.master')
 
-
 @section('admin.content')
 
+{{--    @dd($allGroupPost)--}}
+
+@dd($singleUser)
 
     <div class="content-page">
         <div class="content">
@@ -16,9 +18,8 @@
                 <div class="card-body">
                     <div class="row">
                         <div class="col">
-
-
                             <div class="mb-3">
+
                                 <label for="exampleInputEmail1" class="form-label">User Name</label>
                                 <input readonly type="email" class="form-control" value="{{!empty($singleUser) && isset($singleUser)?$singleUser[0]['name']:''}}" id="exampleInputEmail1" aria-describedby="emailHelp">
                             </div>

@@ -47,12 +47,13 @@ class CommunityPageController extends Controller
             })
             ->leftJoin('community_page_profile_photos as profile_photo', 'profile_photo.page_id', '=', 'community_pages.id')
             ->leftJoin('community_page_cover_photos as cover_photo', 'cover_photo.page_id', '=', 'community_pages.id')
-            ->selectRaw('community_pages.id,community_pages.page_name,community_pages.page_details,users.id as uId,users.name as ownerName,profile_photo.page_profile_photo
+            ->selectRaw('community_pages.id,community_pages.page_name,community_pages.page_details,users.id as uId,users.name as ownerName,
+            profile_photo.page_profile_photo
             ,cover_photo.page_cover_photo, COUNT(likes.id) as likeCounts, COUNT(follows.id) as followCounts')
             ->groupBy('community_pages.id')
             ->get();
 
-        return view('admin.community-page.allGroup', $data);
+        return view('admin.community-page.allPage', $data);
     }
 
     /**

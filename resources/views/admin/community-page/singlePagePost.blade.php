@@ -1,10 +1,12 @@
 @extends('admin.layouts.master')
 
 @section('admin.content')
+{{--    @dd($allPagePost)--}}
 
     <div class="content-page">
         <div class="content">
-            <h4 class="page-title">Pages</h4>
+            <h4 class="page-title">Group Name: {{isset($allPagePost[0])?$allPagePost[0]->page_name:''}}</h4>
+{{--            <h4 class="page-title">Group Owner: {{isset($allGroupPost[0])?$allGroupPost[0]->group_name:''}}</h4>--}}
             <div class="">
                 <div class="card mt-2">
 
@@ -31,28 +33,26 @@
                             <thead>
                             <tr>
                                 <th>#ID</th>
-                                <th>Group Name</th>
-                                <th>Group Owner</th>
-                                <th>Group Image</th>
-                                <th>Group Description</th>
-                                <th>Group User Count</th>
+                                <th>Post Description</th>
+                                <th>Post Owner</th>
+                                <th>Date</th>
                                 <th>Action</th>
                             </tr>
                             </thead>
 
 
                             <tbody>
-{{--                            @dd($allGroups)--}}
-                            @foreach($allGroups as $group)
+{{--                            @dd($allGroupPost)--}}
+                            @foreach($allPagePost as $group)
                                 <tr>
                                     <td>{{$idx++}}</td>
-                                    <td>{{$group->group_name}}</td>
-                                    <td>{{$group->ownerName}}</td>
-                                    <td><img src="{{asset('storage/community/group-post/profile/'.$group->group_profile_photo)}}" alt="" style="height: 40px; width: 50px;"></td>
-                                    <td>{{Str::limit($group->group_details,40,'....')}}</td>
-                                    <td>{{$group->userCount}}</td>
+                                    <td>{{\Illuminate\Support\Str::limit($group->post_description,60,'...')}}</td>
+                                    <td>{{$group->name}}</td>
+                                    <td>{{\Carbon\Carbon::parse($group->created_at)->format('d-M-Y')}}</td>
+{{--                                    <td>{{Str::limit($group->group_details,40,'....')}}</td>--}}
+{{--                                    <td>{{$group->userCount}}</td>--}}
                                     <td>
-                                        <a href="{{route('user.group.all.post',$group->cGroupId)}}" class="btn btn-warning">Click !</a>
+                                        <a href="{{route('user.group.page.post-comments',$group->pPostId)}}" class="btn btn-warning">Check Comments !</a>
                                     </td>
                                 </tr>
                             @endforeach

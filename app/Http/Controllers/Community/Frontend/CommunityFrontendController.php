@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Community\Frontend;
 
 use App\Http\Controllers\Controller;
+use App\Models\City;
 use App\Models\Community\Group\CommunityUserGroupPostComment;
 use App\Models\Community\Page\CommunityPage;
 use App\Models\Community\Page\CommunityPagePostComment;
@@ -17,6 +18,7 @@ use App\Models\Community\User_Profile\CommunityUserProfileEducation;
 use App\Models\Community\User_Profile\CommunityUserProfileInterest;
 use App\Models\Community\User_Profile\CommunityUserProfileLanguage;
 use App\Models\Community\User_Profile\CommunityUserProfileSocialink;
+use App\Models\State;
 use App\Models\User;
 use Carbon\Carbon;
 use Faker\Provider\Uuid;
@@ -87,49 +89,101 @@ class CommunityFrontendController extends Controller
 
         if ($request->ajax()) {
 
+
             $postComments = CommunityUserPostComment::with(['userPosts.users.userProfileImages', 'replies.users'])
                 ->where('user_post_id', '=', $request->get('postId'))
                 ->where('user_post_comment_id', '=', $request->get('cmtId'))
                 ->get();
 //            dd($postComments);
             $html = '';
-//            dd($postComments);
 
-            foreach ($postComments as $comment) {
+//            dd($request->all());
 
-                $date = Carbon::parse($comment->created_at)->diffForHumans();
-                $userName = $comment->userPosts->users->name;
-                $comments = $comment->comment_text;
-                $commentId = $comment->id;
-                $userProfilePicture = isset($comment->users->userProfileImages[0]) ? $comment->users->userProfileImages[0]->user_profile : '';
+            if ($request->get('reqType')==='adminUserChildComment'){
 
-                $html .= '<div class="single-replay-comnt nested-comment-' . $commentId . '">
-                                                <div class="replay-coment-box comment-details">
-                                                    <div class="replay-comment-img">';
-                if (isset($userProfilePicture)) {
-                    $html .= '<a href="#"> <img src="' . asset("storage/community/profile-picture/$userProfilePicture") . '" alt="image">
+//                dd(1);
+//                dd($postComments);
+                foreach ($postComments as $comment) {
+
+                    $date = Carbon::parse($comment->created_at)->diffForHumans();
+                    $userName = $comment->userPosts->users->name;
+                    $comments = $comment->comment_text;
+                    $commentId = $comment->id;
+                    $userProfilePicture = isset($comment->users->userProfileImages[0]) ? $comment->users->userProfileImages[0]->user_profile : '';
+
+                    $html .= '<div class="media-block nested-comment1-'.$commentId.'">';
+                    if (isset($userProfilePicture)) {
+                        $html .= '<a href="#"> <img src="' . asset("storage/community/profile-picture/$userProfilePicture") . '" style="height: 40 px; width: 50px;" alt="image">
                                 </a>';
-                } else {
-                    $html .= '<a><img src="' . asset("community-frontend/assets/images/community/home/news-post/comment01.jpg") . '"alt="image"></a>';
+                    } else {
+                        $html .= '<a><img src="' . asset("community-frontend/assets/images/community/home/news-post/comment01.jpg") . '"alt="image"></a>';
+
+                    }
+                    $html .= '<div class="media-body">
+                                                <div class="mar-btm">
+                                                    <a href="#" class="btn-link text-semibold media-heading box-inline">' . $userName . '</a>
+                                                    <p class="text-muted text-sm"><i class="fa fa-mobile fa-lg"></i> -
+                                                        From Mobile - ' . $date . '</p>
+                                                </div>
+                                                <p>' . $comments . '</p>
+                                                <div class="pad-ver">
+                                                    <div class="btn-group">
+                                                        <a class="btn btn-sm btn-default btn-hover-danger dltComment" data-commentId="' . $commentId . '" href="#"><i
+                                                    class="fa fa-trash text-danger"></i></a>
+                                                    </div>
+                                                    <a class="btn btn-sm btn-default btn-hover-primary"
+                                                       href="#">Report</a>
+                                                </div>
+                                                <hr>
+                                            </div>
+                                        </div>';
 
                 }
-                $html .= '</div>
+
+                return \response()->json([
+                    'status' => true,
+                    'msg' => 'Successfully Added',
+                    'postComments' => $postComments,
+                    'html' => $html
+                ]);
+
+            }else{
+                dd(2);
+                foreach ($postComments as $comment) {
+
+                    $date = Carbon::parse($comment->created_at)->diffForHumans();
+                    $userName = $comment->userPosts->users->name;
+                    $comments = $comment->comment_text;
+                    $commentId = $comment->id;
+                    $userProfilePicture = isset($comment->users->userProfileImages[0]) ? $comment->users->userProfileImages[0]->user_profile : '';
+
+                    $html .= '<div class="single-replay-comnt nested-comment-' . $commentId . '">
+                                                <div class="replay-coment-box comment-details">
+                                                    <div class="replay-comment-img">';
+                    if (isset($userProfilePicture)) {
+                        $html .= '<a href="#"> <img src="' . asset("storage/community/profile-picture/$userProfilePicture") . '" alt="image">
+                                </a>';
+                    } else {
+                        $html .= '<a><img src="' . asset("community-frontend/assets/images/community/home/news-post/comment01.jpg") . '"alt="image"></a>';
+
+                    }
+                    $html .= '</div>
                                                     <div class="replay-comment-details comment-details">
                                                         <div class="replay-coment-info coment-info">
                                                             <div>
                                                                 <h6><a class="replay-comnt-name" href="#">' . $userName . '</a></h6>
                                                                 <span class="replay-time-comnt">' . $date . '</span>
                                                             </div>';
-                if ($comment->user_id === Auth::id()) {
-                    $html .= '<div class="comment-option">
+                    if ($comment->user_id === Auth::id()) {
+                        $html .= '<div class="comment-option">
                                                     <button type="button" class="dropdown-toggle comment-option-btn" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false"><i class="fa fa-ellipsis-h" aria-hidden="true"></i></button>
                                                     <ul class="dropdown-menu comment-option-dropdown" aria-labelledby="dropdownMenuButton1">
                                                         <li class="post-option-item" id="editComment"><i class="fa fa-pencil-square-o" aria-hidden="true"></i>  Edit comment</li>
                                                         <li class="post-option-item dltComment" data-commentId="' . $commentId . '"><i class="fa fa-trash-o" aria-hidden="true"></i>  Delete comment</li>
                                                     </ul>
                                                 </div>';
-                }
-                $html .= ' </div>
+                    }
+                    $html .= ' </div>
                                                         <div class="comment-div">
                                                             <p class="comment-content">' . $comments . '</p>
                                                             <button  class="textarea-btn" type="submit">
@@ -142,15 +196,15 @@ class CommunityFrontendController extends Controller
                                                 </div>
                                             </div>';
 
+                }
+
+                return \response()->json([
+                    'status' => true,
+                    'msg' => 'Successfully Added',
+                    'postComments' => $postComments,
+                    'html' => $html
+                ]);
             }
-
-            return \response()->json([
-                'status' => true,
-                'msg' => 'Successfully Added',
-                'postComments' => $postComments,
-                'html' => $html
-            ]);
-
         }
     }
 
@@ -1123,6 +1177,37 @@ class CommunityFrontendController extends Controller
             ->get();
 
         return view('community-frontend.user-profile', $data, compact('userPhotoAlbum', 'imgArray'));
+
+    }
+
+
+    public function getStateAjax(Request $request): \Illuminate\Http\JsonResponse
+    {
+        $requestData=[];
+        if ($request->ajax()){
+//            dd($request->all());
+            $getStates=State::with('countries')->where('c_id','=',$request->country_id)->get();
+
+            $requestData=[
+                'status'=>true,
+                'getStates'=>$getStates,
+                'msg'=>'Done'
+            ];
+//
+            if ($request->get('reqTyp')==='getCity'){
+
+//                dd($request->all());
+                $getCity=City::where('state_id','=',$request->get('state_id'))->get();
+//                dd($getCity);
+                $requestData=[
+                    'status'=>true,
+                    'getStates'=>$getCity,
+                    'msg'=>'Done'
+                ];
+            }
+        }
+
+        return \response()->json($requestData);
 
     }
 

@@ -107,7 +107,7 @@
         }
     </style>
 
-
+{{--    @dd($allPostComments)--}}
     <div class="content-page">
 
         @if(\Illuminate\Support\Facades\Session::has('success'))
@@ -125,7 +125,7 @@
 
         {{-- ================= Start===================== --}}
 
-{{--                        @dd($allPostComments)--}}
+{{--                        @dd($postComments)--}}
 
         <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
         <div class="container bootdey">
@@ -135,13 +135,13 @@
                         <!-- Newsfeed Content -->
                         <!--===================================================-->
 {{--                                                        @dd($allPostComments)--}}
-                        @foreach($allPostComments as $mainPost)
+                        @foreach($postComments as $mainPost)
                             <div class="media-block post-Comment-{{$mainPost->id}}">
                                 <a class="media-left" href="#">
 
-                                    @if(!empty($mainPost->users->userProfileImages[0]) && isset($mainPost->users->userProfileImages[0])?$mainPost->users->userProfileImages[0]:'')
+                                    @if(!empty($mainPost->userPosts->users->userProfileImages[0]) && isset($mainPost->userPosts->users->userProfileImages[0])?$mainPost->userPosts->users->userProfileImages[0]:'')
                                         <img class="mg-circle img-sm"
-                                            src="{{asset("storage/community/profile-picture/".$mainPost->users->userProfileImages[0]->user_profile)}}"
+                                            src="{{asset("storage/community/profile-picture/".$mainPost->userPosts->users->userProfileImages[0]->user_profile)}}"
                                             alt="image">
                                     @else
                                         <img class="mg-circle img-sm"
@@ -153,7 +153,7 @@
                                 <div class="media-body">
                                     <div class="mar-btm">
                                         <a href="#"
-                                           class="btn-link text-semibold media-heading box-inline">{{$mainPost->userName}}</a>
+                                           class="btn-link text-semibold media-heading box-inline">{{$mainPost->userPosts->users->name}}</a>
                                         <p class="text-muted text-sm"><i class="fa fa-mobile fa-lg"></i>
                                             - {{\Carbon\Carbon::parse($mainPost->created_at)->diffForHumans()}}</p>
                                     </div>
@@ -165,7 +165,7 @@
                                         </div>
                                         @if(count($mainPost->replies)>0)
                                             <a class="btn btn-sm btn-default btn-hover-primary loadChildCmt" href="#"
-                                               data-postIdd="{{$mainPost->pagePostId}}"
+                                               data-postIdd="{{$mainPost->user_post_id}}"
                                                data-commentId="{{$mainPost->id}}">
                                                 Load Reply <i class="fa fa-plus"></i></a>
                                         @endif
@@ -175,6 +175,34 @@
                                     <!-- Comments -->
                                     <div class="post-comments nested-comment-{{$mainPost->id}}">
 
+{{--                                        <div class="media-block">--}}
+{{--                                            <a class="media-left" href="#"><img class="img-circle img-sm"--}}
+{{--                                                                                alt="Profile Picture"--}}
+{{--                                                                                src="https://bootdey.com/img/Content/avatar/avatar2.png"></a>--}}
+{{--                                            <div class="media-body">--}}
+{{--                                                <div class="mar-btm">--}}
+{{--                                                    <a href="#" class="btn-link text-semibold media-heading box-inline">Bobby--}}
+{{--                                                        Marz</a>--}}
+{{--                                                    <p class="text-muted text-sm"><i class="fa fa-mobile fa-lg"></i> ---}}
+{{--                                                        From Mobile - 7 min ago</p>--}}
+{{--                                                </div>--}}
+{{--                                                <p>Sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna--}}
+{{--                                                    aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud--}}
+{{--                                                    exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea--}}
+{{--                                                    commodo consequat.</p>--}}
+{{--                                                <div class="pad-ver">--}}
+{{--                                                    <div class="btn-group">--}}
+{{--                                                        <a class="btn btn-sm btn-default btn-hover-success active"--}}
+{{--                                                           href="#"><i class="fa fa-thumbs-up"></i> You Like it</a>--}}
+{{--                                                        <a class="btn btn-sm btn-default btn-hover-danger" href="#"><i--}}
+{{--                                                                class="fa fa-thumbs-down"></i></a>--}}
+{{--                                                    </div>--}}
+{{--                                                    <a class="btn btn-sm btn-default btn-hover-primary"--}}
+{{--                                                       href="#">Comment</a>--}}
+{{--                                                </div>--}}
+{{--                                                <hr>--}}
+{{--                                            </div>--}}
+{{--                                        </div>--}}
 
                                     </div>
                                 </div>
@@ -198,29 +226,26 @@
         <script>
             $(document).on('click', '.loadChildCmt', function () {
                 let postId = $(this).attr('data-postIdd');
-
                 let cmtId = $(this).attr('data-commentId');
-                // $(this).hide();
-                // console.log(postId,'postId');
-                // console.log(cmtId,'cmtId');
-                // return false;
+                $(this).hide();
+                console.log(postId);
                 let htmlData = $(this).parents('.posted-content').find('.post-comment-list')
                 $.ajax({
-                    url: "{{route('users.get-all-comments')}}",
+                    url: "{{route('user.load.child.comment')}}",
                     post: "GET",
                     data: {
                         postId: postId,
                         cmtId: cmtId,
-                        reqType: 'adminPagePostChildCmt',
-                        // reqType1: 'adminGroupPostChildCmt',
+                        reqType:'adminUserChildComment'
                     },
                     success: function (response) {
 
                         if (response.status === true) {
 
                             // console.log(response.html,'cmt');
-                            // $('.cmtText').val('');
+                            $('.cmtText').val('');
                             $('.nested-comment-' + cmtId).append(response.html);
+
                         }
 
 
@@ -233,16 +258,12 @@
                 // console.log(commentId);
                 // return false;
                 let commentId = $(this).attr('data-commentId');
-                console.log(commentId);
+                // console.log(commentId);
                 // return false;
 
                 let hideDivChildCmt = $(this).parents('.nested-comment1-' + commentId);
                 let hideDivParentCmt = $(this).parents('.post-Comment-' + commentId);
-                // console.log(hideDivChildCmt);
-                // return false;
-                // console.log(commentId);
-                // let commentCount=parseInt($(this).parents('.posted-content').find('.commentCount').text());
-                // let newCommentCount=$(this).parents('.posted-content').find('.commentCount');
+
 
                 // return false;
                 Swal.fire({
@@ -264,18 +285,18 @@
                                 type: 'GET',
                                 data: {
                                     commentId: commentId,
-                                    reqType: 'deletePagePostComment'
+                                    reqType: 'deleteUserPostComment'
                                 },
                                 success: function (response) {
 
                                     if (response.status === true) {
 
                                         Swal.fire('Saved!', '', 'success')
-                                        // newCommentCount.text(commentCount-=1);
+
 
                                         hideDivChildCmt.hide();
                                         hideDivParentCmt.hide();
-                                        // new_comment.text(commentCount-=1);
+
 
                                     } else {
                                         // toastr.error(response.msg);

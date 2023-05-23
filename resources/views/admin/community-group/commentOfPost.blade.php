@@ -1,519 +1,344 @@
 @extends('admin.layouts.master')
 @section('admin.content')
     <style>
-        .post-comments {
-            padding-bottom: 9px;
-            margin: 5px 0 5px;
+        body {
+            margin-top: 20px;
+            background: #ebeef0;
         }
 
-        .comments-nav {
-            border-bottom: 1px solid #eee;
-            margin-bottom: 5px;
+        .img-sm {
+            width: 46px;
+            height: 46px;
         }
 
-        .post-comments .comment-meta {
-            border-bottom: 1px solid #eee;
-            margin-bottom: 5px;
+        .panel {
+            box-shadow: 0 2px 0 rgba(0, 0, 0, 0.075);
+            border-radius: 0;
+            border: 0;
+            margin-bottom: 15px;
         }
 
-        .post-comments .media {
-            border-left: 1px dotted #000;
-            border-bottom: 1px dotted #000;
-            margin-bottom: 5px;
-            padding-left: 10px;
+        .panel .panel-footer, .panel > :last-child {
+            border-bottom-left-radius: 0;
+            border-bottom-right-radius: 0;
         }
 
-        .post-comments .media-heading {
+        .panel .panel-heading, .panel > :first-child {
+            border-top-left-radius: 0;
+            border-top-right-radius: 0;
+        }
+
+        .panel-body {
+            padding: 25px 20px;
+        }
+
+
+        .media-block .media-left {
+            display: block;
+            float: left
+        }
+
+        .media-block .media-right {
+            float: right
+        }
+
+        .media-block .media-body {
+            display: block;
+            overflow: hidden;
+            width: auto
+        }
+
+        .middle .media-left,
+        .middle .media-right,
+        .middle .media-body {
+            vertical-align: middle
+        }
+
+        .thumbnail {
+            border-radius: 0;
+            border-color: #e9e9e9
+        }
+
+        .tag.tag-sm, .btn-group-sm > .tag {
+            padding: 5px 10px;
+        }
+
+        .tag:not(.label) {
+            background-color: #fff;
+            padding: 6px 12px;
+            border-radius: 2px;
+            border: 1px solid #cdd6e1;
             font-size: 12px;
-            color: grey;
+            line-height: 1.42857;
+            vertical-align: middle;
+            -webkit-transition: all .15s;
+            transition: all .15s;
         }
 
-        .post-comments .comment-meta a {
-            font-size: 12px;
-            color: grey;
-            font-weight: bolder;
-            margin-right: 5px;
+        .text-muted, a.text-muted:hover, a.text-muted:focus {
+            color: #acacac;
+        }
+
+        .text-sm {
+            font-size: 0.9em;
+        }
+
+        .text-5x, .text-4x, .text-5x, .text-2x, .text-lg, .text-sm, .text-xs {
+            line-height: 1.25;
+        }
+
+        .btn-trans {
+            background-color: transparent;
+            border-color: transparent;
+            color: #929292;
+        }
+
+        .btn-icon {
+            padding-left: 9px;
+            padding-right: 9px;
+        }
+
+        .btn-sm, .btn-group-sm > .btn, .btn-icon.btn-sm {
+            padding: 5px 10px !important;
+        }
+
+        .mar-top {
+            margin-top: 15px;
         }
     </style>
 
 
-        <div class="content-page">
+    <div class="content-page">
 
-            @if(\Illuminate\Support\Facades\Session::has('success'))
-                <div class="alert alert-success">
-                    {{\Illuminate\Support\Facades\Session::get('success')}}
-                </div>
-            @endif
+        @if(\Illuminate\Support\Facades\Session::has('success'))
+            <div class="alert alert-success">
+                {{\Illuminate\Support\Facades\Session::get('success')}}
+            </div>
+        @endif
 
-            @if(\Illuminate\Support\Facades\Session::has('error'))
-                <div class="alert alert-success">
-                    {{\Illuminate\Support\Facades\Session::get('error')}}
-                </div>
-            @endif
-            <div class="content">
+        @if(\Illuminate\Support\Facades\Session::has('error'))
+            <div class="alert alert-success">
+                {{\Illuminate\Support\Facades\Session::get('error')}}
+            </div>
+        @endif
 
-                <h4 class="page-title">Comment Of Post</h4>
-                <div class="container">
-                    @if(count($pagePostAllComments)>0)
-                    <div class="post-comments">
 
-                        <div>
-                            <label for="comment">{{$postedUser->post_description}}</label>
+        {{-- ================= Start===================== --}}
 
-                        </div>
-                        <div class="d-flex">
+        {{--                @dd($allPostComments)--}}
 
-                            <h5>Posted By- {{$postedUser->name}}  <span>- {{$postCommented->created_at->diffForHumans()}}</span></h5>
+        <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
+        <div class="container bootdey">
+            <div class="col-md-12 bootstrap snippets">
+                <div class="panel">
+                    <div class="panel-body">
+                        <!-- Newsfeed Content -->
+                        <!--===================================================-->
+{{--                                                        @dd($allPostComments)--}}
+                        @foreach($allPostComments as $mainPost)
+                            <div class="media-block post-Comment-{{$mainPost->id}}">
+                                <a class="media-left" href="#">
 
-                        </div>
+                                    @if(!empty($mainPost->users->userProfileImages[0]) && isset($mainPost->users->userProfileImages[0])?$mainPost->users->userProfileImages[0]:'')
+                                        <img class="mg-circle img-sm"
+                                            src="{{asset("storage/community/profile-picture/".$mainPost->users->userProfileImages[0]->user_profile)}}"
+                                            alt="image">
+                                    @else
+                                        <img class="mg-circle img-sm"
+                                            src="{{asset("community-frontend/assets/images/community/home/news-post/Athore01.jpg")}}"
+                                            alt="image">
+                                    @endif
 
-                        <div class="comments-nav">
-                            <ul class="nav nav-pills">
-                                <li role="presentation" class="dropdown">
-                                    <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button"
-                                       aria-haspopup="true" aria-expanded="false">
-
-                                        there are {{!empty($countTotalComment) && isset($countTotalComment) ? $countTotalComment[0]['totalComments']:'0'}} comments <span class="caret"></span>
-                                    </a>
-                                    <ul class="dropdown-menu">
-                                        <li><a href="#">Best</a></li>
-                                        <li><a href="#">Hot</a></li>
-                                    </ul>
-                                </li>
-                            </ul>
-                        </div>
-
-                        @foreach($pagePostAllComments as $comments)
-
-                            @if(count($pagePostAllComments)>0)
-                                <div class="row">
-
-                                    <div class="media">
-                                        <!-- first comment -->
-                                        <div class="media-heading">
-                                            <button class="btn btn-default btn-xs" type="button" data-toggle="collapse"
-                                                    data-target="#collapseOne" aria-expanded="false"
-                                                    aria-controls="collapseExample"><i class="fa-solid fa-plus"></i></button>
-                                            <span class="label label-info">{{$comments->name}}</span> &nbsp;&nbsp;&nbsp; {{$comments->created_at->diffForHumans()}}
+                                </a>
+                                <div class="media-body">
+                                    <div class="mar-btm">
+                                        <a href="#"
+                                           class="btn-link text-semibold media-heading box-inline">{{$mainPost->userName}}</a>
+                                        <p class="text-muted text-sm"><i class="fa fa-mobile fa-lg"></i>
+                                            - {{\Carbon\Carbon::parse($mainPost->created_at)->diffForHumans()}}</p>
+                                    </div>
+                                    <p>{{$mainPost->comment_text}}</p>
+                                    <div class="pad-ver">
+                                        <div class="btn-group">
+                                            <a class="btn btn-sm btn-default btn-hover-danger dltComment" data-commentId="{{$mainPost->id}}"><i
+                                                    class="fa fa-trash text-danger"></i></a>
                                         </div>
+                                        @if(count($mainPost->replies)>0)
+                                            <a class="btn btn-sm btn-default btn-hover-primary loadChildCmt" href="#"
+                                               data-postIdd="{{$mainPost->groupPostId}}"
+                                               data-commentId="{{$mainPost->id}}">
+                                                Load Reply <i class="fa fa-plus"></i></a>
+                                        @endif
+                                    </div>
+                                    <hr>
 
-                                        <div class="panel-collapse collapse in" id="collapseOne">
+                                    <!-- Comments -->
+                                    <div class="post-comments nested-comment-{{$mainPost->id}}">
 
-                                            <div class="media-left">
-                                                <div class="vote-wrap">
-                                                    <div class="save-post">
-                                                        <a href="#"><span class="glyphicon glyphicon-star" aria-label="Save"></span></a>
-                                                    </div>
-                                                    <div class="vote up">
-                                                        <i class="glyphicon glyphicon-menu-up"></i>
-                                                    </div>
-                                                    <div class="vote inactive">
-                                                        <i class="glyphicon glyphicon-menu-down"></i>
-                                                    </div>
-                                                </div>
-                                                <!-- vote-wrap -->
-                                            </div>
-                                            <!-- media-left -->
-
-
-                                            <div class="media-body">
-                                                @if($comments->page_post_comment_id===0)
-                                                    <p>{{$comments->comment_text}}</p>
-
-                                                    @if($comments->page_post_comment_id === $comments->id)
-
-                                                    @endif
-                                                @endif
-
-                                                <div class="comment-meta">
-                                                    <span><a href="#">delete</a></span>
-                                                    <span><a href="#">report</a></span>
-                                                    <span><a href="#">hide</a></span>
-                                                    <span><a class="" role="button" data-toggle="collapse" href="#replyCommentT" aria-expanded="false"
-                                                             aria-controls="collapseExample">reply</a></span>
-
-                                                    <div class="collapse" id="replyCommentT">
-                                                        <form>
-                                                            <div class="form-group">
-                                                                <label for="comment">Your Comment</label>
-                                                                <textarea name="comment" class="form-control" rows="3"></textarea>
-                                                            </div>
-                                                            <button type="submit" class="btn btn-default">Send</button>
-                                                        </form>
-                                                    </div>
-                                                </div>
-
-
-                                                <!-- comment-meta -->
-
-                                                {{--                                    <div class="media">--}}
-                                                {{--                                        <!-- answer to the first comment -->--}}
-
-                                                {{--                                        <div class="media-heading">--}}
-                                                {{--                                            <button class="btn btn-default btn-collapse btn-xs" type="button"--}}
-                                                {{--                                                    data-toggle="collapse" data-target="#collapseTwo"--}}
-                                                {{--                                                    aria-expanded="false" aria-controls="collapseExample"><i--}}
-                                                {{--                                                    class="fa-solid fa-plus"></i></button>--}}
-                                                {{--                                            <span class="label label-info">12314</span> vertu 12 sat once yazmis--}}
-                                                {{--                                        </div>--}}
-
-                                                {{--                                        <div class="panel-collapse collapse in" id="collapseTwo">--}}
-
-                                                {{--                                            <div class="media-left">--}}
-                                                {{--                                                <div class="vote-wrap">--}}
-                                                {{--                                                    <div class="save-post">--}}
-                                                {{--                                                        <a href="#"><span class="glyphicon glyphicon-star"--}}
-                                                {{--                                                                          aria-label="Save"></span></a>--}}
-                                                {{--                                                    </div>--}}
-                                                {{--                                                    <div class="vote up">--}}
-                                                {{--                                                        <i class="glyphicon glyphicon-menu-up"></i>--}}
-                                                {{--                                                    </div>--}}
-                                                {{--                                                    <div class="vote inactive">--}}
-                                                {{--                                                        <i class="glyphicon glyphicon-menu-down"></i>--}}
-                                                {{--                                                    </div>--}}
-                                                {{--                                                </div>--}}
-                                                {{--                                                <!-- vote-wrap -->--}}
-                                                {{--                                            </div>--}}
-                                                {{--                                            <!-- media-left -->--}}
-
-
-                                                {{--                                            <div class="media-body">--}}
-                                                {{--                                                <p>yazmayın artık amk, görmeyeyim sol framede. insan bi meraklanıyor,--}}
-                                                {{--                                                    ümitleniyor. sonra yine özlem dolu yazıları görüp hayal kırıklığıyla--}}
-                                                {{--                                                    okuyorum.</p>--}}
-                                                {{--                                                <div class="comment-meta">--}}
-                                                {{--                                                    <span><a href="#">delete</a></span>--}}
-                                                {{--                                                    <span><a href="#">report</a></span>--}}
-                                                {{--                                                    <span><a href="#">hide</a></span>--}}
-                                                {{--                                                    <span>--}}
-                                                {{--                              <a class="" role="button" data-toggle="collapse" href="#replyCommentThree"--}}
-                                                {{--                                 aria-expanded="false" aria-controls="collapseExample">reply</a>--}}
-                                                {{--                            </span>--}}
-                                                {{--                                                    <div class="collapse" id="replyCommentThree">--}}
-                                                {{--                                                        <form>--}}
-                                                {{--                                                            <div class="form-group">--}}
-                                                {{--                                                                <label for="comment">Your Comment</label>--}}
-                                                {{--                                                                <textarea name="comment" class="form-control"--}}
-                                                {{--                                                                          rows="3"></textarea>--}}
-                                                {{--                                                            </div>--}}
-                                                {{--                                                            <button type="submit" class="btn btn-default">Send</button>--}}
-                                                {{--                                                        </form>--}}
-                                                {{--                                                    </div>--}}
-                                                {{--                                                </div>--}}
-                                                {{--                                                <!-- comment-meta -->--}}
-                                                {{--                                            </div>--}}
-                                                {{--                                        </div>--}}
-                                                {{--                                        <!-- comments -->--}}
-
-                                                {{--                                    </div>--}}
-                                                <!-- answer to the first comment -->
-
-                                            </div>
-                                        </div>
-                                        <!-- comments -->
+{{--                                        <div class="media-block">--}}
+{{--                                            <a class="media-left" href="#"><img class="img-circle img-sm"--}}
+{{--                                                                                alt="Profile Picture"--}}
+{{--                                                                                src="https://bootdey.com/img/Content/avatar/avatar2.png"></a>--}}
+{{--                                            <div class="media-body">--}}
+{{--                                                <div class="mar-btm">--}}
+{{--                                                    <a href="#" class="btn-link text-semibold media-heading box-inline">Bobby--}}
+{{--                                                        Marz</a>--}}
+{{--                                                    <p class="text-muted text-sm"><i class="fa fa-mobile fa-lg"></i> ---}}
+{{--                                                        From Mobile - 7 min ago</p>--}}
+{{--                                                </div>--}}
+{{--                                                <p>Sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna--}}
+{{--                                                    aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud--}}
+{{--                                                    exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea--}}
+{{--                                                    commodo consequat.</p>--}}
+{{--                                                <div class="pad-ver">--}}
+{{--                                                    <div class="btn-group">--}}
+{{--                                                        <a class="btn btn-sm btn-default btn-hover-success active"--}}
+{{--                                                           href="#"><i class="fa fa-thumbs-up"></i> You Like it</a>--}}
+{{--                                                        <a class="btn btn-sm btn-default btn-hover-danger" href="#"><i--}}
+{{--                                                                class="fa fa-thumbs-down"></i></a>--}}
+{{--                                                    </div>--}}
+{{--                                                    <a class="btn btn-sm btn-default btn-hover-primary"--}}
+{{--                                                       href="#">Comment</a>--}}
+{{--                                                </div>--}}
+{{--                                                <hr>--}}
+{{--                                            </div>--}}
+{{--                                        </div>--}}
 
                                     </div>
-                                    <!-- first comment -->
-                                    {{--                        <div class="media">--}}
-                                    {{--                            <!-- first comment -->--}}
-
-                                    {{--                            <div class="media-heading">--}}
-                                    {{--                                <button class="btn btn-default btn-xs" type="button" data-toggle="collapse"--}}
-                                    {{--                                        data-target="#collapseThree" aria-expanded="false"--}}
-                                    {{--                                        aria-controls="collapseExample"><i class="fa-solid fa-plus"></i></button>--}}
-                                    {{--                                <span class="label label-info">12314</span> vertu 12 sat once yazmis--}}
-                                    {{--                            </div>--}}
-
-                                    {{--                            <div class="panel-collapse collapse in" id="collapseThree">--}}
-
-                                    {{--                                <div class="media-left">--}}
-                                    {{--                                    <div class="vote-wrap">--}}
-                                    {{--                                        <div class="save-post">--}}
-                                    {{--                                            <a href="#"><span class="glyphicon glyphicon-star"--}}
-                                    {{--                                                              aria-label="Kaydet"></span></a>--}}
-                                    {{--                                        </div>--}}
-                                    {{--                                        <div class="vote up">--}}
-                                    {{--                                            <i class="glyphicon glyphicon-menu-up"></i>--}}
-                                    {{--                                        </div>--}}
-                                    {{--                                        <div class="vote inactive">--}}
-                                    {{--                                            <i class="glyphicon glyphicon-menu-down"></i>--}}
-                                    {{--                                        </div>--}}
-                                    {{--                                    </div>--}}
-                                    {{--                                    <!-- vote-wrap -->--}}
-                                    {{--                                </div>--}}
-                                    {{--                                <!-- media-left -->--}}
-
-
-                                    {{--                                <div class="media-body">--}}
-                                    {{--                                    <p>yazmayın artık amk, görmeyeyim sol framede. insan bi meraklanıyor, ümitleniyor.--}}
-                                    {{--                                        sonra yine özlem dolu yazıları görüp hayal kırıklığıyla okuyorum.</p>--}}
-                                    {{--                                    <div class="comment-meta">--}}
-                                    {{--                                        <span><a href="#">sil</a></span>--}}
-                                    {{--                                        <span><a href="#">kaydet</a></span>--}}
-                                    {{--                                        <span><a href="#">sikayer et</a></span>--}}
-                                    {{--                                        <span>--}}
-                                    {{--                        <a class="" role="button" data-toggle="collapse" href="#replyCommentFour" aria-expanded="false"--}}
-                                    {{--                           aria-controls="collapseExample">cevapla</a>--}}
-                                    {{--                      </span>--}}
-                                    {{--                                        <div class="collapse" id="replyCommentFour">--}}
-                                    {{--                                            <form>--}}
-                                    {{--                                                <div class="form-group">--}}
-                                    {{--                                                    <label for="comment">Yorumunuz</label>--}}
-                                    {{--                                                    <textarea name="comment" class="form-control" rows="3"></textarea>--}}
-                                    {{--                                                </div>--}}
-                                    {{--                                                <button type="submit" class="btn btn-default">Yolla</button>--}}
-                                    {{--                                            </form>--}}
-                                    {{--                                        </div>--}}
-                                    {{--                                    </div>--}}
-                                    {{--                                    <!-- comment-meta -->--}}
-
-                                    {{--                                    <div class="media">--}}
-                                    {{--                                        <!-- answer to the first comment -->--}}
-
-                                    {{--                                        <div class="media-heading">--}}
-                                    {{--                                            <button class="btn btn-default btn-collapse btn-xs" type="button"--}}
-                                    {{--                                                    data-toggle="collapse" data-target="#collapseFour"--}}
-                                    {{--                                                    aria-expanded="false" aria-controls="collapseExample"><i--}}
-                                    {{--                                                    class="fa-solid fa-plus"></i></button>--}}
-                                    {{--                                            <span class="label label-info">12314</span> vertu 12 sat once yazmis--}}
-                                    {{--                                        </div>--}}
-
-                                    {{--                                        <div class="panel-collapse collapse in" id="collapseFour">--}}
-
-                                    {{--                                            <div class="media-left">--}}
-                                    {{--                                                <div class="vote-wrap">--}}
-                                    {{--                                                    <div class="save-post">--}}
-                                    {{--                                                        <a href="#"><span class="glyphicon glyphicon-star"--}}
-                                    {{--                                                                          aria-label="Kaydet"></span></a>--}}
-                                    {{--                                                    </div>--}}
-                                    {{--                                                    <div class="vote up">--}}
-                                    {{--                                                        <i class="glyphicon glyphicon-menu-up"></i>--}}
-                                    {{--                                                    </div>--}}
-                                    {{--                                                    <div class="vote inactive">--}}
-                                    {{--                                                        <i class="glyphicon glyphicon-menu-down"></i>--}}
-                                    {{--                                                    </div>--}}
-                                    {{--                                                </div>--}}
-                                    {{--                                                <!-- vote-wrap -->--}}
-                                    {{--                                            </div>--}}
-                                    {{--                                            <!-- media-left -->--}}
-
-
-                                    {{--                                            <div class="media-body">--}}
-                                    {{--                                                <p>yazmayın artık amk, görmeyeyim sol framede. insan bi meraklanıyor,--}}
-                                    {{--                                                    ümitleniyor. sonra yine özlem dolu yazıları görüp hayal kırıklığıyla--}}
-                                    {{--                                                    okuyorum.</p>--}}
-                                    {{--                                                <div class="comment-meta">--}}
-                                    {{--                                                    <span><a href="#">sil</a></span>--}}
-                                    {{--                                                    <span><a href="#">kaydet</a></span>--}}
-                                    {{--                                                    <span><a href="#">sikayer et</a></span>--}}
-                                    {{--                                                    <span>--}}
-                                    {{--                              <a class="" role="button" data-toggle="collapse" href="#replyCommentFive"--}}
-                                    {{--                                 aria-expanded="false" aria-controls="collapseExample">cevapla</a>--}}
-                                    {{--                            </span>--}}
-                                    {{--                                                    <div class="collapse" id="replyCommentFive">--}}
-                                    {{--                                                        <form>--}}
-                                    {{--                                                            <div class="form-group">--}}
-                                    {{--                                                                <label for="comment">Yorumunuz</label>--}}
-                                    {{--                                                                <textarea name="comment" class="form-control"--}}
-                                    {{--                                                                          rows="3"></textarea>--}}
-                                    {{--                                                            </div>--}}
-                                    {{--                                                            <button type="submit" class="btn btn-default">Yolla</button>--}}
-                                    {{--                                                        </form>--}}
-                                    {{--                                                    </div>--}}
-                                    {{--                                                </div>--}}
-                                    {{--                                                <!-- comment-meta -->--}}
-
-                                    {{--                                                <div class="media">--}}
-                                    {{--                                                    <!-- first comment -->--}}
-
-                                    {{--                                                    <div class="media-heading">--}}
-                                    {{--                                                        <button class="btn btn-default btn-xs" type="button"--}}
-                                    {{--                                                                data-toggle="collapse" data-target="#collapseFive"--}}
-                                    {{--                                                                aria-expanded="false" aria-controls="collapseExample"><i--}}
-                                    {{--                                                                class="fa-solid fa-plus"></i></button>--}}
-                                    {{--                                                        <span class="label label-info">12314</span> vertu 12 sat once--}}
-                                    {{--                                                        yazmis--}}
-                                    {{--                                                    </div>--}}
-
-                                    {{--                                                    <div class="panel-collapse collapse in" id="collapseFive">--}}
-
-                                    {{--                                                        <div class="media-left">--}}
-                                    {{--                                                            <div class="vote-wrap">--}}
-                                    {{--                                                                <div class="save-post">--}}
-                                    {{--                                                                    <a href="#"><span class="glyphicon glyphicon-star"--}}
-                                    {{--                                                                                      aria-label="Kaydet"></span></a>--}}
-                                    {{--                                                                </div>--}}
-                                    {{--                                                                <div class="vote up">--}}
-                                    {{--                                                                    <i class="glyphicon glyphicon-menu-up"></i>--}}
-                                    {{--                                                                </div>--}}
-                                    {{--                                                                <div class="vote inactive">--}}
-                                    {{--                                                                    <i class="glyphicon glyphicon-menu-down"></i>--}}
-                                    {{--                                                                </div>--}}
-                                    {{--                                                            </div>--}}
-                                    {{--                                                            <!-- vote-wrap -->--}}
-                                    {{--                                                        </div>--}}
-                                    {{--                                                        <!-- media-left -->--}}
-
-
-                                    {{--                                                        <div class="media-body">--}}
-                                    {{--                                                            <p>yazmayın artık amk, görmeyeyim sol framede. insan bi--}}
-                                    {{--                                                                meraklanıyor, ümitleniyor. sonra yine özlem dolu--}}
-                                    {{--                                                                yazıları görüp hayal kırıklığıyla okuyorum.</p>--}}
-                                    {{--                                                            <div class="comment-meta">--}}
-                                    {{--                                                                <span><a href="#">sil</a></span>--}}
-                                    {{--                                                                <span><a href="#">kaydet</a></span>--}}
-                                    {{--                                                                <span><a href="#">sikayer et</a></span>--}}
-                                    {{--                                                                <span>--}}
-                                    {{--                        <a class="" role="button" data-toggle="collapse" href="#replyCommentSix" aria-expanded="false"--}}
-                                    {{--                           aria-controls="collapseExample">cevapla</a>--}}
-                                    {{--                      </span>--}}
-                                    {{--                                                                <div class="collapse" id="replyCommentSix">--}}
-                                    {{--                                                                    <form>--}}
-                                    {{--                                                                        <div class="form-group">--}}
-                                    {{--                                                                            <label for="comment">Yorumunuz</label>--}}
-                                    {{--                                                                            <textarea name="comment"--}}
-                                    {{--                                                                                      class="form-control"--}}
-                                    {{--                                                                                      rows="3"></textarea>--}}
-                                    {{--                                                                        </div>--}}
-                                    {{--                                                                        <button type="submit" class="btn btn-default">--}}
-                                    {{--                                                                            Yolla--}}
-                                    {{--                                                                        </button>--}}
-                                    {{--                                                                    </form>--}}
-                                    {{--                                                                </div>--}}
-                                    {{--                                                            </div>--}}
-                                    {{--                                                            <!-- comment-meta -->--}}
-
-                                    {{--                                                            <div class="media">--}}
-                                    {{--                                                                <!-- answer to the first comment -->--}}
-
-                                    {{--                                                                <div class="media-heading">--}}
-                                    {{--                                                                    <button class="btn btn-default btn-collapse btn-xs"--}}
-                                    {{--                                                                            type="button" data-toggle="collapse"--}}
-                                    {{--                                                                            data-target="#collapseSix"--}}
-                                    {{--                                                                            aria-expanded="false"--}}
-                                    {{--                                                                            aria-controls="collapseExample"><i--}}
-                                    {{--                                                                            class="fa-solid fa-plus"></i></button>--}}
-                                    {{--                                                                    <span class="label label-info">12314</span> vertu 12--}}
-                                    {{--                                                                    sat once yazmis--}}
-                                    {{--                                                                </div>--}}
-
-                                    {{--                                                                <div class="panel-collapse collapse in"--}}
-                                    {{--                                                                     id="collapseSix">--}}
-
-                                    {{--                                                                    <div class="media-left">--}}
-                                    {{--                                                                        <div class="vote-wrap">--}}
-                                    {{--                                                                            <div class="save-post">--}}
-                                    {{--                                                                                <a href="#"><span--}}
-                                    {{--                                                                                        class="glyphicon glyphicon-star"--}}
-                                    {{--                                                                                        aria-label="Kaydet"></span></a>--}}
-                                    {{--                                                                            </div>--}}
-                                    {{--                                                                            <div class="vote up">--}}
-                                    {{--                                                                                <i class="glyphicon glyphicon-menu-up"></i>--}}
-                                    {{--                                                                            </div>--}}
-                                    {{--                                                                            <div class="vote inactive">--}}
-                                    {{--                                                                                <i class="glyphicon glyphicon-menu-down"></i>--}}
-                                    {{--                                                                            </div>--}}
-                                    {{--                                                                        </div>--}}
-                                    {{--                                                                        <!-- vote-wrap -->--}}
-                                    {{--                                                                    </div>--}}
-                                    {{--                                                                    <!-- media-left -->--}}
-
-
-                                    {{--                                                                    <div class="media-body">--}}
-                                    {{--                                                                        <p>yazmayın artık amk, görmeyeyim sol framede.--}}
-                                    {{--                                                                            insan bi meraklanıyor, ümitleniyor. sonra--}}
-                                    {{--                                                                            yine özlem dolu yazıları görüp hayal--}}
-                                    {{--                                                                            kırıklığıyla okuyorum.</p>--}}
-                                    {{--                                                                        <div class="comment-meta">--}}
-                                    {{--                                                                            <span><a href="#">sil</a></span>--}}
-                                    {{--                                                                            <span><a href="#">kaydet</a></span>--}}
-                                    {{--                                                                            <span><a href="#">sikayer et</a></span>--}}
-                                    {{--                                                                            <span>--}}
-                                    {{--                              <a class="" role="button" data-toggle="collapse" href="#replyCommentOne"--}}
-                                    {{--                                 aria-expanded="false" aria-controls="collapseExample">cevapla</a>--}}
-                                    {{--                            </span>--}}
-                                    {{--                                                                            <div class="collapse" id="replyCommentOne">--}}
-                                    {{--                                                                                <form>--}}
-                                    {{--                                                                                    <div class="form-group">--}}
-                                    {{--                                                                                        <label--}}
-                                    {{--                                                                                            for="comment">Yorumunuz</label>--}}
-                                    {{--                                                                                        <textarea name="comment"--}}
-                                    {{--                                                                                                  class="form-control"--}}
-                                    {{--                                                                                                  rows="3"></textarea>--}}
-                                    {{--                                                                                    </div>--}}
-                                    {{--                                                                                    <button type="submit"--}}
-                                    {{--                                                                                            class="btn btn-default">--}}
-                                    {{--                                                                                        Yolla--}}
-                                    {{--                                                                                    </button>--}}
-                                    {{--                                                                                </form>--}}
-                                    {{--                                                                            </div>--}}
-                                    {{--                                                                        </div>--}}
-                                    {{--                                                                        <!-- comment-meta -->--}}
-
-
-                                    {{--                                                                    </div>--}}
-                                    {{--                                                                </div>--}}
-                                    {{--                                                                <!-- comments -->--}}
-
-                                    {{--                                                            </div>--}}
-                                    {{--                                                            <!-- answer to the first comment -->--}}
-
-                                    {{--                                                        </div>--}}
-                                    {{--                                                    </div>--}}
-                                    {{--                                                    <!-- comments -->--}}
-
-                                    {{--                                                </div>--}}
-                                    {{--                                                <!-- first comment -->--}}
-                                    {{--                                            </div>--}}
-                                    {{--                                        </div>--}}
-                                    {{--                                        <!-- comments -->--}}
-
-                                    {{--                                    </div>--}}
-                                    {{--                                    <!-- answer to the first comment -->--}}
-
-                                    {{--                                </div>--}}
-                                    {{--                            </div>--}}
-                                    {{--                            <!-- comments -->--}}
-
-                                    {{--                        </div>--}}
-                                    <!-- first comment -->
                                 </div>
-
-                            @else
-                                <h4>No Comment Found</h4>
-                            @endif
-
+                            </div>
                         @endforeach
 
-
+                        <!--===================================================-->
+                        <!-- End Newsfeed Content -->
                     </div>
-                    @else
-                        <h5>No Comment Found</h5>
-                    @endif
-                    <!-- post-comments -->
                 </div>
-
             </div>
         </div>
 
+        {{-- ================= End ===================== --}}
 
 
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.4/jquery.min.js"
+                integrity="sha512-pumBsjNRGGqkPzKHndZMaAG+bir374sORyzM3uulLV14lN5LyykqNk8eEeUlUkB3U0M4FApyaHraT65ihJhDpQ=="
+                crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
-    <script>
-        $('[data-toggle="collapse"]').on('click', function () {
-            let $this = $(this),
-                $parent = typeof $this.data('parent') !== 'undefined' ? $($this.data('parent')) : undefined;
-            if ($parent === undefined) { /* Just toggle my  */
-                $this.find('.glyphicon').toggleClass('glyphicon-plus glyphicon-minus');
-                return true;
-            }
+        <script>
+            $(document).on('click', '.loadChildCmt', function () {
+                let postId = $(this).attr('data-postIdd');
 
-            /* Open element will be close if parent !== undefined */
-            let currentIcon = $this.find('.glyphicon');
-            currentIcon.toggleClass('glyphicon-plus glyphicon-minus');
-            $parent.find('.glyphicon').not(currentIcon).removeClass('glyphicon-minus').addClass('glyphicon-plus');
+                let cmtId = $(this).attr('data-commentId');
+                // $(this).hide();
+                // console.log(postId,'postId');
+                // console.log(cmtId,'cmtId');
+                // return false;
+                let htmlData = $(this).parents('.posted-content').find('.post-comment-list')
+                $.ajax({
+                    url: "{{route('users.get-all-comments')}}",
+                    post: "GET",
+                    data: {
+                        postId: postId,
+                        cmtId: cmtId,
+                        reqType: 'adminGroupPostChildCmt',
+                        // reqType1: 'adminGroupPostChildCmt',
+                    },
+                    success: function (response) {
 
-        });
+                        if (response.status === true) {
 
-    </script>
+                            // console.log(response.html,'cmt');
+                            // $('.cmtText').val('');
+                            $('.nested-comment-' + cmtId).append(response.html);
+                        }
+
+
+                    },
+                })
+
+            })
+
+            $(document).on('click', '.dltComment', function () {
+                // console.log(commentId);
+                // return false;
+                let commentId = $(this).attr('data-commentId');
+                console.log(commentId);
+                // return false;
+
+                let hideDivChildCmt = $(this).parents('.nested-comment1-' + commentId);
+                let hideDivParentCmt = $(this).parents('.post-Comment-' + commentId);
+                // console.log(hideDivChildCmt);
+                // return false;
+                // console.log(commentId);
+                // let commentCount=parseInt($(this).parents('.posted-content').find('.commentCount').text());
+                // let newCommentCount=$(this).parents('.posted-content').find('.commentCount');
+
+                // return false;
+                Swal.fire({
+                    title: 'Do you want to delete the comment?',
+                    showDenyButton: true,
+                    showCancelButton: false,
+                    confirmButtonColor: "#DD6B55",
+                    denyButtonColor: '#8CD4F5',
+                    confirmButtonText: `Delete`,
+                    denyButtonText: `Don't Delete`,
+                }).then((result) => {
+                    /* Read more about isConfirmed, isDenied below */
+                    if (result.isConfirmed) {
+                        if (commentId !== '') {
+                            // console.log(commentId)
+                            // return false;
+                            $.ajax({
+                                url: '{{route('user.delete.comments')}}',
+                                type: 'GET',
+                                data: {
+                                    commentId: commentId,
+                                    reqType: 'deleteGroupPostComment'
+                                },
+                                success: function (response) {
+
+                                    if (response.status === true) {
+
+                                        Swal.fire('Saved!', '', 'success')
+                                        // newCommentCount.text(commentCount-=1);
+
+                                        hideDivChildCmt.hide();
+                                        hideDivParentCmt.hide();
+                                        // new_comment.text(commentCount-=1);
+
+                                    } else {
+                                        // toastr.error(response.msg);
+                                    }
+                                },
+                                // error: function (err) {
+                                //
+                                //     toastr.error("Error with AJAX callback !");
+                                // }
+                            })
+                        }
+                    } else if (result.isDenied) {
+                        Swal.fire('Changes are not saved', '', 'info')
+                    }
+                })
+
+            })
+        </script>
+
+        <script>
+            $('[data-toggle="collapse"]').on('click', function () {
+                let $this = $(this),
+                    $parent = typeof $this.data('parent') !== 'undefined' ? $($this.data('parent')) : undefined;
+                if ($parent === undefined) { /* Just toggle my  */
+                    $this.find('.glyphicon').toggleClass('glyphicon-plus glyphicon-minus');
+                    return true;
+                }
+
+                /* Open element will be close if parent !== undefined */
+                let currentIcon = $this.find('.glyphicon');
+                currentIcon.toggleClass('glyphicon-plus glyphicon-minus');
+                $parent.find('.glyphicon').not(currentIcon).removeClass('glyphicon-minus').addClass('glyphicon-plus');
+
+            });
+
+        </script>
+
 @endsection

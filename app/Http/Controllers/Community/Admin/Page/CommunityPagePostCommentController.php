@@ -3,6 +3,10 @@
 namespace App\Http\Controllers\Community\Admin\Page;
 
 use App\Http\Controllers\Controller;
+use App\Models\Community\Group\CommunityUserGroup;
+use App\Models\Community\Group\CommunityUserGroupPostComment;
+use App\Models\Community\Page\CommunityPage;
+use App\Models\Community\Page\CommunityPagePost;
 use App\Models\Community\Page\CommunityPagePostComment;
 use Illuminate\Http\Request;
 
@@ -50,17 +54,38 @@ class CommunityPagePostCommentController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function allPagePost($id)
     {
-        //
+        $allPagePost=CommunityPage::join('community_page_posts','community_page_posts.page_id','=','community_pages.id')
+            ->where('community_page_posts.page_id','=',$id)
+            ->join('users','users.id','=','community_page_posts.user_id')
+            ->selectRaw('community_pages.id as pId,community_pages.page_name,
+            community_page_posts.id as pPostId,community_page_posts.post_description,community_page_posts.created_at,
+            users.id as uId,users.name
+            ')
+            ->latest()->get();
+
+        return view('admin.community-page.singlePagePost',compact('allPagePost'));
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function pagePostComment($id)
     {
-        //
+
+        $allPostComments=CommunityPagePostComment::with(['users.userProfileImages', 'replies'])->where('page_post_id','=',$id)
+            ->join('users','users.id','=','community_page_post_comments.user_id')
+            ->where('page_post_comment_id','=',0)
+            ->selectRaw('users.id as user_id,users.name as userName,
+            community_page_post_comments.id,community_page_post_comments.comment_text,
+            community_page_post_comments.created_at,community_page_post_comments.page_post_id as pagePostId,
+            community_page_post_comments.page_post_comment_id as motherCmtId')
+            ->get();
+
+        return view('admin.community-page.commentOfPost',compact('allPostComments'));
+
+
     }
 
     /**
