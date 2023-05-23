@@ -56,9 +56,9 @@
                             <a href="{{route('community.page')}}">All Pages</a>
                         </li>
 
-                        <li>
-                            <a href="{{route('community.page')}}">Page Owners</a>
-                        </li>
+{{--                        <li>--}}
+{{--                            <a href="{{route('community.page')}}">Page Owners</a>--}}
+{{--                        </li>--}}
 
                         <li>
                             <a href="{{route('community.page.posts')}}">Pages Posts</a>

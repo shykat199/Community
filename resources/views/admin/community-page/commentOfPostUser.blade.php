@@ -134,7 +134,7 @@
                     <div class="panel-body">
                         <!-- Newsfeed Content -->
                         <!--===================================================-->
-{{--                                                        @dd($allPostComments)--}}
+{{--                                                        @dd($postComments)--}}
                         @foreach($postComments as $mainPost)
                             <div class="media-block post-Comment-{{$mainPost->id}}">
                                 <a class="media-left" href="#">

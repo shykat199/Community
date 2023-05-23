@@ -156,13 +156,24 @@
                                     </div>
                                     <div class="modal-body post-modal-body">
                                         <div class="my-profile">
-                                            <div class="my-profile-img"><a href="#"><img
-                                                        src="../assets/images/community/home/right/birthday01.jpg"
-                                                        alt="img"></a></div>
-                                            <div class="my-profile-name">Lolita Benally</div>
+                                            <div class="my-profile-img">
+                                                @if(!empty($profilePic->users->userProfileImages[0]) && isset($profilePic->users->userProfileImages[0])?$profilePic->users->userProfileImages[0]:'')
+
+                                                    @if(!empty($profilePic->users->userProfileImages[0]) && isset($profilePic->users->userProfileImages[0])?$profilePic->users->userProfileImages[0]:'')
+                                                        <a href=""><img
+                                                                src="{{asset("storage/community/profile-picture/".$profilePic->users->userProfileImages[0]->user_profile)}}"
+                                                                alt="image"></a>
+                                                    @else
+                                                        <a href=""><img
+                                                                src="{{asset("community-frontend/assets/images/community/home/news-post/Athore01.jpg")}}"
+                                                                alt="image"></a>
+                                                    @endif
+                                                @endif
+                                            </div>
+                                            <div class="my-profile-name">{{Auth::user()->name}}</div>
                                         </div>
                                         <div class="post-text">
-                                            <textarea id="postArea" placeholder="Write Something here..."></textarea>
+                                            <textarea id="postArea" name="imageCaption" placeholder="Write Something here..."></textarea>
                                         </div>
                                         <div class="upload-media">
                                             <div class="photo-place">
@@ -185,7 +196,7 @@
                                                         class="fa fa-times" aria-hidden="true"></i></button>
                                             </div>
                                             <div class="media-input">
-                                                <input type='file' class="vidInp"/>
+                                                <input type='file' name="postFile" class="vidInp"/>
                                             </div>
                                         </div>
                                     </div>

@@ -19,6 +19,7 @@ class CommunityUserPostController extends Controller
 
     public function store(Request $request)
     {
+//        dd($request->all());
 //        dd($request->file('postFile')->getClientOriginalExtension());
 
         if ($request->get('imageCaption') && $request->get('imageCaption') === null) {

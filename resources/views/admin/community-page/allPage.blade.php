@@ -52,7 +52,20 @@
                                     <td>{{$idx++}}</td>
                                     <td>{{$page->page_name}}</td>
                                     <td>{{$page->ownerName}}</td>
-                                    <td><img src="{{asset('storage/community/page-post/profile/'.$page->page_profile_photo)}}" alt="" style="height: 40px; width: 50px;"></td>
+                                    <td>
+
+
+                                        @if($page->page_profile_photo)
+
+                                                <img src="{{asset('storage/community/page-post/profile/'.$page->page_profile_photo)}}" alt="" style="height: 40px; width: 50px;">
+                                            @else
+                                                <a href=""><img
+                                                        src="{{asset("community-frontend/assets/images/community/home/news-post/Athore01.jpg")}}"
+                                                        alt="image" style="height: 50px; width: 50px;">
+                                                </a>
+                                        @endif
+
+                                    </td>
 
 {{--                                    <td>{{$page->page_profile_photo}}</td>--}}
                                     <td>{{Str::limit($page->page_details,40,'....')}}</td>

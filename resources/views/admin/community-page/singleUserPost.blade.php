@@ -48,8 +48,6 @@
                                     <td>{{\Illuminate\Support\Str::limit($group->post_description,60,'...')}}</td>
                                     <td>{{$group->name}}</td>
                                     <td>{{\Carbon\Carbon::parse($group->created_at)->format('d-M-Y')}}</td>
-{{--                                    <td>{{Str::limit($group->group_details,40,'....')}}</td>--}}
-{{--                                    <td>{{$group->userCount}}</td>--}}
                                     <td>
                                         <a href="{{route('community.user.check-post-comment',$group->uPostId)}}" class="btn btn-warning">Check Comments !</a>
                                     </td>

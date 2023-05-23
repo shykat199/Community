@@ -112,7 +112,9 @@ class CommunityFrontendController extends Controller
                     $userProfilePicture = isset($comment->users->userProfileImages[0]) ? $comment->users->userProfileImages[0]->user_profile : '';
 
                     $html .= '<div class="media-block nested-comment1-'.$commentId.'">';
+
                     if (isset($userProfilePicture)) {
+
                         $html .= '<a href="#"> <img src="' . asset("storage/community/profile-picture/$userProfilePicture") . '" style="height: 40 px; width: 50px;" alt="image">
                                 </a>';
                     } else {
@@ -128,7 +130,7 @@ class CommunityFrontendController extends Controller
                                                 <p>' . $comments . '</p>
                                                 <div class="pad-ver">
                                                     <div class="btn-group">
-                                                        <a class="btn btn-sm btn-default btn-hover-danger dltComment" data-commentId="' . $commentId . '" href="#"><i
+                                                        <a class="btn btn-sm btn-default btn-hover-danger dltComment" data-commentId="' . $comment->user_post_comment_id . '" href="#"><i
                                                     class="fa fa-trash text-danger"></i></a>
                                                     </div>
                                                     <a class="btn btn-sm btn-default btn-hover-primary"
@@ -148,7 +150,7 @@ class CommunityFrontendController extends Controller
                 ]);
 
             }else{
-                dd(2);
+//                dd(2);
                 foreach ($postComments as $comment) {
 
                     $date = Carbon::parse($comment->created_at)->diffForHumans();

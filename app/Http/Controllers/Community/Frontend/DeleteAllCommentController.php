@@ -19,7 +19,7 @@ class DeleteAllCommentController extends Controller
 
             if ($request->get('reqType') ==='deleteUserPostComment'){
 //                dd($request->all());
-                $deleteUserComment=CommunityUserPostComment::where('id','=',$request->get('commentId'))->get();
+                $deleteUserComment=CommunityUserPostComment::where('user_post_comment_id','=',$request->get('commentId'))->get();
 
                 $deleteChildCmt=CommunityUserPostComment::where('id','=',$request->get('commentId'))->get();
 //                dd($deleteChildCmt);

@@ -1454,11 +1454,11 @@
                             <div class="profile-friend-list">
                                 <div class="profile-friend-list">
                                     {{--                                                                                                            @dd(userPhotoAlbum())--}}
-                                    <div class="row">
+                                    <div class="row appended">
 
                                         @foreach(userPhotoAlbum() as $key=> $album)
                                             {{--                                                                                        @dd($key)--}}
-                                            <div class="col-lg-3 col-md-6 col-12 {{$key}}">
+                                            <div class="col-lg-3 col-md-6 col-12 removed">
                                                 <div class="single-profile-list single-group-list">
                                                     <div class="view-profile left-widget">
                                                         <div class="profile-cover">
@@ -1497,8 +1497,7 @@
 
                                                             <li>
                                                                 <button class="add-btn showImg attachment-option-btn"
-                                                                        data-key="{{$key}}" data-bs-toggle="modal"
-                                                                        data-bs-target="#photoModal1">
+                                                                        data-key="{{$key}}">
                                                                     <i class="fa fa-paper-plane" aria-hidden="true"></i>
                                                                 </button>
                                                             </li>
@@ -1508,36 +1507,6 @@
                                                 </div>
                                             </div>
                                         @endforeach
-
-                                        {{-- Modal Album --}}
-
-                                        <div class="modal fade" id="photoModal1" tabindex="-1"
-                                             aria-labelledby="photoModalLabel"
-                                             aria-hidden="true">
-                                            <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
-                                                <div class="modal-content post-modal-content">
-                                                    <div class="modal-header">
-                                                        <div class="post-modal-title">
-                                                            <h6 class="modal-title" id="photoModalLabel">Album</h6>
-                                                        </div>
-                                                        <button type="button" class=" post-close"
-                                                                data-bs-dismiss="modal"
-                                                                aria-label="Close"><i class="fa fa-times"
-                                                                                      aria-hidden="true"></i>
-                                                        </button>
-                                                    </div>
-
-                                                    <div class="modal-body post-modal-body">
-
-                                                        <div class="row appendImage">
-
-                                                        </div>
-
-                                                    </div>
-
-                                                </div>
-                                            </div>
-                                        </div>
 
                                     </div>
                                 </div>
@@ -1846,9 +1815,11 @@
             // let postText = $(this).attr("data-commentText");
             let imgType = $(this).attr("data-key");
 
-            let getImgDev = $(this).parents('.profile-friend-list').find('.appendImage')
+            let appendedSection=$(this).parents('.profile-friend-list').find('.appended');
+            let removedSection=$(this).parents('.profile-friend-list').find('.removed');
             // getImgDev.addClass(imgType);
-            console.log(getImgDev);
+            // appendedSection.hide();
+            // console.log(imgType);
             // return false;
 
             $.ajax({
@@ -1856,43 +1827,13 @@
                 type: "GET",
                 data: {
                     imgType: imgType,
+                    // imgType:'img'
                 },
                 success: function (response) {
 
-                    // console.log(response.reqTyp);
-
-                    if (response.reqTyp === 'img') {
-
-                        getImgDev.removeClass('pp')
-                        getImgDev.removeClass('pc')
-                        getImgDev.addClass('img')
-                        if (getImgDev.hasClass('img')) {
-                            getImgDev.append(response.html);
-                        } else {
-                            getImgDev.removeClass('img')
-                        }
-                    } else if (response.reqTyp === 'pp') {
-
-                        getImgDev.removeClass('img')
-                        getImgDev.removeClass('pc')
-                        getImgDev.addClass('pp')
-
-                        if (getImgDev.hasClass('pp')) {
-                            getImgDev.append(response.html);
-                        } else {
-                            getImgDev.removeClass('pp')
-                        }
-
-                    } else if (response.reqTyp === 'pc') {
-                        getImgDev.removeClass('img')
-                        getImgDev.removeClass('pp')
-                        getImgDev.addClass('pc')
-
-                        if (getImgDev.hasClass('pc')) {
-                            getImgDev.append(response.html);
-                        } else {
-                            getImgDev.removeClass('pc')
-                        }
+                    if(response.status===true){
+                        removedSection.remove();
+                        appendedSection.append(response.html);
                     }
                 }
             })
