@@ -431,8 +431,8 @@
 
                     @if($post->userPostMedia)
 
-                        @if($extension[1]==='mp4'||$extension[1]==='mov'||$extension[1]==='wmv'||$extension[1]==='avi'||
-                        $extension[1]==='mkv'||$extension[1]==='webm')
+                        @if($extension[2]==='mp4'||$extension[2]==='mov'||$extension[2]==='wmv'||$extension[2]==='avi'||
+                        $extension[2]==='mkv'||$extension[2]==='webm')
                             <div class="post-img">
                                 <video width="470" height="240" controls>
                                     <source src="{{asset("storage/community/post/videos/".$post->userPostMedia)}}"

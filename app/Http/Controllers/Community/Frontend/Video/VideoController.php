@@ -11,6 +11,12 @@ class VideoController extends Controller
 
     public function index()
     {
+        $friendList = [];
+        $friendList[] = Auth::id();
+        foreach (myFriends() as $friend) {
+            $friendList[] = $friend->uId;
+        }
+
         $videoType = ['mp4', 'mov', 'avi', 'webm', 'wmv', 'mp4', 'mkv'];
 
         $allVideos = CommunityUserPost::with(['users.userProfileImages','comments.replies'])

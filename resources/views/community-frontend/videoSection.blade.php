@@ -24,7 +24,7 @@
 @section('frontend.others')
 
     <div class="row">
-        {{--                @dd($allVideos)--}}
+{{--                        @dd($allVideos)--}}
         @foreach($allVideos as $video)
             {{--                        @dd($video)--}}
             <div class="col-lg-3 col-md-6 col-12">
@@ -61,7 +61,7 @@
                          data-date="{{\Carbon\Carbon::parse( $video->created_at)->format('d M, Y')}}"
                          data-postImg="{{$video->postMedia}}"
 
-                         data-userImg="{{$video->users->userProfileImages[0]->user_profile}}">
+                         data-userImg="{{!empty($video->users->userProfileImages[0]) && isset($video->users->userProfileImages[0])? $video->users->userProfileImages[0]->user_profile:''}}">
                         <video class="community-video-poster">
                             <source src="{{asset('storage/community/post/videos/'.$video->postMedia)}}"
                                     type="video/mp4">
@@ -70,12 +70,13 @@
                             <i class="fa fa-youtube-play" aria-hidden="true"></i>
                         </div>
                     </div>
-                    {{--                                        @dd($video)--}}
+{{--                                                            @dd($video)--}}
                     <ul class="post-react-widget">
                         <li class="post-react like-react">
                             <a href="javascript:void(0)">
                                 <div class="react-icon video-react-icon">
-                                    <i class="reactionLike fa {{$video->reaction_type=='like' && $video->user_id==Auth::id() ?'active fa-heart':'fa-heart-o'}}"
+                                    <i class="reactionLike fa {{$video->reaction_type=='like' ||$video->reaction_type=='love'||$video->reaction_type=='haha'||$video->reaction_type=='wow'||$video->reaction_type=='angry'
+                                        ||$video->reaction_type=='sad' && $video->user_id==Auth::id() ?'active fa-heart':'fa-heart-o'}}"
                                        aria-hidden="true" data-postIdd="{{$video->pId}}"
                                        data-reactionId="{{$video->reactionId}}"
 
@@ -187,15 +188,16 @@
 <script>
     $(document).ready(function () {
         $(document).on('click', '.video-img', function () {
+            alert('..');
             let userName = $(this).attr('data-userName');
             let postId = $(this).attr('data-postId');
             let postDescription = $(this).attr('data-postDescription');
             let postTime = $(this).attr('data-date');
             let postMedia = $(this).attr('data-postImg');
             let userImag = $(this).attr('data-userImg');
-            // let postComment=$(this).attr('data-videoComment');
+            let postComment=$(this).attr('data-videoComment');
 
-            console.log(userName,'fghjk')
+            console.log(postMedia,'fghjk')
             // console.log(postMedia)
             $('.loadVideoCmt').attr('data-videoId', postId);
             console.log(`{{asset("storage/community/post/videos")}}` + '/' + postMedia)
@@ -397,7 +399,7 @@
                 let new_comment = $(this).closest('.like-react').find('.reactionCount');
                 // new_comment.text(reactionCount -= 1);
 
-                // return false;
+                return false;
                 if (postId !== '') {
                     $.ajax({
                         url: '{{route('user.remove.post.reaction')}}',
