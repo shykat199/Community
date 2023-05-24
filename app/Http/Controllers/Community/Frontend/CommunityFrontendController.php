@@ -242,7 +242,6 @@ class CommunityFrontendController extends Controller
 
         if ($request->ajax()) {
 
-//            dd($request->all());
             $postComment = CommunityUserPostComment::create([
                 'user_id' => Auth::id(),
                 'user_post_id' => $request->get('postId'),
@@ -360,9 +359,18 @@ class CommunityFrontendController extends Controller
 
                 if (!empty($postComment->users->userProfileImages[0]) && isset($postComment->users->userProfileImages[0]) ? $postComment->users->userProfileImages[0] : '') {
                     if (!empty($postComment->users->userProfileImages[0]) && isset($postComment->users->userProfileImages[0]) ? $postComment->users->userProfileImages[0] : '') {
-                        $html .= '<a href=""><img src="' . asset("storage/community/profile-picture/" . $postComment->users->userProfileImages[0]->user_profile) . '"
+                        $html .= '<a href="" class="new-comment-img replay-comment-img"><img src="' . asset("storage/community/profile-picture/" . $postComment->users->userProfileImages[0]->user_profile) . '"
                                                       alt="image"></a>';
                     }
+                    else{
+                        $html.='<img
+                                    src="'.asset("community-frontend/assets/images/community/home/news-post/Athore01.jpg").'" alt="image">';
+                    }
+
+                }else{
+
+                    $html.='<img
+                                    src="'.asset("community-frontend/assets/images/community/home/news-post/Athore01.jpg").'" alt="image">';
 
                 }
                 $html .= ' <div class="new-comment-input replay-commnt-input">
@@ -614,12 +622,14 @@ class CommunityFrontendController extends Controller
 
                     if (!empty($comment->users->userProfileImages[0]) && isset($comment->users->userProfileImages[0]) ? $comment->users->userProfileImages[0] : '') {
                         if (!empty($comment->users->userProfileImages[0]) && isset($comment->users->userProfileImages[0]) ? $comment->users->userProfileImages[0] : '') {
-                            $html .= '  <a href = "" class="new-comment-img replay-comment-img" ><img
+                            $html .= '  <a href = "" class="new-comment-img replay-comment-img" >
+                                            <img
                                                             src = "' . asset("storage/community/profile-picture/" . $comment->users->userProfileImages[0]->user_profile) . '"
                                                             alt = "image" ></a >';
                         }
                     } else {
-                        $html .= '<a href=""><img src="' . asset("community-frontend/assets/images/community/home/news-post/Athore01.jpg") . '"
+                        $html .= '<a href="" class="new-comment-img replay-comment-img">
+                        <img src="' . asset("community-frontend/assets/images/community/home/news-post/Athore01.jpg") . '"
                                                             alt="image">
                                                     </a>';
 
@@ -773,7 +783,7 @@ class CommunityFrontendController extends Controller
                                                             alt = "image" ></a >';
                             }
                         } else {
-                            $html .= '<a href=""><img src="' . asset("community-frontend/assets/images/community/home/news-post/Athore01.jpg") . '"
+                            $html .= '<a href="" class="new-comment-img replay-comment-img"><img src="' . asset("community-frontend/assets/images/community/home/news-post/Athore01.jpg") . '"
                                                             alt="image">
                                                     </a>';
 

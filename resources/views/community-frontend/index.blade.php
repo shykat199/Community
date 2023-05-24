@@ -1165,7 +1165,7 @@
                 },
                 error: function (err) {
 
-                    toastr.error("Error with AJAX callback !");
+                    // toastr.error("Error with AJAX callback !");
                 }
             })
         }
