@@ -142,13 +142,14 @@ class AllReactionController extends Controller
                 $dltPostReaction = CommunityUserPostReaction::where('id', '=', $request->get('reactionId'))->where('user_id', '=', Auth::id())
                     ->where('user_post_id', '=', $request->get('postId'))
                     ->delete();
+//                dd($dltPostReaction);
 
                 if ($dltPostReaction) {
 //                    $getUpdatedData = CommunityUserPostComment::where('id', '=', $request->get('cmtId'))->where('user_post_id', '=', $request->get('postId'))->first();
 
                     $returnResult = [
                         'status' => true,
-                        'msg' => 'Successfully Added',
+                        'msg' => 'Successfully deleted',
                         'postComments' => $dltPostReaction
                     ];
                 }

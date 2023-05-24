@@ -14,7 +14,7 @@ use App\Http\Controllers\Community\Frontend\GetCommentController;
 use App\Http\Controllers\Community\Frontend\AllReactionController;
 use App\Http\Controllers\Community\Frontend\DeleteAllCommentController;
 
-Route::middleware(['user'])->group(function (){
+Route::middleware(['auth','user'])->group(function (){
 
     Route::get('/home',[CommunityFrontendController::class,'index'])->name('community.index');
     Route::post('/user/following',[CommunityFrontendController::class,'addUserFollow'])->name('community.user.follow');

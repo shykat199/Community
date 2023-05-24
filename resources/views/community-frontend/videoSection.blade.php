@@ -24,7 +24,7 @@
 @section('frontend.others')
 
     <div class="row">
-{{--                        @dd($allVideos)--}}
+        {{--                        @dd($allVideos)--}}
         @foreach($allVideos as $video)
             {{--                        @dd($video)--}}
             <div class="col-lg-3 col-md-6 col-12">
@@ -70,13 +70,13 @@
                             <i class="fa fa-youtube-play" aria-hidden="true"></i>
                         </div>
                     </div>
-{{--                                                            @dd($video)--}}
+                    {{--                                                            @dd($video)--}}
                     <ul class="post-react-widget">
                         <li class="post-react like-react">
                             <a href="javascript:void(0)">
                                 <div class="react-icon video-react-icon">
                                     <i class="reactionLike fa {{$video->reaction_type=='like' ||$video->reaction_type=='love'||$video->reaction_type=='haha'||$video->reaction_type=='wow'||$video->reaction_type=='angry'
-                                        ||$video->reaction_type=='sad' && $video->user_id==Auth::id() ?'active fa-heart':'fa-heart-o'}}"
+                                        ||$video->reaction_type=='sad' && $video->user_id==Auth::id() ?'fa-heart':'fa-heart-o'}}"
                                        aria-hidden="true" data-postIdd="{{$video->pId}}"
                                        data-reactionId="{{$video->reactionId}}"
 
@@ -188,16 +188,16 @@
 <script>
     $(document).ready(function () {
         $(document).on('click', '.video-img', function () {
-            alert('..');
+            // alert('..');
             let userName = $(this).attr('data-userName');
             let postId = $(this).attr('data-postId');
             let postDescription = $(this).attr('data-postDescription');
             let postTime = $(this).attr('data-date');
             let postMedia = $(this).attr('data-postImg');
             let userImag = $(this).attr('data-userImg');
-            let postComment=$(this).attr('data-videoComment');
+            let postComment = $(this).attr('data-videoComment');
 
-            console.log(postMedia,'fghjk')
+            console.log(postMedia, 'fghjk')
             // console.log(postMedia)
             $('.loadVideoCmt').attr('data-videoId', postId);
             console.log(`{{asset("storage/community/post/videos")}}` + '/' + postMedia)
@@ -280,7 +280,6 @@
             let new_comment = $(this).parents('.row').find('.commentCount');
 
 
-
             // return false;
             Swal.fire({
                 title: 'Do you want to delete the comment?',
@@ -310,7 +309,7 @@
                                     Swal.fire('Saved!', '', 'success')
                                     hideDivChildCmt.hide();
                                     hideDivParentCmt.hide();
-                                    new_comment.text(commentCount-=1);
+                                    new_comment.text(commentCount -= 1);
 
                                 } else {
                                     // toastr.error(response.msg);
@@ -353,17 +352,67 @@
 
         })
 
+
         $(document).on('click', '.reactionLike', function () {
 
             let loveReact = $(this).find('.reactionLike');
 
-            if ($(this).hasClass('active fa-heart')) {
+            // console.log($(this).hasClass('active'), $(this))
+
+            if ($(this).hasClass('fa-heart')) {
 
                 let postId = $(this).attr('data-postIdd');
+                let reactionId = $(this).attr('data-reactionId');
 
                 let reactionCount = parseInt($(this).closest('.like-react').find('.reactionCount').text());
                 let new_comment = $(this).closest('.like-react').find('.reactionCount');
 
+                console.log(postId)
+                console.log(reactionId)
+                $(this).addClass('fa-heart-o').removeClass('fa-heart')
+                // return false;
+
+                if (postId !== '') {
+                    $.ajax({
+                        url: '{{route('user.remove.post.reaction')}}',
+                        type: 'POST',
+                        data: {
+                            postId: postId,
+                            reactionId: reactionId,
+                            reqType: 'removePostReaction',
+                            '_token': '{{csrf_token()}}'
+                        },
+                        success: function (response) {
+
+                            if (response.status === true) {
+                                // newReactionCount.text(reactionCount += 1);
+
+                                new_comment.text(reactionCount -= 1);
+
+                            } else {
+                                // toastr.error(response.msg);
+                            }
+                        },
+                        error: function (err) {
+
+                            // toastr.error("Error with AJAX callback !");
+                        }
+                    })
+                }
+
+
+            }
+
+            else {
+
+                let postId = $(this).attr('data-postIdd');
+                let reactionCount = parseInt($(this).closest('.like-react').find('.reactionCount').text());
+                let new_comment = $(this).closest('.like-react').find('.reactionCount');
+                let reactionId = $(this);
+
+                $(this).removeClass('fa-heart-o').addClass('fa-heart');
+
+                // return false;
                 if (postId !== '') {
                     $.ajax({
                         url: '{{route('user.post-all.reaction')}}',
@@ -379,42 +428,8 @@
                             if (response.status === true) {
                                 // newReactionCount.text(reactionCount += 1);
                                 new_comment.text(reactionCount += 1);
+                                reactionId.attr('data-reactionId',response.postComments.id);
 
-                            } else {
-                                // toastr.error(response.msg);
-                            }
-                        },
-                        error: function (err) {
-
-                            // toastr.error("Error with AJAX callback !");
-                        }
-                    })
-                }
-            } else {
-
-                let postId = $(this).attr('data-postIdd');
-                let reactionId = $(this).attr('data-reactionId');
-
-                let reactionCount = parseInt($(this).closest('.like-react').find('.reactionCount').text());
-                let new_comment = $(this).closest('.like-react').find('.reactionCount');
-                // new_comment.text(reactionCount -= 1);
-
-                return false;
-                if (postId !== '') {
-                    $.ajax({
-                        url: '{{route('user.remove.post.reaction')}}',
-                        type: 'POST',
-                        data: {
-                            postId: postId,
-                            reactionId: reactionId,
-                            reqType: 'removePostReaction',
-                            '_token': '{{csrf_token()}}'
-                        },
-                        success: function (response) {
-
-                            if (response.status === true) {
-                                // newReactionCount.text(reactionCount += 1);
-                                new_comment.text(reactionCount -= 1);
 
                             } else {
                                 // toastr.error(response.msg);

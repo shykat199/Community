@@ -112,7 +112,7 @@
                                                 </button>
                                             </div>
                                             <div class="media-input">
-                                                <input accept="" name="postFile" type='file' class="imgInp"/>
+                                                <input accept="" name="photoFile" type='file' class="imgInp"/>
                                             </div>
                                         </div>
                                     </div>
@@ -207,6 +207,7 @@
                             </div>
                         </div>
                     </li>
+
                     <li>
                         <button type="button" class="attachment-option-btn" data-bs-toggle="modal"
                                 data-bs-target="#tagFriendModal">
@@ -396,11 +397,7 @@
                                             <p class="small-text">or drag and drop</p>
                                         </div>
                                         <div class="preview-file">
-                                            {{--                                        <div class="post-img">--}}
-                                            {{--                                            <video width="550" height="240" controls>--}}
-                                            {{--                                                <source class="videoSrc" src="#" type="video/mp4">--}}
-                                            {{--                                            </video>--}}
-                                            {{--                                        </div>--}}
+
                                             <img class="previewImg postMedia" src="#" alt="">
                                             <button type="button" class="imgClose"><i class="fa fa-times"
                                                                                       aria-hidden="true"></i>
@@ -446,11 +443,12 @@
                         @endif
 
                     @endif
+{{--                    @dd($post)--}}
 
                     <ul class="post-react-widget">
                         <li class="post-react like-react">
-                            <a href="#">
-                                <div class="react-icon">
+                            <a href="javascript:void(0)">
+                                <div class="react-icon removeReaction" data-userPostId="{{$post->postId}}">
 
                                     @if ($post->reaction_type=='like')
                                         <img
@@ -822,50 +820,130 @@
 
         $('.reaction').on('click', function () {
 
-            $('.reaction').removeClass('active');
-            $(this).addClass('active');
 
             let postReaction = $(this).attr('data-reaction_type');
             let postId = $(this).attr('data-pId');
-            console.log(postId);
-            console.log(postReaction);
+            // console.log(postId);
+            // console.log(postReaction);
 
             let img_src = $(this).find('img').attr('src');
             $(this).parents('.like-react').find('.react-icon img').attr('src', img_src);
             let reactionCount = parseInt($(this).parents('.post-body').find('.reactionCount').text());
             let newReactionCount = $(this).parents('.post-body').find('.reactionCount');
 
+            if($(this).hasClass('active')){
 
-            // console.log(parests_data, 'parests_data')
-            // let img_src = $(this).find('img').attr('src');
-            // console.log(img_src,'img_src');
+                console.log('remove');
+                $('.reaction').removeClass('active');
+
+                if (postId !== '') {
+                    $.ajax({
+                        url: '{{route('user.remove.post.reaction')}}',
+                        type: 'POST',
+                        data: {
+                            postId: postId,
+                            // reactionId: reactionId,
+                            reqType: 'removePostReaction',
+                            '_token': '{{csrf_token()}}'
+                        },
+                        success: function (response) {
+
+                            if (response.status === true) {
+                                // newReactionCount.text(reactionCount += 1);
+
+                                new_comment.text(reactionCount -= 1);
+
+                            } else {
+                                // toastr.error(response.msg);
+                            }
+                        },
+                        error: function (err) {
+
+                            // toastr.error("Error with AJAX callback !");
+                        }
+                    })
+                }
+            }
+
+            else {
+                console.log('add');
+                $(this).addClass('active');
+                if (postReaction !== '' && postId !== '') {
+                    $.ajax({
+                        url: '{{route('user.post-all.reaction')}}',
+                        type: 'POST',
+                        data: {
+                            postReaction: postReaction,
+                            postId: postId,
+                            reqType: 'storePostReaction',
+                            '_token': '{{csrf_token()}}'
+                        },
+                        success: function (response) {
+
+                            if (response.success === true) {
+                                newReactionCount.text(reactionCount += 1);
+
+                            } else {
+                                // toastr.error(response.msg);
+                            }
+                        },
+                        error: function (err) {
+
+                            toastr.error("Error with AJAX callback !");
+                        }
+                    })
+                }
+            }
             return false;
 
-            if (postReaction !== '' && postId !== '') {
-                $.ajax({
-                    url: '{{route('user.post-all.reaction')}}',
-                    type: 'POST',
-                    data: {
-                        postReaction: postReaction,
-                        postId: postId,
-                        reqType: 'storePostReaction',
-                        '_token': '{{csrf_token()}}'
-                    },
-                    success: function (response) {
 
-                        if (response.success === true) {
-                            newReactionCount.text(reactionCount += 1);
+        })
 
-                        } else {
-                            // toastr.error(response.msg);
+
+        $('.removeReaction').on('click', function () {
+
+
+            // let postReaction = $(this).attr('data-reaction_type');
+            let postId = $(this).attr('data-userPostId');
+            console.log(postId);
+            // console.log(postReaction);
+
+
+            // let img_src = $(this).find('img').attr('src');
+            // $(this).parents('.like-react').find('.react-icon img').attr('src', img_src);
+            let reactionCount = parseInt($(this).parents('.post-body').find('.reactionCount').text());
+            let newReactionCount = $(this).parents('.post-body').find('.reactionCount');
+
+            return false;
+
+                if (postId !== '') {
+                    $.ajax({
+                        url: '{{route('user.remove.post.reaction')}}',
+                        type: 'POST',
+                        data: {
+                            postId: postId,
+                            // reactionId: reactionId,
+                            reqType: 'removePostReaction',
+                            '_token': '{{csrf_token()}}'
+                        },
+                        success: function (response) {
+
+                            if (response.status === true) {
+                                // newReactionCount.text(reactionCount += 1);
+
+                                new_comment.text(reactionCount -= 1);
+
+                            } else {
+                                // toastr.error(response.msg);
+                            }
+                        },
+                        error: function (err) {
+
+                            // toastr.error("Error with AJAX callback !");
                         }
-                    },
-                    error: function (err) {
+                    })
+                }
 
-                        toastr.error("Error with AJAX callback !");
-                    }
-                })
-            }
         })
 
 

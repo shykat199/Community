@@ -889,28 +889,14 @@ class CommunityFrontendController extends Controller
     public function destroy($id)
     {
 
-//        $postImage = $postImage->post_image_video;
-//        $mediaExtension = explode('.', $postImage);
-//        if ($mediaExtension[1] == 'mp4' || $mediaExtension[1] == 'mov' || $mediaExtension[1] == 'wmv' ||
-//            $mediaExtension[1] == 'avi' || $mediaExtension[1] == 'mkv' || $mediaExtension[1] == 'webm'
-//        ) {
-//          @dd(1);
-//            $dltVideo = Storage::delete('public/community/post/videos/' . $postImage);
-//
-//        } else {
-//            $dltImag = Storage::delete('public/community/post/' . $postImage);
-//
-//        }
-
         $postImage = CommunityUserPostFileType::where('post_id', '=', $id)->first();
-//        $postImage = $postImage->post_image_video;
-//        dd($postImage);
+
         if ($postImage) {
             $postImage = $postImage->post_image_video;
 //            dd($postImage);
             $mediaExtension = explode('.', $postImage);
-            if ($mediaExtension[1] == 'mp4' || $mediaExtension[1] == 'mov' || $mediaExtension[1] == 'wmv' ||
-                $mediaExtension[1] == 'avi' || $mediaExtension[1] == 'mkv' || $mediaExtension[1] == 'webm'
+            if ($mediaExtension[2] == 'mp4' || $mediaExtension[2] == 'mov' || $mediaExtension[2] == 'wmv' ||
+                $mediaExtension[2] == 'avi' || $mediaExtension[2] == 'mkv' || $mediaExtension[2] == 'webm'
             ) {
 //                @dd(1);
                 $dltVideo = Storage::delete('public/community/post/videos/' . $postImage);

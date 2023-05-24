@@ -38,6 +38,8 @@ class CommunityUserPostController extends Controller
                     'user_id' => Auth::id(),
                     'post_description' => $request->get('postMessage')
                 ]);
+
+//                dd($userPost);
                 if ($request->hasFile('postFile')) {
 
                     if ($request->file('postFile')->getClientOriginalExtension() == 'mp4' ||
@@ -48,12 +50,15 @@ class CommunityUserPostController extends Controller
                         $fileName = Uuid::uuid() . '.'.'video'.'.'. $request->file('postFile')->getClientOriginalExtension();
                         $file = Storage::put('/public/community/post/videos/' . $fileName, file_get_contents($request->file('postFile')));
 //                        dd($fileName);
-                    } else {
-                        $fileName = Uuid::uuid() . '.'.'image'. $request->file('postFile')->getClientOriginalExtension();
-                        $file = Storage::put('/public/community/post/' . $fileName, file_get_contents($request->file('postFile')));
                     }
 
+                }else{
+//                    dd(1);
+                    $fileName = Uuid::uuid() . '.'.'image'.'.'. $request->file('photoFile')->getClientOriginalExtension();
+//                    dd($fileName);
+                    $file = Storage::put('/public/community/post/'.$fileName, file_get_contents($request->file('photoFile')));
                 }
+
 //                dd(3);
                 $postImageCaption = CommunityUserPostFileType::create([
                     'post_id' => $userPost->id,

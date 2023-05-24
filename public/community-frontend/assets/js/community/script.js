@@ -116,14 +116,14 @@ $('.chat-online').slick({
 });
 
 // video like
-$('.video-react-icon i').click(function(){
-  $(this).toggleClass('active')
-  if ($(this).hasClass('active')) {
-    $(this).addClass('fa-heart').removeClass('fa-heart-o')
-  } else {
-    $(this).removeClass('fa-heart').addClass('fa-heart-o')
-  }
-})
+// $('.video-react-icon i').click(function(){
+//   $(this).toggleClass('active')
+//   if ($(this).hasClass('active')) {
+//     $(this).addClass('fa-heart').removeClass('fa-heart-o')
+//   } else {
+//     $(this).removeClass('fa-heart').addClass('fa-heart-o')
+//   }
+// })
 
 // comment replay inbox show
 $(document).on('click', '.replay-tag', function() {
