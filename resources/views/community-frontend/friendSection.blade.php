@@ -53,19 +53,62 @@
                 <div class="tab-pane fade show active" id="friendRequest" role="tabpanel" aria-labelledby="friendRequestTab">
                     <div class="profile-friend-list">
                         <div class="row">
+{{--                            @dd($allRequestedUser)--}}
                             @foreach($allRequestedUser as $requestFriend)
                                 <div class="col-lg-3 col-md-6 col-12">
                                     <div class="single-profile-list">
                                         <div class="view-profile left-widget">
                                             <div class="profile-cover">
-                                                <a href="#"><img src="{{asset("community-frontend/assets/images/community/home/smallCover.jpg")}}" alt="cover"></a>
+{{--                                                <a href="#"><img src="{{asset("community-frontend/assets/images/community/home/smallCover.jpg")}}" alt="cover"></a>--}}
+
+
+                                                @if(!empty($requestFriend->userCoverImages[0]) && isset($requestFriend->userCoverImages[0])?$requestFriend->userCoverImages [0]:'')
+
+                                                    @if(!empty($requestFriend->userCoverImages[0]) && isset($requestFriend->userCoverImages[0])?$requestFriend->userCoverImages [0]:'')
+                                                        <a href=""><img
+                                                                src="{{asset("storage/community/profile-picture/".$requestFriend->userCoverImages[0]->user_cover)}}"
+                                                                alt="image"></a>
+                                                    @else
+                                                        <a href=""><img
+                                                                src="{{asset("community-frontend/assets/images/community/home/smallCover.jpg")}}"
+                                                                alt="image"></a>
+                                                    @endif
+                                                @else
+
+                                                    <a href=""><img
+                                                            src="{{asset("community-frontend/assets/images/community/home/smallCover.jpg")}}"
+                                                            alt="image"></a>
+                                                @endif
+
+
                                                 <div class="add-friend-icon">
                                                     <a href="#"><i class="fa fa-user-o" aria-hidden="true"></i></a>
                                                 </div>
                                             </div>
 
                                             <div class="profile-title d-flex align-items-center">
-                                                <a href="#"><img src="{{asset("community-frontend/assets/images/community/home/user-0.jpg")}}" alt=""></a>
+
+
+                                                @if(!empty($requestFriend->userProfileImages[0]) && isset($requestFriend->userProfileImages[0])?$requestFriend->userProfileImages[0]:'')
+
+                                                    @if(!empty($requestFriend->userProfileImages[0]) && isset($requestFriend->userProfileImages[0])?$requestFriend->userProfileImages[0]:'')
+                                                        <a href=""><img
+                                                                src="{{asset("storage/community/profile-picture/".$requestFriend->userProfileImages[0]->user_profile)}}"
+                                                                alt="image"></a>
+                                                    @else
+                                                        <a href=""><img
+                                                                src="{{asset("community-frontend/assets/images/community/home/user-0.jpg")}}"
+                                                                alt="image"></a>
+                                                    @endif
+                                                @else
+
+                                                    <a href=""><img
+                                                            src="{{asset("community-frontend/assets/images/community/home/user-0.jpg")}}"
+                                                            alt="image"></a>
+                                                @endif
+
+
+
                                                 <div class="profile-name">
                                                     <h6><a href="#">{{$requestFriend->name}}</a></h6>
                                                     <span class="mutual-friend">{{$requestFriend->countMutualFriend}} Mutual Friends</span>
@@ -73,17 +116,19 @@
                                             </div>
                                             <ul class="profile-statistics">
                                                 <li><a href="#">
-                                                        <p class="statics-count">59862</p>
+                                                        <p class="statics-count">0</p>
                                                         <p class="statics-name">Likes</p>
                                                     </a></li>
                                                 <li><a href="#">
                                                         <p class="statics-count">{{$requestFriend->followings}}</p>
                                                         <p class="statics-name">Following</p>
                                                     </a></li>
-                                                <li><a href="#">
-                                                        <p class="statics-count">784514</p>
-                                                        <p class="statics-name">Followers</p>
-                                                    </a></li>
+                                                <li>
+{{--                                                    <a href="#">--}}
+{{--                                                        <p class="statics-count">784514</p>--}}
+{{--                                                        <p class="statics-name">Followers</p>--}}
+{{--                                                    </a>--}}
+                                                </li>
                                             </ul>
                                             <ul class="add-msg-btn">
                                                 <li><button type="button" class="add-btn">Accept</button></li>
@@ -108,13 +153,50 @@
                                     <div class="single-profile-list">
                                         <div class="view-profile left-widget">
                                             <div class="profile-cover">
-                                                <a href="#"><img src="{{asset("community-frontend/assets/images/community/home/smallCover.jpg")}}" alt="cover"></a>
+
+
+                                                @if(!empty($user->userCoverImages[0]) && isset($user->userCoverImages[0])?$user->userCoverImages [0]:'')
+
+                                                    @if(!empty($user->userCoverImages[0]) && isset($user->userCoverImages[0])?$user->userCoverImages [0]:'')
+                                                        <a href=""><img
+                                                                src="{{asset("storage/community/profile-picture/".$user->userCoverImages[0]->user_cover)}}"
+                                                                alt="image"></a>
+                                                    @else
+                                                        <a href=""><img
+                                                                src="{{asset("community-frontend/assets/images/community/home/smallCover.jpg")}}"
+                                                                alt="image"></a>
+                                                    @endif
+                                                @else
+
+                                                    <a href=""><img
+                                                            src="{{asset("community-frontend/assets/images/community/home/smallCover.jpg")}}"
+                                                            alt="image"></a>
+                                                @endif
+
+
+{{--                                                <a href="#"><img src="{{asset("community-frontend/assets/images/community/home/smallCover.jpg")}}" alt="cover"></a>--}}
                                                 <div class="add-friend-icon">
                                                     <a href="#"><i class="fa fa-user-o" aria-hidden="true"></i></a>
                                                 </div>
                                             </div>
                                             <div class="profile-title d-flex align-items-center">
-                                                <a href="#"><img src="{{asset("community-frontend/assets/images/community/home/user-0.jpg")}}" alt=""></a>
+                                                @if(!empty($user->userProfileImages[0]) && isset($user->userProfileImages[0])?$user->userProfileImages[0]:'')
+
+                                                    @if(!empty($user->userProfileImages[0]) && isset($user->userProfileImages[0])?$user->userProfileImages[0]:'')
+                                                        <a href=""><img
+                                                                src="{{asset("storage/community/profile-picture/".$user->userProfileImages[0]->user_profile)}}"
+                                                                alt="image"></a>
+                                                    @else
+                                                        <a href=""><img
+                                                                src="{{asset("community-frontend/assets/images/community/home/user-0.jpg")}}"
+                                                                alt="image"></a>
+                                                    @endif
+                                                @else
+
+                                                    <a href=""><img
+                                                            src="{{asset("community-frontend/assets/images/community/home/user-0.jpg")}}"
+                                                            alt="image"></a>
+                                                @endif
                                                 <div class="profile-name">
                                                     <h6><a href="#">{{$user->name}}</a></h6>
                                                     <span class="mutual-friend">{{$user->countMutualFriend}} Mutual Friends</span>
@@ -122,17 +204,19 @@
                                             </div>
                                             <ul class="profile-statistics">
                                                 <li><a href="#">
-                                                        <p class="statics-count">59862</p>
+                                                        <p class="statics-count">0</p>
                                                         <p class="statics-name">Likes</p>
                                                     </a></li>
                                                 <li><a href="#">
                                                         <p class="statics-count">{{$user->followings}}</p>
                                                         <p class="statics-name">Following</p>
                                                     </a></li>
-                                                <li><a href="#">
-                                                        <p class="statics-count">784514</p>
-                                                        <p class="statics-name">Followers</p>
-                                                    </a></li>
+                                                <li>
+{{--                                                    <a href="#">--}}
+{{--                                                        <p class="statics-count">784514</p>--}}
+{{--                                                        <p class="statics-name">Followers</p>--}}
+{{--                                                    </a>--}}
+                                                </li>
                                             </ul>
                                             <ul class="add-msg-btn">
                                                 <li><button type="button" class="add-btn">Add Friend</button></li>

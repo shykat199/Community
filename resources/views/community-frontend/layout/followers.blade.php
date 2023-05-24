@@ -14,9 +14,24 @@ $user_id=isset($user_id)?\Illuminate\Support\Facades\Crypt::decrypt($user_id):''
             @forelse(allUserFollowers($user_id) as $follower)
 
                 <li>
-                    <div class="right-wdget-img"><a href="#"><img
-                                src="{{asset("community-frontend/assets/images/community/home/right/birthday01.jpg")}}"
-                                alt="img"></a>
+                    <div class="right-wdget-img">
+                        @if(!empty($follower->users->userProfileImages[0]) && isset($follower->users->userProfileImages[0])?$follower->users->userProfileImages[0]:'')
+
+                            @if(!empty($follower->users->userProfileImages[0]) && isset($follower->users->userProfileImages[0])?$follower->users->userProfileImages[0]:'')
+                                <a href=""><img
+                                        src="{{asset("storage/community/profile-picture/".$follower->users->userProfileImages[0]->user_profile)}}"
+                                        alt="image"></a>
+                            @else
+                                <a href=""><img
+                                        src="{{asset("community-frontend/assets/images/community/home/news-post/Athore01.jpg")}}"
+                                        alt="image"></a>
+                            @endif
+                        @else
+
+                            <a href=""><img
+                                    src="{{asset("community-frontend/assets/images/community/home/news-post/Athore01.jpg")}}"
+                                    alt="image"></a>
+                        @endif
                     </div>
                     <div class="page-title follower-title">
                         <a class="userName" href="#"
@@ -42,9 +57,25 @@ $user_id=isset($user_id)?\Illuminate\Support\Facades\Crypt::decrypt($user_id):''
 
             @forelse(allUserFollowers() as $follower)
                 <li>
-                    <div class="right-wdget-img"><a href="#"><img
-                                src="{{asset("community-frontend/assets/images/community/home/right/birthday01.jpg")}}"
-                                alt="img"></a>
+                    <div class="right-wdget-img">
+
+                        @if(!empty($follower->users->userProfileImages[0]) && isset($follower->users->userProfileImages[0])?$follower->users->userProfileImages[0]:'')
+
+                            @if(!empty($follower->users->userProfileImages[0]) && isset($follower->users->userProfileImages[0])?$follower->users->userProfileImages[0]:'')
+                                <a href=""><img
+                                        src="{{asset("storage/community/profile-picture/".$follower->users->userProfileImages[0]->user_profile)}}"
+                                        alt="image"></a>
+                            @else
+                                <a href=""><img
+                                        src="{{asset("community-frontend/assets/images/community/home/news-post/Athore01.jpg")}}"
+                                        alt="image"></a>
+                            @endif
+                        @else
+
+                            <a href=""><img
+                                    src="{{asset("community-frontend/assets/images/community/home/news-post/Athore01.jpg")}}"
+                                    alt="image"></a>
+                        @endif
                     </div>
                     <div class="page-title follower-title">
                         <a class="userName" href="#"

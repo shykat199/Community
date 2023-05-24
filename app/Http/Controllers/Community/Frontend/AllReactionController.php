@@ -12,6 +12,7 @@ use App\Models\Community\User_Post\CommunityUserPostComment;
 use App\Models\Community\User_Post\CommunityUserPostReaction;
 use App\Models\Community\User_Profile\CommunityUserProfileCover;
 use App\Models\Community\User_Profile\CommunityUserProfilePhoto;
+use http\Env\Response;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -27,23 +28,72 @@ class AllReactionController extends Controller
             if ($request->get('reqType') === 'storePostReaction') {
 
 //                dd($request->all());
-                $storePostReaction = CommunityUserPostReaction::create([
-                    'user_post_id' => $request->get('postId'),
-                    'user_id' => \Auth::id(),
-                    'reaction_type' => $request->get('postReaction')
-                ]);
+
+                $returnResult = [];
+                $postId = $request->get('postId');
+                $reaction_type = $request->get('postReaction');
+
+                $checkReaction = CommunityUserPostReaction::where('user_post_id', '=', $postId)->where('user_id', '=', Auth::id())
+                    ->first();
+
+//                dd($checkReaction);
+                if (!empty($checkReaction)) {
+
+                    if ($reaction_type == $checkReaction->reaction_type) {
 
 
-                if ($storePostReaction) {
-                    $returnResult = [
-                        'status' => true,
-                        'msg' => 'Successfully Added',
-                        'postComments' => $storePostReaction
-                    ];
+                        $deleteReaction = $checkReaction->delete();
+
+                        if ($deleteReaction) {
+                            $returnResult = [
+                                'status' => true,
+                                'msg' => 'Successfully Deleted',
+                                'postComments' => $deleteReaction,
+                                'flag'=>0
+                            ];
+                        }
+                    } else {
+
+                        $updatedReaction = $checkReaction->update([
+                            'reaction_type' => $reaction_type
+                        ]);
+
+                        if ($updatedReaction) {
+                            $returnResult = [
+                                'status' => true,
+                                'msg' => 'Successfully updated',
+                                'postComments' => $updatedReaction,
+                                'flag'=>2
+
+                            ];
+                        }
+                    }
+
                 }
-            }
 
-            elseif ($request->get('reqType') === 'storePagePostReaction') {
+                else {
+
+//                    dd('add reaction');
+
+                    $storePostReaction = CommunityUserPostReaction::create([
+                        'user_post_id' => $request->get('postId'),
+                        'user_id' => \Auth::id(),
+                        'reaction_type' => $request->get('postReaction')
+                    ]);
+
+                    if ($storePostReaction) {
+                        $returnResult = [
+                            'status' => true,
+                            'msg' => 'Successfully Added',
+                            'postComments' => $storePostReaction,
+                            'flag'=>1
+                        ];
+                    }
+                }
+
+                return \response()->json($returnResult);
+
+            } elseif ($request->get('reqType') === 'storePagePostReaction') {
                 $storePostReaction = CommunityPagePostReaction::create([
                     'page_post_id' => $request->get('postId'),
                     'user_id' => \Auth::id(),
@@ -58,9 +108,7 @@ class AllReactionController extends Controller
                         'postComments' => json_encode($storePostReaction)
                     ];
                 }
-            }
-
-            elseif ($request->get('reqType') === 'storeGroupPostReaction') {
+            } elseif ($request->get('reqType') === 'storeGroupPostReaction') {
 
 //                dd($request->all());
                 $storePostReaction = CommunityUserGroupPostReaction::create([
@@ -96,9 +144,7 @@ class AllReactionController extends Controller
                     ];
                 }
 
-            }
-
-            elseif ($request->get('reqType') === 'editGroupNewsFeedComment') {
+            } elseif ($request->get('reqType') === 'editGroupNewsFeedComment') {
 
 //                dd($request->all());
                 $editGroupCmt = CommunityUserGroupPostComment::where('id', '=', $request->get('cmtId'))->where('group_post_id', '=', $request->get('postId'))->update([
@@ -115,9 +161,7 @@ class AllReactionController extends Controller
                     ];
                 }
 
-            }
-
-            elseif ($request->get('reqType') === 'editPageNewsFeedComment') {
+            } elseif ($request->get('reqType') === 'editPageNewsFeedComment') {
 
 //                dd($request->all());
                 $editPageCmt = CommunityPagePostComment::where('id', '=', $request->get('cmtId'))->where('page_post_id', '=', $request->get('postId'))->update([
@@ -134,9 +178,7 @@ class AllReactionController extends Controller
                     ];
                 }
 
-            }
-
-            elseif ($request->get('reqType') === 'removePostReaction') {
+            } elseif ($request->get('reqType') === 'removePostReaction') {
 
 //                dd($request->all());
                 $dltPostReaction = CommunityUserPostReaction::where('id', '=', $request->get('reactionId'))->where('user_id', '=', Auth::id())
@@ -154,9 +196,7 @@ class AllReactionController extends Controller
                     ];
                 }
 
-            }
-
-            elseif ($request->get('imgType') === 'img') {
+            } elseif ($request->get('imgType') === 'img') {
                 $allPostImg = CommunityUserPostFileType::leftJoin('community_user_posts', 'community_user_posts.id', '=', 'community_user_post_file_types.post_id')
                     ->where('community_user_posts.user_id', '=', Auth::id())
                     ->where('community_user_post_file_types.post_image_video', 'LIKE', '%' . 'image' . '%')
@@ -170,7 +210,7 @@ class AllReactionController extends Controller
 
                         $html .= '<div class="col-lg-3 col-md-4 col-6">
                                             <div class="single-gallary-photo">';
-                                                if (!empty($image) && isset($image) ? $image : '') {
+                        if (!empty($image) && isset($image) ? $image : '') {
                             $html .= ' <a href="#">
                              <img src="' . asset('storage/community/post/' . $image->allPostMedia) . '" alt="image">
                                                                     </a>';
@@ -205,14 +245,12 @@ class AllReactionController extends Controller
                     'html' => $html,
                     'msg' => 'Successfully Added',
                     'postComments' => $allPostImg,
-                    'reqTyp'=>'img'
+                    'reqTyp' => 'img'
 
                 ];
 
 
-            }
-
-            elseif ($request->get('imgType') === 'pc') {
+            } elseif ($request->get('imgType') === 'pc') {
 //                dd(1);
                 $allPostImg = CommunityUserProfileCover::where('community_user_profile_covers.user_id', '=', Auth::id())
                     ->select('user_cover as allPostMedia')->get();
@@ -261,13 +299,11 @@ class AllReactionController extends Controller
                     'html' => $html,
                     'msg' => 'Successfully Added',
                     'postComments' => $allPostImg,
-                    'reqTyp'=>'pc'
+                    'reqTyp' => 'pc'
 
                 ];
 
-            }
-
-            elseif ($request->get('imgType') === 'pp') {
+            } elseif ($request->get('imgType') === 'pp') {
 
                 $allPostImg = CommunityUserProfilePhoto::where('community_user_profile_photos.user_id', '=', Auth::id())
                     ->where('community_user_profile_photos.user_profile', 'LIKE', '%' . 'profile-Photo' . '%')
@@ -317,7 +353,7 @@ class AllReactionController extends Controller
                     'html' => $html,
                     'msg' => 'Successfully Added',
                     'postComments' => $allPostImg,
-                    'reqTyp'=>'pp'
+                    'reqTyp' => 'pp'
 
                 ];
 

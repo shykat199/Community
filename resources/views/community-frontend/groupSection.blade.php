@@ -106,16 +106,34 @@
                                     <div class="single-profile-list single-group-list">
                                         <div class="view-profile left-widget">
                                             <div class="profile-cover">
-                                                <a href="#"><img
-                                                        src="{{asset("community-frontend/assets/images/community/home/smallCover.jpg")}}"
-                                                        alt="cover"></a>
+
+                                                @if($group->gCover)
+                                                    <a href="#"><img
+                                                            src="{{asset("storage/community/group-post/cover/".$group->gCover)}}"
+                                                            alt="cover">
+                                                    </a>
+                                                @else
+                                                    <a href="#"><img
+                                                            src="{{asset('community-frontend/assets/images/community/home/smallCover.jpg')}}"
+                                                            alt="cover">
+                                                    </a>
+
+                                                @endif
                                             </div>
                                             <a href="{{route('user.group.details',\Illuminate\Support\Facades\Crypt::encrypt($group->gId))}}" style="text-decoration: none;color: inherit;">
 
                                                 <div class="profile-title d-flex align-items-center">
-                                                    <img
-                                                            src="{{asset("community-frontend/assets/images/community/home/user-0.jpg")}}"
-                                                            alt="image">
+                                                    @if($group->gProfile)
+
+
+                                                        <a href="#"><img src="{{asset("storage/community/group-post/profile/".$group->gProfile)}}" alt="image"></a>
+
+                                                    @else
+
+                                                        <a href="#"><img src="{{asset('community-frontend/assets/images/community/home/user-0.jpg')}}" alt="image"></a>
+
+                                                    @endif
+
                                                     <div class="profile-name">
                                                         <h6>{{$group->gName}}</h6>
                                                         <span class="mutual-friend">Public Groups</span>
@@ -173,16 +191,32 @@
                                     <div class="single-profile-list single-group-list">
                                         <div class="view-profile left-widget">
                                             <div class="profile-cover">
-                                                <a href="#"><img
-                                                        src="{{asset("community-frontend/assets/images/community/home/smallCover.jpg")}}"
-                                                        alt="cover"></a>
+                                                @if($group->gCover)
+                                                    <a href="#"><img
+                                                            src="{{asset("storage/community/group-post/cover/".$group->gCover)}}"
+                                                            alt="cover">
+                                                    </a>
+                                                @else
+                                                    <a href="#"><img
+                                                            src="{{asset('community-frontend/assets/images/community/home/smallCover.jpg')}}"
+                                                            alt="cover">
+                                                    </a>
+
+                                                @endif
                                             </div>
 
                                             <a href="{{route('user.group.details',\Illuminate\Support\Facades\Crypt::encrypt($group->gId))}}" style="text-decoration: none;color: inherit;">
                                                 <div class="profile-title d-flex align-items-center">
-                                                    <img
-                                                            src="{{asset("community-frontend/assets/images/community/home/user-0.jpg")}}"
-                                                            alt="image">
+                                                    @if($group->gProfile)
+
+
+                                                        <a href="#"><img src="{{asset("storage/community/group-post/profile/".$group->gProfile)}}" alt="image"></a>
+
+                                                    @else
+
+                                                        <a href="#"><img src="{{asset('community-frontend/assets/images/community/home/user-0.jpg')}}" alt="image"></a>
+
+                                                    @endif
                                                     <div class="profile-name">
                                                         <h6>{{$group->gName}}</h6>
                                                         <span class="mutual-friend">Public Groups</span>

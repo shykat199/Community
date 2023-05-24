@@ -254,6 +254,8 @@ class CommunityUserGroupController extends Controller
 
     public function storeGroupCoverPhoto(Request $request)
     {
+//        dd($request->all());
+
         $fileName = null;
         if ($request->hasFile('grpCover')) {
 

@@ -70,13 +70,29 @@
 
     <div class="profile-likes">
         <p><i class="fa fa-heart-o" aria-hidden="true"></i> New Likes This Weeks</p>
+{{--        @dd(myFriends());--}}
 
         <ul class="recent-likes-person">
             @foreach(myFriends() as $friend)
                 {{--                @dd($friend)--}}
                 <li>
-                    <a href="#"><img src="{{asset("storage/community/profile-picture/".$friend->user_profile)}}"
-                                     alt="img"></a>
+                    @if(!empty($friend->userProfileImages[0]) && isset($friend->userProfileImages[0])?$friend->userProfileImages[0]:'')
+
+                        @if(!empty($friend->userProfileImages[0]) && isset($friend->userProfileImages[0])?$friend->userProfileImages[0]:'')
+                            <a href=""><img
+                                    src="{{asset("storage/community/profile-picture/".$friend->userProfileImages[0]->user_profile)}}"
+                                    alt="image"></a>
+                        @else
+                            <a href=""><img
+                                    src="{{asset("community-frontend/assets/images/community/home/news-post/Athore01.jpg")}}"
+                                    alt="image"></a>
+                        @endif
+                    @else
+
+                            <a href=""><img
+                                    src="{{asset("community-frontend/assets/images/community/home/news-post/Athore01.jpg")}}"
+                                    alt="image"></a>
+                    @endif
                 </li>
             @endforeach
 

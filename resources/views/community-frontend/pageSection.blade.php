@@ -99,30 +99,53 @@
                      aria-labelledby="friendRequestTab">
                     <div class="profile-friend-list">
                         <div class="row">
-                            {{--                            @dd($allAvailableGroups)--}}
+                            {{--                                                        @dd($allAvailablePages)--}}
                             @foreach($allAvailablePages as $page)
                                 {{--@dd($group)--}}
                                 <div class="col-lg-3 col-md-6 col-12">
                                     <div class="single-profile-list single-group-list">
                                         <div class="view-profile left-widget">
                                             <div class="profile-cover">
-                                                <a href="#"><img
-                                                        src="{{asset("community-frontend/assets/images/community/home/smallCover.jpg")}}"
-                                                        alt="cover"></a>
+
+                                                @if($page->pCover)
+                                                    <a href="#"><img
+                                                            src="{{asset("storage/community/page-post/cover/".$page->pCover)}}"
+                                                            alt="cover">
+                                                    </a>
+                                                @else
+                                                    <a href="#"><img
+                                                            src="{{asset('community-frontend/assets/images/community/home/smallCover.jpg')}}"
+                                                            alt="cover">
+                                                    </a>
+
+                                                @endif
+
+
                                             </div>
                                             <a href="{{route('user.page.details',\Illuminate\Support\Facades\Crypt::encrypt($page->pId))}}"
                                                style="text-decoration: none;color: inherit;">
 
+{{--                                                @dd($page)--}}
+
                                                 <div class="profile-title d-flex align-items-center">
-                                                    <img
-                                                        src="{{asset("community-frontend/assets/images/community/home/user-0.jpg")}}"
-                                                        alt="image">
+
+                                                    @if($page->pProfile)
+
+
+                                                        <a href="#"><img src="{{asset("storage/community/page-post/profile/".$page->pProfile)}}" alt="image"></a>
+
+                                                    @else
+
+                                                        <a href="#"><img src="{{asset('community-frontend/assets/images/community/home/user-0.jpg')}}" alt="image"></a>
+
+                                                    @endif
+                                                </div>
+
+
                                                     <div class="profile-name">
                                                         <h6>{{$page->pName}}</h6>
                                                         <span class="mutual-friend">Public Page</span>
                                                     </div>
-                                                </div>
-
                                             </a>
                                             <ul class="profile-statistics">
                                                 <li><a href="#">
@@ -177,17 +200,39 @@
                                     <div class="single-profile-list single-group-list">
                                         <div class="view-profile left-widget">
                                             <div class="profile-cover">
-                                                <a href="#"><img
-                                                        src="{{asset("community-frontend/assets/images/community/home/smallCover.jpg")}}"
-                                                        alt="cover"></a>
+
+                                                @if($page->pCover)
+                                                    <a href="#"><img
+                                                            src="{{asset("storage/community/page-post/cover/".$page->pCover)}}"
+                                                            alt="cover">
+                                                    </a>
+                                                @else
+                                                    <a href="#"><img
+                                                            src="{{asset('community-frontend/assets/images/community/home/smallCover.jpg')}}"
+                                                            alt="cover">
+                                                    </a>
+
+                                                @endif
+
+
+{{--                                                <a href="#"><img--}}
+{{--                                                        src="{{asset("community-frontend/assets/images/community/home/smallCover.jpg")}}"--}}
+{{--                                                        alt="cover"></a>--}}
                                             </div>
 
                                             <a href="{{route('user.page.details',\Illuminate\Support\Facades\Crypt::encrypt($page->pId))}}"
                                                style="text-decoration: none;color: inherit;">
                                                 <div class="profile-title d-flex align-items-center">
-                                                    <img
-                                                        src="{{asset("community-frontend/assets/images/community/home/user-0.jpg")}}"
-                                                        alt="image">
+                                                    @if($page->pProfile)
+
+
+                                                        <a href="#"><img src="{{asset("storage/community/page-post/profile/".$page->pProfile)}}" alt="image"></a>
+
+                                                    @else
+
+                                                        <a href="#"><img src="{{asset('community-frontend/assets/images/community/home/user-0.jpg')}}" alt="image"></a>
+
+                                                    @endif
                                                     <div class="profile-name">
                                                         <h6>{{$page->pName}}</h6>
                                                         <span class="mutual-friend">Public Groups</span>

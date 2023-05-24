@@ -52,7 +52,7 @@ class CommunityUserFriendRequestController extends Controller
     public function allFriendRequest()
     {
 
-        $allRequestedUser = User::join('community_user_friend_requests as requestedUser', function ($q) {
+        $allRequestedUser = User::with(['userProfileImages','userCoverImages'])->join('community_user_friend_requests as requestedUser', function ($q) {
             $q->on('requestedUser.sender_user_id', '=', 'users.id');
             $q->where('requestedUser.receiver_user_id', '=', Auth::id());
             $q->where('requestedUser.status', '=', 0);
@@ -78,7 +78,7 @@ class CommunityUserFriendRequestController extends Controller
                 $q->where('f1.user_id','=',Auth::id());
                 $q->where('f2.user_id','=','users.id');
             })
-            ->selectRaw('users.id as uId, users.name,requestedUser.id as reqId,profilePhoto.user_profile,profileCover.user_cover,
+            ->selectRaw('users.id , users.name,requestedUser.id as reqId,profilePhoto.user_profile,profileCover.user_cover,
             COUNT(userFollowings.id) as followings,COUNT(usersFollowers.id) as followers,COUNT(f1.id) as countMutualFriend')
             ->groupBy('users.id')
             ->get();
@@ -87,11 +87,15 @@ class CommunityUserFriendRequestController extends Controller
         $userIdArray = [];
         $userIdArray[] = Auth::id();
         $userIdArray[] = ADMIN_ROLE;
+//        dd(myFriends());
+
         foreach (myFriends() as $friend) {
-            $userIdArray[] = $friend->uId;
+//            dd($friend);
+            $userIdArray[] = $friend->id;
         }
 //        dd($userIdArray);
-        $allUsers = User::whereNotIn('users.id', $userIdArray)
+
+        $allUsers = User::with(['userProfileImages','userCoverImages'])->whereNotIn('users.id', $userIdArray)
             ->leftJoin('community_user_profile_photos as profilePhoto', function ($q) use ($userIdArray) {
                 $q->on('profilePhoto.user_id', '=', 'users.id');
                 $q->where('users.id', '!=', ADMIN_ROLE);

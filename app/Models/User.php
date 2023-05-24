@@ -10,7 +10,9 @@ use App\Models\Community\Page\CommunityPage;
 use App\Models\Community\Page\CommunityPagePost;
 use App\Models\Community\Page\CommunityPagePostComment;
 use App\Models\Community\Page\UsersPage;
+use App\Models\Community\User\CommunityUserFollowing;
 use App\Models\Community\User_Post\CommunityUserPostComment;
+use App\Models\Community\User_Profile\CommunityUserProfileCover;
 use App\Models\Community\User_Profile\CommunityUserProfileLanguage;
 use App\Models\Community\User_Profile\CommunityUserProfilePhoto;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -74,6 +76,10 @@ class User extends Authenticatable
     {
         return $this->hasMany(CommunityUserProfilePhoto::class,'user_id')->latest();
     }
+    public function userCoverImages(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(CommunityUserProfileCover::class,'user_id')->latest();
+    }
 
     public function groupPosts(): \Illuminate\Database\Eloquent\Relations\HasMany
     {
@@ -101,6 +107,11 @@ class User extends Authenticatable
     public function userPagePostComments(): \Illuminate\Database\Eloquent\Relations\HasMany
     {
         return $this->hasMany(CommunityPagePostComment::class,'user_id');
+    }
+
+    public function usersFollowers(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(CommunityUserFollowing::class,'user_id');
     }
 
 

@@ -350,14 +350,14 @@ function allUserFollowers($id= null)
 
 
     if (empty($id)){
-        $userFollowers = CommunityUserFollowing::join('users', 'users.id', 'community_user_followings.user_id')
+        $userFollowers = CommunityUserFollowing::with('users.userProfileImages')->join('users', 'users.id', 'community_user_followings.user_id')
             ->leftjoin('community_user_followings as myFollows', 'myFollows.user_id', 'myFollows.user_following_id')
             ->where('community_user_followings.user_following_id', Auth::id())
             ->where('users.role', '!=', ADMIN_ROLE)
             ->selectRaw('users.id as uId,users.name as userName,community_user_followings.user_following_id,
         community_user_followings.user_id,myFollows.id as is_followed')->get();
     }else{
-        $userFollowers = CommunityUserFollowing::join('users', 'users.id', 'community_user_followings.user_id')
+        $userFollowers = CommunityUserFollowing::with('users.userProfileImages')->join('users', 'users.id', 'community_user_followings.user_id')
             ->leftjoin('community_user_followings as myFollows', 'myFollows.user_id', 'myFollows.user_following_id')
             ->where('community_user_followings.user_following_id', $id)
             ->where('users.role', '!=', ADMIN_ROLE)
@@ -424,7 +424,7 @@ function countRequest()
 
 function myFriends()
 {
-    $myFriends = User::join('community_user_friends', function ($q) {
+    $myFriends = User::with('userProfileImages')->join('community_user_friends', function ($q) {
         $q->on('community_user_friends.requested_user_id', '=', 'users.id');
         $q->where('users.id', '!=', ADMIN_ROLE);
         $q->where('community_user_friends.user_id', '=', Auth::id());
@@ -447,7 +447,7 @@ function myFriends()
         ->leftJoin('community_user_details as userDetails', function ($q) {
             $q->on('userDetails.user_id', '=', 'users.id');
         })
-        ->selectRaw('users.id as uId,users.name as userName,profilePhoto.user_id as profileUserId,profilePhoto.user_profile,
+        ->selectRaw('users.id,users.name as userName,profilePhoto.user_id as profileUserId,profilePhoto.user_profile,
         profileCover.user_cover,COUNT(userFollowers.id) as userFollowers,COUNT(userFollowings.id) as userFollowings,userDetails.birthplace')
         ->groupBy('users.id')
         ->orderBy('users.name')
@@ -459,7 +459,7 @@ function myFriends()
 function recentlyAddedFriends()
 {
 
-    $myFriends = User::join('community_user_friends', function ($q) {
+    $myFriends = User::with(['userProfileImages','userCoverImages'])->join('community_user_friends', function ($q) {
         $q->on('community_user_friends.requested_user_id', '=', 'users.id');
         $q->where('users.id', '!=', ADMIN_ROLE);
         $q->where('community_user_friends.user_id', '=', Auth::id());
@@ -576,7 +576,7 @@ function getUpComingBirthday()
 {
 
     $currentDate = \Carbon\Carbon::now();
-    $allBirthdays = User::join('community_user_friends as userFriend', function ($q) {
+    $allBirthdays = User::with('userProfileImages')->join('community_user_friends as userFriend', function ($q) {
         $q->on('userFriend.requested_user_id', '=', 'users.id');
         $q->where('userFriend.user_id', '=', Auth::id());
         $q->where('userFriend.user_id', '!=', ADMIN_ROLE);
@@ -586,7 +586,7 @@ function getUpComingBirthday()
             $q->whereRaw("DATE_FORMAT(userDetails.dob,'%m-%d') > DATE_FORMAT(now(), '%m-%d')");
             $q->whereRaw('MONTH(userDetails.dob) = ' . Carbon::now()->format('m'));
         })
-        ->selectRaw('users.id as Uid, users.name as userName,userDetails.dob')
+        ->selectRaw('users.id , users.name as userName,userDetails.dob')
         ->orderBy('userDetails.dob', 'ASC')
         ->get();
     return $allBirthdays;
