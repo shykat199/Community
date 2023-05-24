@@ -138,7 +138,7 @@
         <!-- video show modal start -->
         <div class="modal fade video-modal-show" id="videoShow" tabindex="-1" aria-labelledby="exampleModalLabel"
              aria-hidden="true" onclick="document.getElementById('comunityVideoPause').pause();">
-            <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-dialog modal-dialog-centered modal-lg">
                 <div class="modal-content">
                     <button type="button" class="vido-modal-close-btn" data-bs-dismiss="modal" aria-label="Close"
                             onclick="document.getElementById('comunityVideoPause').pause();"><i class="fa fa-times"
