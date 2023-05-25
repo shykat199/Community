@@ -64,14 +64,30 @@
 
                                 <li class="dropdown-content-list">
                                     <div class="figure">
-                                        <a href="#"><img
-                                                src="{{asset("community-frontend/assets/images/community/header/user-1.jpg")}}"
-                                                alt=""></a>
+
+                                        @if(!empty($follower->users->userProfileImages[0]) && isset($follower->users->userProfileImages[0])?$follower->users->userProfileImages[0]:'')
+
+                                            @if(!empty($follower->users->userProfileImages[0]) && isset($follower->users->userProfileImages[0])?$follower->users->userProfileImages[0]:'')
+                                                <a href=""><img
+                                                        src="{{asset("storage/community/profile-picture/".$follower->users->userProfileImages[0]->user_profile)}}"
+                                                        alt="image"></a>
+                                            @else
+                                                <a href=""><img
+                                                        src="{{asset("community-frontend/assets/images/community/home/news-post/Athore01.jpg")}}"
+                                                        alt="image"></a>
+                                            @endif
+                                        @else
+
+                                            <a href=""><img
+                                                    src="{{asset("community-frontend/assets/images/community/home/news-post/Athore01.jpg")}}"
+                                                    alt="image"></a>
+                                        @endif
+
                                     </div>
                                     <div class="text">
                                         <h6><a href="#" class="userName" data-idd="{{$friendRequest->reqId}}"
                                                data-id="{{$friendRequest->uId}}">{{$friendRequest->userName}}</a></h6>
-                                        <p>26 friends</p>
+                                        <p>{{$friendRequest->countMutualFriend}} friends</p>
                                     </div>
                                     <div class="add-dlt-btn">
                                         <a class="dltBtn" type="button"><i class="fa fa-times" aria-hidden="true"></i>

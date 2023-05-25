@@ -16,6 +16,7 @@
 
     <!-- login page start  -->
     <section class="community-login-area">
+
         <a href="#" class="home-icon"><i class="fa fa-home" aria-hidden="true"></i></a>
         <div class="community-login">
             <div class="login-logo">
@@ -39,24 +40,48 @@
                 @error('password')
                 <span class="text-danger">{{$message}}</span>
                 @enderror
+
+                <article class="regular">
+                    <h5>User Role</h5>
+                    <input type="radio" name="role" id="rad1" value="{{SERVICE_PROVIDER_ROLE}}">
+                    <label for="rad1">Service Provider</label>
+                    <input type="radio" name="role" id="rad2" value="{{VENDOR_ROLE}}">
+                    <label for="rad2">Vendor</label>
+                    <input type="radio" name="role" id="rad3" value="{{USER_ROLE}}">
+                    <label for="rad3">User</label>
+                </article>
+
+                <div class="mb-3">
+                    <div class="form-check">
+                        <input type="checkbox" class="form-check-input" id="checkbox-signup">
+                        <label class="form-check-label" for="checkbox-signup">I accept <a href="#" class="text-muted">Terms and Conditions</a></label>
+                    </div>
+
+
+
+                    <div class="login-btn-list">
+                        <button type="submit" class="social-theme-btn">Register</button>
+                        <p>Or</p>
+                        <button type="submit" class="social-theme-btn googl-btn">Log In with Google</button>
+                    </div>
+                    <div>
+                        <a href="{{route('admin.login_page')}}">Have Already Account ?</a>
+                    </div>
+
+                </div>
+
+
+            </form>
             </div>
 
-            <div class="mb-3">
-                <div class="form-check">
-                    <input type="checkbox" class="form-check-input" id="checkbox-signup">
-                    <label class="form-check-label" for="checkbox-signup">I accept <a href="#" class="text-muted">Terms and Conditions</a></label>
-                </div>
-                <div class="login-btn-list">
-                    <button type="submit" class="social-theme-btn">Register</button>
-                    <p>Or</p>
-                    <button type="submit" class="social-theme-btn googl-btn">Log In with Google</button>
-                </div>
-                <div>
-                    <a href="{{route('admin.login_page')}}">Have Already Account ?</a>
-                </div>
-            </form>
-        </div>
+
+
     </section>
+
+
+
+
+
     <!-- login page end  -->
 
 @endsection

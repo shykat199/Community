@@ -126,11 +126,11 @@
                                                     @if($group->gProfile)
 
 
-                                                        <a href="#"><img src="{{asset("storage/community/group-post/profile/".$group->gProfile)}}" alt="image"></a>
+                                                        <a href="{{route('user.group.details',\Illuminate\Support\Facades\Crypt::encrypt($group->gId))}}"><img src="{{asset("storage/community/group-post/profile/".$group->gProfile)}}" alt="image"></a>
 
                                                     @else
 
-                                                        <a href="#"><img src="{{asset('community-frontend/assets/images/community/home/user-0.jpg')}}" alt="image"></a>
+                                                        <a href="{{route('user.group.details',\Illuminate\Support\Facades\Crypt::encrypt($group->gId))}}"><img src="{{asset('community-frontend/assets/images/community/home/user-0.jpg')}}" alt="image"></a>
 
                                                     @endif
 
@@ -192,12 +192,12 @@
                                         <div class="view-profile left-widget">
                                             <div class="profile-cover">
                                                 @if($group->gCover)
-                                                    <a href="#"><img
+                                                    <a href="{{route('user.group.details',\Illuminate\Support\Facades\Crypt::encrypt($group->gId))}}"><img
                                                             src="{{asset("storage/community/group-post/cover/".$group->gCover)}}"
                                                             alt="cover">
                                                     </a>
                                                 @else
-                                                    <a href="#"><img
+                                                    <a href="{{route('user.group.details',\Illuminate\Support\Facades\Crypt::encrypt($group->gId))}}"><img
                                                             src="{{asset('community-frontend/assets/images/community/home/smallCover.jpg')}}"
                                                             alt="cover">
                                                     </a>

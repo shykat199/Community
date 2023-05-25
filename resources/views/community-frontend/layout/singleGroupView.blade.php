@@ -131,7 +131,7 @@
                                                 </button>
                                             </div>
                                             <div class="media-input">
-                                                <input accept="" name="postFile" type='file' class="imgInp"/>
+                                                <input accept="" name="postFile1" type='file' class="imgInp"/>
                                             </div>
                                         </div>
                                     </div>
@@ -145,7 +145,7 @@
                     </li>
                     <li>
                         <button type="button" class="attachment-option-btn" data-bs-toggle="modal"
-                                data-bs-target="#photoModal">
+                                data-bs-target="#videoModalopen">
                             <div class="attachment-icon vido-icon">
                                 <svg xmlns="http://www.w3.org/2000/svg" version="1.1" x="0" y="0" viewBox="0 0 512 512"
                                      style="enable-background:new 0 0 512 512" xml:space="preserve" class=""><g>
@@ -161,6 +161,75 @@
                             </div>
                             Video
                         </button>
+
+
+                        <div class="modal fade" id="videoModalopen" tabindex="-1" aria-labelledby="videoModalLabel"
+                             aria-hidden="true" onclick="document.getElementById('uploadingVideo').pause();">
+                            <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+                                <div class="modal-content post-modal-content">
+                                    <div class="modal-header">
+                                        <div class="post-modal-title">
+                                            <h6 class="modal-title" id="photoModalLabel">Create Post</h6>
+                                        </div>
+                                        <button type="button" class=" post-close" data-bs-dismiss="modal"
+                                                aria-label="Close"
+                                                onclick="document.getElementById('uploadingVideo').pause();"><i
+                                                class="fa fa-times" aria-hidden="true"></i></button>
+                                    </div>
+                                    <div class="modal-body post-modal-body">
+                                        <div class="my-profile">
+                                            <div class="my-profile-img">
+                                                @if(!empty($profilePic->users->userProfileImages[0]) && isset($profilePic->users->userProfileImages[0])?$profilePic->users->userProfileImages[0]:'')
+
+                                                    @if(!empty($profilePic->users->userProfileImages[0]) && isset($profilePic->users->userProfileImages[0])?$profilePic->users->userProfileImages[0]:'')
+                                                        <a href=""><img
+                                                                src="{{asset("storage/community/profile-picture/".$profilePic->users->userProfileImages[0]->user_profile)}}"
+                                                                alt="image"></a>
+                                                    @else
+                                                        <a href=""><img
+                                                                src="{{asset("community-frontend/assets/images/community/home/news-post/Athore01.jpg")}}"
+                                                                alt="image"></a>
+                                                    @endif
+                                                @endif
+                                            </div>
+                                            <div class="my-profile-name">{{Auth::user()->name}}</div>
+                                        </div>
+                                        <div class="post-text">
+                                            <textarea id="postArea" name="imageCaption" placeholder="Write Something here..."></textarea>
+                                        </div>
+                                        <div class="upload-media">
+                                            <div class="photo-place">
+                                            <span class="icon">
+                                                <svg xmlns="http://www.w3.org/2000/svg" version="1.1" x="0" y="0"
+                                                     viewBox="0 0 24 24" style="enable-background:new 0 0 512 512"
+                                                     xml:space="preserve" class=""><g><path
+                                                            d="m22.448 7.608-1.2 8.58a3.142 3.142 0 0 1-1.257 2.312.311.311 0 0 1-.488-.244V9.665A3.829 3.829 0 0 0 15.335 5.5H5.923c-.3 0-.307-.27-.286-.39a3.134 3.134 0 0 1 1.112-2.085 3.2 3.2 0 0 1 2.442-.473l10.561 1.48a3.211 3.211 0 0 1 2.223 1.134 3.191 3.191 0 0 1 .473 2.442zM18 9.665v8.668A2.358 2.358 0 0 1 15.335 21H4.667A2.357 2.357 0 0 1 2 18.333V9.665A2.357 2.357 0 0 1 4.667 7h10.668A2.358 2.358 0 0 1 18 9.665zM13.25 14a.75.75 0 0 0-.75-.75h-1.75V11.5a.75.75 0 0 0-1.5 0v1.75H7.5a.75.75 0 0 0 0 1.5h1.75v1.75a.75.75 0 0 0 1.5 0v-1.75h1.75a.75.75 0 0 0 .75-.75z"
+                                                            fill="#000000" data-original="#000000" class=""></path></g></svg>
+                                            </span>
+                                                <h6 class="title">Add Videos</h6>
+                                                <p class="small-text">or drag and drop</p>
+                                            </div>
+                                            <div class="preview-file">
+                                                <video controls class="status-video" id="uploadingVideo">
+                                                    <source src="#" class="video-status-here">
+                                                </video>
+                                                <button type="button" class="imgClose"
+                                                        onclick="document.getElementById('uploadingVideo').pause();"><i
+                                                        class="fa fa-times" aria-hidden="true"></i></button>
+                                            </div>
+                                            <div class="media-input">
+                                                <input type='file' name="postFile" class="vidInp"/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="submit" class="social-theme-btn post-btn">Post</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
                     </li>
                     <li>
                         <button type="submit" class="social-theme-btn">Post</button>
@@ -169,7 +238,7 @@
             </form>
 
         </div>
-        {{--                                                @dd($groupPosts)--}}
+{{--                                                        @dd($groupPosts)--}}
         @foreach($groupPosts as $post)
             <div class="main-content posted-content">
 
@@ -322,7 +391,7 @@
                         @php
                             $extension=explode('.',$post->group_post_file);
                         @endphp
-                        {{--                                            @dd($extension[1])--}}
+{{--                                                                    @dd($post->group_post_file)--}}
 
                         @if($post->group_post_file)
 

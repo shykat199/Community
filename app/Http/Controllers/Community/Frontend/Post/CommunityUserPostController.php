@@ -54,9 +54,9 @@ class CommunityUserPostController extends Controller
 
                 }else{
 //                    dd(1);
-                    $fileName = Uuid::uuid() . '.'.'image'.'.'. $request->file('photoFile')->getClientOriginalExtension();
+                    $fileName = Uuid::uuid() . '.'.'image'.'.'. $request->file('postFile1')->getClientOriginalExtension();
 //                    dd($fileName);
-                    $file = Storage::put('/public/community/post/'.$fileName, file_get_contents($request->file('photoFile')));
+                    $file = Storage::put('/public/community/post/'.$fileName, file_get_contents($request->file('postFile1')));
                 }
 
 //                dd(3);

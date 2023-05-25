@@ -107,6 +107,19 @@
                                         <div class="view-profile left-widget">
                                             <div class="profile-cover">
 
+{{--                                                @if($page->pCover)--}}
+{{--                                                    <a href="#"><img--}}
+{{--                                                            src="{{asset("storage/community/page-post/cover/".$page->pCover)}}"--}}
+{{--                                                            alt="cover">--}}
+{{--                                                    </a>--}}
+{{--                                                @else--}}
+{{--                                                    <a href="#"><img--}}
+{{--                                                            src="{{asset('community-frontend/assets/images/community/home/smallCover.jpg')}}"--}}
+{{--                                                            alt="cover">--}}
+{{--                                                    </a>--}}
+
+{{--                                                @endif--}}
+
                                                 @if($page->pCover)
                                                     <a href="#"><img
                                                             src="{{asset("storage/community/page-post/cover/".$page->pCover)}}"
@@ -122,6 +135,8 @@
 
 
                                             </div>
+
+
                                             <a href="{{route('user.page.details',\Illuminate\Support\Facades\Crypt::encrypt($page->pId))}}"
                                                style="text-decoration: none;color: inherit;">
 
@@ -132,21 +147,24 @@
                                                     @if($page->pProfile)
 
 
-                                                        <a href="#"><img src="{{asset("storage/community/page-post/profile/".$page->pProfile)}}" alt="image"></a>
+                                                        <a href="{{route('user.page.details',\Illuminate\Support\Facades\Crypt::encrypt($page->pId))}}"><img src="{{asset("storage/community/page-post/profile/".$page->pProfile)}}" alt="image"></a>
 
                                                     @else
 
-                                                        <a href="#"><img src="{{asset('community-frontend/assets/images/community/home/user-0.jpg')}}" alt="image"></a>
+                                                        <a href="{{route('user.page.details',\Illuminate\Support\Facades\Crypt::encrypt($page->pId))}}"><img src="{{asset('community-frontend/assets/images/community/home/user-0.jpg')}}" alt="image"></a>
 
                                                     @endif
+
+                                                        <div class="profile-name">
+                                                            <h6>{{$page->pName}}</h6>
+                                                            <span class="mutual-friend">Public Page</span>
+                                                        </div>
+
                                                 </div>
 
 
-                                                    <div class="profile-name">
-                                                        <h6>{{$page->pName}}</h6>
-                                                        <span class="mutual-friend">Public Page</span>
-                                                    </div>
                                             </a>
+
                                             <ul class="profile-statistics">
                                                 <li><a href="#">
                                                         <p class="statics-count">{{getGroupPostCount($page->pId)}}</p>
@@ -226,11 +244,11 @@
                                                     @if($page->pProfile)
 
 
-                                                        <a href="#"><img src="{{asset("storage/community/page-post/profile/".$page->pProfile)}}" alt="image"></a>
+                                                        <a href="{{route('user.page.details',\Illuminate\Support\Facades\Crypt::encrypt($page->pId))}}"><img src="{{asset("storage/community/page-post/profile/".$page->pProfile)}}" alt="image"></a>
 
                                                     @else
 
-                                                        <a href="#"><img src="{{asset('community-frontend/assets/images/community/home/user-0.jpg')}}" alt="image"></a>
+                                                        <a href="{{route('user.page.details',\Illuminate\Support\Facades\Crypt::encrypt($page->pId))}}"><img src="{{asset('community-frontend/assets/images/community/home/user-0.jpg')}}" alt="image"></a>
 
                                                     @endif
                                                     <div class="profile-name">

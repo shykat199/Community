@@ -798,6 +798,7 @@
         @endforeach
 
     </div>
+{{--    @dd(allRequestedFriend())--}}
 
     <div class="col-lg-3">
         <div class="news-feed-right">

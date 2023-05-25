@@ -246,7 +246,7 @@ class CommunityUserPageController extends Controller
         if ($request->get('imageCaption') && $request->get('imageCaption') === null) {
 //            dd(1);
             $storePagePost = CommunityPagePost::create([
-                'page_id' => $request->get('pageId'),
+                'page_id' =>  \Crypt::decrypt($request->get('pageId')),
                 'user_id' => Auth::id(),
                 'post_description' => $request->get('postMessage'),
             ]);
@@ -256,7 +256,7 @@ class CommunityUserPageController extends Controller
             if ($request->hasFile('postFile') !== null || $request->get('imageCaption') !== null) {
 //                dd(3);
                 $storePagePost = CommunityPagePost::create([
-                    'page_id' => $request->get('pageId'),
+                    'page_id' =>  \Crypt::decrypt($request->get('pageId')),
                     'user_id' => Auth::id(),
                     'post_description' => $request->get('postMessage'),
                 ]);
@@ -269,17 +269,19 @@ class CommunityUserPageController extends Controller
 //                    dd(4);
                         $fileName = Uuid::uuid() . '.' . $request->file('postFile')->getClientOriginalExtension();
                         $file = Storage::put('/public/community/page-post/videos/' . $fileName, file_get_contents($request->file('postFile')));
-                    } else {
-//                    dd(5,$fileName);
-                        $fileName = Uuid::uuid() . '.' . $request->file('postFile')->getClientOriginalExtension();
-                        $file = Storage::put('/public/community/page-post/' . $fileName, file_get_contents($request->file('postFile')));
                     }
-                    $pagePostFile = CommunityPagePostFileType::create([
-                        'page_post_id' => $storePagePost->id,
-                        'post_comment_caption' => $request->get('imageCaption'),
-                        'post_image_video' => $fileName,
-                    ]);
                 }
+                else {
+//                    dd(5,$fileName);
+                    $fileName = Uuid::uuid() . '.' . $request->file('postFile1')->getClientOriginalExtension();
+                    $file = Storage::put('/public/community/page-post/' . $fileName, file_get_contents($request->file('postFile1')));
+                }
+
+                $pagePostFile = CommunityPagePostFileType::create([
+                    'page_post_id' => $storePagePost->id,
+                    'post_comment_caption' => $request->get('imageCaption'),
+                    'post_image_video' => $fileName,
+                ]);
             }
 
         }

@@ -49,6 +49,7 @@
             </div>
         </div>
         <div class="row">  <!-- tab content in this row -->
+
             <div class="tab-content" id="myTabContent">
                 <div class="tab-pane fade show active" id="friendRequest" role="tabpanel" aria-labelledby="friendRequestTab">
                     <div class="profile-friend-list">

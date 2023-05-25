@@ -201,11 +201,12 @@ class CommunityUserGroupController extends Controller
 
     public function userGroupPostStore(Request $request)
     {
+//        dd();
 //        dd($request->all());
-        if ($request->get('imageCaption') === null && $request->hasFile('postFile') === null) {
+        if ($request->get('imageCaption') && $request->get('imageCaption') === null) {
 //            dd(1);
             $storeGroupPost = CommunityUserGroupPost::create([
-                'group_id' => $request->get('groupId'),
+                'group_id' => \Crypt::decrypt($request->get('groupId')),
                 'user_id' => Auth::id(),
                 'post_description' => $request->get('postMessage'),
             ]);
@@ -213,24 +214,30 @@ class CommunityUserGroupController extends Controller
 //            dd(2);
             $fileName = null;
             if ($request->hasFile('postFile') !== null || $request->get('imageCaption') !== null) {
-
+//                dd(2);
                 $storeGroupPost = CommunityUserGroupPost::create([
-                    'group_id' => $request->get('groupId'),
+                    'group_id' => \Crypt::decrypt($request->get('groupId')),
                     'user_id' => Auth::id(),
                     'post_description' => $request->get('postMessage'),
                 ]);
-
-                if ($request->file('postFile')->getClientOriginalExtension() == 'mp4' || $request->file('postFile')->getClientOriginalExtension() == 'mov' ||
-                    $request->file('postFile')->getClientOriginalExtension() == 'wmv' || $request->file('postFile')->getClientOriginalExtension() == 'avi' ||
-                    $request->file('postFile')->getClientOriginalExtension() == 'mkv' || $request->file('postFile')->getClientOriginalExtension() == 'webm'
-                ) {
-                    $fileName = Uuid::uuid() . '.' . $request->file('postFile')->getClientOriginalExtension();
-                    $file = Storage::put('/public/community/group-post/videos/' . $fileName, file_get_contents($request->file('postFile')));
-                } else {
-                    $fileName = Uuid::uuid() . '.' . $request->file('postFile')->getClientOriginalExtension();
-                    $file = Storage::put('/public/community/group-post/' . $fileName, file_get_contents($request->file('postFile')));
+                if ($request->hasFile('postFile')){
+//                    dd(12);
+                    if ($request->file('postFile')->getClientOriginalExtension() == 'mp4' || $request->file('postFile')->getClientOriginalExtension() == 'mov' ||
+                        $request->file('postFile')->getClientOriginalExtension() == 'wmv' || $request->file('postFile')->getClientOriginalExtension() == 'avi' ||
+                        $request->file('postFile')->getClientOriginalExtension() == 'mkv' || $request->file('postFile')->getClientOriginalExtension() == 'webm'
+                    ) {
+                        $fileName = Uuid::uuid() . '.' . $request->file('postFile')->getClientOriginalExtension();
+                        $file = Storage::put('/public/community/group-post/videos/' . $fileName, file_get_contents($request->file('postFile')));
+                    }
+//                    dd($fileName);
                 }
-//                dd(3);
+
+                 else {
+//                     dd(3);
+                    $fileName = Uuid::uuid() . '.' . $request->file('postFile1')->getClientOriginalExtension();
+                    $file = Storage::put('/public/community/group-post/' . $fileName, file_get_contents($request->file('postFile1')));
+                }
+//                dd(4);
 
                 $GroupPostFile = CommunityUserGroupPostFile::create([
                     'group_post_id' => $storeGroupPost->id,

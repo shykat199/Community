@@ -107,7 +107,7 @@ class AuthController extends Controller
     public function register(AdminRequest $request)
     {
 
-        //dd($request->all());
+//        dd($request->all());
 
         $createUser = User::create([
             'name' => $request->get('name'),

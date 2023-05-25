@@ -32,7 +32,7 @@
             @endforeach
         @else
 
-            @dd(allPages($id))
+{{--            @dd(allPages($id))--}}
             @foreach(allPages($id) as $page)
 
 

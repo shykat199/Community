@@ -405,7 +405,15 @@ function allRequestedFriend()
         ->where('users.id', '!=', ADMIN_ROLE)
         ->where('community_user_friend_requests.status', '=', 0)
         ->where('community_user_friend_requests.receiver_user_id', '=', Auth::id())
-        ->selectRaw('users.id,users.name as userName,community_user_friend_requests.id as reqId')
+        ->leftJoin('community_user_friends as f1', 'f1.user_id', '=', 'users.id')
+        ->leftJoin('community_user_friends as f2', function ($q) {
+            $q->on('f1.requested_user_id', '=', 'f2.requested_user_id');
+            $q->where('f1.user_id','=',Auth::id());
+            $q->where('f2.user_id','=','users.id');
+        })
+
+        ->selectRaw('users.id,users.name as userName,community_user_friend_requests.id as reqId,COUNT(f1.id) as countMutualFriend')
+        ->groupBy('users.id')
         ->get();
     return $requestedFriendList;
 }
