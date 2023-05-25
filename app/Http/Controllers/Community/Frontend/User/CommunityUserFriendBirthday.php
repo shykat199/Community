@@ -19,7 +19,7 @@ class CommunityUserFriendBirthday extends Controller
 
         $currentDate = \Carbon\Carbon::now();
 
-        $todayBirthdays = User::join('community_user_friends as userFriend', function ($q) {
+        $todayBirthdays = User::with('userProfileImages')->join('community_user_friends as userFriend', function ($q) {
             $q->on('userFriend.requested_user_id', '=', 'users.id');
             $q->where('userFriend.user_id', '=', Auth::id());
             $q->where('userFriend.user_id', '!=', ADMIN_ROLE);
@@ -44,13 +44,13 @@ class CommunityUserFriendBirthday extends Controller
         foreach (myFriends() as $myFriend) {
             $myFreinds[] = $myFriend->uId;
         }
-        $getAllBirthdays = CommunityUserDetails::join('users', function ($q) use ($myFreinds) {
+        $getAllBirthdays = CommunityUserDetails::with('users.userProfileImages')->join('users', function ($q) use ($myFreinds) {
             $q->on('community_user_details.user_id', '=', 'users.id');
             $q->where('users.id', '!=', ADMIN_ROLE);
             $q->whereIn('users.id', $myFreinds);
         })
 
-            ->selectRaw('users.id as Uid,users.name,community_user_details.dob')
+            ->selectRaw('users.id,users.name,community_user_details.dob')
             ->get();
 
 //        return $getAllBirthdays;

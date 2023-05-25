@@ -376,7 +376,7 @@
                                                                         aria-hidden="true"></i></button>
                                                             </div>
                                                             <div class="media-input">
-                                                                <input name="postFile" accept="" type='file'
+                                                                <input name="photoFile" accept="" type='file'
                                                                        id="imgInp"/>
                                                             </div>
                                                         </div>
@@ -389,14 +389,13 @@
                                             </div>
                                         </div>
                                     </li>
+
                                     <li>
                                         <button type="button" class="attachment-option-btn" data-bs-toggle="modal"
-                                                data-bs-target="#photoModal">
+                                                data-bs-target="#videoModalopen">
                                             <div class="attachment-icon vido-icon">
-                                                <svg xmlns="http://www.w3.org/2000/svg" version="1.1" x="0" y="0"
-                                                     viewBox="0 0 512 512"
-                                                     style="enable-background:new 0 0 512 512" xml:space="preserve"
-                                                     class=""><g>
+                                                <svg xmlns="http://www.w3.org/2000/svg" version="1.1" x="0" y="0" viewBox="0 0 512 512"
+                                                     style="enable-background:new 0 0 512 512" xml:space="preserve" class=""><g>
                                                         <g fill-rule="evenodd">
                                                             <path
                                                                 d="M440.59 206.676H99.418l327.7-94.93a10.018 10.018 0 0 0 5.976-4.781 9.989 9.989 0 0 0 .847-7.606L416.793 40.16C409.941 16.516 387.926 0 363.253 0c-5.198 0-10.378.738-15.401 2.191L40.176 91.321c-14.23 4.12-26.024 13.581-33.215 26.632-7.188 13.05-8.875 28.078-4.754 42.305l16.754 57.836v238.254C18.96 487.035 43.926 512 74.609 512h120.164c5.524 0 10-4.477 10-10s-4.476-10-10-10H74.613c-19.66 0-35.652-15.992-35.652-35.652V320.262H430.589v136.086c0 19.66-15.991 35.652-35.651 35.652H274.773c-5.52 0-10 4.477-10 10s4.48 10 10 10h120.165c30.687 0 55.652-24.965 55.652-55.652V216.676c0-5.524-4.477-10-10-10zm-176.332 93.586 42.488-73.586h55.262l-42.485 73.586zm-78.36 0 42.489-73.586h55.261l-42.484 73.586zm-78.355 0 42.484-73.586h55.266l-42.488 73.586zm37.18-129.457-71.149-68.336 53.309-15.442a9.92 9.92 0 0 0 1.312 1.543l71.149 68.336-53.309 15.442a9.951 9.951 0 0 0-1.312-1.543zm134-125.84L349.87 113.3l-53.308 15.441a9.742 9.742 0 0 0-1.313-1.543l-71.148-68.336 53.308-15.441a9.92 9.92 0 0 0 1.313 1.543zM203.457 66.77l71.148 68.332-53.308 15.445a9.742 9.742 0 0 0-1.313-1.543l-71.148-68.336 53.309-15.441c.378.543.816 1.062 1.312 1.543zm149.961-45.368c3.21-.93 6.52-1.402 9.836-1.402 15.824 0 29.937 10.578 34.328 25.727l14.367 49.59-40.12 11.62a10.165 10.165 0 0 0-1.317-1.542l-71.145-68.333zM24.48 127.602c4.61-8.372 12.16-14.434 21.262-17.07l5.875-1.704a10.17 10.17 0 0 0 1.313 1.543l71.148 68.336-88.293 25.578-14.367-49.59c-2.637-9.097-1.547-18.718 3.062-27.093zm14.48 99.074h87.974l-42.485 73.586H38.961zm303.657 73.586 42.485-73.586h45.488v73.586zm0 0"
@@ -409,6 +408,72 @@
                                             </div>
                                             Video
                                         </button>
+
+                                        <div class="modal fade" id="videoModalopen" tabindex="-1" aria-labelledby="videoModalLabel"
+                                             aria-hidden="true" onclick="document.getElementById('uploadingVideo').pause();">
+                                            <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+                                                <div class="modal-content post-modal-content">
+                                                    <div class="modal-header">
+                                                        <div class="post-modal-title">
+                                                            <h6 class="modal-title" id="photoModalLabel">Create Post</h6>
+                                                        </div>
+                                                        <button type="button" class=" post-close" data-bs-dismiss="modal"
+                                                                aria-label="Close"
+                                                                onclick="document.getElementById('uploadingVideo').pause();"><i
+                                                                class="fa fa-times" aria-hidden="true"></i></button>
+                                                    </div>
+                                                    <div class="modal-body post-modal-body">
+                                                        <div class="my-profile">
+                                                            <div class="my-profile-img">
+                                                                @if(!empty($profilePic->users->userProfileImages[0]) && isset($profilePic->users->userProfileImages[0])?$profilePic->users->userProfileImages[0]:'')
+
+                                                                    @if(!empty($profilePic->users->userProfileImages[0]) && isset($profilePic->users->userProfileImages[0])?$profilePic->users->userProfileImages[0]:'')
+                                                                        <a href=""><img
+                                                                                src="{{asset("storage/community/profile-picture/".$profilePic->users->userProfileImages[0]->user_profile)}}"
+                                                                                alt="image"></a>
+                                                                    @else
+                                                                        <a href=""><img
+                                                                                src="{{asset("community-frontend/assets/images/community/home/news-post/Athore01.jpg")}}"
+                                                                                alt="image"></a>
+                                                                    @endif
+                                                                @endif
+                                                            </div>
+                                                            <div class="my-profile-name">{{Auth::user()->name}}</div>
+                                                        </div>
+                                                        <div class="post-text">
+                                                            <textarea id="postArea" name="imageCaption" placeholder="Write Something here..."></textarea>
+                                                        </div>
+                                                        <div class="upload-media">
+                                                            <div class="photo-place">
+                                            <span class="icon">
+                                                <svg xmlns="http://www.w3.org/2000/svg" version="1.1" x="0" y="0"
+                                                     viewBox="0 0 24 24" style="enable-background:new 0 0 512 512"
+                                                     xml:space="preserve" class=""><g><path
+                                                            d="m22.448 7.608-1.2 8.58a3.142 3.142 0 0 1-1.257 2.312.311.311 0 0 1-.488-.244V9.665A3.829 3.829 0 0 0 15.335 5.5H5.923c-.3 0-.307-.27-.286-.39a3.134 3.134 0 0 1 1.112-2.085 3.2 3.2 0 0 1 2.442-.473l10.561 1.48a3.211 3.211 0 0 1 2.223 1.134 3.191 3.191 0 0 1 .473 2.442zM18 9.665v8.668A2.358 2.358 0 0 1 15.335 21H4.667A2.357 2.357 0 0 1 2 18.333V9.665A2.357 2.357 0 0 1 4.667 7h10.668A2.358 2.358 0 0 1 18 9.665zM13.25 14a.75.75 0 0 0-.75-.75h-1.75V11.5a.75.75 0 0 0-1.5 0v1.75H7.5a.75.75 0 0 0 0 1.5h1.75v1.75a.75.75 0 0 0 1.5 0v-1.75h1.75a.75.75 0 0 0 .75-.75z"
+                                                            fill="#000000" data-original="#000000" class=""></path></g></svg>
+                                            </span>
+                                                                <h6 class="title">Add Videos</h6>
+                                                                <p class="small-text">or drag and drop</p>
+                                                            </div>
+                                                            <div class="preview-file">
+                                                                <video controls class="status-video" id="uploadingVideo">
+                                                                    <source src="#" class="video-status-here">
+                                                                </video>
+                                                                <button type="button" class="imgClose"
+                                                                        onclick="document.getElementById('uploadingVideo').pause();"><i
+                                                                        class="fa fa-times" aria-hidden="true"></i></button>
+                                                            </div>
+                                                            <div class="media-input">
+                                                                <input type='file' name="postFile" class="vidInp"/>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="submit" class="social-theme-btn post-btn">Post</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </li>
                                     <li>
                                         <button type="button" class="attachment-option-btn" data-bs-toggle="modal"
@@ -1367,7 +1432,7 @@
                                                         </div>
                                                     </div>
                                                     <div class="profile-title d-flex align-items-center">
-                                                        <a href="#">
+{{--                                                        <a href="#">--}}
                                                             @if(!empty($friend->userProfileImages[0]) && isset($friend->userProfileImages[0])?$friend->userProfileImages[0]:'')
 
                                                                 @if(!empty($friend->userProfileImages[0]) && isset($friend->userProfileImages[0])?$friend->userProfileImages[0]:'')
@@ -1385,6 +1450,7 @@
                                                                         src="{{asset("community-frontend/assets/images/community/home/user-0.jpg")}}"
                                                                         alt="image"></a>
                                                             @endif
+{{--                                                        </a>--}}
                                                         <div class="profile-name">
                                                             <h6><a href="#">{{$friend->userName}}</a></h6>
                                                             <span class="locaiton">

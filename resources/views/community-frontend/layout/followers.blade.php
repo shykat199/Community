@@ -10,6 +10,8 @@ $user_id=isset($user_id)?\Illuminate\Support\Facades\Crypt::decrypt($user_id):''
  @endphp
 
         @if($user_id)
+{{--            allUserFollowers($user_id) --}}
+        @dd(allUserFollowers($user_id))
 
             @forelse(allUserFollowers($user_id) as $follower)
 
@@ -54,7 +56,7 @@ $user_id=isset($user_id)?\Illuminate\Support\Facades\Crypt::decrypt($user_id):''
 
 
         @else
-
+{{--            @dd(allUserFollowers())--}}
             @forelse(allUserFollowers() as $follower)
                 <li>
                     <div class="right-wdget-img">
@@ -82,7 +84,7 @@ $user_id=isset($user_id)?\Illuminate\Support\Facades\Crypt::decrypt($user_id):''
                            data-id="{{$follower->uId}}">{{$follower->userName}}
                         </a>
 
-                        @if(!empty($follower->is_followed))
+                        @if(empty($follower->is_followed))
                             <a href="#" class="following-add btnFollow">Followed</a>
                         @else
                             <a href="#" class="following-add btnFollow">Follow</a>
@@ -104,6 +106,9 @@ $user_id=isset($user_id)?\Illuminate\Support\Facades\Crypt::decrypt($user_id):''
             let userId = $(this).siblings('.userName').data('id');
             // let abc=$(this).text();
             // console.log(abc)
+
+            console.log(userId);
+            // return false
             if (userName !== '' && userId !== '') {
 
                 $.ajax({

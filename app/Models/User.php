@@ -10,6 +10,7 @@ use App\Models\Community\Page\CommunityPage;
 use App\Models\Community\Page\CommunityPagePost;
 use App\Models\Community\Page\CommunityPagePostComment;
 use App\Models\Community\Page\UsersPage;
+use App\Models\Community\User\CommunityUserDetails;
 use App\Models\Community\User\CommunityUserFollowing;
 use App\Models\Community\User_Post\CommunityUserPostComment;
 use App\Models\Community\User_Profile\CommunityUserProfileCover;
@@ -112,6 +113,11 @@ class User extends Authenticatable
     public function usersFollowers(): \Illuminate\Database\Eloquent\Relations\HasMany
     {
         return $this->hasMany(CommunityUserFollowing::class,'user_id');
+    }
+
+    public function userDetails(): \Illuminate\Database\Eloquent\Relations\HasOne
+    {
+        return $this->hasOne(CommunityUserDetails::class);
     }
 
 

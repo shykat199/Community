@@ -220,8 +220,8 @@ class CommunityFrontendController extends Controller
             $userName = $request->get('userName');
 
             $communityFollower = CommunityUserFollowing::create([
-                'user_following_id' => Auth::id(),
-                'user_id' => $userId
+                'user_following_id' =>  Auth::id(),
+                'user_id' => $userId,
             ]);
 
             if ($communityFollower) {

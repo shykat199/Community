@@ -70,11 +70,10 @@
 
     <div class="profile-likes">
         <p><i class="fa fa-heart-o" aria-hidden="true"></i> New Likes This Weeks</p>
-{{--        @dd(myFriends());--}}
 
         <ul class="recent-likes-person">
             @foreach(myFriends() as $friend)
-                {{--                @dd($friend)--}}
+
                 <li>
                     @if(!empty($friend->userProfileImages[0]) && isset($friend->userProfileImages[0])?$friend->userProfileImages[0]:'')
 

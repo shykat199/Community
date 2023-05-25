@@ -146,6 +146,7 @@
                             </div>
                             Video
                         </button>
+
                         <div class="modal fade" id="videoModalopen" tabindex="-1" aria-labelledby="videoModalLabel"
                              aria-hidden="true" onclick="document.getElementById('uploadingVideo').pause();">
                             <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">

@@ -41,9 +41,27 @@
                     @if($todayBirthday->message===null)
                         <li class="single-wish">
                             {{--                            @dd($todayBirthday)--}}
-                            <div class="right-wdget-img"><a href="#"><img
-                                        src="{{asset("community-frontend/assets/images/community/home/right/birthday01.jpg")}}"
-                                        alt="img"></a></div>
+                            <div class="right-wdget-img">
+
+                                @if(!empty($todayBirthday->userProfileImages[0]) && isset($todayBirthday->userProfileImages[0])?$todayBirthday->userProfileImages[0]:'')
+
+                                    @if(!empty($todayBirthday->userProfileImages[0]) && isset($todayBirthday->userProfileImages[0])?$todayBirthday->userProfileImages[0]:'')
+                                        <a href=""><img
+                                                src="{{asset("storage/community/profile-picture/".$todayBirthday->userProfileImages[0]->user_profile)}}"
+                                                alt="image"></a>
+                                    @else
+                                        <a href=""><img
+                                                src="{{asset("community-frontend/assets/images/community/home/news-post/Athore01.jpg")}}"
+                                                alt="image"></a>
+                                    @endif
+                                @else
+
+                                    <a href=""><img
+                                            src="{{asset("community-frontend/assets/images/community/home/news-post/Athore01.jpg")}}"
+                                            alt="image"></a>
+                                @endif
+
+                            </div>
                             <div class="page-title">
                                 <a href="#">{{$todayBirthday->userName}}</a>
                                 <span class="date">{{\Carbon\Carbon::now()->format('d F , Y')}}</span>
@@ -65,30 +83,6 @@
 
 
 
-
-
-{{--                @dd($todayBirthday)--}}
-{{--                    <li class="single-wish">--}}
-{{--                        <div class="right-wdget-img"><a href="#"><img--}}
-{{--                                    src="{{asset("community-frontend/assets/images/community/home/right/birthday01.jpg")}}"--}}
-{{--                                    alt="img"></a></div>--}}
-{{--                        <div class="page-title">--}}
-{{--                            <a href="#">{{$todayBirthday->userName}}</a>--}}
-{{--                            <span class="date">{{\Carbon\Carbon::now()->format('d F , Y')}}</span>--}}
-{{--                            <form action="{{route('user.friend.birthday.wishMessage')}}" class="birthday-wish"--}}
-{{--                                  method="post">--}}
-{{--                                @csrf--}}
-{{--                                <button type="button" class="emoji-btn"><i class="fa fa-meh-o"--}}
-{{--                                                                           aria-hidden="true"></i>--}}
-{{--                                </button>--}}
-{{--                                <input type="text" name="message" placeholder="Write something">--}}
-{{--                                <input type="hidden" name="wished_user_id" value="{{$todayBirthday->Uid}}"--}}
-{{--                                       placeholder="Write something">--}}
-{{--                                <button type="submit" class="social-theme-btn wish-send-btn">Send</button>--}}
-{{--                            </form>--}}
-{{--                        </div>--}}
-{{--                    </li>--}}
-
                 @endforeach
             @else
                 <span>No Data Found</span>
@@ -106,9 +100,31 @@
 
                         <div class="col-lg-4 col-md-4">
                             <div class="single-info">
-                                <div class="page-img"><a href="#"><img
-                                            src="{{asset("community-frontend/assets/images/community/home/right/birthday01.jpg")}}"
-                                            alt="img"></a></div>
+                                <div class="page-img">
+
+                                    @if(!empty($todayBirthday->userProfileImages[0]) && isset($todayBirthday->userProfileImages[0])?$todayBirthday->userProfileImages[0]:'')
+
+                                        @if(!empty($todayBirthday->userProfileImages[0]) && isset($todayBirthday->userProfileImages[0])?$todayBirthday->userProfileImages[0]:'')
+                                            <a href=""><img
+                                                    src="{{asset("storage/community/profile-picture/".$todayBirthday->userProfileImages[0]->user_profile)}}"
+                                                    alt="image"></a>
+                                        @else
+                                            <a href=""><img
+                                                    src="{{asset("community-frontend/assets/images/community/home/news-post/Athore01.jpg")}}"
+                                                    alt="image"></a>
+                                        @endif
+                                    @else
+
+                                        <a href=""><img
+                                                src="{{asset("community-frontend/assets/images/community/home/news-post/Athore01.jpg")}}"
+                                                alt="image"></a>
+                                    @endif
+
+{{--                                    <a href="#"><img--}}
+{{--                                            src="{{asset("community-frontend/assets/images/community/home/right/birthday01.jpg")}}"--}}
+{{--                                            alt="img"></a>--}}
+
+                                </div>
                                 <div class="page-title">
                                     <a href="#">{{$recentBirthday->userName}}</a>
                                     <span
@@ -137,9 +153,28 @@
                             @if(\Carbon\Carbon::parse($birthday->dob)->format('F') === $months)
                                 <div class="col-lg-4 col-md-4">
                                     <div class="single-info">
-                                        <div class="page-img"><a href="#"><img
-                                                    src="{{asset("community-frontend/assets/images/community/home/right/birthday01.jpg")}}"
-                                                    alt="img"></a></div>
+                                        <div class="page-img">
+
+                                            @if(!empty($birthday->users->userProfileImages[0]) && isset($birthday->users->userProfileImages[0])?$birthday->users->userProfileImages[0]:'')
+
+                                                @if(!empty($birthday->users->userProfileImages[0]) && isset($birthday->users->userProfileImages[0])?$birthday->users->userProfileImages[0]:'')
+                                                    <a href=""><img
+                                                            src="{{asset("storage/community/profile-picture/".$birthday->users->userProfileImages[0]->user_profile)}}"
+                                                            alt="image"></a>
+                                                @else
+                                                    <a href=""><img
+                                                            src="{{asset("community-frontend/assets/images/community/home/news-post/Athore01.jpg")}}"
+                                                            alt="image"></a>
+                                                @endif
+                                            @else
+
+                                                <a href=""><img
+                                                        src="{{asset("community-frontend/assets/images/community/home/news-post/Athore01.jpg")}}"
+                                                        alt="image"></a>
+                                            @endif
+
+
+                                        </div>
                                         <div class="page-title">
                                             <a href="#">{{$birthday->name}}</a>
                                             <span

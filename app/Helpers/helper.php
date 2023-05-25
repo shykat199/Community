@@ -405,7 +405,7 @@ function allRequestedFriend()
         ->where('users.id', '!=', ADMIN_ROLE)
         ->where('community_user_friend_requests.status', '=', 0)
         ->where('community_user_friend_requests.receiver_user_id', '=', Auth::id())
-        ->selectRaw('users.id as uId,users.name as userName,community_user_friend_requests.id as reqId')
+        ->selectRaw('users.id,users.name as userName,community_user_friend_requests.id as reqId')
         ->get();
     return $requestedFriendList;
 }
@@ -482,7 +482,7 @@ function recentlyAddedFriends()
         ->leftJoin('community_user_details as userDetails', function ($q) {
             $q->on('userDetails.user_id', '=', 'users.id');
         })
-        ->selectRaw('users.id as uId,users.name as userName,profilePhoto.user_id as profileUserId,profilePhoto.user_profile,
+        ->selectRaw('users.id,users.name as userName,profilePhoto.user_id as profileUserId,profilePhoto.user_profile,
         profileCover.user_cover,COUNT(userFollowers.id) as userFollowers,COUNT(userFollowings.id) as userFollowings,userDetails.birthplace')
         ->groupBy('users.id')
         ->orderBy('community_user_friends.created_at', 'DESC')
