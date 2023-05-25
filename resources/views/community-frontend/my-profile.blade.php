@@ -746,7 +746,7 @@
                                                         src="{{asset("community-frontend/assets/images/community/home/news-post/react-6.png")}}"
                                                         alt="React"></li>
                                                 <li class="reaction {{$myPost->reaction_type=='angry'?'active':''}}"
-                                                    data-reaction_type="care" data-pId="{{$myPost->postId}}"><img
+                                                    data-reaction_type="angry" data-pId="{{$myPost->postId}}"><img
                                                         src="{{asset("community-frontend/assets/images/community/home/news-post/react-7.png")}}"
                                                         alt="React"></li>
                                             </ul>
@@ -1668,54 +1668,56 @@
 
         $('.reaction').on('click', function () {
 
-            $('.reaction').removeClass('active');
-            $(this).addClass('active');
 
             let postReaction = $(this).attr('data-reaction_type');
             let postId = $(this).attr('data-pId');
             // console.log(postId);
             // console.log(postReaction);
-            let reactionCount = parseInt($(this).parents('.post-body').find('.reactionCount').text());
-            let newReactionCount = $(this).parents('.post-body').find('.reactionCount');
 
-            let img_src = $(this).find('img').attr('src')
-            $(this).parents('.like-react').find('.react-icon img').attr('src', img_src)
-
-            // console.log(parests_data, 'parests_data')
-            // let img_src = $(this).find('img').attr('src');
-            // console.log(img_src,'img_src');
             // return false;
 
-            if (postReaction !== '' && postId !== '') {
+            let peviousStateImg='http://127.0.0.1:8000/community-frontend/assets/images/community/home/news-post/like.png';
+
+            let img_src = $(this).find('img').attr('src');
+            $(this).parents('.like-react').find('.react-icon img').attr('src', img_src);
+            let reactionCount = parseInt($(this).parents('.post-body').find('.reactionCount').text());
+            let newReactionCount = $(this).parents('.post-body').find('.reactionCount');
+            let changeState=$(this).parents('.like-react').find('.react-icon img');
+
+
+            if (postId !== '' && postReaction!=='') {
                 $.ajax({
                     url: '{{route('user.post-all.reaction')}}',
                     type: 'POST',
                     data: {
-                        postReaction: postReaction,
                         postId: postId,
+                        postReaction:postReaction,
                         reqType: 'storePostReaction',
                         '_token': '{{csrf_token()}}'
                     },
                     success: function (response) {
 
-                        if (response.success === true) {
-                            // console.log(response);
-                            // console.log(response.data);
-                            newReactionCount.text(reactionCount += 1);
+                        if (response.status === true) {
+                            // newReactionCount.text(reactionCount += 1);
 
-                            // toastr.success(response.msg);
-                            // console.log(response.postComments);
+                            if(response.flag==1){
+                                newReactionCount.text(reactionCount += 1)
+                            }else if (response.flag==2){
 
-                        } else {
-                            // toastr.error(response.msg);
+                            }else{
+                                newReactionCount.text(reactionCount -= 1);
+                                changeState.attr('src',peviousStateImg);
+                            }
+
                         }
                     },
                     error: function (err) {
 
-                        toastr.error("Error with AJAX callback !");
+                        // toastr.error("Error with AJAX callback !");
                     }
                 })
             }
+
         })
 
 

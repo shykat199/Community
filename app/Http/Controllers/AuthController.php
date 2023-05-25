@@ -108,11 +108,26 @@ class AuthController extends Controller
     {
 
 //        dd($request->all());
+//        Carbon::now().'-'.'-'.$request->get('name')
+
+        $slug = '';
+
+        if ($request->get('role') === ADMIN_ROLE) {
+            $slug = Carbon::now()->format('d-m-Y') . '-' . 'ADMIN' . '-' . $request->get('name');
+        } elseif ($request->get('role') === USER_ROLE) {
+            $slug = Carbon::now()->format('d-m-Y') . '-' . 'USER' . '-' . $request->get('name');
+        } elseif ($request->get('role') === SERVICE_PROVIDER_ROLE) {
+            $slug = Carbon::now()->format('d-m-Y') . '-' . 'SERVICE-PROVIDER' . '-' . $request->get('name');
+        } else {
+            $slug = Carbon::now()->format('d-m-Y') . '-' . 'VENDOR' . '-' . $request->get('name');
+        }
+
 
         $createUser = User::create([
             'name' => $request->get('name'),
             'email' => $request->get('email'),
             'role' => $request->get('role'),
+            'user_slug' => $slug,
             'email_verified_at' => Carbon::now(),
             'password' => Hash::make($request->get('password')),
 

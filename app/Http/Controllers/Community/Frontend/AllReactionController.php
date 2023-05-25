@@ -38,10 +38,10 @@ class AllReactionController extends Controller
 
 //                dd($checkReaction);
                 if (!empty($checkReaction)) {
-
+//                    dd(1);
                     if ($reaction_type == $checkReaction->reaction_type) {
 
-
+//                        dd(2);
                         $deleteReaction = $checkReaction->delete();
 
                         if ($deleteReaction) {
@@ -49,10 +49,11 @@ class AllReactionController extends Controller
                                 'status' => true,
                                 'msg' => 'Successfully Deleted',
                                 'postComments' => $deleteReaction,
-                                'flag'=>0
+                                'flag' => 0
                             ];
                         }
                     } else {
+//                        dd(3);
 
                         $updatedReaction = $checkReaction->update([
                             'reaction_type' => $reaction_type
@@ -63,17 +64,16 @@ class AllReactionController extends Controller
                                 'status' => true,
                                 'msg' => 'Successfully updated',
                                 'postComments' => $updatedReaction,
-                                'flag'=>2
+                                'flag' => 2
 
                             ];
                         }
                     }
 
-                }
-
-                else {
+                } else {
 
 //                    dd('add reaction');
+//                    dd('vbn');
 
                     $storePostReaction = CommunityUserPostReaction::create([
                         'user_post_id' => $request->get('postId'),
@@ -86,14 +86,15 @@ class AllReactionController extends Controller
                             'status' => true,
                             'msg' => 'Successfully Added',
                             'postComments' => $storePostReaction,
-                            'flag'=>1
+                            'flag' => 1
                         ];
                     }
                 }
 
                 return \response()->json($returnResult);
 
-            } elseif ($request->get('reqType') === 'storePagePostReaction') {
+            }
+            elseif ($request->get('reqType') === 'storePagePostReaction') {
                 $storePostReaction = CommunityPagePostReaction::create([
                     'page_post_id' => $request->get('postId'),
                     'user_id' => \Auth::id(),
@@ -108,23 +109,71 @@ class AllReactionController extends Controller
                         'postComments' => json_encode($storePostReaction)
                     ];
                 }
-            } elseif ($request->get('reqType') === 'storeGroupPostReaction') {
+            }
 
-//                dd($request->all());
-                $storePostReaction = CommunityUserGroupPostReaction::create([
-                    'group_post_id' => $request->get('postId'),
-                    'user_id' => \Auth::id(),
-                    'reaction_type' => $request->get('postReaction')
-                ]);
+            elseif ($request->get('reqType') === 'storeGroupPostReaction') {
 
 
-                if ($storePostReaction) {
-                    $returnResult = [
-                        'status' => true,
-                        'msg' => 'Successfully Added',
-                        'postComments' => json_encode($storePostReaction)
-                    ];
+                $returnResult = [];
+                $postId = $request->get('postId');
+                $reaction_type = $request->get('postReaction');
+
+                $checkReaction = CommunityUserGroupPostReaction::where('group_post_id', '=', $postId)->where('user_id', '=', Auth::id())
+                    ->first();
+
+//                dd($checkReaction);
+                if (!empty($checkReaction)) {
+//                    dd(1);
+                    if ($reaction_type == $checkReaction->reaction_type) {
+
+//                        dd(2);
+                        $deleteReaction = $checkReaction->delete();
+
+                        if ($deleteReaction) {
+                            $returnResult = [
+                                'status' => true,
+                                'msg' => 'Successfully Deleted',
+                                'postComments' => $deleteReaction,
+                                'flag' => 0
+                            ];
+                        }
+                    } else {
+//                        dd(3);
+
+                        $updatedReaction = $checkReaction->update([
+                            'reaction_type' => $reaction_type
+                        ]);
+
+                        if ($updatedReaction) {
+                            $returnResult = [
+                                'status' => true,
+                                'msg' => 'Successfully updated',
+                                'postComments' => $updatedReaction,
+                                'flag' => 2
+
+                            ];
+                        }
+                    }
+
+                } else {
+                    $storePostReaction = CommunityUserGroupPostReaction::create([
+                        'group_post_id' => $request->get('postId'),
+                        'user_id' => \Auth::id(),
+                        'reaction_type' => $request->get('postReaction')
+                    ]);
+
+                    if ($storePostReaction) {
+                        $returnResult = [
+                            'status' => true,
+                            'msg' => 'Successfully Added',
+                            'postComments' => $storePostReaction,
+                            'flag' => 1
+                        ];
+                    }
                 }
+
+                return \response()->json($returnResult);
+
             } // Edit Comment Section
 
             elseif ($request->get('reqType') === 'editUserNewsFeedComment') {

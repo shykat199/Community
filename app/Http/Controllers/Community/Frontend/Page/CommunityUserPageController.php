@@ -18,6 +18,7 @@ use App\Models\Community\Page\CommunityPagePostFileType;
 use App\Models\Community\Page\CommunityPagePostReaction;
 use App\Models\Community\Page\CommunityPageProfilePhoto;
 use App\Models\Community\Page\UsersPage;
+use App\Models\Community\User_Post\CommunityUserPostReaction;
 use Carbon\Carbon;
 use Faker\Provider\Uuid;
 use Illuminate\Http\Request;
@@ -98,7 +99,7 @@ class CommunityUserPageController extends Controller
 
     public function getSinglePageView($id)
     {
-        $id=Crypt::decrypt($id);
+        $id = Crypt::decrypt($id);
         $getPageDetails = CommunityPage::join('users', function ($q) use ($id) {
             $q->on('users.id', '=', 'community_pages.user_id');
             $q->where('community_pages.id', '=', $id);
@@ -246,7 +247,7 @@ class CommunityUserPageController extends Controller
         if ($request->get('imageCaption') && $request->get('imageCaption') === null) {
 //            dd(1);
             $storePagePost = CommunityPagePost::create([
-                'page_id' =>  \Crypt::decrypt($request->get('pageId')),
+                'page_id' => \Crypt::decrypt($request->get('pageId')),
                 'user_id' => Auth::id(),
                 'post_description' => $request->get('postMessage'),
             ]);
@@ -256,7 +257,7 @@ class CommunityUserPageController extends Controller
             if ($request->hasFile('postFile') !== null || $request->get('imageCaption') !== null) {
 //                dd(3);
                 $storePagePost = CommunityPagePost::create([
-                    'page_id' =>  \Crypt::decrypt($request->get('pageId')),
+                    'page_id' => \Crypt::decrypt($request->get('pageId')),
                     'user_id' => Auth::id(),
                     'post_description' => $request->get('postMessage'),
                 ]);
@@ -270,8 +271,7 @@ class CommunityUserPageController extends Controller
                         $fileName = Uuid::uuid() . '.' . $request->file('postFile')->getClientOriginalExtension();
                         $file = Storage::put('/public/community/page-post/videos/' . $fileName, file_get_contents($request->file('postFile')));
                     }
-                }
-                else {
+                } else {
 //                    dd(5,$fileName);
                     $fileName = Uuid::uuid() . '.' . $request->file('postFile1')->getClientOriginalExtension();
                     $file = Storage::put('/public/community/page-post/' . $fileName, file_get_contents($request->file('postFile1')));
@@ -300,38 +300,76 @@ class CommunityUserPageController extends Controller
     public function storeUserPagePostReaction(Request $request)
     {
 
-        $storePostReaction = '';
 
         if ($request->ajax()) {
-            $userId = Auth::id();
-            $getReaction = $request->get('getReaction');
-            $pagePostId = $request->get('pagePostId');
 
-//            @dd($request->all());
-            if ($userId !== null && $getReaction !== null && $pagePostId !== null) {
+            if ($request->get('reqType') === 'storePostReaction') {
 
-                $storePostReaction = CommunityPagePostReaction::create([
-                    'user_id' => $userId,
-                    'page_post_id' => $pagePostId,
-                    'reaction_type' => $getReaction,
-                ]);
+//                dd($request->all());
+
+                $returnResult = [];
+                $postId = $request->get('postId');
+                $reaction_type = $request->get('postReaction');
+
+                $checkReaction = CommunityPagePostReaction::where('page_post_id', '=', $postId)->where('user_id', '=', Auth::id())
+                    ->first();
+
+//                dd($checkReaction);
+                if (!empty($checkReaction)) {
+
+                    if ($reaction_type == $checkReaction->reaction_type) {
+
+
+                        $deleteReaction = $checkReaction->delete();
+
+                        if ($deleteReaction) {
+                            $returnResult = [
+                                'status' => true,
+                                'msg' => 'Successfully Deleted',
+                                'postComments' => $deleteReaction,
+                                'flag' => 0
+                            ];
+                        }
+                    } else {
+
+                        $updatedReaction = $checkReaction->update([
+                            'reaction_type' => $reaction_type
+                        ]);
+
+                        if ($updatedReaction) {
+                            $returnResult = [
+                                'status' => true,
+                                'msg' => 'Successfully updated',
+                                'postComments' => $updatedReaction,
+                                'flag' => 2
+
+                            ];
+                        }
+                    }
+
+                } else {
+
+                    $storePostReaction = CommunityPagePostReaction::create([
+                        'page_post_id' => $request->get('postId'),
+                        'user_id' => \Auth::id(),
+                        'reaction_type' => $request->get('postReaction')
+                    ]);
+
+                    if ($storePostReaction) {
+                        $returnResult = [
+                            'status' => true,
+                            'msg' => 'Successfully Added',
+                            'postComments' => $storePostReaction,
+                            'flag' => 1
+                        ];
+                    }
+                }
+
+                return \response()->json($returnResult);
+
             }
 
-            if ($storePostReaction) {
-                return \response()->json([
-                    'status' => true,
-                    'success' => true,
-                    'data' => $storePostReaction,
-                    'msg' => 'Successfully Added.',
-                ]);
-            } else {
-                return \response()->json([
-                    'status' => true,
-                    'success' => false,
-                    'data' => $storePostReaction,
-                    'msg' => 'Something wrong.',
-                ]);
-            }
+
         }
 
     }
@@ -543,14 +581,14 @@ class CommunityUserPageController extends Controller
                                     </div>
                                     <!-- child comment start  -->
                                     <div class="child-comment">
-                                                            <div class="single-replay-comnt nested-comment-'.$storePagePostCmt->id.'">
+                                                            <div class="single-replay-comnt nested-comment-' . $storePagePostCmt->id . '">
 
                                                                                 </div>';
 
 
                 if (count($storePagePostCmt->replies) > 0) {
                     $html .= '<div class="more-comment">
-                                                <a class="loadChildCmt" data-postIdd="'.$storePagePostCmt->page_post_id.'" data-commentId="'.$storePagePostCmt->id.'">More+</a>
+                                                <a class="loadChildCmt" data-postIdd="' . $storePagePostCmt->page_post_id . '" data-commentId="' . $storePagePostCmt->id . '">More+</a>
                                             </div>';
                 }
 
@@ -569,11 +607,10 @@ class CommunityUserPageController extends Controller
                 }
 
 
-
-                $html.=' <div class="new-comment-input replay-commnt-input">
-                                                <input data-cmtId="'.$storePagePostCmt->id.'" class="cmtText" type="text"
+                $html .= ' <div class="new-comment-input replay-commnt-input">
+                                                <input data-cmtId="' . $storePagePostCmt->id . '" class="cmtText" type="text"
                                                        name="cmttext"
-                                                       data-userPostId="'.$storePagePostCmt->page_post_id.'"
+                                                       data-userPostId="' . $storePagePostCmt->page_post_id . '"
                                                        placeholder="Write a comment....">
                                                 <div class="attached-icon">
                                                     <a href="#"><i class="fa fa-camera" aria-hidden="true"></i></a>
@@ -658,9 +695,9 @@ class CommunityUserPageController extends Controller
 
                     $html .= ' </div>
                                                         <div class="comment-div">
-                                                            <p class="comment-content">'.$storeComments->comment_text.'</p>
+                                                            <p class="comment-content">' . $storeComments->comment_text . '</p>
                                                             <button class="textarea-btn" type="submit" style="display: none;">
-                                                            <i class="fa fa-paper-plane" data-commenttext="check Child" data-cmtId="'.$storeComments->id.'" data-postId="'.$storeComments->page_post_id.'" aria-hidden="true"></i>
+                                                            <i class="fa fa-paper-plane" data-commenttext="check Child" data-cmtId="' . $storeComments->id . '" data-postId="' . $storeComments->page_post_id . '" aria-hidden="true"></i>
                                                             </button>
                                                             <button class="textarea-cancel-btn" style="display: none;">Cancel</button>
 

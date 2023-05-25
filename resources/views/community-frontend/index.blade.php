@@ -283,7 +283,7 @@
 
         </div>
 
-
+{{--        @dd($allUserPosts)--}}
         @foreach($allUserPosts as $post)
             {{--            @dd($post)--}}
 

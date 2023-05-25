@@ -79,7 +79,7 @@
                 <li class="nav-item" role="presentation">
                     <button class="nav-link" id="closeAccount-tab" data-bs-toggle="tab"
                             data-bs-target="#closeAccount-tab-pane" type="button" role="tab"
-                            aria-controls="message-tab-pane" aria-selected="false">Close Account
+                            aria-controls="message-tab-pane" aria-selected="false">More Setting
                     </button>
                 </li>
             </ul>
@@ -252,7 +252,6 @@
 
                                 </div>
 
-
                                 <div class="col-lg-6">
                                     <label for="language">Language</label>
                                     @php
@@ -270,6 +269,7 @@
                                     </select>
                                 </div>
 
+
                                 <div class="col-lg-6">
                                     <label for="city">City</label>
 
@@ -279,6 +279,8 @@
                                     </select>
 
                                 </div>
+
+
 
 
                                 <div class="col-lg-6">
@@ -639,7 +641,56 @@
                                 </div>
                             </form>
                         </div>
+
+                        <div class="setting-form-wrapper profile-information">
+                            <div class="setting-title">
+
+{{--                                @dd($userInfo)--}}
+                                Your Unique Link
+                            </div>
+
+                            @php
+
+                                $checkSlug=\App\Models\User::select('user_slug')->where('id','=',Auth::id())->where('role','=',USER_ROLE)->first();
+//                                dd($checkSlug)
+
+                            @endphp
+
+
+                            @if($checkSlug->user_slug===null)
+                                <form action="{{route('user.store.unique-slag')}}" method="post">
+                                    @csrf
+
+                                    <div class="col-12">
+                                        <button type="submit" class="social-theme-btn save-btn">Generate your link</button>
+                                    </div>
+                                </form>
+
+                            @else
+
+                                <form action="{{route('user.store.unique-slag')}}" method="post">
+                                    @csrf
+                                    <div class="row">
+                                        <div class="col-lg-6">
+                                            <label for="yourPassword">Your Link</label>
+                                            {{--                                        @dd(dd(Auth::user()->role))--}}
+                                            <input type="text" name="userSlag" id="yourPassword" value="{{!empty($userInfo[0]) && isset($userInfo[0])?$userInfo[0]['users']['user_slug']:''}}">
+                                        </div>
+                                    </div>
+
+                                    <div class="col-12">
+                                        <button type="submit" class="social-theme-btn save-btn">Update Link</button>
+                                    </div>
+                                </form>
+
+                            @endif
+
+
+
+                        </div>
                     </div>
+
+
                 </div>
             </div>
         </div>

@@ -427,7 +427,7 @@
                                         src="{{asset("community-frontend/assets/images/community/home/news-post/react-6.png")}}"
                                         alt="React"></li>
                                 <li class="reaction {{$post->reaction_type=='angry'?'active':''}}"
-                                    data-reaction_type="care" data-pId="{{$post->pId}}"><img
+                                    data-reaction_type="angry" data-pId="{{$post->pId}}"><img
                                         src="{{asset("community-frontend/assets/images/community/home/news-post/react-7.png")}}"
                                         alt="React"></li>
                             </ul>
@@ -778,53 +778,61 @@
         crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script>
     $(document).ready(function () {
-        $('.reaction').on('click', function () {
 
-            $('.reaction').removeClass('active');
-            $(this).addClass('active');
+        {{--url: '{{route('user.post-all.reaction')}}',--}}
+            $('.reaction').on('click', function () {
 
-            let postReaction = $(this).attr('data-reaction_type');
-            let postId = $(this).attr('data-pId');
-            console.log(postId);
-            console.log(postReaction);
 
-            let img_src = $(this).find('img').attr('src')
-            $(this).parents('.like-react').find('.react-icon img').attr('src', img_src)
+                let postReaction = $(this).attr('data-reaction_type');
+                let postId = $(this).attr('data-pId');
+                // console.log(postId);
+                // console.log(postReaction);
+                //
+                // return false;
 
-            // console.log(parests_data, 'parests_data')
-            // let img_src = $(this).find('img').attr('src');
-            // console.log(img_src,'img_src');
-            // return false;
+                let peviousStateImg='http://127.0.0.1:8000/community-frontend/assets/images/community/home/news-post/like.png';
 
-            if (postReaction !== '' && postId !== '') {
-                $.ajax({
-                    url: '{{route('user.post-all.reaction')}}',
-                    type: 'POST',
-                    data: {
-                        postReaction: postReaction,
-                        postId: postId,
-                        reqType: 'storePagePostReaction',
-                        '_token': '{{csrf_token()}}'
-                    },
-                    success: function (response) {
+                let img_src = $(this).find('img').attr('src');
+                $(this).parents('.like-react').find('.react-icon img').attr('src', img_src);
+                let reactionCount = parseInt($(this).parents('.post-body').find('.reactionCount').text());
+                let newReactionCount = $(this).parents('.post-body').find('.reactionCount');
+                let changeState=$(this).parents('.like-react').find('.react-icon img');
 
-                        if (response.success === true) {
-                            console.log(response);
-                            console.log(response.data);
-                            // toastr.success(response.msg);
-                            console.log(response.postComments);
 
-                        } else {
-                            // toastr.error(response.msg);
+                if (postId !== '' && postReaction!=='') {
+                    $.ajax({
+                        url: '{{route('user.page.post.reaction')}}',
+                        type: 'POST',
+                        data: {
+                            postId: postId,
+                            postReaction:postReaction,
+                            reqType: 'storePostReaction',
+                            '_token': '{{csrf_token()}}'
+                        },
+                        success: function (response) {
+
+                            if (response.status === true) {
+                                // newReactionCount.text(reactionCount += 1);
+
+                                if(response.flag==1){
+                                    newReactionCount.text(reactionCount += 1)
+                                }else if (response.flag==2){
+
+                                }else{
+                                    newReactionCount.text(reactionCount -= 1);
+                                    changeState.attr('src',peviousStateImg);
+                                }
+
+                            }
+                        },
+                        error: function (err) {
+
+                            // toastr.error("Error with AJAX callback !");
                         }
-                    },
-                    error: function (err) {
+                    })
+                }
 
-                        toastr.error("Error with AJAX callback !");
-                    }
-                })
-            }
-        })
+            })
 
         $('.postComments').keydown(function (e) {
             if (e.keyCode === 13) {

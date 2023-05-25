@@ -47,6 +47,7 @@ Route::middleware(['auth','user'])->group(function (){
 //    Route::post('/user/my-profile/account-information',[UserProfileSettingController::class,'storeAccountInformation'])->name('user.my-profile.account-information');
     Route::post('/user/my-profile/update-password',[UserProfileSettingController::class,'updatePassword'])->name('user.my-profile.update-password');
     Route::post('/user/my-profile/deactivate-account',[UserProfileSettingController::class,'accountDeactivate'])->name('user.my-profile.deactivate-account');
+    Route::post('/user/my-profile/user-slag-account',[UserProfileSettingController::class,'userSlag'])->name('user.store.unique-slag');
     Route::post('/user/my-profile/education',[UserProfileSettingController::class,'storeUserEducation'])->name('user.my-profile.profile.education');
     Route::get('/user/my-profile/edit_education/{id}',[UserProfileSettingController::class,'editUserEducation'])->name('user.my-profile.profile.edit.education');
     Route::post('/user/my-profile/update_education/{id}',[UserProfileSettingController::class,'updateUserEducation'])->name('user.my-profile.update.profile.education');

@@ -25,7 +25,7 @@ class UserProfileSettingController extends Controller
     {
 
         $data['allCountries'] = Country::all();
-        $data['userInfo'] = CommunityUserDetails::all()->toArray();
+        $data['userInfo'] = CommunityUserDetails::with('users')->where('user_id', '=', Auth::id())->get()->toArray();
         $data['userLanguage'] = User::with('languages')
             ->where('id', '=', Auth::id())
             ->first();
@@ -123,12 +123,64 @@ class UserProfileSettingController extends Controller
 //            $userAccountStatus=User::whereId(Auth::id())->update([
 //                'account_status'=>0
 //            ]);
-////            dd('updated');
+//            dd('updated');
 //            if ($userAccountStatus){
             Auth::logout();
             return to_route('admin.login_page')->with('success', 'Account Deactivated Successfully');
 
             // }
+        }
+
+
+    }
+
+    public function userSlag(Request $request)
+    {
+
+
+//        dd($slug);
+
+        $checkSlug = User::select('id', 'user_slug')->where('user_slug', '=', $request->get('userSlag'))->first();
+
+//        dd($checkSlug);
+
+        if ($checkSlug === null) {
+//            dd($slug);
+            $updateUserSlag = User::find(Auth::id())->update([
+                'user_slug' => $request->get('userSlag')
+            ]);
+        } elseif ($checkSlug->user_slug !== null) {
+//            dd('1');
+            return redirect()->back()->with('error', 'Name is already taken');
+        } else {
+//            dd('new create');
+
+            $slug = '';
+//        dd($request->all());
+
+
+            if (Auth::user()->role === ADMIN_ROLE) {
+                $slug = Carbon::now()->format('d-m-Y') . '-' . 'ADMIN' . '-' . Auth::user()->name;
+            } elseif (Auth::user()->role === USER_ROLE) {
+                $slug = Carbon::now()->format('d-m-Y') . '-' . 'USER' . '-' . Auth::user()->name;
+            } elseif (Auth::user()->role === SERVICE_PROVIDER_ROLE) {
+                $slug = Carbon::now()->format('d-m-Y') . '-' . 'SERVICE-PROVIDER' . '-' . Auth::user()->name;
+            } else {
+                $slug = Carbon::now()->format('d-m-Y') . '-' . 'VENDOR' . '-' . Auth::user()->name;
+            }
+            $userSlug = User::updateOrCreate([
+                'id' => Auth::id()
+            ], [
+                'user_slug' => $slug
+            ]);
+        }
+
+//        dd($userSlug);
+
+        if ($updateUserSlag || $userSlug) {
+            return redirect()->back()->with('success', 'Successfully Done');
+        } else {
+            return redirect()->back()->with('error', 'Something Wrong');
         }
 
 
@@ -326,7 +378,8 @@ class UserProfileSettingController extends Controller
     }
 
 
-    public function storeSocialLinks(Request $request){
+    public function storeSocialLinks(Request $request)
+    {
 
         $data = $request->except(['_method', '_token']);
 //        dd($data);
