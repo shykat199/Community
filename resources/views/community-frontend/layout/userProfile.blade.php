@@ -43,6 +43,11 @@
                         alt="image">
                 </a>
             @endif
+        @else
+            <a href=""><img
+                    src="{{asset("community-frontend/assets/images/community/home/news-post/Athore01.jpg")}}"
+                    alt="image">
+            </a>
         @endif
 
 

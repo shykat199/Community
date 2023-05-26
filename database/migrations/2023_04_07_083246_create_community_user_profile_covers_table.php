@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('community_user_profile_covers', function (Blueprint $table) {
             $table->id();
+            $table->tinyInteger('user_id')->nullable();
             $table->string('user_cover')->nullable();
             $table->timestamps();
         });

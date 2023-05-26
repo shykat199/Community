@@ -964,7 +964,7 @@ class CommunityFrontendController extends Controller
             ->groupBy('users.id')
             ->first();
 
-        $data['countFollower'] = CommunityUserFollowing::join('users', 'users.id', 'community_user_followings.user_id')
+        $data['countFollower'] = CommunityUserFollowing::with(['users.userProfileImages'])->join('users', 'users.id', 'community_user_followings.user_id')
             ->where('community_user_followings.user_id', $id)
             ->where('users.role', '!=', ADMIN_ROLE)
             ->selectRaw('COUNT(community_user_followings.user_id) as userFollowings')
@@ -978,7 +978,7 @@ class CommunityFrontendController extends Controller
             ->groupBy('community_user_followings.user_following_id')
             ->get();
 
-        $data['myFriends'] = User::join('community_user_friends', function ($q) use ($id) {
+        $data['myFriends'] = User::with('userProfileImages')->join('community_user_friends', function ($q) use ($id) {
             $q->on('community_user_friends.requested_user_id', '=', 'users.id');
             $q->where('users.id', '!=', ADMIN_ROLE);
             $q->where('community_user_friends.user_id', '=', $id);
@@ -1001,13 +1001,13 @@ class CommunityFrontendController extends Controller
             ->leftJoin('community_user_details as userDetails', function ($q) {
                 $q->on('userDetails.user_id', '=', 'users.id');
             })
-            ->selectRaw('users.id as uId,users.name as userName,profilePhoto.user_id as profileUserId,profilePhoto.user_profile,
+            ->selectRaw('users.id as id,users.name as userName,profilePhoto.user_id as profileUserId,profilePhoto.user_profile,
             profileCover.user_cover,COUNT(userFollowers.id) as userFollowers,COUNT(userFollowings.id) as userFollowings,userDetails.birthplace')
             ->groupBy('users.id')
             ->orderBy('users.name')
             ->get();
 
-        $data['userDetails'] = CommunityUserDetails::leftJoin('users', 'users.id', 'community_user_details.user_id')
+        $data['userDetails'] = CommunityUserDetails::with(['users.userProfileImages'])->leftJoin('users', 'users.id', 'community_user_details.user_id')
             ->leftJoin('community_user_profile_photos as userProfilePhoto', 'userProfilePhoto.user_id', 'users.id')
             ->leftJoin('community_user_profile_covers as userCoverPhoto', 'userCoverPhoto.user_id', 'users.id')
             ->leftJoin('community_user_profile_education as userProfileWork', function ($q) use ($id) {
@@ -1091,7 +1091,7 @@ class CommunityFrontendController extends Controller
         $imgArray = [];
 //        $data['imgArray']
 
-        $allPhotos = User::join('community_user_posts as userPost', 'userPost.user_id', '=', 'users.id')
+        $allPhotos = User::with('userProfileImages')-> join('community_user_posts as userPost', 'userPost.user_id', '=', 'users.id')
             ->where('userPost.user_id', '!=', ADMIN_ROLE)
             ->where('userPost.user_id', '=', $id)
             ->leftJoin('community_user_post_file_types as postFile', 'postFile.post_id', '=', 'userPost.id')
@@ -1145,7 +1145,7 @@ class CommunityFrontendController extends Controller
             }
         }
 
-        $data['recentlyAddedFriends'] = User::join('community_user_friends', function ($q) use ($id) {
+        $data['recentlyAddedFriends'] = User::with('userProfileImages')->join('community_user_friends', function ($q) use ($id) {
             $q->on('community_user_friends.requested_user_id', '=', 'users.id');
             $q->where('users.id', '!=', ADMIN_ROLE);
             $q->where('community_user_friends.user_id', '=', $id);

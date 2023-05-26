@@ -18,7 +18,7 @@ return new class extends Migration
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->tinyInteger('role');
-            $table->string('user_slug')->unique()->nullable();
+            $table->tinyInteger('account_status');
             $table->string('phone',30)->nullable();
             $table->rememberToken();
             $table->timestamps();

@@ -205,6 +205,11 @@
                                                 alt="image">
 
                                     @endif
+
+                                @else
+                                    <img
+                                        src="{{asset("community-frontend/assets/images/community/home/news-post/Athore01.jpg")}}"
+                                        alt="image">
                                 @endif
 
 

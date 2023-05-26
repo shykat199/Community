@@ -41,10 +41,10 @@
                                 @endif
 
 
-
+{{--                                @dd($userDetails)--}}
                             </div>
                             <div class="profile-name">
-                                <h6><a href="#">{{Auth::user()->name}}</a></h6>
+                                <h6><a href="#">{{!empty($userDetails) && isset($userDetails)? $userDetails->name:'No Data Found'}}</a></h6>
                                 <span
                                     class="locaiton">{{!empty($userDetails) && isset($userDetails)? $userDetails->birthplace:'No Data Found'}}</span>
                             </div>
@@ -539,7 +539,7 @@
                                                                                                         data-original="#ffcc66"
                                                                                                         class=""></path></g></svg>
                                                                                             </span> Replay <span
-                                                                        class="count">(0)</span></a>
+                                                                        class="count">({{count($postComment->replies)}})</span></a>
                                                             </div>
                                                         @endif
 
@@ -883,26 +883,74 @@
                              aria-labelledby="allFriendTab">
                             <div class="profile-friend-list">
                                 <div class="row">
+{{--                                    @dd($myFriends)--}}
 
                                     @foreach($myFriends as $friend)
                                         <div class="col-lg-3 col-md-6 col-12">
                                             <div class="single-profile-list">
                                                 <div class="view-profile left-widget">
                                                     <div class="profile-cover">
-                                                        <a href="{{route('user.profile',\Illuminate\Support\Facades\Crypt::encrypt($friend->uId))}}"><img
-                                                                src="{{asset("community-frontend/assets/images/community/home/smallCover.jpg")}}"
-                                                                alt="cover"></a>
+
+
+                                                        @if(!empty($friend->userCoverImages[0]) && isset($friend->userCoverImages[0])?$friend->userCoverImages [0]:'')
+
+                                                            @if(!empty($friend->userCoverImages[0]) && isset($friend->userCoverImages[0])?$friend->userCoverImages [0]:'')
+                                                                <a href="{{route('user.profile',\Illuminate\Support\Facades\Crypt::encrypt($friend->id))}}"><img
+                                                                        src="{{asset("storage/community/profile-picture/".$friend->userCoverImages[0]->user_cover)}}"
+                                                                        alt="image"></a>
+                                                            @else
+                                                                <a href="{{route('user.profile',\Illuminate\Support\Facades\Crypt::encrypt($friend->id))}}"><img
+                                                                        src="{{asset("community-frontend/assets/images/community/home/smallCover.jpg")}}"
+                                                                        alt="image"></a>
+                                                            @endif
+                                                        @else
+
+                                                            <a href="{{route('user.profile',\Illuminate\Support\Facades\Crypt::encrypt($friend->id))}}"><img
+                                                                    src="{{asset("community-frontend/assets/images/community/home/smallCover.jpg")}}"
+                                                                    alt="image"></a>
+                                                        @endif
+
+
+
+{{--                                                        <a href="{{route('user.profile',\Illuminate\Support\Facades\Crypt::encrypt($friend->uId))}}"><img--}}
+{{--                                                                src="{{asset("community-frontend/assets/images/community/home/smallCover.jpg")}}"--}}
+{{--                                                                alt="cover"></a>--}}
                                                         <div class="add-friend-icon">
-                                                            <a href="#"><i class="fa fa-user-o" aria-hidden="true"></i></a>
+                                                            <a href="{{route('user.profile',\Illuminate\Support\Facades\Crypt::encrypt($friend->id))}}"><i class="fa fa-user-o" aria-hidden="true"></i></a>
                                                         </div>
                                                     </div>
                                                     <div class="profile-title d-flex align-items-center">
-                                                        <a href="{{route('user.profile',\Illuminate\Support\Facades\Crypt::encrypt($friend->uId))}}">
-                                                            <img
-                                                                src="{{asset("community-frontend/assets/images/community/home/user-0.jpg")}}"
-                                                                alt=""></a>
+
+
+
+                                                        @if(!empty($friend->userProfileImages[0]) && isset($friend->userProfileImages[0])?$friend->userProfileImages[0]:'')
+
+                                                            @if(!empty($friend->userProfileImages[0]) && isset($friend->userProfileImages[0])?$friend->userProfileImages[0]:'')
+                                                                <a href="{{route('user.profile',\Illuminate\Support\Facades\Crypt::encrypt($friend->id))}}"><img
+                                                                        src="{{asset("storage/community/profile-picture/".$friend->userProfileImages[0]->user_profile)}}"
+                                                                        alt="image"></a>
+                                                            @else
+                                                                <a href="{{route('user.profile',\Illuminate\Support\Facades\Crypt::encrypt($friend->id))}}"><img
+                                                                        src="{{asset("community-frontend/assets/images/community/home/user-0.jpg")}}"
+                                                                        alt="image"></a>
+                                                            @endif
+                                                        @else
+
+                                                            <a href="{{route('user.profile',\Illuminate\Support\Facades\Crypt::encrypt($friend->id))}}"><img
+                                                                    src="{{asset("community-frontend/assets/images/community/home/user-0.jpg")}}"
+                                                                    alt="image"></a>
+                                                        @endif
+
+
+{{--                                                        <a href="{{route('user.profile',\Illuminate\Support\Facades\Crypt::encrypt($friend->uId))}}">--}}
+{{--                                                            <img--}}
+{{--                                                                src="{{asset("community-frontend/assets/images/community/home/user-0.jpg")}}"--}}
+{{--                                                                alt=""></a>--}}
+
+
+
                                                         <div class="profile-name">
-                                                            <h6><a href="{{route('user.profile',\Illuminate\Support\Facades\Crypt::encrypt($friend->uId))}}">{{$friend->userName}}</a></h6>
+                                                            <h6><a href="{{route('user.profile',\Illuminate\Support\Facades\Crypt::encrypt($friend->id))}}">{{$friend->userName}}</a></h6>
                                                             <span class="locaiton">
 
                                                                 @if($friend->birthplace===null)
@@ -952,23 +1000,54 @@
                             <div class="profile-friend-list">
                                 <div class="row">
 
+{{--                                    @dd($recentlyAddedFriends)--}}
+
                                     @foreach($recentlyAddedFriends as $friend)
                                         <div class="col-lg-3 col-md-6 col-12">
                                             <div class="single-profile-list">
                                                 <div class="view-profile left-widget">
                                                     <div class="profile-cover">
-                                                        <a href="#"><img
-                                                                src="{{asset("community-frontend/assets/images/community/home/smallCover.jpg")}}"
-                                                                alt="cover"></a>
+                                                        @if(!empty($friend->userCoverImages[0]) && isset($friend->userCoverImages[0])?$friend->userCoverImages [0]:'')
+
+                                                            @if(!empty($friend->userCoverImages[0]) && isset($friend->userCoverImages[0])?$friend->userCoverImages [0]:'')
+                                                                <a href={{route('user.profile',\Illuminate\Support\Facades\Crypt::encrypt($friend->uId))}}><img
+                                                                        src="{{asset("storage/community/profile-picture/".$friend->userCoverImages[0]->user_cover)}}"
+                                                                        alt="image"></a>
+                                                            @else
+                                                                <a href={{route('user.profile',\Illuminate\Support\Facades\Crypt::encrypt($friend->uId))}}><img
+                                                                        src="{{asset("community-frontend/assets/images/community/home/smallCover.jpg")}}"
+                                                                        alt="image"></a>
+                                                            @endif
+                                                        @else
+
+                                                            <a href={{route('user.profile',\Illuminate\Support\Facades\Crypt::encrypt($friend->uId))}}><img
+                                                                    src="{{asset("community-frontend/assets/images/community/home/smallCover.jpg")}}"
+                                                                    alt="image"></a>
+                                                        @endif
                                                         <div class="add-friend-icon">
-                                                            <a href="#"><i class="fa fa-user-o" aria-hidden="true"></i></a>
+                                                            <a href="{{route('user.profile',\Illuminate\Support\Facades\Crypt::encrypt($friend->uId))}}"><i class="fa fa-user-o" aria-hidden="true"></i></a>
                                                         </div>
                                                     </div>
                                                     <div class="profile-title d-flex align-items-center">
-                                                        <a href="#">
-                                                            <img
-                                                                src="{{asset("community-frontend/assets/images/community/home/user-0.jpg")}}"
-                                                                alt=""></a>
+                                                        {{--                                                        <a href="#">--}}
+                                                        @if(!empty($friend->userProfileImages[0]) && isset($friend->userProfileImages[0])?$friend->userProfileImages[0]:'')
+
+                                                            @if(!empty($friend->userProfileImages[0]) && isset($friend->userProfileImages[0])?$friend->userProfileImages[0]:'')
+                                                                <a href=""><img
+                                                                        src="{{asset("storage/community/profile-picture/".$friend->userProfileImages[0]->user_profile)}}"
+                                                                        alt="image"></a>
+                                                            @else
+                                                                <a href=""><img
+                                                                        src="{{asset("community-frontend/assets/images/community/home/user-0.jpg")}}"
+                                                                        alt="image"></a>
+                                                            @endif
+                                                        @else
+
+                                                            <a href=""><img
+                                                                    src="{{asset("community-frontend/assets/images/community/home/user-0.jpg")}}"
+                                                                    alt="image"></a>
+                                                        @endif
+                                                        {{--                                                        </a>--}}
                                                         <div class="profile-name">
                                                             <h6><a href="#">{{$friend->userName}}</a></h6>
                                                             <span class="locaiton">

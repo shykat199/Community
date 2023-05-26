@@ -11,7 +11,7 @@ $user_id=isset($user_id)?\Illuminate\Support\Facades\Crypt::decrypt($user_id):''
 
         @if($user_id)
 {{--            allUserFollowers($user_id) --}}
-        @dd(allUserFollowers($user_id))
+{{--        @dd(allUserFollowers($user_id))--}}
 
             @forelse(allUserFollowers($user_id) as $follower)
 

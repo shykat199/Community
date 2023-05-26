@@ -596,7 +596,7 @@
                                                                                                         data-original="#ffcc66"
                                                                                                         class=""></path></g></svg>
                                                                                             </span> Replay <span
-                                                        class="count">(0)</span></a>
+                                                        class="count">({{count($postComment->replies)}})</span></a>
                                             </div>
                                         @endif
 

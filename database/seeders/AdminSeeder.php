@@ -22,6 +22,7 @@ class AdminSeeder extends Seeder
                 'name' => 'admin',
                 'email' => 'admin@gmail.com',
                 'role' => ADMIN_ROLE,
+                'user_slug'=>Carbon::now()->format('d-m-Y') . '-' . 'ADMIN' . '-' . ADMIN_ROLE,
                 'password' => Hash::make('password'),
                 'email_verified_at' => Carbon::now(),
             ]);

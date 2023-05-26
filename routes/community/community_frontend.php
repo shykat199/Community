@@ -16,7 +16,7 @@ use App\Http\Controllers\Community\Frontend\DeleteAllCommentController;
 
 Route::middleware(['auth','user'])->group(function (){
 
-    Route::get('/home',[CommunityFrontendController::class,'index'])->name('community.index');
+    Route::get('/',[CommunityFrontendController::class,'index'])->name('community.index');
     Route::post('/user/following',[CommunityFrontendController::class,'addUserFollow'])->name('community.user.follow');
     Route::get('/user/post/delete/{id}',[CommunityFrontendController::class,'destroy'])->name('community.user.post.delete');
     Route::post('/user/post/update',[CommunityFrontendController::class,'updatePost'])->name('community.user.post.update');

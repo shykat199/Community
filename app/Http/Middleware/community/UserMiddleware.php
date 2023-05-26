@@ -26,8 +26,8 @@ class UserMiddleware
                 ->selectRaw('community_user_bans.user_id,community_user_bans.user_ban')
                 ->first();
 
-//                dd($banUserCheck);
-            if ($banUserCheck->user_ban == 0) {
+//                dd($banUserCheck->user_ban);
+            if ( $banUserCheck === null) {
                 return $next($request);
             } else {
                 Auth::logout();

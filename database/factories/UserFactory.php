@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
 
@@ -17,10 +18,15 @@ class UserFactory extends Factory
      */
     public function definition(): array
     {
+
+//        $slug = Carbon::now()->format('d-m-Y') . '-' . 'ADMIN' . '-' . $request->get('name');
+
+
         return [
             'name' => fake()->name(),
             'email' => fake()->unique()->safeEmail(),
             'email_verified_at' => now(),
+            'user_slug'=>Carbon::now()->format('d-m-Y') . '-' . 'ADMIN' . '-' . fake()->name(),
             'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
             'remember_token' => Str::random(10),
         ];

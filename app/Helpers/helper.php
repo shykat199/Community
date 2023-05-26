@@ -662,7 +662,7 @@ function myPostCommentCount($id)
 
 function allUsersDetails()
 {
-    $allUserDetails = User::with('userProfileImages')->join('community_user_details as userDetail', function ($q) {
+    $allUserDetails = User::with('userProfileImages')->leftJoin('community_user_details as userDetail', function ($q) {
         $q->on('userDetail.user_id', '=', 'users.id');
         $q->where('userDetail.user_id', '=', Auth::id());
         $q->where('userDetail.user_id', '!=', ADMIN_ROLE);

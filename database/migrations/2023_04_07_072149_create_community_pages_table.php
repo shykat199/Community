@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('community_pages', function (Blueprint $table) {
             $table->id();
+            $table->tinyInteger('user_id')->nullable();
             $table->string('page_name',20);
             $table->text('page_details')->nullable();
             $table->timestamps();
