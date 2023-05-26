@@ -60,8 +60,8 @@
                         <ul class="dropdown-content">
 
 
-                            @foreach(allRequestedFriend() as $friendRequest)
 
+                            @forelse(allRequestedFriend() as $friendRequest)
                                 <li class="dropdown-content-list">
                                     <div class="figure">
 
@@ -96,11 +96,22 @@
                                         </a>
                                     </div>
                                 </li>
-                            @endforeach
 
+                            @empty
+
+                                <div class="load-more mb-30">
+                                    <a href="#">
+                                        No Request Available
+                                    </a>
+                                </div>
+
+
+                            @endforelse
 
                         </ul>
-                        <a href="#" class="vew-all-btn">View All Requests</a>
+                        @if(count(allRequestedFriend())>3)
+                            <a href="#" class="vew-all-btn">View All Requests</a>
+                        @endif
                     </div>
                 </li>
 
@@ -283,13 +294,13 @@
 
 <script src="{{asset("community-frontend/assets/js/jquery.min.js")}}"></script>
 
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+{{--<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>--}}
 <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.4/jquery.min.js"
-        integrity="sha512-pumBsjNRGGqkPzKHndZMaAG+bir374sORyzM3uulLV14lN5LyykqNk8eEeUlUkB3U0M4FApyaHraT65ihJhDpQ=="
-        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+{{--<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.4/jquery.min.js"--}}
+{{--        integrity="sha512-pumBsjNRGGqkPzKHndZMaAG+bir374sORyzM3uulLV14lN5LyykqNk8eEeUlUkB3U0M4FApyaHraT65ihJhDpQ=="--}}
+{{--        crossorigin="anonymous" referrerpolicy="no-referrer"></script>--}}
 <script src="{{asset("community-frontend/assets/js/bootstrap.bundle.min.js")}}"></script>
 <script src="{{asset("community-frontend/assets/js/odometer.js")}}"></script>
 <script src="{{asset("community-frontend/assets/js/slick-slider.js")}}"></script>

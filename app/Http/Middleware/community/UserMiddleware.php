@@ -26,7 +26,7 @@ class UserMiddleware
                 ->selectRaw('community_user_bans.user_id,community_user_bans.user_ban')
                 ->first();
 
-//                dd($banUserCheck->user_ban);
+//                dd($banUserCheck);
             if ( $banUserCheck === null) {
                 return $next($request);
             } else {

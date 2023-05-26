@@ -24,9 +24,7 @@
 @section('frontend.others')
 
     <div class="row">
-        {{--                        @dd($allVideos)--}}
-        @foreach($allVideos as $video)
-            {{--                        @dd($video)--}}
+        @forelse($allVideos as $video)
             <div class="col-lg-3 col-md-6 col-12">
                 <div class="single-upload-video">
                     <div class="single-info">
@@ -133,7 +131,16 @@
                     </div>
                 </div>
             </div>
-        @endforeach
+
+        @empty
+
+            <div class="load-more mb-30">
+                <a href="#">
+                    No Video Available
+                </a>
+            </div>
+
+        @endforelse
 
         <!-- video show modal start -->
         <div class="modal fade video-modal-show" id="videoShow" tabindex="-1" aria-labelledby="exampleModalLabel"

@@ -143,6 +143,32 @@
                                                     @csrf
                                                     <div class="modal-body post-modal-body">
 
+                                                        <div class="my-profile">
+                                                            <div class="my-profile-img">
+                                                                @if(!empty($profilePic->users->userProfileImages[0]) && isset($profilePic->users->userProfileImages[0])?$profilePic->users->userProfileImages[0]:'')
+
+                                                                    @if(!empty($profilePic->users->userProfileImages[0]) && isset($profilePic->users->userProfileImages[0])?$profilePic->users->userProfileImages[0]:'')
+                                                                        <a href=""><img
+                                                                                src="{{asset("storage/community/profile-picture/".$profilePic->users->userProfileImages[0]->user_profile)}}"
+                                                                                alt="image"></a>
+                                                                    @else
+                                                                        <a href=""><img
+                                                                                src="{{asset("community-frontend/assets/images/community/home/news-post/Athore01.jpg")}}"
+                                                                                alt="image"></a>
+                                                                    @endif
+                                                                @else
+                                                                    <a href=""><img
+                                                                            src="{{asset("community-frontend/assets/images/community/home/news-post/Athore01.jpg")}}"
+                                                                            alt="image"></a>
+                                                                @endif
+                                                            </div>
+                                                            <div class="my-profile-name">{{Auth::user()->name}}</div>
+                                                        </div>
+
+                                                        <div class="post-text">
+                                                            <textarea id="postArea" name="imageCaption" placeholder="Write Something here..."></textarea>
+                                                        </div>
+
                                                         <div class="upload-media">
                                                             <div class="photo-place">
                                                             <span class="icon">
@@ -346,9 +372,12 @@
                                                     </div>
                                                     <div class="modal-body post-modal-body">
                                                         <div class="my-profile">
-                                                            <div class="my-profile-img"><a href="#"><img
+                                                            <div class="my-profile-img">
+                                                                <a href="#"><img
                                                                         src="{{asset("community-frontend/assets/images/community/home/right/birthday01.jpg")}}"
-                                                                        alt="img"></a></div>
+                                                                        alt="img">
+                                                                </a>
+                                                            </div>
                                                             <div class="my-profile-name">{{Auth::user()->name}}</div>
                                                         </div>
                                                         <div class="post-text">
@@ -415,7 +444,7 @@
                                                 <div class="modal-content post-modal-content">
                                                     <div class="modal-header">
                                                         <div class="post-modal-title">
-                                                            <h6 class="modal-title" id="photoModalLabel">Create Post</h6>
+                                                            <h6 class="modal-title" id="photoModalLabel">Upload Video</h6>
                                                         </div>
                                                         <button type="button" class=" post-close" data-bs-dismiss="modal"
                                                                 aria-label="Close"
@@ -436,6 +465,10 @@
                                                                                 src="{{asset("community-frontend/assets/images/community/home/news-post/Athore01.jpg")}}"
                                                                                 alt="image"></a>
                                                                     @endif
+                                                                @else
+                                                                    <a href=""><img
+                                                                            src="{{asset("community-frontend/assets/images/community/home/news-post/Athore01.jpg")}}"
+                                                                            alt="image"></a>
                                                                 @endif
                                                             </div>
                                                             <div class="my-profile-name">{{Auth::user()->name}}</div>
@@ -821,6 +854,12 @@
                                                                         alt="image">
                                                                 </a>
                                                             @endif
+
+                                                        @else
+                                                            <a href=""><img
+                                                                    src="{{asset("community-frontend/assets/images/community/home/news-post/Athore01.jpg")}}"
+                                                                    alt="image">
+                                                            </a>
                                                         @endif
                                                     </div>
                                                     <div class="comment-details">

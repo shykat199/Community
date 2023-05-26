@@ -235,10 +235,8 @@ class CommunityFrontendController extends Controller
 
     }
 
-    public
-    function storeComment(Request $request)
+    public function storeComment(Request $request)
     {
-//        dd($request->all());
 
         if ($request->ajax()) {
 
@@ -262,6 +260,11 @@ class CommunityFrontendController extends Controller
                         $html .= '<a href=""><img src="' . asset("storage/community/profile-picture/" . $postComment->users->userProfileImages[0]->user_profile) . '"
                                           alt="image"></a>';
                     }
+
+                }else{
+
+                    $html.=' <a href=""><img
+                                    src="'.asset("community-frontend/assets/images/community/home/news-post/Athore01.jpg").'" alt="image"></a>';
 
                 }
 
@@ -527,7 +530,7 @@ class CommunityFrontendController extends Controller
                     $html .= '<li class="single-comment post-Comment-' . $commentId . '">
                                 <div class="parent-comment">
                                     <div class="replay-comment-img comment-img">';
-                    if (isset($userProfilePicture)) {
+                    if (!empty($userProfilePicture) && isset($userProfilePicture)) {
                         $html .= '<a href="#"> <img src="' . asset("storage/community/profile-picture/$userProfilePicture") . '" alt="image">
                                 </a>';
                     } else {
@@ -683,11 +686,11 @@ class CommunityFrontendController extends Controller
                         $html .= '<li class="single-comment post-Comment-' . $commentId . '">
                                 <div class="parent-comment">
                                     <div class="replay-comment-img comment-img">';
-                        if (isset($userProfilePicture)) {
+                        if (!empty($userProfilePicture) && isset($userProfilePicture)) {
                             $html .= '<a href="#"> <img src="' . asset("storage/community/profile-picture/$userProfilePicture") . '" alt="image">
                                 </a>';
                         } else {
-                            $html .= '<a><img src="' . asset("community-frontend/assets/images/community/home/news-post/comment01.jpg") . '"alt="image"></a>';
+                            $html .= '<a><img src="' . asset("community-frontend/assets/images/community/home/news-post/Athore01.jpg") . '"alt="image"></a>';
 
                         }
                         $html .= ' </div>

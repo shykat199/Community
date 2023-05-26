@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Community\Frontend\Post;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\UserPostRequest;
 use App\Models\Community\User\CommunityUserPost;
 use App\Models\Community\User\CommunityUserPostFileType;
 use App\Models\Community\User\CommunityUserPostTag;
@@ -17,56 +18,110 @@ use Illuminate\Support\Facades\Storage;
 class CommunityUserPostController extends Controller
 {
 
-    public function store(Request $request)
+    public function store(UserPostRequest $request)
     {
-//        dd($request->all());
-//        dd($request->file('postFile')->getClientOriginalExtension());
 
-        if ($request->get('imageCaption') && $request->get('imageCaption') === null) {
-//            dd(1);
-            $userPost = CommunityUserPost::create([
-                'user_id' => Auth::id(),
-                'post_description' => $request->get('postMessage')
-            ]);
+        if ($request->get('postMessage')) {
 
-        } else {
-            $fileName = null;
-//            dd(2);
-            if ($request->hasFile('postFile') !== null || $request->get('imageCaption') !== null) {
-//                dd(1);
+            if ($request->hasFile('videoFile') || $request->hasFile('photoFile')) {
+
                 $userPost = CommunityUserPost::create([
                     'user_id' => Auth::id(),
                     'post_description' => $request->get('postMessage')
                 ]);
 
-//                dd($userPost);
-                if ($request->hasFile('postFile')) {
+                if ($request->hasFile('videoFile')) {
 
-                    if ($request->file('postFile')->getClientOriginalExtension() == 'mp4' ||
-                        $request->file('postFile')->getClientOriginalExtension() == 'mov' || $request->file('postFile')->getClientOriginalExtension() == 'wmv' ||
-                        $request->file('postFile')->getClientOriginalExtension() == 'avi' || $request->file('postFile')->getClientOriginalExtension() == 'mkv' ||
-                        $request->file('postFile')->getClientOriginalExtension() == 'webm'
+                    if ($request->file('videoFile')->getClientOriginalExtension() == 'mp4' ||
+                        $request->file('videoFile')->getClientOriginalExtension() == 'mov' || $request->file('videoFile')->getClientOriginalExtension() == 'wmv' ||
+                        $request->file('videoFile')->getClientOriginalExtension() == 'avi' || $request->file('videoFile')->getClientOriginalExtension() == 'mkv' ||
+                        $request->file('videoFile')->getClientOriginalExtension() == 'webm'
                     ) {
-                        $fileName = Uuid::uuid() . '.'.'video'.'.'. $request->file('postFile')->getClientOriginalExtension();
-                        $file = Storage::put('/public/community/post/videos/' . $fileName, file_get_contents($request->file('postFile')));
-//                        dd($fileName);
+                        $fileName = Uuid::uuid() . '.' . 'video' . '.' . $request->file('videoFile')->getClientOriginalExtension();
+                        $file = Storage::put('/public/community/post/videos/' . $fileName, file_get_contents($request->file('videoFile')));
+
+                        $postImageCaption = CommunityUserPostFileType::create([
+                            'post_id' => $userPost->id,
+                            'post_image_video' => $fileName,
+                            'caption' => $request->get('imageCaption'),
+                        ]);
+//
                     }
 
-                }else{
-//                    dd(1);
-                    $fileName = Uuid::uuid() . '.'.'image'.'.'. $request->file('postFile1')->getClientOriginalExtension();
-//                    dd($fileName);
-                    $file = Storage::put('/public/community/post/'.$fileName, file_get_contents($request->file('postFile1')));
                 }
 
-//                dd(3);
-                $postImageCaption = CommunityUserPostFileType::create([
-                    'post_id' => $userPost->id,
-                    'post_image_video' => $fileName,
-                    'caption' => $request->get('imageCaption'),
+                else {
+
+                    $fileName = Uuid::uuid() . '.' . 'image' . '.' . $request->file('photoFile')->getClientOriginalExtension();
+                    $file = Storage::put('/public/community/post/' . $fileName, file_get_contents($request->file('photoFile')));
+
+                    $postImageCaption = CommunityUserPostFileType::create([
+                        'post_id' => $userPost->id,
+                        'post_image_video' => $fileName,
+                        'caption' => $request->get('imageCaption'),
+                    ]);
+
+                }
+
+            }
+
+            else {
+
+//                dd(2);
+                $userPost = CommunityUserPost::create([
+                    'user_id' => Auth::id(),
+                    'post_description' => $request->get('postMessage')
                 ]);
             }
+
         }
+
+        else {
+
+            $fileName = null;
+//            dd($request->all());
+            if ($request->hasFile('videoFile')  || $request->hasFile('photoFile')  ) {
+//                dd($request->all());
+                $userPost = CommunityUserPost::create([
+                    'user_id' => Auth::id(),
+                    'post_description' => $request->get('postMessage')
+                ]);
+
+
+                if ($request->hasFile('videoFile')) {
+//                    dd('v');
+                    if ($request->file('videoFile')->getClientOriginalExtension() == 'mp4' ||
+                        $request->file('videoFile')->getClientOriginalExtension() == 'mov' || $request->file('videoFile')->getClientOriginalExtension() == 'wmv' ||
+                        $request->file('videoFile')->getClientOriginalExtension() == 'avi' || $request->file('videoFile')->getClientOriginalExtension() == 'mkv' ||
+                        $request->file('videoFile')->getClientOriginalExtension() == 'webm'
+                    ) {
+                        $fileName = Uuid::uuid() . '.' . 'video' . '.' . $request->file('videoFile')->getClientOriginalExtension();
+                        $file = Storage::put('/public/community/post/videos/' . $fileName, file_get_contents($request->file('videoFile')));
+
+                        $postImageCaption = CommunityUserPostFileType::create([
+                            'post_id' => $userPost->id,
+                            'post_image_video' => $fileName,
+                            'caption' => $request->get('imageCaption'),
+                        ]);
+//
+                    }
+                } else {
+//                    dd('i');
+                    $fileName = Uuid::uuid() . '.' . 'image' . '.' . $request->file('photoFile')->getClientOriginalExtension();
+//
+                    $file = Storage::put('/public/community/post/' . $fileName, file_get_contents($request->file('photoFile')));
+
+                    $postImageCaption = CommunityUserPostFileType::create([
+                        'post_id' => $userPost->id,
+                        'post_image_video' => $fileName,
+                        'caption' => $request->get('imageCaption'),
+                    ]);
+                }
+
+            }
+        }
+
+
         if ($request->get('tagId')) {
 
             $input['tagId'] = $request->input('tagId');
@@ -88,8 +143,10 @@ class CommunityUserPostController extends Controller
 //            toastr('dd', 'success');
             toastr()->success('Post has been posted successfully!', 'Congrats');
             return Redirect::back();
+        } else {
+            toastr()->error('An error has occurred please try again later.');
+
         }
-        toastr()->error('An error has occurred please try again later.');
 
     }
 
@@ -113,14 +170,18 @@ class CommunityUserPostController extends Controller
 //
                 if (!empty($storeComments->users->userProfileImages[0]) && isset($storeComments->users->userProfileImages[0]) ? $storeComments->users->userProfileImages[0]->user_profile : '') {
                     if (!empty($storeComments->users->userProfileImages[0]) && isset($storeComments->users->userProfileImages[0]) ? $storeComments->users->userProfileImages[0]->user_profile : '') {
-                        $html .= '<a href=""><img src="' . asset("storage/community/profile-picture/" . $storeComments->users->userProfileImages[0]->user_profile) . '"
+                        $html .= '<a class="new-comment-img replay-comment-img" href="" ><img src="' . asset("storage/community/profile-picture/" . $storeComments->users->userProfileImages[0]->user_profile) . '"
                                                                           alt="image"></a>';
+                    }else{
+                        $html .= '<img class="new-comment-img replay-comment-img" src="' . asset("community-frontend/assets/images/community/home/news-post/comment01.jpg") . '"alt="image">';
+
                     }
 
                 } else {
-                    $html .= '<img src="' . asset("community-frontend/assets/images/community/home/news-post/comment01.jpg") . '"alt="image">';
+                    $html .= '<img class="new-comment-img replay-comment-img" src="' . asset("community-frontend/assets/images/community/home/news-post/comment01.jpg") . '"alt="image">';
 
                 }
+
 
                 $html .= '</div>
                                                     <div class="replay-comment-details comment-details">
@@ -154,9 +215,9 @@ class CommunityUserPostController extends Controller
 
                 $html .= ' </div>
                                                         <div class="comment-div">
-                                                            <p class="comment-content">'.$storeComments->comment_text.'</p>
+                                                            <p class="comment-content">' . $storeComments->comment_text . '</p>
                                                             <button class="textarea-btn" type="submit" style="display: none;">
-                                                            <i class="fa fa-paper-plane" data-commenttext="check Child" data-cmtId="'.$storeComments->id.'" data-postId="'.$storeComments->user_post_id.' aria-hidden="true"></i>
+                                                            <i class="fa fa-paper-plane" data-commenttext="check Child" data-cmtId="' . $storeComments->id . '" data-postId="' . $storeComments->user_post_id . ' aria-hidden="true"></i>
                                                             </button>
                                                             <button class="textarea-cancel-btn" style="display: none;">Cancel</button>
 
