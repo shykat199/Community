@@ -18,6 +18,7 @@ Route::middleware(['auth','user'])->group(function (){
 
     Route::get('/',[CommunityFrontendController::class,'index'])->name('community.index');
     Route::post('/user/following',[CommunityFrontendController::class,'addUserFollow'])->name('community.user.follow');
+    Route::get('/user/un-following',[CommunityFrontendController::class,'userUnFollow'])->name('community.user.unFollow');
     Route::get('/user/post/delete/{id}',[CommunityFrontendController::class,'destroy'])->name('community.user.post.delete');
     Route::post('/user/post/update',[CommunityFrontendController::class,'updatePost'])->name('community.user.post.update');
     Route::post('/user/post/comments',[CommunityFrontendController::class,'storeComment'])->name('community.user.post.comment');
@@ -27,6 +28,9 @@ Route::middleware(['auth','user'])->group(function (){
 
     //user details
     Route::post('/user-friend/accept_request',[CommunityUserFriendRequestController::class,'acceptRequest'])->name('community.user.acceptRequest');
+    Route::post('/user-friend/send-friendRequest',[CommunityUserFriendRequestController::class,'addFriendRequest'])->name('community.user.sendRequest');
+    Route::get('/user-friend/cancel-friendRequest',[CommunityUserFriendRequestController::class,'cancelFriendRequest'])->name('community.user.cancelRequest');
+    Route::get('/user-friend/search-friend',[CommunityUserFriendRequestController::class,'searchFriends'])->name('community.user.search-friend');
     Route::post('/user/post',[CommunityUserPostController::class,'store'])->name('community.user.post');
     Route::post('/user/store/post-comment',[CommunityUserPostController::class,'storeCommentOfComment'])->name('community.user.store.commentsOfComments');
 
@@ -100,8 +104,6 @@ Route::middleware(['auth','user'])->group(function (){
     Route::post('/user/group/upload-profile-photo',[CommunityUserGroupController::class,'storeGroupProfilePhoto'])->name('user.group.profile.upload');
     Route::post('/user/group/store/post-commentOfComment',[CommunityUserGroupController::class,'storeGroupPostCommentOfComment'])->name('community.user.store.group.commentsOfComments');
     Route::post('/user/group/store/post-comment',[CommunityUserGroupController::class,'storeGroupPostComment'])->name('community.store.user.group.post.comment');
-
-
 
 
     //Page Section

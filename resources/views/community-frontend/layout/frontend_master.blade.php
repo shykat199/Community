@@ -43,14 +43,14 @@
                     <button type="submit" id="inputSearchBtn"><i class="fa fa-search" aria-hidden="true"></i></button>
                 </form>
             </div>
-            {{--            @dd(allRequestedFriend())--}}
+            {{--                        @dd(allRequestedFriend())--}}
             <ul class="menu_list">
                 <li class="list_option">
                     <a href="{{route('community.index')}}"><i class="fa fa-home" aria-hidden="true"></i></a></li>
                 <li class="list_option">
                     <a href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false"><i
                             class="fa fa-user" aria-hidden="true"></i> <span
-                            class="counting frind-request-counting">{{ !empty(countRequest()[0]) && isset(countRequest()[0])?countRequest()[0]['total']:'0'}}</span></a>
+                            class="counting frind-request-counting">{{allRequestedFriend() ? count(allRequestedFriend()):'0'}}</span></a>
                     <div class="dropdown-option dropdown-menu" aria-labelledby="dropdownMenuLink">
                         <div class="dropdown-title d-flex align-items-center">
                             <h4>Friend Requests</h4>
@@ -58,7 +58,6 @@
                                                                           aria-hidden="true"></i></button>
                         </div>
                         <ul class="dropdown-content">
-
 
 
                             @forelse(allRequestedFriend() as $friendRequest)
@@ -104,7 +103,6 @@
                                         No Request Available
                                     </a>
                                 </div>
-
 
                             @endforelse
 
@@ -208,12 +206,12 @@
 
                                     @if(!empty(allUsersDetails()->userProfileImages[0]) && isset(allUsersDetails()->userProfileImages[0])?allUsersDetails()->userProfileImages[0]:'')
                                         <img
-                                                src="{{asset("storage/community/profile-picture/".allUsersDetails()->userProfileImages[0]->user_profile)}}"
-                                                alt="image">
+                                            src="{{asset("storage/community/profile-picture/".allUsersDetails()->userProfileImages[0]->user_profile)}}"
+                                            alt="image">
                                     @else
                                         <img
-                                                src="{{asset("community-frontend/assets/images/community/home/news-post/Athore01.jpg")}}"
-                                                alt="image">
+                                            src="{{asset("community-frontend/assets/images/community/home/news-post/Athore01.jpg")}}"
+                                            alt="image">
 
                                     @endif
 
@@ -222,7 +220,6 @@
                                         src="{{asset("community-frontend/assets/images/community/home/news-post/Athore01.jpg")}}"
                                         alt="image">
                                 @endif
-
 
 
                                 <p class="member_name">{{Auth::user()->name}}
@@ -241,7 +238,8 @@
                                 </p>
                             </div>
                             <ul class="settings-list">
-                                <li><i class="fa fa-user" aria-hidden="true"></i><a href="{{route('user.my-profile')}}">My Profile</a></li>
+                                <li><i class="fa fa-user" aria-hidden="true"></i><a href="{{route('user.my-profile')}}">My
+                                        Profile</a></li>
                                 <li><i class="fa fa-cog" aria-hidden="true"></i><a
                                         href="{{route('user.my-profile.setting')}}">Setting</a></li>
                                 <li><i class="fa fa-user-secret" aria-hidden="true"></i><a
@@ -306,7 +304,9 @@
 <script src="{{asset("community-frontend/assets/js/slick-slider.js")}}"></script>
 <script src="{{asset("community-frontend/assets/js/community/script.js")}}"></script>
 <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-nice-select/1.1.0/js/jquery.nice-select.min.js" integrity="sha512-NqYds8su6jivy1/WLoW8x1tZMRD7/1ZfhWG/jcRQLOzV1k1rIODCpMgoBnar5QXshKJGV7vi0LXLNXPoFsM5Zg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-nice-select/1.1.0/js/jquery.nice-select.min.js"
+        integrity="sha512-NqYds8su6jivy1/WLoW8x1tZMRD7/1ZfhWG/jcRQLOzV1k1rIODCpMgoBnar5QXshKJGV7vi0LXLNXPoFsM5Zg=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
@@ -385,6 +385,8 @@
     toastr.warning("{{ session('warning') }}");
     @endif
 </script>
+
+@include('ajax.allAjaxCall')
 
 </body>
 

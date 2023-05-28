@@ -6,12 +6,12 @@
 
     <ul class="like-items">
         @php
-$user_id=isset($user_id)?\Illuminate\Support\Facades\Crypt::decrypt($user_id):'';
- @endphp
+            $user_id=isset($user_id)?\Illuminate\Support\Facades\Crypt::decrypt($user_id):'';
+        @endphp
 
         @if($user_id)
-{{--            allUserFollowers($user_id) --}}
-{{--        @dd(allUserFollowers($user_id))--}}
+            {{--            allUserFollowers($user_id) --}}
+{{--                    @dd(allUserFollowers($user_id))--}}
 
             @forelse(allUserFollowers($user_id) as $follower)
 
@@ -41,7 +41,7 @@ $user_id=isset($user_id)?\Illuminate\Support\Facades\Crypt::decrypt($user_id):''
                         </a>
 
                         @if(!empty($follower->is_followed))
-                            <a href="#" class="following-add btnFollow">Followed</a>
+                            <a href="#" class="following-add unfolloww" data-followId="{{$follower->flowId}}">UnFollow</a>
                         @else
                             <a href="#" class="following-add btnFollow">Follow</a>
                         @endif
@@ -54,9 +54,8 @@ $user_id=isset($user_id)?\Illuminate\Support\Facades\Crypt::decrypt($user_id):''
 
             @endforelse
 
-
         @else
-{{--            @dd(allUserFollowers())--}}
+{{--                        @dd(allUserFollowers())--}}
             @forelse(allUserFollowers() as $follower)
                 <li>
                     <div class="right-wdget-img">
@@ -85,7 +84,7 @@ $user_id=isset($user_id)?\Illuminate\Support\Facades\Crypt::decrypt($user_id):''
                         </a>
 
                         @if(empty($follower->is_followed))
-                            <a href="#" class="following-add btnFollow">Followed</a>
+                            <a href="#" class="following-add unfolloww" data-userId="{{$follower->uId}}" data-followId="{{$follower->flowId}}">UnFollow</a>
                         @else
                             <a href="#" class="following-add btnFollow">Follow</a>
                         @endif
@@ -112,17 +111,17 @@ $user_id=isset($user_id)?\Illuminate\Support\Facades\Crypt::decrypt($user_id):''
             if (userName !== '' && userId !== '') {
 
                 $.ajax({
-                    url:'{{route('community.user.follow')}}',
-                    type:'POST',
-                    data:{
-                        userId:userId,
-                        userName:userName,
-                        '_token':'{{csrf_token()}}'
+                    url: '{{route('community.user.follow')}}',
+                    type: 'POST',
+                    data: {
+                        userId: userId,
+                        userName: userName,
+                        '_token': '{{csrf_token()}}'
                     },
-                    success:function (response){
+                    success: function (response) {
                         console.log(response);
                         let msg = "";
-                        if(response.status){
+                        if (response.status) {
                             // let abc=$(this).val();
 
                             console.log(msg);

@@ -261,15 +261,13 @@ function allPages($id = null)
             ->leftJoin('community_page_profile_photos as profile_photo', 'profile_photo.page_id', '=', 'community_pages.id')
             ->leftJoin('community_page_follow_likes as likes', function ($q) {
                 $q->on('likes.page_id', '=', 'community_pages.id');
-                $q->where('likes.user_id','=',Auth::id());
+                $q->where('likes.user_id', '=', Auth::id());
                 $q->whereRaw('likes.page_like = 1');
             })
             ->selectRaw('users.name,users.id,community_pages.page_name,community_pages.id as pId,profile_photo.page_profile_photo,COUNT(likes.id) as likeCounts')
             ->groupBy('community_pages.id')
             ->get();
-    }
-
-    else {
+    } else {
         $allPages = CommunityPage::join('users', function ($q) use ($id) {
             $q->on('users.id', 'community_pages.user_id');
             $q->where('community_pages.id', '!=', $id);
@@ -277,7 +275,7 @@ function allPages($id = null)
             ->leftJoin('community_page_profile_photos as profile_photo', 'profile_photo.page_id', '=', 'community_pages.id')
             ->leftJoin('community_page_follow_likes as likes', function ($q) {
                 $q->on('likes.page_id', '=', 'community_pages.id');
-                $q->where('likes.user_id','=',Auth::id());
+                $q->where('likes.user_id', '=', Auth::id());
                 $q->whereRaw('likes.page_like = 1');
             })
             ->selectRaw('users.name,users.id,community_pages.page_name,community_pages.id as pId,profile_photo.page_profile_photo,COUNT(likes.id) as likeCounts')
@@ -314,9 +312,7 @@ function allGroups($id = null)
             ->groupBy('community_user_groups.id')
             ->inRandomOrder()->limit(5)
             ->get();
-    }
-
-    else {
+    } else {
 
         $allGroups = CommunityUserGroup::join('community_user_group_pivots', function ($q) use ($id) {
             $q->on('community_user_group_pivots.group_id', '=', 'community_user_groups.id');
@@ -345,23 +341,23 @@ function allGroups($id = null)
 
 }
 
-function allUserFollowers($id= null)
+function allUserFollowers($id = null)
 {
 
 
-    if (empty($id)){
+    if (empty($id)) {
         $userFollowers = CommunityUserFollowing::with('users.userProfileImages')->join('users', 'users.id', 'community_user_followings.user_id')
             ->leftjoin('community_user_followings as myFollows', 'myFollows.user_id', 'myFollows.user_following_id')
             ->where('community_user_followings.user_following_id', Auth::id())
             ->where('users.role', '!=', ADMIN_ROLE)
-            ->selectRaw('users.id as uId,users.name as userName,community_user_followings.user_following_id,
+            ->selectRaw('users.id as uId,users.name as userName,community_user_followings.user_following_id,community_user_followings.id as flowId,
         community_user_followings.user_id,myFollows.id as is_followed')->get();
-    }else{
+    } else {
         $userFollowers = CommunityUserFollowing::with('users.userProfileImages')->join('users', 'users.id', 'community_user_followings.user_id')
             ->leftjoin('community_user_followings as myFollows', 'myFollows.user_id', 'myFollows.user_following_id')
             ->where('community_user_followings.user_following_id', $id)
             ->where('users.role', '!=', ADMIN_ROLE)
-            ->selectRaw('users.id as uId,users.name as userName,community_user_followings.user_following_id,
+            ->selectRaw('users.id as uId,users.name as userName,community_user_followings.user_following_id,community_user_followings.id as flowId,
         community_user_followings.user_id,myFollows.id as is_followed')->get();
     }
 
@@ -399,20 +395,39 @@ function countFollowers()
 function allRequestedFriend()
 {
 
-    $requestedFriendList = User::join('community_user_friend_requests', 'community_user_friend_requests.sender_user_id', '=', 'users.id')
-        ->join('community_user_friend_requests as countRequest', 'countRequest.sender_user_id', '=', 'users.id')
-        ->where('users.id', '!=', Auth::id())
-        ->where('users.id', '!=', ADMIN_ROLE)
+//    $requestedFriendList=User::with('userProfileImages')
+//        ->join('community_user_friend_requests',function ($q){
+//            $q->on('community_user_friend_requests.receiver_user_id','=','users.id');
+//            $q->where('community_user_friend_requests.sender_user_id','=',Auth::id());
+//        })->get();
+
+    $requestedFriendList  = User::with('userProfileImages')->join('community_user_friend_requests', 'community_user_friend_requests.receiver_user_id', '=', 'users.id')
+        ->join('community_user_friend_requests as countRequest', 'countRequest.receiver_user_id', '=', 'users.id')
         ->where('community_user_friend_requests.status', '=', 0)
-        ->where('community_user_friend_requests.receiver_user_id', '=', Auth::id())
+        ->where('community_user_friend_requests.sender_user_id', '=', Auth::id())
         ->leftJoin('community_user_friends as f1', 'f1.user_id', '=', 'users.id')
         ->leftJoin('community_user_friends as f2', function ($q) {
             $q->on('f1.requested_user_id', '=', 'f2.requested_user_id');
-            $q->where('f1.user_id','=',Auth::id());
-            $q->where('f2.user_id','=','users.id');
+            $q->where('f1.user_id', '=', Auth::id());
+            $q->where('f2.user_id', '=', 'users.id');
         })
-
-        ->selectRaw('users.id,users.name as userName,community_user_friend_requests.id as reqId,COUNT(f1.id) as countMutualFriend')
+        ->leftJoin('community_user_friend_requests as friendReq','friendReq.receiver_user_id','=','users.id')
+        ->leftJoin('community_user_followings as userFollowings', function ($q) {
+            $q->on('userFollowings.user_id', '=', 'community_user_friend_requests.sender_user_id');
+        })
+        ->leftJoin('community_user_followings as usersFollowers', function ($q) {
+            $q->on('userFollowings.user_following_id', '=', 'community_user_friend_requests.sender_user_id');
+        })
+        ->leftJoin('community_user_profile_photos as profilePhoto', function ($q) {
+            $q->on('profilePhoto.user_id', '=', 'community_user_friend_requests.sender_user_id');
+            $q->where('users.id', '!=', ADMIN_ROLE);
+        })
+        ->leftJoin('community_user_profile_covers as profileCover', function ($q) {
+            $q->on('profileCover.user_id', '=', 'community_user_friend_requests.sender_user_id');
+            $q->where('users.id', '!=', ADMIN_ROLE);
+        })
+        ->selectRaw('users.id,users.name as userName,community_user_friend_requests.id as reqId,COUNT(f1.id) as countMutualFriend,COUNT(userFollowings.id) as followings,COUNT(usersFollowers.id) as followers,
+        profilePhoto.user_profile,profileCover.user_cover,friendReq.sender_user_id as requestedId')
         ->groupBy('users.id')
         ->get();
     return $requestedFriendList;
@@ -467,7 +482,7 @@ function myFriends()
 function recentlyAddedFriends()
 {
 
-    $myFriends = User::with(['userProfileImages','userCoverImages'])->join('community_user_friends', function ($q) {
+    $myFriends = User::with(['userProfileImages', 'userCoverImages'])->join('community_user_friends', function ($q) {
         $q->on('community_user_friends.requested_user_id', '=', 'users.id');
         $q->where('users.id', '!=', ADMIN_ROLE);
         $q->where('community_user_friends.user_id', '=', Auth::id());
@@ -516,9 +531,8 @@ function userAllPhoto()
     $allPhotos = User::join('community_user_posts as userPost', 'userPost.user_id', '=', 'users.id')
         ->where('userPost.user_id', '!=', ADMIN_ROLE)
         ->where('userPost.user_id', '=', Auth::id())
-
         ->leftJoin('community_user_post_file_types as postFile', 'postFile.post_id', '=', 'userPost.id')
-        ->where('postFile.post_image_video','LIKE','%' . 'image' . '%')
+        ->where('postFile.post_image_video', 'LIKE', '%' . 'image' . '%')
         ->orderByDesc('postFile.id')->pluck('postFile.post_image_video')->toArray();
 
 //dd($allPhotos);
@@ -541,13 +555,13 @@ function userPhotoAlbum()
     $coverImgArray = [];
     $profileImgArray = [];
     $uploadedImage = [];
-    $userPhotoAlbum=[];
+    $userPhotoAlbum = [];
     $allProfilePhotos = \App\Models\Community\User_Profile\CommunityUserProfilePhoto::where('user_id', '=', Auth::id())->select('user_profile');
     $allCoverProfilePhotos = \App\Models\Community\User_Profile\CommunityUserProfileCover::where('user_id', '=', Auth::id())->select('user_cover')
         ->unionAll($allProfilePhotos);
-    $allPostImage=\App\Models\Community\User\CommunityUserPostFileType::leftJoin('community_user_posts','community_user_posts.id','=','community_user_post_file_types.post_id')
-        ->where('community_user_posts.user_id','=',Auth::id())
-        ->where('community_user_post_file_types.post_image_video','LIKE','%' . 'image' . '%')
+    $allPostImage = \App\Models\Community\User\CommunityUserPostFileType::leftJoin('community_user_posts', 'community_user_posts.id', '=', 'community_user_post_file_types.post_id')
+        ->where('community_user_posts.user_id', '=', Auth::id())
+        ->where('community_user_post_file_types.post_image_video', 'LIKE', '%' . 'image' . '%')
         ->select('post_image_video as allPostMedia')
         ->unionAll($allCoverProfilePhotos)->get();
 
@@ -570,7 +584,7 @@ function userPhotoAlbum()
             } elseif ($mediaExtension[1] === 'image') {
                 $uploadedImage[] = $imgPhoto->allPostMedia;
                 $userPhotoAlbum['img'] = $uploadedImage;
-            }else {
+            } else {
                 return $data = "No Data";
             }
         }

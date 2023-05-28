@@ -224,10 +224,36 @@ class CommunityFrontendController extends Controller
                 'user_id' => $userId,
             ]);
 
+//            dd($communityFollower);
+
             if ($communityFollower) {
                 return \response()->json([
                     'status' => true,
                     'msg' => 'Successfully Added',
+                ]);
+            }
+
+        }
+
+    }
+
+    public function userUnFollow(Request $request)
+    {
+
+
+        if (\request()->ajax()) {
+            $id = $request->get('userId');
+            $uId = $request->get('userid');
+//            $userName = $request->get('userName');
+
+            $communityDltFollower = CommunityUserFollowing::where('id','=',$id)->first()->delete();
+
+//            dd($communityDltFollower);
+
+            if ($communityDltFollower) {
+                return \response()->json([
+                    'status' => true,
+                    'msg' => 'Successfully remove',
                 ]);
             }
 
@@ -259,6 +285,11 @@ class CommunityFrontendController extends Controller
                     if (!empty($postComment->users->userProfileImages[0]) && isset($postComment->users->userProfileImages[0]) ? $postComment->users->userProfileImages[0] : '') {
                         $html .= '<a href=""><img src="' . asset("storage/community/profile-picture/" . $postComment->users->userProfileImages[0]->user_profile) . '"
                                           alt="image"></a>';
+                    }else{
+
+                        $html.=' <a href=""><img
+                                    src="'.asset("community-frontend/assets/images/community/home/news-post/Athore01.jpg").'" alt="image"></a>';
+
                     }
 
                 }else{
@@ -397,7 +428,9 @@ class CommunityFrontendController extends Controller
                     'msg' => 'Successfully Added.',
                     'html' => $html
                 ]);
-            } else {
+            }
+
+            else {
 
 
                 return \response()->json([
@@ -1010,7 +1043,7 @@ class CommunityFrontendController extends Controller
             ->orderBy('users.name')
             ->get();
 
-        $data['userDetails'] = CommunityUserDetails::with(['users.userProfileImages'])->leftJoin('users', 'users.id', 'community_user_details.user_id')
+        $data['userDetails'] = CommunityUserDetails::with(['users.userProfileImages'])->join('users', 'users.id', 'community_user_details.user_id')
             ->leftJoin('community_user_profile_photos as userProfilePhoto', 'userProfilePhoto.user_id', 'users.id')
             ->leftJoin('community_user_profile_covers as userCoverPhoto', 'userCoverPhoto.user_id', 'users.id')
             ->leftJoin('community_user_profile_education as userProfileWork', function ($q) use ($id) {
@@ -1021,7 +1054,7 @@ class CommunityFrontendController extends Controller
             })
             ->where('users.id', '=', $id)
             ->selectRaw('community_user_details.*,users.id as Uid,users.name,userProfilePhoto.user_profile as profilePicture,
-            userCoverPhoto.user_cover as coverPicture,userProfileWork.designation')
+            userCoverPhoto.user_cover as coverPicture,userProfileWork.designation,users.email')
             ->first();
 
         $data['allUserLanguage'] = CommunityUserProfileLanguage::where('user_id', '=', $id)->get();

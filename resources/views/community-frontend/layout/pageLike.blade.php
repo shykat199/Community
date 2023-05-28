@@ -4,10 +4,13 @@
         <a href="{{route('user.all.pages')}}">See All</a>
     </div>
     <ul class="like-items">
-        {{--        @dd($id)--}}
+
+{{--        @php--}}
+{{--            $id=\Illuminate\Support\Facades\Crypt::encrypt($id)--}}
+{{--        @endphp--}}
 
         @if(empty($id))
-{{--            @dd(allPages($id=null))--}}
+
             @foreach(allPages($id=null) as $page)
 
                 <li>
@@ -24,7 +27,8 @@
                                     alt="img">
                         @endif
                     </div>
-                    <div class="page-title"><a href="{{route('user.page.details',\Illuminate\Support\Facades\Crypt::encrypt($page->pId))}}">{{$page->page_name}}</a>
+                    <div class="page-title"><a
+                            href="{{route('user.page.details',\Illuminate\Support\Facades\Crypt::encrypt($page->pId))}}">{{$page->page_name}}</a>
                         <span>Like {{$page->likeCounts}}</span>
                     </div>
                 </li>
@@ -32,10 +36,8 @@
             @endforeach
         @else
 
-{{--            @dd(allPages($id))--}}
+            {{--            @dd(allPages($id))--}}
             @foreach(allPages($id) as $page)
-
-
 
                 <li>
                     <div class="page-img">
@@ -53,7 +55,8 @@
 
 
                     </div>
-                    <div class="page-title"><a href="{{route('user.page.details',\Illuminate\Support\Facades\Crypt::encrypt($page->pId))}}">{{$page->page_name}}</a>
+                    <div class="page-title"><a
+                            href="{{route('user.page.details',\Illuminate\Support\Facades\Crypt::encrypt($page->pId))}}">{{$page->page_name}}</a>
                         <span>Like {{$page->likeCounts}}</span>
                     </div>
                 </li>

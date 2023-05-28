@@ -43,7 +43,7 @@ class GetCommentController extends Controller
                         $html .= '<li class="single-comment post-Comment-' . $commentId . '">
                                 <div class="parent-comment">
                                     <div class="replay-comment-img comment-img">';
-                        if (isset($userProfilePicture)) {
+                        if (!empty($userProfilePicture) && isset($userProfilePicture)) {
                             $html .= '<a href="#"> <img src="' . asset("storage/community/profile-picture/$userProfilePicture") . '" alt="image">
                                 </a>';
                         } else {
@@ -128,7 +128,7 @@ class GetCommentController extends Controller
                                                                                                         data-original="#ffcc66"
                                                                                                         class=""></path></g></svg>
                                                                                             </span> Replay <span
-                                                        class="count">(0)</span></a>
+                                                        class="count">('.count($comment->replies).')</span></a>
                                             </div>';
                         }
 
@@ -141,9 +141,14 @@ class GetCommentController extends Controller
                                 $html .= '  <a href = "" class="new-comment-img replay-comment-img" ><img
                                                             src = "' . asset("storage/community/profile-picture/" . $comment->users->userProfileImages[0]->user_profile) . '"
                                                             alt = "image" ></a >';
+                            }else {
+                                $html .= '<a href="" class="new-comment-img replay-comment-img"><img src="' . asset("community-frontend/assets/images/community/home/news-post/Athore01.jpg") . '"
+                                                            alt="image">
+                                                    </a>';
+
                             }
                         } else {
-                            $html .= '<a href=""><img src="' . asset("community-frontend/assets/images/community/home/news-post/Athore01.jpg") . '"
+                            $html .= '<a href="" class="new-comment-img replay-comment-img"><img src="' . asset("community-frontend/assets/images/community/home/news-post/Athore01.jpg") . '"
                                                             alt="image">
                                                     </a>';
 
@@ -328,7 +333,7 @@ class GetCommentController extends Controller
                     $html .= '<div class="single-replay-comnt nested-comment-' . $commentId . '">
                                                 <div class="replay-coment-box comment-details">
                                                     <div class="replay-comment-img">';
-                    if (isset($userProfilePicture)) {
+                    if (!empty($userProfilePicture) && isset($userProfilePicture)) {
                         $html .= '<a href="#"> <img src="' . asset("storage/community/profile-picture/$userProfilePicture") . '" alt="image">
                                 </a>';
                     } else {
@@ -465,7 +470,7 @@ class GetCommentController extends Controller
                         $html .= '<li class="single-comment post-Comment-' . $commentId . '">
                                 <div class="parent-comment">
                                     <div class="replay-comment-img comment-img">';
-                        if (isset($userProfilePicture)) {
+                        if (!empty($userProfilePicture) && isset($userProfilePicture)) {
                             $html .= '<a href="#"> <img src="' . asset("storage/community/profile-picture/$userProfilePicture") . '" alt="image">
                                 </a>';
                         } else {
@@ -563,9 +568,14 @@ class GetCommentController extends Controller
                                 $html .= '  <a href = "" class="new-comment-img replay-comment-img" ><img
                                                             src = "' . asset("storage/community/profile-picture/" . $comment->users->userProfileImages[0]->user_profile) . '"
                                                             alt = "image" ></a >';
+                            }else {
+                                $html .= '<a  class="new-comment-img replay-comment-img" href=""><img src="' . asset("community-frontend/assets/images/community/home/news-post/Athore01.jpg") . '"
+                                                            alt="image">
+                                                    </a>';
+
                             }
                         } else {
-                            $html .= '<a href=""><img src="' . asset("community-frontend/assets/images/community/home/news-post/Athore01.jpg") . '"
+                            $html .= '<a  class="new-comment-img replay-comment-img" href=""><img src="' . asset("community-frontend/assets/images/community/home/news-post/Athore01.jpg") . '"
                                                             alt="image">
                                                     </a>';
 
@@ -722,6 +732,11 @@ class GetCommentController extends Controller
                                 $html .= '  <a href = "" class="new-comment-img replay-comment-img" ><img
                                                             src = "' . asset("storage/community/profile-picture/" . $comment->users->userProfileImages[0]->user_profile) . '"
                                                             alt = "image" ></a >';
+                            }else {
+                                $html .= '<a href=""><img src="' . asset("community-frontend/assets/images/community/home/news-post/Athore01.jpg") . '"
+                                                            alt="image">
+                                                    </a>';
+
                             }
                         } else {
                             $html .= '<a href=""><img src="' . asset("community-frontend/assets/images/community/home/news-post/Athore01.jpg") . '"

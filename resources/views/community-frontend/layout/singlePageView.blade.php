@@ -18,13 +18,6 @@
 
         <div class="news-feed-left">
 
-            {{--            @include('community-frontend.layout.pageProfile',['getPageDetails'=>$getPageDetails])--}}
-
-            {{--            @if(!empty($isAdmin->group_user_role) && isset($isAdmin->group_user_role) && $isAdmin->group_user_role == 1)--}}
-            {{--                @include('community-frontend.layout.groupUserInvitation',['id'=>$id])--}}
-            {{--            @endif--}}
-
-{{--            @dd($id)--}}
 
             @include('community-frontend.layout.pageLike',['id'=>$id])
 
@@ -103,6 +96,10 @@
                                                                     src="{{asset("community-frontend/assets/images/community/home/news-post/Athore01.jpg")}}"
                                                                     alt="image"></a>
                                                         @endif
+                                                    @else
+                                                        <a href=""><img
+                                                                src="{{asset("community-frontend/assets/images/community/home/news-post/Athore01.jpg")}}"
+                                                                alt="image"></a>
                                                     @endif
 
 
@@ -137,7 +134,7 @@
                                                     </button>
                                                 </div>
                                                 <div class="media-input">
-                                                    <input accept="" name="postFile1" type='file' class="imgInp"/>
+                                                    <input accept="image/x-png,image/gif,image/jpeg" name="photoFile" type='file' class="imgInp"/>
                                                 </div>
                                             </div>
                                         </div>
@@ -195,7 +192,12 @@
                                                                     src="{{asset("community-frontend/assets/images/community/home/news-post/Athore01.jpg")}}"
                                                                     alt="image"></a>
                                                         @endif
+                                                    @else
+                                                        <a href=""><img
+                                                                src="{{asset("community-frontend/assets/images/community/home/news-post/Athore01.jpg")}}"
+                                                                alt="image"></a>
                                                     @endif
+
                                                 </div>
                                                 <div class="my-profile-name">{{Auth::user()->name}}</div>
                                             </div>
@@ -223,7 +225,7 @@
                                                             class="fa fa-times" aria-hidden="true"></i></button>
                                                 </div>
                                                 <div class="media-input">
-                                                    <input type='file' name="postFile" class="vidInp"/>
+                                                    <input type='file' accept="video/mp4,video/x-m4v,video/*" name="videoFile" class="vidInp"/>
                                                 </div>
                                             </div>
                                         </div>
@@ -245,7 +247,7 @@
         @endif
 
         {{--@dd($pagePosts)--}}
-        @foreach($pagePosts as $post)
+        @forelse($pagePosts as $post)
             <div class="main-content posted-content">
                 <div class="post-autore d-flex justify-content-between align-items-center">
                     <div class="authore-title d-flex align-items-center">
@@ -293,7 +295,7 @@
                                 {{--                            @dd($post->grpPostId)--}}
                                 <li><a href="{{route('user.page.post.dlt',$post->pagePostId)}}"
                                        data-id="{{$post->pagePostId}}"
-                                       data-userProfile="{{$post->users->userProfileImages[0]!=null && isset($post->users->userProfileImages[0])? $post->users->userProfileImages[0]->user_profile:''}}"
+                                       data-userProfile="{{!empty($post->users->userProfileImages[0]) && isset($post->users->userProfileImages[0])? $post->users->userProfileImages[0]->user_profile:''}}"
                                        class="post-option-item dltPost"><i class="fa fa-trash-o"
                                                                            aria-hidden="true"></i> Delete Post</a>
                                 </li>
@@ -314,8 +316,8 @@
 
                         @if($post->post_image_video)
 
-                            @if($extension[1]==='mp4'||$extension[1]==='mov'||$extension[1]==='wmv'||$extension[1]==='avi'||
-                            $extension[1]==='mkv'||$extension[1]==='webm')
+                            @if($extension[2]==='mp4'||$extension[2]==='mov'||$extension[2]==='wmv'||$extension[2]==='avi'||
+                            $extension[2]==='mkv'||$extension[2]==='webm')
                                 <div class="post-img">
                                     <video width="550" height="240" controls>
                                         <source
@@ -501,6 +503,11 @@
                                                         alt="image">
                                                 </a>
                                             @endif
+                                        @else
+                                            <a href=""><img
+                                                    src="{{asset("community-frontend/assets/images/community/home/news-post/Athore01.jpg")}}"
+                                                    alt="image">
+                                            </a>
                                         @endif
                                     </div>
                                     <div class="comment-details">
@@ -610,11 +617,16 @@
                                                             src="{{asset("storage/community/profile-picture/".$postComment->users->userProfileImages[0]->user_profile)}}"
                                                             alt="image"></a>
                                                 @else
-                                                    <a href=""><img
+                                                    <a class="new-comment-img replay-comment-img" href=""><img
                                                             src="{{asset("community-frontend/assets/images/community/home/news-post/Athore01.jpg")}}"
                                                             alt="image">
                                                     </a>
                                                 @endif
+                                            @else
+                                                <a class="new-comment-img replay-comment-img" href=""><img
+                                                        src="{{asset("community-frontend/assets/images/community/home/news-post/Athore01.jpg")}}"
+                                                        alt="image">
+                                                </a>
                                             @endif
                                             <div class="new-comment-input replay-commnt-input">
                                                 <input data-cmtId="{{$postComment->id}}" class="cmtText" type="text"
@@ -666,7 +678,14 @@
                 </div>
             </div>
 
-        @endforeach
+        @empty
+            <div class="load-more mb-30">
+                <a href="#">
+                    No Post Available
+                </a>
+            </div>
+
+        @endforelse
 
         <!-- Modal -->
         <div class="modal fade" id="photoModal1" tabindex="-1" aria-labelledby="photoModalLabel"
@@ -864,12 +883,13 @@
                                 // console.log($(this),'this')
                                 console.log(response.data);
                                 $(this).val('');
-                                htmlData.append(response.data);
+                                htmlData.append(response.html);
                                 new_comment.text(commentCount += 1)
 
                                 // console.log(response.data);
 
-                            } else {
+                            }
+                            else {
                                 toastr.error(response.msg);
                             }
                         },

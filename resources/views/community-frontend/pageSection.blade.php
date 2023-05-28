@@ -107,18 +107,6 @@
                                         <div class="view-profile left-widget">
                                             <div class="profile-cover">
 
-{{--                                                @if($page->pCover)--}}
-{{--                                                    <a href="#"><img--}}
-{{--                                                            src="{{asset("storage/community/page-post/cover/".$page->pCover)}}"--}}
-{{--                                                            alt="cover">--}}
-{{--                                                    </a>--}}
-{{--                                                @else--}}
-{{--                                                    <a href="#"><img--}}
-{{--                                                            src="{{asset('community-frontend/assets/images/community/home/smallCover.jpg')}}"--}}
-{{--                                                            alt="cover">--}}
-{{--                                                    </a>--}}
-
-{{--                                                @endif--}}
 
                                                 @if($page->pCover)
                                                     <a href="#"><img
@@ -232,10 +220,6 @@
 
                                                 @endif
 
-
-{{--                                                <a href="#"><img--}}
-{{--                                                        src="{{asset("community-frontend/assets/images/community/home/smallCover.jpg")}}"--}}
-{{--                                                        alt="cover"></a>--}}
                                             </div>
 
                                             <a href="{{route('user.page.details',\Illuminate\Support\Facades\Crypt::encrypt($page->pId))}}"
@@ -276,7 +260,7 @@
 
                                                 <li>
 
-                                                    <button type="button" class="add-btn">Go</button>
+                                                   <a href="{{route('user.page.details',\Illuminate\Support\Facades\Crypt::encrypt($page->pId))}}"><button type="button" class="add-btn">Go</button></a>
 
 
                                                 </li>

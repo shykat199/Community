@@ -33,8 +33,10 @@ class CommunityUserPostController extends Controller
                 if ($request->hasFile('videoFile')) {
 
                     if ($request->file('videoFile')->getClientOriginalExtension() == 'mp4' ||
-                        $request->file('videoFile')->getClientOriginalExtension() == 'mov' || $request->file('videoFile')->getClientOriginalExtension() == 'wmv' ||
-                        $request->file('videoFile')->getClientOriginalExtension() == 'avi' || $request->file('videoFile')->getClientOriginalExtension() == 'mkv' ||
+                        $request->file('videoFile')->getClientOriginalExtension() == 'mov' ||
+                        $request->file('videoFile')->getClientOriginalExtension() == 'wmv' ||
+                        $request->file('videoFile')->getClientOriginalExtension() == 'avi' ||
+                        $request->file('videoFile')->getClientOriginalExtension() == 'mkv' ||
                         $request->file('videoFile')->getClientOriginalExtension() == 'webm'
                     ) {
                         $fileName = Uuid::uuid() . '.' . 'video' . '.' . $request->file('videoFile')->getClientOriginalExtension();

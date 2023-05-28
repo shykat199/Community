@@ -97,6 +97,10 @@
                                                                 src="{{asset("community-frontend/assets/images/community/home/news-post/Athore01.jpg")}}"
                                                                 alt="image"></a>
                                                     @endif
+                                                @else
+                                                    <a href=""><img
+                                                            src="{{asset("community-frontend/assets/images/community/home/news-post/Athore01.jpg")}}"
+                                                            alt="image"></a>
                                                 @endif
 
 
@@ -131,7 +135,7 @@
                                                 </button>
                                             </div>
                                             <div class="media-input">
-                                                <input accept="" name="postFile1" type='file' class="imgInp"/>
+                                                <input accept="image/x-png,image/gif,image/jpeg"  name="photoFile" type='file' class="imgInp"/>
                                             </div>
                                         </div>
                                     </div>
@@ -190,6 +194,10 @@
                                                                 src="{{asset("community-frontend/assets/images/community/home/news-post/Athore01.jpg")}}"
                                                                 alt="image"></a>
                                                     @endif
+                                                @else
+                                                    <a href=""><img
+                                                            src="{{asset("community-frontend/assets/images/community/home/news-post/Athore01.jpg")}}"
+                                                            alt="image"></a>
                                                 @endif
                                             </div>
                                             <div class="my-profile-name">{{Auth::user()->name}}</div>
@@ -219,7 +227,7 @@
                                                         class="fa fa-times" aria-hidden="true"></i></button>
                                             </div>
                                             <div class="media-input">
-                                                <input type='file' name="postFile" class="vidInp"/>
+                                                <input type='file' accept="video/mp4,video/x-m4v,video/*" name="videoFile" class="vidInp"/>
                                             </div>
                                         </div>
                                     </div>
@@ -240,7 +248,8 @@
 
         </div>
         {{--                                                        @dd($groupPosts)--}}
-        @foreach($groupPosts as $post)
+        @forelse($groupPosts as $post)
+
             <div class="main-content posted-content">
 
                 <div class="post-autore d-flex justify-content-between align-items-center">
@@ -356,11 +365,7 @@
                                             <p class="small-text">or drag and drop</p>
                                         </div>
                                         <div class="preview-file">
-                                            {{--                                        <div class="post-img">--}}
-                                            {{--                                            <video width="550" height="240" controls>--}}
-                                            {{--                                                <source class="videoSrc" src="#" type="video/mp4">--}}
-                                            {{--                                            </video>--}}
-                                            {{--                                        </div>--}}
+
                                             <img class="previewImg postMedia" src="#" alt="">
                                             <button type="button" class="imgClose"><i class="fa fa-times"
                                                                                       aria-hidden="true"></i>
@@ -384,36 +389,34 @@
 
                 <div class="post-body">
                     <p class="post-status">{{$post->post_description}}</p>
-                    {{--                    @dd($post->group_post_file)--}}
 
-                    @if($post->group_post_file!=null)
 
-                        {{--                    @dd(explode('.',$post->userPostMedia))--}}
+
                         @php
                             $extension=explode('.',$post->group_post_file);
+//                            dd($extension)
                         @endphp
-                        {{--                                                                    @dd($post->group_post_file)--}}
 
-                        @if($post->group_post_file)
+{{--                    @dd($post)--}}
+                    @if($post->group_post_file)
 
-                            @if($extension[1]==='mp4'||$extension[1]==='mov'||$extension[1]==='wmv'||$extension[1]==='avi'||
-                            $extension[1]==='mkv'||$extension[1]==='webm')
-                                <div class="post-img">
-                                    <video width="550" height="240" controls>
-                                        <source
-                                            src="{{asset("storage/community/group-post/videos/".$post->group_post_file)}}"
+                        @if($extension[2]==='mp4'||$extension[2]==='mov'||$extension[2]==='wmv'||$extension[2]==='avi'||
+                        $extension[2]==='mkv'||$extension[2]==='webm')
+                            <div class="post-img">
+                                <video width="470" height="240" controls>
+                                    <source src="{{asset("storage/community/group-post/videos/".$post->group_post_file)}}"
                                             type="video/mp4">
-                                    </video>
-                                </div>
-                            @else
-                                <div class="post-img">
-                                    <img src="{{asset("storage/community/group-post/".$post->group_post_file)}}" alt="">
-                                </div>
-                            @endif
-
+                                </video>
+                            </div>
+                        @else
+                            <div class="post-img">
+                                <img src="{{asset("storage/community/group-post/".$post->group_post_file)}}" alt="">
+                            </div>
                         @endif
 
                     @endif
+
+
                     {{--                    @dd($post)--}}
                     <ul class="post-react-widget">
                         <li class="post-react like-react">
@@ -549,7 +552,7 @@
                                         </g></svg>
                                 </div>
                                 <span class="react-name">share</span>
-                                <span class="react-count">2506</span>
+                                <span class="react-count">0</span>
                             </a>
                         </li>
 
@@ -574,15 +577,20 @@
                                         @if(!empty($postComment->users->userProfileImages[0]) && isset($postComment->users->userProfileImages[0])?$postComment->users->userProfileImages[0]:'')
 
                                             @if(!empty($postComment->users->userProfileImages[0]) && isset($postComment->users->userProfileImages[0])?$postComment->users->userProfileImages[0]:'')
-                                                <a href=""><img
+                                                <a href="" class="new-comment-img replay-comment-img"><img
                                                         src="{{asset("storage/community/profile-picture/".$postComment->users->userProfileImages[0]->user_profile)}}"
                                                         alt="image"></a>
                                             @else
-                                                <a href=""><img
+                                                <a href="" class="new-comment-img replay-comment-img"><img
                                                         src="{{asset("community-frontend/assets/images/community/home/news-post/Athore01.jpg")}}"
                                                         alt="image">
                                                 </a>
                                             @endif
+                                        @else
+                                            <a href="" class="new-comment-img replay-comment-img"><img
+                                                    src="{{asset("community-frontend/assets/images/community/home/news-post/Athore01.jpg")}}"
+                                                    alt="image">
+                                            </a>
                                         @endif
                                     </div>
                                     <div class="comment-details">
@@ -692,11 +700,16 @@
                                                             src="{{asset("storage/community/profile-picture/".$postComment->users->userProfileImages[0]->user_profile)}}"
                                                             alt="image"></a>
                                                 @else
-                                                    <a href=""><img
+                                                    <a href="" class="new-comment-img replay-comment-img" ><img
                                                             src="{{asset("community-frontend/assets/images/community/home/news-post/Athore01.jpg")}}"
                                                             alt="image">
                                                     </a>
                                                 @endif
+                                            @else
+                                                <a href="" class="new-comment-img replay-comment-img" ><img
+                                                        src="{{asset("community-frontend/assets/images/community/home/news-post/Athore01.jpg")}}"
+                                                        alt="image">
+                                                </a>
                                             @endif
                                             <div class="new-comment-input replay-commnt-input">
                                                 <input data-cmtId="{{$postComment->id}}" class="cmtText" type="text"
@@ -736,6 +749,7 @@
                                     src="{{asset("community-frontend/assets/images/community/home/news-post/Athore01.jpg")}}"
                                     alt="image">
                             @endif
+
                         </a>
 
                         <div class="new-comment-input">
@@ -749,7 +763,14 @@
                 </div>
             </div>
 
-        @endforeach
+
+            @empty
+                <div class="load-more mb-30">
+                    <a href="#">
+                        No Post Available
+                    </a>
+                </div>
+        @endforelse
 
 
     </div>
@@ -763,11 +784,8 @@
                 </a>
             </div>
 
-
-            {{--            @include('community-frontend.layout.birthday')--}}
             @include('community-frontend.layout.group_user_list')
 
-            {{--            @include('community-frontend.layout.followers')--}}
 
 
         </div>

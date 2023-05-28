@@ -34,7 +34,7 @@ class CommunityUserGroupController extends Controller
 
         $allAvailableGroups = CommunityUserGroup::join('community_user_group_pivots as groupPivot', function ($q) {
             $q->on('groupPivot.group_id', '=', 'community_user_groups.id');
-            $q->where('groupPivot.user_id', '!=', Auth::id());
+
         })
             ->leftJoin('community_user_group_profile_photos as groupProfile', 'groupProfile.group_id', '=', 'community_user_groups.id')
             ->leftJoin('community_user_group_cover_photos as groupCover', 'groupCover.group_id', '=', 'community_user_groups.id')
@@ -203,58 +203,165 @@ class CommunityUserGroupController extends Controller
     {
 //        dd();
 //        dd($request->all());
-        if ($request->get('imageCaption') && $request->get('imageCaption') === null) {
+//        if ($request->get('imageCaption') && $request->get('imageCaption') === null) {
 //            dd(1);
-            $storeGroupPost = CommunityUserGroupPost::create([
+//            $storeGroupPost = CommunityUserGroupPost::create([
+//                'group_id' => \Crypt::decrypt($request->get('groupId')),
+//                'user_id' => Auth::id(),
+//                'post_description' => $request->get('postMessage'),
+//            ]);
+//        } else {
+////            dd(2);
+//            $fileName = null;
+//            if ($request->hasFile('postFile') !== null || $request->get('imageCaption') !== null) {
+////                dd(2);
+//                $storeGroupPost = CommunityUserGroupPost::create([
+//                    'group_id' => \Crypt::decrypt($request->get('groupId')),
+//                    'user_id' => Auth::id(),
+//                    'post_description' => $request->get('postMessage'),
+//                ]);
+//                if ($request->hasFile('postFile')){
+////                    dd(12);
+//                    if ($request->file('postFile')->getClientOriginalExtension() == 'mp4' || $request->file('postFile')->getClientOriginalExtension() == 'mov' ||
+//                        $request->file('postFile')->getClientOriginalExtension() == 'wmv' || $request->file('postFile')->getClientOriginalExtension() == 'avi' ||
+//                        $request->file('postFile')->getClientOriginalExtension() == 'mkv' || $request->file('postFile')->getClientOriginalExtension() == 'webm'
+//                    ) {
+//                        $fileName = Uuid::uuid() . '.' . $request->file('postFile')->getClientOriginalExtension();
+//                        $file = Storage::put('/public/community/group-post/videos/' . $fileName, file_get_contents($request->file('postFile')));
+//                    }
+////                    dd($fileName);
+//                }
+//
+//                 else {
+////                     dd(3);
+//                    $fileName = Uuid::uuid() . '.' . $request->file('postFile1')->getClientOriginalExtension();
+//                    $file = Storage::put('/public/community/group-post/' . $fileName, file_get_contents($request->file('postFile1')));
+//                }
+////                dd(4);
+//
+//                $GroupPostFile = CommunityUserGroupPostFile::create([
+//                    'group_post_id' => $storeGroupPost->id,
+//                    'group_post_caption' => $request->get('imageCaption'),
+//                    'group_post_file' => $fileName,
+//                ]);
+//            }
+//
+//        }
+
+//        dd($request->all());
+
+        if ($request->get('postMessage')) {
+
+            if ($request->hasFile('videoFile') || $request->hasFile('photoFile')) {
+
+                $storeGroupPost = CommunityUserGroupPost::create([
                 'group_id' => \Crypt::decrypt($request->get('groupId')),
                 'user_id' => Auth::id(),
                 'post_description' => $request->get('postMessage'),
             ]);
-        } else {
-//            dd(2);
-            $fileName = null;
-            if ($request->hasFile('postFile') !== null || $request->get('imageCaption') !== null) {
-//                dd(2);
-                $storeGroupPost = CommunityUserGroupPost::create([
-                    'group_id' => \Crypt::decrypt($request->get('groupId')),
-                    'user_id' => Auth::id(),
-                    'post_description' => $request->get('postMessage'),
-                ]);
-                if ($request->hasFile('postFile')){
-//                    dd(12);
-                    if ($request->file('postFile')->getClientOriginalExtension() == 'mp4' || $request->file('postFile')->getClientOriginalExtension() == 'mov' ||
-                        $request->file('postFile')->getClientOriginalExtension() == 'wmv' || $request->file('postFile')->getClientOriginalExtension() == 'avi' ||
-                        $request->file('postFile')->getClientOriginalExtension() == 'mkv' || $request->file('postFile')->getClientOriginalExtension() == 'webm'
+
+                if ($request->hasFile('videoFile')) {
+
+                    if ($request->file('videoFile')->getClientOriginalExtension() == 'mp4' ||
+                        $request->file('videoFile')->getClientOriginalExtension() == 'mov' ||
+                        $request->file('videoFile')->getClientOriginalExtension() == 'wmv' ||
+                        $request->file('videoFile')->getClientOriginalExtension() == 'avi' ||
+                        $request->file('videoFile')->getClientOriginalExtension() == 'mkv' ||
+                        $request->file('videoFile')->getClientOriginalExtension() == 'webm'
                     ) {
-                        $fileName = Uuid::uuid() . '.' . $request->file('postFile')->getClientOriginalExtension();
-                        $file = Storage::put('/public/community/group-post/videos/' . $fileName, file_get_contents($request->file('postFile')));
+                        $fileName = Uuid::uuid() . '.' . 'video' . '.' . $request->file('videoFile')->getClientOriginalExtension();
+                        $file = Storage::put('/public/community/group-post/videos/' . $fileName, file_get_contents($request->file('videoFile')));
+
+                        $GroupPostFile = CommunityUserGroupPostFile::create([
+                            'group_post_id' => $storeGroupPost->id,
+                            'group_post_file' => $fileName,
+                            'group_post_caption' => $request->get('imageCaption'),
+                        ]);
+//
                     }
-//                    dd($fileName);
+
                 }
 
-                 else {
-//                     dd(3);
-                    $fileName = Uuid::uuid() . '.' . $request->file('postFile1')->getClientOriginalExtension();
-                    $file = Storage::put('/public/community/group-post/' . $fileName, file_get_contents($request->file('postFile1')));
-                }
-//                dd(4);
+                else {
 
-                $GroupPostFile = CommunityUserGroupPostFile::create([
-                    'group_post_id' => $storeGroupPost->id,
-                    'group_post_caption' => $request->get('imageCaption'),
-                    'group_post_file' => $fileName,
-                ]);
+                    $fileName = Uuid::uuid() . '.' . 'image' . '.' . $request->file('photoFile')->getClientOriginalExtension();
+                    $file = Storage::put('/public/community/group-post/' . $fileName, file_get_contents($request->file('photoFile')));
+
+                    $GroupPostFile = CommunityUserGroupPostFile::create([
+                        'group_post_id' => $storeGroupPost->id,
+                        'group_post_file' => $fileName,
+                        'group_post_caption' => $request->get('imageCaption'),
+                    ]);
+
+                }
+
+            }
+
+            else {
+
+                $storeGroupPost = CommunityUserGroupPost::create([
+                'group_id' => \Crypt::decrypt($request->get('groupId')),
+                'user_id' => Auth::id(),
+                'post_description' => $request->get('postMessage'),
+            ]);
             }
 
         }
 
+        else {
+
+            $fileName = null;
+//            dd($request->all());
+            if ($request->hasFile('videoFile')  || $request->hasFile('photoFile')  ) {
+//                dd($request->all());
+                $storeGroupPost = CommunityUserGroupPost::create([
+                'group_id' => \Crypt::decrypt($request->get('groupId')),
+                'user_id' => Auth::id(),
+                'post_description' => $request->get('postMessage'),
+            ]);
+
+
+                if ($request->hasFile('videoFile')) {
+
+                    if ($request->file('videoFile')->getClientOriginalExtension() == 'mp4' ||
+                        $request->file('videoFile')->getClientOriginalExtension() == 'mov' ||
+                        $request->file('videoFile')->getClientOriginalExtension() == 'wmv' ||
+                        $request->file('videoFile')->getClientOriginalExtension() == 'avi' ||
+                        $request->file('videoFile')->getClientOriginalExtension() == 'mkv' ||
+                        $request->file('videoFile')->getClientOriginalExtension() == 'webm'
+                    ) {
+                        $fileName = Uuid::uuid() . '.' . 'video' . '.' . $request->file('videoFile')->getClientOriginalExtension();
+                        $file = Storage::put('/public/community/group-post/videos/' . $fileName, file_get_contents($request->file('videoFile')));
+
+                        $GroupPostFile = CommunityUserGroupPostFile::create([
+                            'group_post_id' => $storeGroupPost->id,
+                            'group_post_file' => $fileName,
+                            'group_post_caption' => $request->get('imageCaption'),
+                        ]);
+//
+                    }
+                } else {
+                    $fileName = Uuid::uuid() . '.' . 'image' . '.' . $request->file('photoFile')->getClientOriginalExtension();
+                    $file = Storage::put('/public/community/group-post/' . $fileName, file_get_contents($request->file('photoFile')));
+
+                    $GroupPostFile = CommunityUserGroupPostFile::create([
+                        'group_post_id' => $storeGroupPost->id,
+                        'group_post_file' => $fileName,
+                        'group_post_caption' => $request->get('imageCaption'),
+                    ]);
+                }
+
+            }
+        }
+
 
         if ($storeGroupPost || $GroupPostFile) {
-//            toastr('dd', 'success');
             toastr()->success('Post has been posted successfully!', 'Congrats');
             return Redirect::back();
+        }else{
+            toastr()->error('An error has occurred please try again later.');
+            return Redirect::back();
         }
-        toastr()->error('An error has occurred please try again later.');
 
     }
 
@@ -330,12 +437,17 @@ class CommunityUserGroupController extends Controller
 //
                 if (!empty($storeComments->users->userProfileImages[0]) && isset($storeComments->users->userProfileImages[0]) ? $storeComments->users->userProfileImages[0]->user_profile : '') {
                     if (!empty($storeComments->users->userProfileImages[0]) && isset($storeComments->users->userProfileImages[0]) ? $storeComments->users->userProfileImages[0]->user_profile : '') {
-                        $html .= '<a href=""><img src="' . asset("storage/community/profile-picture/" . $storeComments->users->userProfileImages[0]->user_profile) . '"
-                                                                          alt="image"></a>';
+                        $html .= '<a class="new-comment-img replay-comment-img" href="">
+                            <img src="' . asset("storage/community/profile-picture/" . $storeComments->users->userProfileImages[0]->user_profile) . '"
+                                                                          alt="image">
+                                                                          </a>';
+                    }else {
+                        $html .= '<a class="new-comment-img replay-comment-img"><img src="' . asset("community-frontend/assets/images/community/home/news-post/comment01.jpg") . '"alt="image"></a>';
+
                     }
 
                 } else {
-                    $html .= '<img src="' . asset("community-frontend/assets/images/community/home/news-post/comment01.jpg") . '"alt="image">';
+                    $html .= '<a class="new-comment-img replay-comment-img"><img src="' . asset("community-frontend/assets/images/community/home/news-post/comment01.jpg") . '"alt="image"></a>';
 
                 }
 
@@ -416,10 +528,20 @@ class CommunityUserGroupController extends Controller
                                     <div class="comment-img">';
                 if (!empty($postComment->users->userProfileImages[0]) && isset($postComment->users->userProfileImages[0]) ? $postComment->users->userProfileImages[0] : '') {
                     if (!empty($postComment->users->userProfileImages[0]) && isset($postComment->users->userProfileImages[0]) ? $postComment->users->userProfileImages[0] : '') {
-                        $html .= '<a href=""><img src="' . asset("storage/community/profile-picture/" . $postComment->users->userProfileImages[0]->user_profile) . '"
-                                          alt="image"></a>';
+                        $html .= '<a  class="new-comment-img replay-comment-img" href="">
+                                    <img  src="' . asset("storage/community/profile-picture/" . $postComment->users->userProfileImages[0]->user_profile) . '"
+                                          alt="image">
+                                          </a>';
+                    }else{
+                        $html .='<a class="new-comment-img replay-comment-img"> <img
+                                    src="'.asset("community-frontend/assets/images/community/home/news-post/Athore01.jpg").'"
+                                    alt="image"></a>';
                     }
 
+                }else{
+                    $html .=' <a class="new-comment-img replay-comment-img"><img
+                                    src="'.asset("community-frontend/assets/images/community/home/news-post/Athore01.jpg").'"
+                                    alt="image"></a>';
                 }
 
                 $html .= '</div>
@@ -516,10 +638,18 @@ class CommunityUserGroupController extends Controller
 
                 if (!empty($postComment->users->userProfileImages[0]) && isset($postComment->users->userProfileImages[0]) ? $postComment->users->userProfileImages[0] : '') {
                     if (!empty($postComment->users->userProfileImages[0]) && isset($postComment->users->userProfileImages[0]) ? $postComment->users->userProfileImages[0] : '') {
-                        $html .= '<a href=""><img src="' . asset("storage/community/profile-picture/" . $postComment->users->userProfileImages[0]->user_profile) . '"
+                        $html .= '<a class="new-comment-img replay-comment-img" href=""><img src="' . asset("storage/community/profile-picture/" . $postComment->users->userProfileImages[0]->user_profile) . '"
                                                       alt="image"></a>';
+                    }else{
+                        $html .='<a class="new-comment-img replay-comment-img"> <img
+                                    src="'.asset("community-frontend/assets/images/community/home/news-post/Athore01.jpg").'"
+                                    alt="image"></a>';
                     }
 
+                }else{
+                    $html .='<a class="new-comment-img replay-comment-img"> <img
+                                    src="'.asset("community-frontend/assets/images/community/home/news-post/Athore01.jpg").'"
+                                    alt="image"></a>';
                 }
                 $html .= ' <div class="new-comment-input replay-commnt-input">
                                                 <input data-cmtId="' . $postComment->id . '" class="cmtText" type="text"

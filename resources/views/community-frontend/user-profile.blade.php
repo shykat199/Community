@@ -41,7 +41,7 @@
                                 @endif
 
 
-{{--                                @dd($userDetails)--}}
+                                @dd($userDetails)
                             </div>
                             <div class="profile-name">
                                 <h6><a href="#">{{!empty($userDetails) && isset($userDetails)? $userDetails->name:'No Data Found'}}</a></h6>
@@ -674,7 +674,7 @@
                             </div>
 {{--                                                                                @dd($userDetails)--}}
                             <ul class="profile-personal-information">
-                                <li><span>Email:</span><a href="#">{{$userDetails->email}}</a></li>
+                                <li><span>Email:</span><a href="#">{{!empty($userDetails) && isset($userDetails)?$userDetails->email:'No Data Found'}}</a></li>
                                 <li>
                                     <span>Birthday:</span>{{!empty($userDetails) && isset($userDetails)?\Carbon\Carbon::parse($userDetails->dob)->format('M d, Y'):'No Data Found'}}
                                     {{--                                <li><span>Birthday:</span>{{  \Carbon\Carbon::parse($userDetails->dob)->format('M d, Y')}}--}}

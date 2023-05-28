@@ -100,7 +100,7 @@
                     <div class="profile-friend-list">
                         <div class="row">
 {{--                            @dd($allAvailableGroups)--}}
-                            @foreach($allAvailableGroups as $group)
+                            @forelse($allAvailableGroups as $group)
                                 {{--@dd($group)--}}
                                 <div class="col-lg-3 col-md-6 col-12">
                                     <div class="single-profile-list single-group-list">
@@ -108,12 +108,12 @@
                                             <div class="profile-cover">
 
                                                 @if($group->gCover)
-                                                    <a href="#"><img
+                                                    <a href="{{route('user.group.details',\Illuminate\Support\Facades\Crypt::encrypt($group->gId))}}"><img
                                                             src="{{asset("storage/community/group-post/cover/".$group->gCover)}}"
                                                             alt="cover">
                                                     </a>
                                                 @else
-                                                    <a href="#"><img
+                                                    <a href="{{route('user.group.details',\Illuminate\Support\Facades\Crypt::encrypt($group->gId))}}"><img
                                                             src="{{asset('community-frontend/assets/images/community/home/smallCover.jpg')}}"
                                                             alt="cover">
                                                     </a>
@@ -175,8 +175,15 @@
                                         </div>
                                     </div>
                                 </div>
-                            @endforeach
 
+                            @empty
+                                <div class="load-more mb-30">
+                                    <a href="#">
+                                        No Post Available
+                                    </a>
+                                </div>
+
+                            @endforelse
 
                         </div>
                     </div>

@@ -334,12 +334,6 @@
     //                            dd($isOwner);
                         @endphp
 
-                        {{--                    @dd($post)--}}
-                        {{--                    <form action="{{ route('orders.destroy', $row->id) }}" method="post"--}}
-                        {{--                          class="d-inline">@csrf@method('DELETE')--}}
-                        {{--                        <button type="button" class="btn btn-sm btn-danger confirm-delete"><i class="fas fa-times"></i>--}}
-                        {{--                        </button>--}}
-                        {{--                    </form>--}}
 
 
                         <div class="post-option">
@@ -467,7 +461,6 @@
                             @endif
 
                         @endif
-                        {{--                    @dd($post)--}}
 
                         <ul class="post-react-widget">
                             <li class="post-react like-react">
