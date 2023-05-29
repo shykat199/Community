@@ -32,4 +32,13 @@ class CommunityUserPostComment extends Model
     {
         return $this->belongsTo(User::class,'user_id');
     }
+
+    public function commentReaction(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(CommunityUserPostCommentReaction::class,'post_comment_id')->where('user_id','=',\Auth::id());
+    }
+    public function newsFeedCommentReaction(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(CommunityUserPostCommentReaction::class,'post_comment_id')->where('user_id','=',\Auth::id());
+    }
 }

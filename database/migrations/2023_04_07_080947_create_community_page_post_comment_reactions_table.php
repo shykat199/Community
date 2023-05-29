@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->bigInteger('page_post_comment_id');
             $table->bigInteger('user_id');
-            $table->enum('reaction_type',['haha','love','care','like','sad','wow','angry']);
+            $table->tinyInteger('reaction_type');
             $table->timestamps();
         });
     }

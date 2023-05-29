@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Community\Frontend\Page;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\PagePostRequest;
 use App\Models\Community\Group\CommunityUserGroup;
 use App\Models\Community\Group\CommunityUserGroupPivot;
 use App\Models\Community\Group\CommunityUserGroupPost;
@@ -122,7 +123,7 @@ class CommunityUserPageController extends Controller
 
 //        return $getPageDetails;
 
-        $pagePosts = CommunityPagePost::with(['users.userProfileImages', 'comments.replies'])
+        $pagePosts = CommunityPagePost::with(['users.userProfileImages', 'comments.replies', 'comments.commentsReaction'])
             ->join('community_pages as communityPages', function ($q) use ($id) {
                 $q->on('communityPages.id', '=', 'community_page_posts.page_id');
                 $q->where('community_page_posts.page_id', '=', $id);
@@ -241,51 +242,9 @@ class CommunityUserPageController extends Controller
     }
 
 
-    public function userPagePostStore(Request $request)
+    public function userPagePostStore(PagePostRequest $request)
     {
-//        dd($request->all());
-//      dd($request->get('pa    geId'));
-//        if ($request->get('imageCaption') && $request->get('imageCaption') === null) {
-////            dd(1);
-//            $storePagePost = CommunityPagePost::create([
-//                'page_id' => \Crypt::decrypt($request->get('pageId')),
-//                'user_id' => Auth::id(),
-//                'post_description' => $request->get('postMessage'),
-//            ]);
-//        } else {
-////            dd(2);
-//            $fileName = null;
-//            if ($request->hasFile('postFile') !== null || $request->get('imageCaption') !== null) {
-////                dd(3);
-//                $storePagePost = CommunityPagePost::create([
-//                    'page_id' => \Crypt::decrypt($request->get('pageId')),
-//                    'user_id' => Auth::id(),
-//                    'post_description' => $request->get('postMessage'),
-//                ]);
-//                if ($request->hasFile('postFile')) {
-//
-//                    if ($request->file('postFile')->getClientOriginalExtension() == 'mp4' || $request->file('postFile')->getClientOriginalExtension() == 'mov' ||
-//                        $request->file('postFile')->getClientOriginalExtension() == 'wmv' || $request->file('postFile')->getClientOriginalExtension() == 'avi' ||
-//                        $request->file('postFile')->getClientOriginalExtension() == 'mkv' || $request->file('postFile')->getClientOriginalExtension() == 'webm'
-//                    ) {
-////                    dd(4);
-//                        $fileName = Uuid::uuid() . '.' . $request->file('postFile')->getClientOriginalExtension();
-//                        $file = Storage::put('/public/community/page-post/videos/' . $fileName, file_get_contents($request->file('postFile')));
-//                    }
-//                } else {
-////                    dd(5,$fileName);
-//                    $fileName = Uuid::uuid() . '.' . $request->file('postFile1')->getClientOriginalExtension();
-//                    $file = Storage::put('/public/community/page-post/' . $fileName, file_get_contents($request->file('postFile1')));
-//                }
-//
-//                $pagePostFile = CommunityPagePostFileType::create([
-//                    'page_post_id' => $storePagePost->id,
-//                    'post_comment_caption' => $request->get('imageCaption'),
-//                    'post_image_video' => $fileName,
-//                ]);
-//            }
-//
-//        }
+
 
         if ($request->get('postMessage')) {
 
@@ -306,7 +265,7 @@ class CommunityUserPageController extends Controller
                         $request->file('videoFile')->getClientOriginalExtension() == 'mkv' ||
                         $request->file('videoFile')->getClientOriginalExtension() == 'webm'
                     ) {
-                        $fileName = Uuid::uuid() . '.'.'video'.'.'. $request->file('videoFile')->getClientOriginalExtension();
+                        $fileName = Uuid::uuid() . '.' . 'video' . '.' . $request->file('videoFile')->getClientOriginalExtension();
                         $file = Storage::put('/public/community/page-post/videos/' . $fileName, file_get_contents($request->file('videoFile')));
 
                         $pagePostFile = CommunityPagePostFileType::create([
@@ -323,10 +282,10 @@ class CommunityUserPageController extends Controller
                     $file = Storage::put('/public/community/page-post/' . $fileName, file_get_contents($request->file('photoFile')));
 
                     $pagePostFile = CommunityPagePostFileType::create([
-                    'page_post_id' => $storePagePost->id,
-                    'post_comment_caption' => $request->get('imageCaption'),
-                    'post_image_video' => $fileName,
-                ]);
+                        'page_post_id' => $storePagePost->id,
+                        'post_comment_caption' => $request->get('imageCaption'),
+                        'post_image_video' => $fileName,
+                    ]);
 
                 }
 
@@ -347,10 +306,10 @@ class CommunityUserPageController extends Controller
             if ($request->hasFile('videoFile') || $request->hasFile('photoFile')) {
 //                dd($request->all());
                 $storePagePost = CommunityPagePost::create([
-                'page_id' => \Crypt::decrypt($request->get('pageId')),
-                'user_id' => Auth::id(),
-                'post_description' => $request->get('postMessage'),
-            ]);
+                    'page_id' => \Crypt::decrypt($request->get('pageId')),
+                    'user_id' => Auth::id(),
+                    'post_description' => $request->get('postMessage'),
+                ]);
 
 
                 if ($request->hasFile('videoFile')) {
@@ -362,7 +321,7 @@ class CommunityUserPageController extends Controller
                         $request->file('videoFile')->getClientOriginalExtension() == 'mkv' ||
                         $request->file('videoFile')->getClientOriginalExtension() == 'webm'
                     ) {
-                        $fileName = Uuid::uuid() . '.'.'video'.'.'. $request->file('videoFile')->getClientOriginalExtension();
+                        $fileName = Uuid::uuid() . '.' . 'video' . '.' . $request->file('videoFile')->getClientOriginalExtension();
                         $file = Storage::put('/public/community/page-post/videos/' . $fileName, file_get_contents($request->file('videoFile')));
 
                         $pagePostFile = CommunityPagePostFileType::create([
@@ -470,6 +429,42 @@ class CommunityUserPageController extends Controller
 
             }
 
+
+        }
+
+    }
+
+
+    public function storePagePostCommentReaction(Request $request)
+    {
+        $storeCommentReaction = CommunityPagePostCommentReaction::create([
+            'page_post_comment_id' => $request->get('postCommentId'),
+            'user_id' => Auth::id(),
+            'reaction_type' => 1
+        ]);
+        if ($storeCommentReaction) {
+            return response()->json([
+                'status' => true,
+                'msg' => 'Success',
+                'data' => $storeCommentReaction
+            ]);
+        }
+    }
+
+    public function deleteUserPagePostCommentReaction(Request $request)
+    {
+
+        if ($request->ajax()) {
+
+            $deleteReaction = CommunityPagePostCommentReaction::where('id', '=', $request->get('postCommentReactionId'))->delete();
+
+            if ($deleteReaction) {
+                return response()->json([
+                    'status' => true,
+                    'msg' => 'Success',
+                    'data' => $deleteReaction
+                ]);
+            }
 
         }
 
@@ -634,17 +629,17 @@ class CommunityUserPageController extends Controller
                     if (!empty($postComment->users->userProfileImages[0]) && isset($postComment->users->userProfileImages[0]) ? $postComment->users->userProfileImages[0] : '') {
                         $html .= '<a class="new-comment-img replay-comment-img" href=""><img src="' . asset("storage/community/profile-picture/" . $postComment->users->userProfileImages[0]->user_profile) . '"
                                           alt="image"></a>';
-                    }else{
+                    } else {
 
-                        $html.=' <a class="new-comment-img replay-comment-img" href=""><img
-                                    src="'.asset("community-frontend/assets/images/community/home/news-post/Athore01.jpg").'" alt="image"></a>';
+                        $html .= ' <a class="new-comment-img replay-comment-img" href=""><img
+                                    src="' . asset("community-frontend/assets/images/community/home/news-post/Athore01.jpg") . '" alt="image"></a>';
 
                     }
 
-                }else{
+                } else {
 
-                    $html.=' <a class="new-comment-img replay-comment-img" href=""><img
-                                    src="'.asset("community-frontend/assets/images/community/home/news-post/Athore01.jpg").'" alt="image"></a>';
+                    $html .= ' <a class="new-comment-img replay-comment-img" href=""><img
+                                    src="' . asset("community-frontend/assets/images/community/home/news-post/Athore01.jpg") . '" alt="image"></a>';
 
                 }
 
@@ -744,16 +739,15 @@ class CommunityUserPageController extends Controller
                     if (!empty($postComment->users->userProfileImages[0]) && isset($postComment->users->userProfileImages[0]) ? $postComment->users->userProfileImages[0] : '') {
                         $html .= '<a href="" class="new-comment-img replay-comment-img"><img src="' . asset("storage/community/profile-picture/" . $postComment->users->userProfileImages[0]->user_profile) . '"
                                                       alt="image"></a>';
-                    }
-                    else{
-                        $html.='<a  class="new-comment-img replay-comment-img"> <img
-                                    src="'.asset("community-frontend/assets/images/community/home/news-post/Athore01.jpg").'" alt="image"> </a>';
+                    } else {
+                        $html .= '<a  class="new-comment-img replay-comment-img"> <img
+                                    src="' . asset("community-frontend/assets/images/community/home/news-post/Athore01.jpg") . '" alt="image"> </a>';
                     }
 
-                }else{
+                } else {
 
-                    $html.='<a  class="new-comment-img replay-comment-img"> <img
-                                    src="'.asset("community-frontend/assets/images/community/home/news-post/Athore01.jpg").'" alt="image"> </a>';
+                    $html .= '<a  class="new-comment-img replay-comment-img"> <img
+                                    src="' . asset("community-frontend/assets/images/community/home/news-post/Athore01.jpg") . '" alt="image"> </a>';
 
                 }
                 $html .= ' <div class="new-comment-input replay-commnt-input">
@@ -805,7 +799,7 @@ class CommunityUserPageController extends Controller
                         if (!empty($storeComments->users->userProfileImages[0]) && isset($storeComments->users->userProfileImages[0]) ? $storeComments->users->userProfileImages[0]->user_profile : '') {
                             $html .= '<a class="new-comment-img replay-comment-img" href=""><img src="' . asset("storage/community/profile-picture/" . $storeComments->users->userProfileImages[0]->user_profile) . '"
                                                                           alt="image"></a>';
-                        }else {
+                        } else {
                             $html .= '<a class="new-comment-img replay-comment-img"><img src="' . asset("community-frontend/assets/images/community/home/news-post/comment01.jpg") . '"alt="image"></a>';
 
                         }

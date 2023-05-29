@@ -616,7 +616,7 @@ function getUpComingBirthday()
 
 function getMyPostTimeLine()
 {
-    $allMyPosts = \App\Models\Community\User\CommunityUserPost::with(['users.userProfileImages', 'newsFeedComments.replies'])
+    $allMyPosts = \App\Models\Community\User\CommunityUserPost::with(['users.userProfileImages', 'newsFeedComments.replies','newsFeedComments.commentReaction'])
         ->join('users', function ($q) {
             $q->on('users.id', '=', 'community_user_posts.user_id');
             $q->where('users.id', '!=', ADMIN_ROLE);
@@ -635,8 +635,8 @@ function getMyPostTimeLine()
             $q->on('userPostReaction.user_post_id', '=', 'community_user_posts.id');
             $q->where('userPostReaction.user_id', '=', Auth::id());
         })
-        ->selectRaw('users.id as user_id,users.name as userName,community_user_posts.id as postId,community_user_posts.post_description as postDescription,community_user_posts.created_at,
-        postMedia.post_image_video as postMediaFile, postMedia.caption as postMediaFileCaption,userTag.tag_user_id as taggedUser,
+        ->selectRaw('users.id ,users.name as userName,community_user_posts.id as postId,community_user_posts.post_description as postDescription,
+        community_user_posts.created_at,postMedia.post_image_video as postMediaFile, postMedia.caption as postMediaFileCaption,userTag.tag_user_id as taggedUser,
         userPostReaction.reaction_type,userPostReaction.id as reactionId,
         taggedUser.name as taggedUserName')
         ->latest()

@@ -9,6 +9,7 @@ use App\Models\Community\Page\CommunityPagePostComment;
 use App\Models\Community\Page\CommunityPagePostReaction;
 use App\Models\Community\User\CommunityUserPostFileType;
 use App\Models\Community\User_Post\CommunityUserPostComment;
+use App\Models\Community\User_Post\CommunityUserPostCommentReaction;
 use App\Models\Community\User_Post\CommunityUserPostReaction;
 use App\Models\Community\User_Profile\CommunityUserProfileCover;
 use App\Models\Community\User_Profile\CommunityUserProfilePhoto;
@@ -94,6 +95,8 @@ class AllReactionController extends Controller
                 return \response()->json($returnResult);
 
             }
+
+
             elseif ($request->get('reqType') === 'storePagePostReaction') {
                 $storePostReaction = CommunityPagePostReaction::create([
                     'page_post_id' => $request->get('postId'),
@@ -193,7 +196,9 @@ class AllReactionController extends Controller
                     ];
                 }
 
-            } elseif ($request->get('reqType') === 'editGroupNewsFeedComment') {
+            }
+
+            elseif ($request->get('reqType') === 'editGroupNewsFeedComment') {
 
 //                dd($request->all());
                 $editGroupCmt = CommunityUserGroupPostComment::where('id', '=', $request->get('cmtId'))->where('group_post_id', '=', $request->get('postId'))->update([
@@ -210,7 +215,9 @@ class AllReactionController extends Controller
                     ];
                 }
 
-            } elseif ($request->get('reqType') === 'editPageNewsFeedComment') {
+            }
+
+            elseif ($request->get('reqType') === 'editPageNewsFeedComment') {
 
 //                dd($request->all());
                 $editPageCmt = CommunityPagePostComment::where('id', '=', $request->get('cmtId'))->where('page_post_id', '=', $request->get('postId'))->update([
@@ -227,7 +234,9 @@ class AllReactionController extends Controller
                     ];
                 }
 
-            } elseif ($request->get('reqType') === 'removePostReaction') {
+            }
+
+            elseif ($request->get('reqType') === 'removePostReaction') {
 
 //                dd($request->all());
                 $dltPostReaction = CommunityUserPostReaction::where('id', '=', $request->get('reactionId'))->where('user_id', '=', Auth::id())
@@ -245,7 +254,9 @@ class AllReactionController extends Controller
                     ];
                 }
 
-            } elseif ($request->get('imgType') === 'img') {
+            }
+
+            elseif ($request->get('imgType') === 'img') {
                 $allPostImg = CommunityUserPostFileType::leftJoin('community_user_posts', 'community_user_posts.id', '=', 'community_user_post_file_types.post_id')
                     ->where('community_user_posts.user_id', '=', Auth::id())
                     ->where('community_user_post_file_types.post_image_video', 'LIKE', '%' . 'image' . '%')
@@ -299,7 +310,9 @@ class AllReactionController extends Controller
                 ];
 
 
-            } elseif ($request->get('imgType') === 'pc') {
+            }
+
+            elseif ($request->get('imgType') === 'pc') {
 //                dd(1);
                 $allPostImg = CommunityUserProfileCover::where('community_user_profile_covers.user_id', '=', Auth::id())
                     ->select('user_cover as allPostMedia')->get();
@@ -352,7 +365,9 @@ class AllReactionController extends Controller
 
                 ];
 
-            } elseif ($request->get('imgType') === 'pp') {
+            }
+
+            elseif ($request->get('imgType') === 'pp') {
 
                 $allPostImg = CommunityUserProfilePhoto::where('community_user_profile_photos.user_id', '=', Auth::id())
                     ->where('community_user_profile_photos.user_profile', 'LIKE', '%' . 'profile-Photo' . '%')
@@ -407,6 +422,24 @@ class AllReactionController extends Controller
                 ];
 
             }
+
+//            elseif ($request->get('reqType'=='userCommentReaction')){
+//                dd($request->all());
+//                $storeCommentReaction=CommunityUserPostCommentReaction::create([
+//                    'user_id'=>Auth::id(),
+//                    'post_comment_id'=>$request->get('postCommentId'),
+//                    'reaction_type'=>1
+//                ]);
+//
+//                if ($storeCommentReaction){
+//                    $returnResult = [
+//                        'status' => true,
+//                        'msg' => 'Successfully Added',
+//                        'postCommentsReaction' => $storeCommentReaction,
+//
+//                    ];
+//                }
+//            }
 
 
         }

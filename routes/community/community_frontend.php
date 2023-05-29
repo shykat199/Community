@@ -25,6 +25,8 @@ Route::middleware(['auth','user'])->group(function (){
     Route::post('/user/post/child-comments',[CommunityFrontendController::class,'storeChildComment'])->name('community.user.post.child.comment');
     Route::get('get/user/post/comments',[CommunityFrontendController::class,'showComments'])->name('user.post.comment');
     Route::get('user/post/reaction',[CommunityFrontendController::class,'storeReaction'])->name('user.post.reaction');
+    Route::post('user/post/comment-reaction',[CommunityFrontendController::class,'storeComentReaction'])->name('user.post.cmt-reaction');
+    Route::post('user/post/remove-reaction',[CommunityFrontendController::class,'removeComentReaction'])->name('user.post.rmv-reaction');
 
     //user details
     Route::post('/user-friend/accept_request',[CommunityUserFriendRequestController::class,'acceptRequest'])->name('community.user.acceptRequest');
@@ -99,6 +101,9 @@ Route::middleware(['auth','user'])->group(function (){
     Route::post('/user/group/accept-user-invitation',[CommunityUserGroupController::class,'acceptGroupUserInvitation'])->name('user.group.accept.invitation');
     Route::post('/user/group/post',[CommunityUserGroupController::class,'userGroupPostStore'])->name('user.group.post.store');
     Route::post('/user/group/post/reaction',[CommunityUserGroupController::class,'storeUserGroupPostReaction'])->name('user.group.post.reaction');
+    Route::post('/user/group/post/reaction',[CommunityUserGroupController::class,'removeUserGroupPostReaction'])->name('user.post.rmv-group-reaction');
+    Route::post('/user/group/post/comment-reaction',[CommunityUserGroupController::class,'storeCommentReaction'])->name('user.post.group.cmt-reaction');
+    Route::post('/user/group/post/remove-reaction',[CommunityUserGroupController::class,'removeCommentReaction'])->name('user.post.rmv-group-reaction');
     Route::post('/user/group/remove',[CommunityUserGroupController::class,'destroy'])->name('user.group.remove');
     Route::post('/user/group/upload-cover-photo',[CommunityUserGroupController::class,'storeGroupCoverPhoto'])->name('user.group.cover.upload');
     Route::post('/user/group/upload-profile-photo',[CommunityUserGroupController::class,'storeGroupProfilePhoto'])->name('user.group.profile.upload');
@@ -114,6 +119,8 @@ Route::middleware(['auth','user'])->group(function (){
     Route::post('/user/page/post',[CommunityUserPageController::class,'userPagePostStore'])->name('user.page.post.store');
     Route::post('/user/page/post/update',[CommunityUserPageController::class,'updatePagePost'])->name('user.page.post.update');
     Route::post('/user/page/post/reaction',[CommunityUserPageController::class,'storeUserPagePostReaction'])->name('user.page.post.reaction');
+    Route::post('/user/page/post/store-cmt-reaction',[CommunityUserPageController::class,'storePagePostCommentReaction'])->name('user.post.page.cmt-reaction');
+    Route::post('/user/page/post/remove-cmt-reaction',[CommunityUserPageController::class,'deleteUserPagePostCommentReaction'])->name('user.post.rmv-page-reaction');
     Route::post('/user/page/upload-profile-photo',[CommunityUserPageController::class,'storePageProfilePhoto'])->name('user.page.profile.upload');
     Route::post('/user/page/upload-cover-photo',[CommunityUserPageController::class,'storePageCoverPhoto'])->name('user.page.cover.upload');
     Route::post('/user/page/store/post-comments',[CommunityUserPageController::class,'storePagePostComment'])->name('community.store.user.page.post.comment');
@@ -124,6 +131,7 @@ Route::middleware(['auth','user'])->group(function (){
 //    Route::get('/user/get-all-comments',[GetCommentController::class,'getAllComments'])->name('users.get-all-comments');
     Route::post('/user/store-all-reactions',[AllReactionController::class,'allAjax'])->name('user.post-all.reaction');
     Route::post('/user/remove-reactions',[AllReactionController::class,'allAjax'])->name('user.remove.post.reaction');
+//    Route::post('/user/remove-reactions',[AllReactionController::class,'allAjax'])->name('user.remove.post.reaction');
 
     //Ajax get user image album
     Route::get('/user/show-album',[AllReactionController::class,'allAjax'])->name('user.show.image-album');

@@ -29,4 +29,9 @@ class CommunityPagePostComment extends Model
         return $this->belongsTo(User::class,'user_id');
     }
 
+    public function commentsReaction(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(CommunityPagePostCommentReaction::class,'page_post_comment_id')->where('user_id','=',\Auth::id());
+    }
+
 }

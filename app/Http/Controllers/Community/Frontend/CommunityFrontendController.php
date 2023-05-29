@@ -13,6 +13,7 @@ use App\Models\Community\User\CommunityUserPost;
 use App\Models\Community\User\CommunityUserPostFileType;
 use App\Models\Community\User\CommunityUserPostTag;
 use App\Models\Community\User_Post\CommunityUserPostComment;
+use App\Models\Community\User_Post\CommunityUserPostCommentReaction;
 use App\Models\Community\User_Post\CommunityUserPostReaction;
 use App\Models\Community\User_Profile\CommunityUserProfileEducation;
 use App\Models\Community\User_Profile\CommunityUserProfileInterest;
@@ -42,7 +43,7 @@ class CommunityFrontendController extends Controller
             $friendList[] = $friend->uId;
         }
 
-        $allUserPosts = CommunityUserPost::with(['users.userProfileImages', 'comments.replies'])
+        $allUserPosts = CommunityUserPost::with(['users.userProfileImages', 'comments.replies','comments.commentReaction'])
             ->join('users', function ($q) use ($friendList) {
                 $q->on('users.id', '=', 'community_user_posts.user_id');
                 $q->whereIn('users.id', $friendList);
@@ -99,7 +100,7 @@ class CommunityFrontendController extends Controller
 
 //            dd($request->all());
 
-            if ($request->get('reqType')==='adminUserChildComment'){
+            if ($request->get('reqType') === 'adminUserChildComment') {
 
 //                dd(1);
 //                dd($postComments);
@@ -111,9 +112,9 @@ class CommunityFrontendController extends Controller
                     $commentId = $comment->id;
                     $userProfilePicture = isset($comment->users->userProfileImages[0]) ? $comment->users->userProfileImages[0]->user_profile : '';
 
-                    $html .= '<div class="media-block nested-comment1-'.$commentId.'">';
+                    $html .= '<div class="media-block nested-comment1-' . $commentId . '">';
 
-                    if (isset($userProfilePicture)) {
+                    if (!empty($userProfilePicture) && isset($userProfilePicture)) {
 
                         $html .= '<a href="#"> <img src="' . asset("storage/community/profile-picture/$userProfilePicture") . '" style="height: 40 px; width: 50px;" alt="image">
                                 </a>';
@@ -149,7 +150,7 @@ class CommunityFrontendController extends Controller
                     'html' => $html
                 ]);
 
-            }else{
+            } else {
 //                dd(2);
                 foreach ($postComments as $comment) {
 
@@ -162,7 +163,7 @@ class CommunityFrontendController extends Controller
                     $html .= '<div class="single-replay-comnt nested-comment-' . $commentId . '">
                                                 <div class="replay-coment-box comment-details">
                                                     <div class="replay-comment-img">';
-                    if (isset($userProfilePicture)) {
+                    if (!empty($userProfilePicture) && isset($userProfilePicture)) {
                         $html .= '<a href="#"> <img src="' . asset("storage/community/profile-picture/$userProfilePicture") . '" alt="image">
                                 </a>';
                     } else {
@@ -220,7 +221,7 @@ class CommunityFrontendController extends Controller
             $userName = $request->get('userName');
 
             $communityFollower = CommunityUserFollowing::create([
-                'user_following_id' =>  Auth::id(),
+                'user_following_id' => Auth::id(),
                 'user_id' => $userId,
             ]);
 
@@ -246,7 +247,7 @@ class CommunityFrontendController extends Controller
             $uId = $request->get('userid');
 //            $userName = $request->get('userName');
 
-            $communityDltFollower = CommunityUserFollowing::where('id','=',$id)->first()->delete();
+            $communityDltFollower = CommunityUserFollowing::where('id', '=', $id)->first()->delete();
 
 //            dd($communityDltFollower);
 
@@ -283,19 +284,19 @@ class CommunityFrontendController extends Controller
                                     <div class="comment-img">';
                 if (!empty($postComment->users->userProfileImages[0]) && isset($postComment->users->userProfileImages[0]) ? $postComment->users->userProfileImages[0] : '') {
                     if (!empty($postComment->users->userProfileImages[0]) && isset($postComment->users->userProfileImages[0]) ? $postComment->users->userProfileImages[0] : '') {
-                        $html .= '<a href=""><img src="' . asset("storage/community/profile-picture/" . $postComment->users->userProfileImages[0]->user_profile) . '"
+                        $html .= '<a class="new-comment-img replay-comment-img" href=""><img src="' . asset("storage/community/profile-picture/" . $postComment->users->userProfileImages[0]->user_profile) . '"
                                           alt="image"></a>';
-                    }else{
+                    } else {
 
-                        $html.=' <a href=""><img
-                                    src="'.asset("community-frontend/assets/images/community/home/news-post/Athore01.jpg").'" alt="image"></a>';
+                        $html .= ' <a class="new-comment-img replay-comment-img" href=""><img
+                                    src="' . asset("community-frontend/assets/images/community/home/news-post/Athore01.jpg") . '" alt="image"></a>';
 
                     }
 
-                }else{
+                } else {
 
-                    $html.=' <a href=""><img
-                                    src="'.asset("community-frontend/assets/images/community/home/news-post/Athore01.jpg").'" alt="image"></a>';
+                    $html .= ' <a class="new-comment-img replay-comment-img" href=""><img
+                                    src="' . asset("community-frontend/assets/images/community/home/news-post/Athore01.jpg") . '" alt="image"></a>';
 
                 }
 
@@ -393,18 +394,17 @@ class CommunityFrontendController extends Controller
 
                 if (!empty($postComment->users->userProfileImages[0]) && isset($postComment->users->userProfileImages[0]) ? $postComment->users->userProfileImages[0] : '') {
                     if (!empty($postComment->users->userProfileImages[0]) && isset($postComment->users->userProfileImages[0]) ? $postComment->users->userProfileImages[0] : '') {
-                        $html .= '<a href="" class="new-comment-img replay-comment-img"><img src="' . asset("storage/community/profile-picture/" . $postComment->users->userProfileImages[0]->user_profile) . '"
+                        $html .= '<a class="new-comment-img replay-comment-img" href="" class="new-comment-img replay-comment-img"><img src="' . asset("storage/community/profile-picture/" . $postComment->users->userProfileImages[0]->user_profile) . '"
                                                       alt="image"></a>';
-                    }
-                    else{
-                        $html.='<img
-                                    src="'.asset("community-frontend/assets/images/community/home/news-post/Athore01.jpg").'" alt="image">';
+                    } else {
+                        $html .= '<a class="new-comment-img replay-comment-img"><img
+                                    src="' . asset("community-frontend/assets/images/community/home/news-post/Athore01.jpg") . '" alt="image"></a>';
                     }
 
-                }else{
+                } else {
 
-                    $html.='<img
-                                    src="'.asset("community-frontend/assets/images/community/home/news-post/Athore01.jpg").'" alt="image">';
+                    $html .= '<a class="new-comment-img replay-comment-img"><img
+                                    src="' . asset("community-frontend/assets/images/community/home/news-post/Athore01.jpg") . '" alt="image"></a>';
 
                 }
                 $html .= ' <div class="new-comment-input replay-commnt-input">
@@ -428,9 +428,7 @@ class CommunityFrontendController extends Controller
                     'msg' => 'Successfully Added.',
                     'html' => $html
                 ]);
-            }
-
-            else {
+            } else {
 
 
                 return \response()->json([
@@ -1127,7 +1125,7 @@ class CommunityFrontendController extends Controller
         $imgArray = [];
 //        $data['imgArray']
 
-        $allPhotos = User::with('userProfileImages')-> join('community_user_posts as userPost', 'userPost.user_id', '=', 'users.id')
+        $allPhotos = User::with('userProfileImages')->join('community_user_posts as userPost', 'userPost.user_id', '=', 'users.id')
             ->where('userPost.user_id', '!=', ADMIN_ROLE)
             ->where('userPost.user_id', '=', $id)
             ->leftJoin('community_user_post_file_types as postFile', 'postFile.post_id', '=', 'userPost.id')
@@ -1217,32 +1215,74 @@ class CommunityFrontendController extends Controller
 
     public function getStateAjax(Request $request): \Illuminate\Http\JsonResponse
     {
-        $requestData=[];
-        if ($request->ajax()){
+        $requestData = [];
+        if ($request->ajax()) {
 //            dd($request->all());
-            $getStates=State::with('countries')->where('c_id','=',$request->country_id)->get();
+            $getStates = State::with('countries')->where('c_id', '=', $request->country_id)->get();
 
-            $requestData=[
-                'status'=>true,
-                'getStates'=>$getStates,
-                'msg'=>'Done'
+            $requestData = [
+                'status' => true,
+                'getStates' => $getStates,
+                'msg' => 'Done'
             ];
 //
-            if ($request->get('reqTyp')==='getCity'){
+            if ($request->get('reqTyp') === 'getCity') {
 
 //                dd($request->all());
-                $getCity=City::where('state_id','=',$request->get('state_id'))->get();
+                $getCity = City::where('state_id', '=', $request->get('state_id'))->get();
 //                dd($getCity);
-                $requestData=[
-                    'status'=>true,
-                    'getStates'=>$getCity,
-                    'msg'=>'Done'
+                $requestData = [
+                    'status' => true,
+                    'getStates' => $getCity,
+                    'msg' => 'Done'
                 ];
             }
         }
 
         return \response()->json($requestData);
 
+    }
+
+
+    public function storeComentReaction(Request $request)
+    {
+
+//        dd($request->all());
+
+        if ($request->ajax()) {
+            $storeCommentReaction = CommunityUserPostCommentReaction::create([
+                'user_id' => Auth::id(),
+                'post_comment_id' => $request->get('postCommentId'),
+                'reaction_type' => 1
+            ]);
+
+            if ($storeCommentReaction) {
+                return \response()->json([
+                    'status' => true,
+                    'msg' => 'Successfully Added',
+                    'postCommentsReaction' => $storeCommentReaction,
+                ]);
+            }
+        }
+    }
+
+
+    public function removeComentReaction(Request $request)
+    {
+
+//        dd($request->all());
+
+        if ($request->ajax()) {
+            $deleteCommentReaction = CommunityUserPostCommentReaction::where('id',$request->get('postCommentReactionId'))->delete();
+
+            if ($deleteCommentReaction) {
+                return \response()->json([
+                    'status' => true,
+                    'msg' => 'Successfully Added',
+                    'postCommentsReaction' => $deleteCommentReaction,
+                ]);
+            }
+        }
     }
 
 }

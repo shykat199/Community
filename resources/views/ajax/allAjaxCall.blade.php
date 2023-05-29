@@ -61,7 +61,7 @@
         let tldId = $(this).attr('data-reqId');
         let userId = $(this).attr('data-userId');
 
-        let hideDiv=$(this).parents('.row').find('.removeDiv-'+userId);
+        let hideDiv = $(this).parents('.row').find('.removeDiv-' + userId);
 
 
         if (tldId !== '') {
@@ -70,14 +70,14 @@
                 type: 'POST',
                 data: {
                     tldId: tldId,
-                    userId:userId,
+                    userId: userId,
                     '_token': '{{csrf_token()}}'
                 },
                 success: function (response) {
                     console.log(response);
                     let msg = "";
                     if (response.status) {
-                        if(response.status===true){
+                        if (response.status === true) {
                             $hideDiv.hide();
                         }
 
@@ -138,12 +138,12 @@
                 type: 'GET',
                 data: {
                     userId: id,
-                    userid:userId,
+                    userid: userId,
                 },
                 success: function (response) {
                     console.log(response);
                     let msg = "";
-                    if (response.status===true) {
+                    if (response.status === true) {
 
                         hideDev.html('');
                         hideDev.html(`<a data-userId="${userId}" href="javascript:void(0)"><i class="fa fa-user-o" aria-hidden="true"></i></a>`);
@@ -154,6 +154,9 @@
 
         }
     })
+
+
+
 
 
     //search friend

@@ -175,12 +175,12 @@
 
 {{--                                                <a href="#"><img src="{{asset("community-frontend/assets/images/community/home/smallCover.jpg")}}" alt="cover"></a>--}}
                                                     <div class="add-friend-icon">
-                                                        <a class="btnFollow" data-userId="{{$user->id}}" href="javascript:void(0)">
+                                                        <a class="{{!empty($user->userFollowingId) && isset($user->userFollowingId)?'unfolloww':'btnFollow'}}" data-userId="{{$user->id}}" href="javascript:void(0)">
 
                                                             @if(!empty($user->followedId) && isset($user->followedId))
 
                                                                 <ul class="add-msg-btn">
-                                                                    <li><button type="button" class="msg-btn unfolloww" data-followId="{{$user->userFollowingId}}" data-userId="{{$user->id}}">UnFollow</button></li>
+                                                                    <li><button type="button" class="msg-btn  {{!empty($user->userFollowingId) && isset($user->userFollowingId)?'unfolloww':'btnFollow'}}" data-followId="{{$user->userFollowingId}}" data-userId="{{$user->id}}">UnFollow</button></li>
                                                                 </ul>
 
                                                             @else

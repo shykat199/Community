@@ -614,9 +614,11 @@
                                 foreach ($post->comments as $cId){
                                     $cmtIdArray[]=$cId->id;
                                 }
-    //                            dd($cmtIdArray);
+
                             @endphp
+
                             @foreach($post->comments as $postComment)
+{{--                                @dd($postComment)--}}
 
                                 <li class="single-comment post-Comment-{{$postComment->id}}">
                                     <div class="parent-comment">
@@ -706,8 +708,17 @@
                                                 </button>
                                                 <button class="textarea-cancel-btn" style="display: none;">Cancel</button>
                                             </div>
+
+
+                                            @php
+                                                $countCommentReaction=\App\Models\Community\User_Post\CommunityUserPostCommentReaction::where('post_comment_id','=',$postComment->id)->count();
+                                            @endphp
+
                                             <ul class="coment-react">
-                                                <li class="comment-like"><a href="#">Like(0)</a></li>
+                                                <li class="comment-like cmtReaction {{!empty( $postComment->commentReaction[0]) && isset($postComment->commentReaction[0]) && $postComment->commentReaction[0]->reaction_type===1 && $postComment->commentReaction[0]->user_id == Auth::id() ?'acitve':''}}"
+                                                    data-postCommentId="{{ $postComment->id}}" data-postCommentReactionId="{{!empty( $postComment->commentReaction[0]) && isset($postComment->commentReaction[0])?$postComment->commentReaction[0]->id:''}}">
+                                                    <a  href="javascript:void(0)" >Like(<span class="reactionCount">{{!empty($countCommentReaction)&& isset($countCommentReaction)?$countCommentReaction:'0'}}</span>)</a>
+                                                </li>
                                                 <li><a href="javascript:void(0)" class="replay-tag">Replay</a></li>
                                             </ul>
                                         </div>
@@ -807,10 +818,7 @@
                                 <div class="attached-icon">
                                     <a href="#"><i class="fa fa-camera" aria-hidden="true"></i></a>
                                 </div>
-                                {{--                            <input type="text" data-postId="{{$post->postId}}" class="postComments" name="postComment" placeholder="Write a comment....">--}}
-                                {{--                            <div class="attached-icon">--}}
-                                {{--                                <a href="#"><i class="fa fa-camera" aria-hidden="true"></i></a>--}}
-                                {{--                            </div>--}}
+
                             </div>
 
                         </div>
@@ -852,7 +860,10 @@
 
         </div>
     </div>
+{{--    @include('ajax.allAjaxCall')--}}
 @endsection
+
+
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.4/jquery.min.js"
         integrity="sha512-pumBsjNRGGqkPzKHndZMaAG+bir374sORyzM3uulLV14lN5LyykqNk8eEeUlUkB3U0M4FApyaHraT65ihJhDpQ=="
@@ -911,6 +922,63 @@
                     })
                 }
 
+        })
+
+        //comment reaction
+        $(document).on('click', '.cmtReaction', function (e) {
+
+            if($(this).hasClass('acitve')){
+
+                let postCommentReactionId = $(this).attr('data-postCommentReactionId');
+                let countIncrease=parseInt($(this).find('.reactionCount').html()) ;
+                let countNum=$(this).find('.reactionCount');
+                let postCommentReaction = $(this);
+
+
+                $.ajax({
+                    url: '{{route('user.post.rmv-reaction')}}',
+                    type: "POST",
+                    data: {
+                        postCommentReactionId: postCommentReactionId,
+                        reqType: "userCommentReaction",
+                        '_token': '{{csrf_token()}}'
+                    },
+                    success:function (response){
+                        if(response.status===true){
+                            postCommentReaction.removeClass('acitve')
+                            countNum.html(countIncrease-=1);
+                        }
+                    }
+                })
+
+
+            }
+
+            else {
+
+                let postCommentId = $(this).attr('data-postCommentId');
+                let countIncrease=parseInt($(this).find('.reactionCount').html()) ;
+                let countNum=$(this).find('.reactionCount');
+                let postCommentReactionId = $(this);
+
+
+                $.ajax({
+                    url: '{{route('user.post.cmt-reaction')}}',
+                    type: "POST",
+                    data: {
+                        postCommentId: postCommentId,
+                        reqType: "userCommentReaction",
+                        '_token': '{{csrf_token()}}'
+                    },
+                    success:function (response){
+                        if(response.status===true){
+                            postCommentReactionId.attr('data-postCommentReactionId',response.postCommentsReaction.id);
+                            postCommentReactionId.addClass('acitve');
+                            countNum.html(countIncrease+=1);
+                        }
+                    }
+                })
+            }
         })
 
 

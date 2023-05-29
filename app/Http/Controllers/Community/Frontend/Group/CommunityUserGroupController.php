@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Community\Frontend\Group;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\GroupPostRequest;
 use App\Models\Community\Group\CommunityUserGroup;
 use App\Models\Community\Group\CommunityUserGroupCoverPhoto;
 use App\Models\Community\Group\CommunityUserGroupPost;
@@ -137,7 +138,7 @@ class CommunityUserGroupController extends Controller
             ->first();
 
 
-        $groupPosts = CommunityUserGroupPost::with(['users.userProfileImages', 'comments.replies'])
+        $groupPosts = CommunityUserGroupPost::with(['users.userProfileImages', 'comments.replies','comments.commentsReaction'])
             ->join('community_user_groups as communityGroups', function ($q) use ($id) {
                 $q->on('communityGroups.id', '=', 'community_user_group_posts.group_id');
                 $q->where('community_user_group_posts.group_id', '=', $id);
@@ -199,57 +200,8 @@ class CommunityUserGroupController extends Controller
     }
 
 
-    public function userGroupPostStore(Request $request)
+    public function userGroupPostStore(GroupPostRequest $request)
     {
-//        dd();
-//        dd($request->all());
-//        if ($request->get('imageCaption') && $request->get('imageCaption') === null) {
-//            dd(1);
-//            $storeGroupPost = CommunityUserGroupPost::create([
-//                'group_id' => \Crypt::decrypt($request->get('groupId')),
-//                'user_id' => Auth::id(),
-//                'post_description' => $request->get('postMessage'),
-//            ]);
-//        } else {
-////            dd(2);
-//            $fileName = null;
-//            if ($request->hasFile('postFile') !== null || $request->get('imageCaption') !== null) {
-////                dd(2);
-//                $storeGroupPost = CommunityUserGroupPost::create([
-//                    'group_id' => \Crypt::decrypt($request->get('groupId')),
-//                    'user_id' => Auth::id(),
-//                    'post_description' => $request->get('postMessage'),
-//                ]);
-//                if ($request->hasFile('postFile')){
-////                    dd(12);
-//                    if ($request->file('postFile')->getClientOriginalExtension() == 'mp4' || $request->file('postFile')->getClientOriginalExtension() == 'mov' ||
-//                        $request->file('postFile')->getClientOriginalExtension() == 'wmv' || $request->file('postFile')->getClientOriginalExtension() == 'avi' ||
-//                        $request->file('postFile')->getClientOriginalExtension() == 'mkv' || $request->file('postFile')->getClientOriginalExtension() == 'webm'
-//                    ) {
-//                        $fileName = Uuid::uuid() . '.' . $request->file('postFile')->getClientOriginalExtension();
-//                        $file = Storage::put('/public/community/group-post/videos/' . $fileName, file_get_contents($request->file('postFile')));
-//                    }
-////                    dd($fileName);
-//                }
-//
-//                 else {
-////                     dd(3);
-//                    $fileName = Uuid::uuid() . '.' . $request->file('postFile1')->getClientOriginalExtension();
-//                    $file = Storage::put('/public/community/group-post/' . $fileName, file_get_contents($request->file('postFile1')));
-//                }
-////                dd(4);
-//
-//                $GroupPostFile = CommunityUserGroupPostFile::create([
-//                    'group_post_id' => $storeGroupPost->id,
-//                    'group_post_caption' => $request->get('imageCaption'),
-//                    'group_post_file' => $fileName,
-//                ]);
-//            }
-//
-//        }
-
-//        dd($request->all());
-
         if ($request->get('postMessage')) {
 
             if ($request->hasFile('videoFile') || $request->hasFile('photoFile')) {
@@ -710,6 +662,40 @@ class CommunityUserGroupController extends Controller
             }
         }
 
+    }
+
+    public function storeCommentReaction(Request $request){
+
+        if ($request->ajax()){
+            $storeGroupCommentReaction=CommunityUserGroupPostCommentReaction::create([
+                'user_id'=>Auth::id(),
+                'group_post_comment_id'=>$request->get('postCommentId'),
+                'reaction_type'=>1
+            ]);
+
+            if ($storeGroupCommentReaction){
+                return \response()->json([
+                    'msg'=>'Success',
+                    'status'=>true,
+                    'data'=>$storeGroupCommentReaction
+                ]);
+            }
+        }
+
+    }
+
+    public function removeCommentReaction(Request $request){
+        if ($request->ajax()){
+            $dltCommentReaction=CommunityUserGroupPostCommentReaction::where('id','=',$request->get('postCommentReactionId'))->delete();
+
+            if ($dltCommentReaction){
+                return \response()->json([
+                    'msg'=>'Success',
+                    'status'=>true,
+                    'data'=>$dltCommentReaction
+                ]);
+            }
+        }
     }
 
     public function editPost(Request $request)

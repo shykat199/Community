@@ -246,7 +246,7 @@
             </div>
         @endif
 
-        {{--@dd($pagePosts)--}}
+{{--        @dd($pagePosts)--}}
         @forelse($pagePosts as $post)
             <div class="main-content posted-content">
                 <div class="post-autore d-flex justify-content-between align-items-center">
@@ -574,8 +574,14 @@
                                             </button>
                                             <button class="textarea-cancel-btn" style="display: none;">Cancel</button>
                                         </div>
+                                        @php
+                                            $countCommentReaction=\App\Models\Community\Page\CommunityPagePostCommentReaction::where('page_post_comment_id','=',$postComment->id)->count();
+                                        @endphp
                                         <ul class="coment-react">
-                                            <li class="comment-like"><a href="#">Like(0)</a></li>
+                                            <li class="comment-like cmtReaction {{!empty( $postComment->commentsReaction[0]) && isset($postComment->commentsReaction[0]) && $postComment->commentsReaction[0]->reaction_type===1 && $postComment->commentsReaction[0]->user_id == Auth::id() ?'acitve':''}}"
+                                                data-postCommentId="{{ $postComment->id}}" data-postCommentReactionId="{{!empty( $postComment->commentsReaction[0]) && isset($postComment->commentsReaction[0])?$postComment->commentsReaction[0]->id:''}}">
+                                                <a  href="javascript:void(0)" >Like(<span class="reactionCount">{{!empty($countCommentReaction)&& isset($countCommentReaction)?$countCommentReaction:'0'}}</span>)</a>
+                                            </li>
                                             <li><a href="javascript:void(0)" class="replay-tag">Replay</a></li>
                                         </ul>
                                     </div>
@@ -852,6 +858,63 @@
                 }
 
             })
+
+        $(document).on('click', '.cmtReaction', function (e) {
+
+            if($(this).hasClass('acitve')){
+
+                let postCommentReactionId = $(this).attr('data-postCommentReactionId');
+                let countIncrease=parseInt($(this).find('.reactionCount').html()) ;
+                let countNum=$(this).find('.reactionCount');
+                let postCommentReaction = $(this);
+
+
+                $.ajax({
+                    url: '{{route('user.post.rmv-page-reaction')}}',
+                    type: "POST",
+                    data: {
+                        postCommentReactionId: postCommentReactionId,
+                        reqType: "userCommentReaction",
+                        '_token': '{{csrf_token()}}'
+                    },
+                    success:function (response){
+                        if(response.status===true){
+                            postCommentReaction.removeClass('acitve')
+                            countNum.html(countIncrease-=1);
+                        }
+                    }
+                })
+
+
+            }
+
+            else {
+
+                let postCommentId = $(this).attr('data-postCommentId');
+                let countIncrease=parseInt($(this).find('.reactionCount').html()) ;
+                let countNum=$(this).find('.reactionCount');
+                let postCommentReactionId = $(this);
+                // console.log(postCommentId);
+                // return false;
+                $.ajax({
+                    url: '{{route('user.post.page.cmt-reaction')}}',
+                    type: "POST",
+                    data: {
+                        postCommentId: postCommentId,
+                        reqType: "userCommentReaction",
+                        '_token': '{{csrf_token()}}'
+                    },
+                    success:function (response){
+                        if(response.status===true){
+                            postCommentReactionId.attr('data-postCommentReactionId',response.data.id);
+                            postCommentReactionId.addClass('acitve');
+                            countNum.html(countIncrease+=1);
+                        }
+                    }
+                })
+            }
+        })
+
 
         $('.postComments').keydown(function (e) {
             if (e.keyCode === 13) {

@@ -171,6 +171,6 @@ $(document).on("click", ".react-option li", function() {
 
 
 // comment like active class add
-$(".comment-like").on("click", function(){
-    $(this).toggleClass("acitve");
-  });
+// $(".comment-like").on("click", function(){
+//     $(this).toggleClass("acitve");
+//   });

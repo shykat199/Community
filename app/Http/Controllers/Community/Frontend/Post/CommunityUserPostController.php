@@ -172,15 +172,15 @@ class CommunityUserPostController extends Controller
 //
                 if (!empty($storeComments->users->userProfileImages[0]) && isset($storeComments->users->userProfileImages[0]) ? $storeComments->users->userProfileImages[0]->user_profile : '') {
                     if (!empty($storeComments->users->userProfileImages[0]) && isset($storeComments->users->userProfileImages[0]) ? $storeComments->users->userProfileImages[0]->user_profile : '') {
-                        $html .= '<a class="new-comment-img replay-comment-img" href="" ><img src="' . asset("storage/community/profile-picture/" . $storeComments->users->userProfileImages[0]->user_profile) . '"
+                        $html .= '<a  href="" ><img src="' . asset("storage/community/profile-picture/" . $storeComments->users->userProfileImages[0]->user_profile) . '"
                                                                           alt="image"></a>';
                     }else{
-                        $html .= '<img class="new-comment-img replay-comment-img" src="' . asset("community-frontend/assets/images/community/home/news-post/comment01.jpg") . '"alt="image">';
+                        $html .= '<a ><img  src="' . asset("community-frontend/assets/images/community/home/news-post/comment01.jpg") . '"alt="image"></a>';
 
                     }
 
                 } else {
-                    $html .= '<img class="new-comment-img replay-comment-img" src="' . asset("community-frontend/assets/images/community/home/news-post/comment01.jpg") . '"alt="image">';
+                    $html .= '<a><img  src="' . asset("community-frontend/assets/images/community/home/news-post/comment01.jpg") . '"alt="image"></a>';
 
                 }
 
