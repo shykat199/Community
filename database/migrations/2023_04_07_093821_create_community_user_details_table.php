@@ -16,13 +16,17 @@ return new class extends Migration
             $table->bigInteger('user_id');
             $table->date('dob')->nullable();
             $table->string('birthplace',50)->nullable();
+            $table->string('occupation',60)->nullable();
             $table->string('phone',30)->nullable();
             $table->string('gender',10)->nullable();
             $table->string('relationship',50)->nullable();
             $table->string('blood',10)->nullable();
             $table->string('website',10)->nullable();
             $table->text('about_me')->nullable();
-
+            $table->string('backup_email',70)->nullable();
+            $table->string('city',70)->nullable();
+            $table->string('state',70)->nullable();
+            $table->string('country',70)->nullable();
             $table->timestamps();
         });
     }

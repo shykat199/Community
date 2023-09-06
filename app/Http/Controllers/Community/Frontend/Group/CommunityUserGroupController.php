@@ -41,7 +41,7 @@ class CommunityUserGroupController extends Controller
             ->leftJoin('community_user_group_cover_photos as groupCover', 'groupCover.group_id', '=', 'community_user_groups.id')
             ->selectRaw('community_user_groups.id as gId,community_user_groups.group_name as gName,
             community_user_groups.group_details as gDetails,COUNT(groupPivot.id) userCount,groupProfile.group_profile_photo as gProfile,groupCover.cover_photo as gCover,
-            community_user_groups.created_at,groupPivot.user_status')
+            community_user_groups.created_at,groupPivot.user_status,groupPivot.group_user_role')
             ->groupBy('community_user_groups.id')
             ->get();
 

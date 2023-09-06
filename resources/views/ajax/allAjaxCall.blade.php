@@ -157,8 +157,6 @@
 
 
 
-
-
     //search friend
     $(document).on('keyup', '#inputSearch', function (e) {
         e.preventDefault();
@@ -176,11 +174,32 @@
                 success: function (response) {
                     if (response.status === true) {
 
-                        $('.row').html(response.html);
+                        $('.searchResult').hide();
+                        $('.appendSearch').append(response.html);
 
                     }
                 }
             })
+        }
+        else {
+            console.log(search,'sdfv');
+
+            $.ajax({
+                url: '{{route('community.user.search-friend')}}',
+                method: "GET",
+                data: {
+                    search: search,
+                },
+                success: function (response) {
+                    if (response.status === true) {
+
+                        $('.searchResult').hide();
+                        $('.appendSearch').append(response.html);
+
+                    }
+                }
+            })
+
         }
 
     })

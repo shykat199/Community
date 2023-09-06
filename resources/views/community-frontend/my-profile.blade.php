@@ -2,7 +2,7 @@
 @section('frontend.content')
 
     <!-- my profile start -->
-    {{--    @dd($userDetails)--}}
+{{--        @dd($userDetails)--}}
     <div class="main-profile">
         <div class="row">
             <div class="col-lg-12">

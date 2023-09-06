@@ -99,7 +99,7 @@
                      aria-labelledby="friendRequestTab">
                     <div class="profile-friend-list">
                         <div class="row">
-{{--                            @dd($allAvailableGroups)--}}
+                            {{--                            @dd($allAvailableGroups)--}}
                             @forelse($allAvailableGroups as $group)
                                 {{--@dd($group)--}}
                                 <div class="col-lg-3 col-md-6 col-12">
@@ -120,17 +120,21 @@
 
                                                 @endif
                                             </div>
-                                            <a href="{{route('user.group.details',\Illuminate\Support\Facades\Crypt::encrypt($group->gId))}}" style="text-decoration: none;color: inherit;">
+                                            <a href="{{route('user.group.details',\Illuminate\Support\Facades\Crypt::encrypt($group->gId))}}"
+                                               style="text-decoration: none;color: inherit;">
 
                                                 <div class="profile-title d-flex align-items-center">
                                                     @if($group->gProfile)
 
-
-                                                        <a href="{{route('user.group.details',\Illuminate\Support\Facades\Crypt::encrypt($group->gId))}}"><img src="{{asset("storage/community/group-post/profile/".$group->gProfile)}}" alt="image"></a>
+                                                        <a href="{{route('user.group.details',\Illuminate\Support\Facades\Crypt::encrypt($group->gId))}}"><img
+                                                                src="{{asset("storage/community/group-post/profile/".$group->gProfile)}}"
+                                                                alt="image"></a>
 
                                                     @else
 
-                                                        <a href="{{route('user.group.details',\Illuminate\Support\Facades\Crypt::encrypt($group->gId))}}"><img src="{{asset('community-frontend/assets/images/community/home/user-0.jpg')}}" alt="image"></a>
+                                                        <a href="{{route('user.group.details',\Illuminate\Support\Facades\Crypt::encrypt($group->gId))}}"><img
+                                                                src="{{asset('community-frontend/assets/images/community/home/user-0.jpg')}}"
+                                                                alt="image"></a>
 
                                                     @endif
 
@@ -156,19 +160,27 @@
                                                     </a></li>
                                             </ul>
                                             <ul class="add-msg-btn join-group">
+                                                {{--                                                @dd($group)--}}
 
                                                 <li>
-                                                    <form action="{{route('user.join.groups')}}" method="post">
-                                                        @csrf
-                                                        <input type="hidden" name="groupId" value="{{$group->gId}}">
-                                                        @if($group->user_status===0)
+{{--                                                    @dd($group)--}}
+
+                                                    @if($group->user_status===0)
+                                                        <form action="{{route('user.join.groups')}}" method="post">
+                                                            @csrf
+                                                            <input type="hidden" name="groupId" value="{{$group->gId}}">
                                                             <button type="button" class="add-btn">Request Send</button>
-                                                            {{--                                                        @elseif($group->user_status===1)--}}
-                                                            {{--                                                            <button type="button" class="add-btn">Go</button>--}}
-                                                        @else
-                                                            <button type="submit" class="add-btn">Join Group</button>
-                                                        @endif
-                                                    </form>
+                                                        </form>
+                                                        <button type="button" class="add-btn">Go</button>
+                                                    @elseif($group->group_user_role==1)
+                                                        <a href="{{route('user.group.details',\Illuminate\Support\Facades\Crypt::encrypt($group->gId))}}">
+                                                            <button type="submit" class="add-btn">Go</button>
+                                                        </a>
+                                                    @else
+                                                       <a href="{{route('user.group.details',\Illuminate\Support\Facades\Crypt::encrypt($group->gId))}}">
+                                                           <button type="submit" class="add-btn">Join Group</button>
+                                                       </a>
+                                                    @endif
                                                 </li>
 
                                             </ul>
@@ -212,16 +224,20 @@
                                                 @endif
                                             </div>
 
-                                            <a href="{{route('user.group.details',\Illuminate\Support\Facades\Crypt::encrypt($group->gId))}}" style="text-decoration: none;color: inherit;">
+                                            <a href="{{route('user.group.details',\Illuminate\Support\Facades\Crypt::encrypt($group->gId))}}"
+                                               style="text-decoration: none;color: inherit;">
                                                 <div class="profile-title d-flex align-items-center">
                                                     @if($group->gProfile)
 
-
-                                                        <a href="#"><img src="{{asset("storage/community/group-post/profile/".$group->gProfile)}}" alt="image"></a>
+                                                        <a href="#"><img
+                                                                src="{{asset("storage/community/group-post/profile/".$group->gProfile)}}"
+                                                                alt="image"></a>
 
                                                     @else
 
-                                                        <a href="#"><img src="{{asset('community-frontend/assets/images/community/home/user-0.jpg')}}" alt="image"></a>
+                                                        <a href="#"><img
+                                                                src="{{asset('community-frontend/assets/images/community/home/user-0.jpg')}}"
+                                                                alt="image"></a>
 
                                                     @endif
                                                     <div class="profile-name">

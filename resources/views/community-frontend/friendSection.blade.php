@@ -143,12 +143,12 @@
 
                 <div class="tab-pane fade" id="recentlyAdded" role="tabpanel" aria-labelledby="recentlyAddedTab">
                     <div class="profile-friend-list">
-                        <div class="row">
+                        <div class="row appendSearch">
 
 {{--                            @dd($allUsers)--}}
 
                             @foreach($allUsers as $user)
-                                <div class="col-lg-3 col-md-6 col-12">
+                                <div class="col-lg-3 col-md-6 col-12 searchResult">
                                     <div class="single-profile-list">
                                         <div class="view-profile left-widget">
                                             <div class="profile-cover">
@@ -172,9 +172,7 @@
                                                             alt="image"></a>
                                                 @endif
 
-
-{{--                                                <a href="#"><img src="{{asset("community-frontend/assets/images/community/home/smallCover.jpg")}}" alt="cover"></a>--}}
-                                                    <div class="add-friend-icon">
+                                                 <div class="add-friend-icon">
                                                         <a class="{{!empty($user->userFollowingId) && isset($user->userFollowingId)?'unfolloww':'btnFollow'}}" data-userId="{{$user->id}}" href="javascript:void(0)">
 
                                                             @if(!empty($user->followedId) && isset($user->followedId))

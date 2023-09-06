@@ -40,7 +40,8 @@
                 </li>
                 <li class="nav-item" role="presentation">
                     <button class="nav-link" id="work-tab" data-bs-toggle="tab" data-bs-target="#work-tab-pane"
-                            type="button" role="tab" aria-controls="work-tab-pane" aria-selected="false">Work Information
+                            type="button" role="tab" aria-controls="work-tab-pane" aria-selected="false">Work
+                        Information
                     </button>
                 </li>
 
@@ -65,17 +66,7 @@
                             type="button" role="tab" aria-controls="contact-tab-pane" aria-selected="false">Privacy
                     </button>
                 </li>
-                {{--                <li class="nav-item" role="presentation">--}}
-                {{--                    <button class="nav-link" id="notificaiton-tab" data-bs-toggle="tab"--}}
-                {{--                            data-bs-target="#notification-tab-pane" type="button" role="tab"--}}
-                {{--                            aria-controls="contact-tab-pane" aria-selected="false">Notification--}}
-                {{--                    </button>--}}
-                {{--                </li>--}}
-                {{--                <li class="nav-item" role="presentation">--}}
-                {{--                    <button class="nav-link" id="message-tab" data-bs-toggle="tab" data-bs-target="#message-tab-pane"--}}
-                {{--                            type="button" role="tab" aria-controls="message-tab-pane" aria-selected="false">Message--}}
-                {{--                    </button>--}}
-                {{--                </li>--}}
+
                 <li class="nav-item" role="presentation">
                     <button class="nav-link" id="closeAccount-tab" data-bs-toggle="tab"
                             data-bs-target="#closeAccount-tab-pane" type="button" role="tab"
@@ -84,15 +75,18 @@
                 </li>
             </ul>
 
-            {{--Profile Information--}}
-
-
             <div class="setting-tab-content">
                 <div class="tab-content" id="myTabContent">
 
                     <div class="tab-pane fade show active" id="home-tab-pane" role="tabpanel" aria-labelledby="home-tab"
                          tabindex="0">
-                        {{--                        @dd($userInfo)--}}
+
+                        @php
+
+                        $breakName=explode(' ',$userInfo['name']);
+
+                        @endphp
+
                         <form class="setting-form-wrapper profile-information"
                               action="{{route('user.my-profile.profile-information')}}" method="post">
                             @csrf
@@ -101,86 +95,82 @@
                             <div class="row">
                                 <div class="col-lg-6">
                                     <label for="firstName">First Name</label>
-                                    <input type="text" value="{{(isset($userInfo[0]))?$userInfo[0]['fname']:''}}"
-                                           id="firstName" name="fname" placeholder="First Name">
+                                    <input type="text" value="{{(isset($breakName) && isset($breakName[0]))?$breakName[0]:''}}"
+                                           id="firstName" name="" placeholder="First Name">
                                 </div>
                                 <div class="col-lg-6">
                                     <label for="lastName">Last Name</label>
-                                    <input type="text" value="{{(isset( $userInfo[0]))?$userInfo[0]['lname']:''}}"
-                                           id="lastName" name="lname" placeholder="Last Name">
+                                    <input type="text" value="{{(isset($breakName) && isset($breakName[1]))?$breakName[1]:''}}"
+                                           id="lastName" name="" placeholder="Last Name">
                                 </div>
                                 <div class="col-lg-6">
                                     <label for="forMail">Email</label>
-                                    <input type="email" value="{{(isset( $userInfo[0]))?$userInfo[0]['email']:''}}"
-                                           id="forMail" name="email" placeholder="Email">
+                                    <input type="email" value="{{(isset( $userInfo))?$userInfo['email']:''}}"
+                                           id="forMail" name="" placeholder="Email">
                                 </div>
                                 <div class="col-lg-6">
                                     <label for="forBackupMail">Backup Email</label>
-                                    <input type="email" value="" id="forBackupMail" name="bmail"
+                                    <input type="email" value="{{(isset( $userInfo))?$userInfo['backup_email']:''}}" id="forBackupMail" name="bmail"
                                            placeholder="Backup Email">
                                 </div>
+{{--                                @dd($userInfo)--}}
                                 <div class="col-lg-6">
                                     <label for="birthDay">Date of Birth</label>
-                                    <input type="text" name="dob" class="form-control"
+                                    <input type="text" name="dob" class="form-control datepicker"
                                            id="datepicker"
-                                           value="{{isset($userInfo[0])? \Carbon\Carbon::parse($userInfo[0]['dob'])->format('d-m-Y'):''}}"
+                                           value="{{isset($userInfo)? \Carbon\Carbon::parse($userInfo['dob'])->format('d-m-Y'):''}}"
                                            placeholder="">
 
                                 </div>
 
                                 <div class="col-lg-6">
                                     <label for="poneNumber">Phone Number</label>
-                                    <input type="number" value="{{(isset( $userInfo[0]))?$userInfo[0]['phone']:''}}"
+                                    <input type="number" value="{{(isset( $userInfo))?$userInfo['phone']:''}}"
                                            id=":'poneNumber" name="pnumber" placeholder="Phone Number">
                                 </div>
+                                {{--                                @dd($userInfo)--}}
                                 <div class="col-lg-6">
-                                    <label for="relation">Occupation</label>
-                                    <select name="occupation" class="js-example-basic-single" id="relation">
+                                    <label for="occupation">Occupation</label>
+                                    <select name="occupation" class="js-example-basic-single" id="occupation">
                                         <option value="" selected>Occupation</option>
                                         <option
-                                            value="Software Developer" {{isset($userInfo[0]) && $userInfo[0]['occupation']==='Software Developer'?'selected':''}}>
+                                            value="Software Developer" {{isset($userInfo) && $userInfo['occupation']==='Software Developer'?'selected':''}}>
                                             Software Developer
                                         </option>
                                         <option
-                                            value="Biomedical Engineer" {{isset($userInfo[0]) && $userInfo[0]['occupation']==='Biomedical Engineer'?'selected':''}}>
+                                            value="Biomedical Engineer" {{isset($userInfo) && $userInfo['occupation']==='Biomedical Engineer'?'selected':''}}>
                                             Biomedical Engineer
                                         </option>
                                         <option
-                                            value="Civil Engineer" {{isset($userInfo[0]) && $userInfo[0]['occupation']==='Civil Engineer'?'selected':''}}>
+                                            value="Civil Engineer" {{isset($userInfo) && $userInfo['occupation']==='Civil Engineer'?'selected':''}}>
                                             Civil Engineer
                                         </option>
                                         <option
-                                            value="General Practitioner" {{isset($userInfo[0]) && $userInfo[0]['occupation']==='General Practitioner'?'selected':''}}>
+                                            value="General Practitioner" {{isset($userInfo) && $userInfo['occupation']==='General Practitioner'?'selected':''}}>
                                             General Practitioner
                                         </option>
                                         <option
-                                            value="Technician" {{isset($userInfo[0]) && $userInfo[0]['occupation']==='Technician'?'selected':''}}>
+                                            value="Technician" {{isset($userInfo) && $userInfo['occupation']==='Technician'?'selected':''}}>
                                             Technician
                                         </option>
                                     </select>
                                 </div>
-                                <div class="col-lg-6">
-                                    <label for="gender">Gender</label>
-                                    <select name="" id="gender">
-                                        <option selected>Gender</option>
-                                        <option >Male</option>
-                                        <option >Female</option>
-                                    </select>
-                                </div>
+                                {{--                                {{ dd($userInfo) }}--}}
+
                                 <div class="col-lg-6">
                                     <label for="gender">Gender</label>
                                     <select name="gender" class="js-example-basic-single" id="gender">
                                         <option value="" selected>Gender</option>
                                         <option
-                                            value="Male" {{isset($userInfo[0])&& $userInfo[0]['gender']==='Male'?'selected':''}}>
+                                            value="Male" {{isset($userInfo)&& $userInfo['gender']==='Male'?'selected':''}}>
                                             Male
                                         </option>
                                         <option
-                                            value="Female" {{isset($userInfo[0])&& $userInfo[0]['gender']==='Female'?'selected':''}}>
+                                            value="Female" {{isset($userInfo)&& $userInfo['gender']==='Female'?'selected':''}}>
                                             Female
                                         </option>
                                         <option
-                                            value="Other" {{isset($userInfo[0])&& $userInfo[0]['gender']==='Other'?'selected':''}}>
+                                            value="Other" {{isset($userInfo)&& $userInfo['gender']==='Other'?'selected':''}}>
                                             Other
                                         </option>
                                     </select>
@@ -190,11 +180,11 @@
                                     <select name="relation" class="js-example-basic-single" id="relation">
                                         <option value="" selected>Relation Status</option>
                                         <option
-                                            value="Married" {{isset($userInfo[0]) && $userInfo[0]['relationship']==='Married'?'selected':''}}>
+                                            value="Married" {{isset($userInfo) && $userInfo['relationship']==='Married'?'selected':''}}>
                                             Married
                                         </option>
                                         <option
-                                            value="Single" {{isset($userInfo[0]) && $userInfo[0]['relationship']==='Single'?'selected':''}}>
+                                            value="Single" {{isset($userInfo) && $userInfo['relationship']==='Single'?'selected':''}}>
                                             Single
                                         </option>
                                     </select>
@@ -205,7 +195,7 @@
                                         <option value="" selected>Blood Group</option>
                                         @foreach(bloodGroups() as $group)
                                             <option
-                                                value="{{$group}}"{{isset($userInfo[0]) && $userInfo[0]['blood']===$group?'selected':''}}>{{$group}}</option>
+                                                value="{{$group}}"{{isset($userInfo) && $userInfo['blood']===$group?'selected':''}}>{{$group}}</option>
                                         @endforeach
 
                                     </select>
@@ -214,20 +204,22 @@
 
                                 <div class="col-lg-6">
                                     <label for="website">Website</label>
-                                    <input type="text" value="{{(isset( $userInfo[0]))?$userInfo[0]['website']:''}}"
+                                    <input type="text" value="{{(isset( $userInfo))?$userInfo['website']:''}}"
                                            id="website" name="website" placeholder="Website">
                                 </div>
 
                                 <div class="col-lg-6">
 
                                     <label for="country">Country</label>
-{{--                                    @dd($userInfo[0]['country'])--}}
-                                    <select class="js-example-basic-single country-dropdown" id="country-dropdown1" name="country">
+                                    {{--                                    @dd($userInfo[0]['country'])--}}
+                                    <select class="js-example-basic-single country-dropdown" id="country-dropdown1"
+                                            name="country">
                                         <option selected value="">Select Country</option>
                                         {{--                                                    @dd($allCountries)--}}
                                         @foreach($allCountries as $country)
 
-                                            <option value="{{$country->country}}" {{isset($userInfo[0]['country']) && $userInfo[0]['country']===$country->country?'selected':''}}>{{$country->country}}
+                                            <option
+                                                value="{{$country->country}}" {{isset($userInfo['country']) && $userInfo['country']===$country->country?'selected':''}}>{{$country->country}}
                                             </option>
                                         @endforeach
 
@@ -239,13 +231,14 @@
                                 <div class="col-lg-6">
                                     <label for="address">Address</label>
                                     <input type="text" id="address"
-                                           value="{{isset($userInfo[0])?$userInfo[0]['birthplace']:''}}" name="address"
+                                           value="{{isset($userInfo)?$userInfo['birthplace']:''}}" name="address"
                                            placeholder="Address">
                                 </div>
 
                                 <div class="col-lg-6">
                                     <label for="state">State</label>
-                                    <select class="js-example-basic-single state-dropdown" id="state-dropdown1" name="state">
+                                    <select class="js-example-basic-single state-dropdown" id="state-dropdown1"
+                                            name="state">
                                         <option selected value="">Select State</option>
 
                                     </select>
@@ -273,7 +266,8 @@
                                 <div class="col-lg-6">
                                     <label for="city">City</label>
 
-                                    <select class="js-example-basic-single city-dropdown1" id="city-dropdown1" name="city">
+                                    <select class="js-example-basic-single city-dropdown1" id="city-dropdown1"
+                                            name="city">
                                         <option selected value="">Select City</option>
 
                                     </select>
@@ -281,12 +275,10 @@
                                 </div>
 
 
-
-
                                 <div class="col-lg-6">
                                     <label for="address">About Me</label>
-                                    <textarea name="about_me" rows="5"
-                                              cols="38">"{{isset($userInfo[0])?$userInfo[0]['about_me']:''}}</textarea>
+                                    <textarea class="editor" name="about_me" rows="5"
+                                              cols="38">{!!isset($userInfo)?$userInfo['about_me']:''!!}</textarea>
                                 </div>
                                 <div class="col-12 mt-2">
                                     <button type="submit" class="social-theme-btn save-btn">Save</button>
@@ -294,7 +286,7 @@
                             </div>
                         </form>
                     </div>
-{{--                    @dd($userEducation)--}}
+{{--                                        @dd($userEducation)--}}
                     <div class="tab-pane fade" id="edu-tab-pane" role="tabpanel" aria-labelledby="edu-tab"
                          tabindex="0">
 
@@ -306,38 +298,39 @@
                             <div class="row">
                                 <div class="col-lg-6">
                                     <label for="instituteName">Institute Name</label>
-                                    <input type="text" value="" id="instituteName" name="instituteName"
+                                    <input type="text" value=" {{$userEducation->institute}}" id="instituteName" name="instituteName"
                                            placeholder="Institute Name">
                                 </div>
                                 <div class="col-lg-6">
                                     <label for="degreeName">Degree Name</label>
-                                    <input type="text" value="" id="degreeName" name="degreeName"
+                                    <input type="text" value=" {{$userEducation->degree_name}}" id="degreeName" name="degreeName"
                                            placeholder="Degree Name">
                                 </div>
 
                                 <div class="col-lg-6">
                                     <label for="startingDate">Starting year</label>
                                     <input type="text" name="startingDate" class="form-control datepicker"
-                                           value=""
+                                           value=" {{$userEducation->starting_date}}"
                                            placeholder="">
 
                                 </div>
                                 <div class="col-lg-6">
                                     <label for="passingDate">Passing year</label>
                                     <input type="text" name="passingDate" class="form-control datepicker"
-                                           value=""
+                                           value=" {{$userEducation->ending_date}}"
                                            placeholder="">
 
                                 </div>
                                 <div class="col-lg-6">
                                     <label for="institute">About Institute</label>
-                                    <textarea class="form-control editor" placeholder="Enter the Description"
-                                              name="institute"></textarea>
+                                    <textarea class="editor1" placeholder="Enter the Description"
+                                              name="institute">{!!$userEducation->description!!}</textarea>
                                 </div>
 
                                 <div class="col-lg-6">
                                     <div class="form-check form-switch">
-                                        <input class="form-check-input"  name="is_present" type="checkbox" id="flexSwitchCheckDefault">
+                                        <input class="form-check-input" name="is_present" type="checkbox"
+                                               id="flexSwitchCheckDefault" {{$userEducation->is_present===1?'checked':''}}>
                                         <label class="form-check-label" for="flexSwitchCheckDefault">Is Present</label>
                                     </div>
 
@@ -355,7 +348,7 @@
                         <form class="setting-form-wrapper profile-information"
                               action="{{route('user.my-profile.profile.work')}}" method="post">
                             @csrf
-
+                            @dd($userWork)
                             <h5 class="setting-title">Work Information</h5>
                             <div class="row">
                                 <div class="col-lg-6">
@@ -387,13 +380,14 @@
 
                                 <div class="col-lg-6">
                                     <label for="company">About Company</label>
-                                    <textarea class="form-control" id="editor1" placeholder="Enter the Description"
+                                    <textarea class=" editor2" placeholder="Enter the Description"
                                               name="company"></textarea>
                                 </div>
 
                                 <div class="col-lg-6">
                                     <div class="form-check form-switch">
-                                        <input class="form-check-input"  name="is_present" type="checkbox" id="flexSwitchCheckDefault">
+                                        <input class="form-check-input" name="is_present" type="checkbox"
+                                               id="flexSwitchCheckDefault">
                                         <label class="form-check-label" for="flexSwitchCheckDefault">Is Present</label>
                                     </div>
 
@@ -408,8 +402,9 @@
 
                     <div class="tab-pane fade" id="interest-tab-pane" role="tabpanel" aria-labelledby="interest-tab"
                          tabindex="0">
-{{--                        @dd($userInterests)--}}
-                        <form action="{{route('user.my-profile.profile.interest')}}" class="setting-form-wrapper profile-information" method="post">
+                        {{--                        @dd($userInterests)--}}
+                        <form action="{{route('user.my-profile.profile.interest')}}"
+                              class="setting-form-wrapper profile-information" method="post">
                             @csrf
                             <h5 class="setting-title">Field Of Interest information</h5>
                             <div class="row">
@@ -419,7 +414,10 @@
                                         <div class="input-group-prepend">
                                             <span class="input-group-text" id="inputGroup-sizing-sm">Hobby</span>
                                         </div>
-                                        <input type="text" name="hobby" value="{{(isset($userInterests['hobby'])) ? $userInterests['hobby'] : ''}}" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm">
+                                        <input type="text" name="hobby"
+                                               value="{{(isset($userInterests['hobby'])) ? $userInterests['hobby'] : ''}}"
+                                               class="form-control" aria-label="Small"
+                                               aria-describedby="inputGroup-sizing-sm">
 
                                     </div>
                                 </div>
@@ -427,9 +425,13 @@
                                 <div class="col-lg-12">
                                     <div class="input-group input-group-sm mb-3">
                                         <div class="input-group-prepend">
-                                            <span class="input-group-text" id="inputGroup-sizing-sm">Favourite Book</span>
+                                            <span class="input-group-text"
+                                                  id="inputGroup-sizing-sm">Favourite Book</span>
                                         </div>
-                                        <input type="text" name="fav_book" value="{{(isset($userInterests['fav_book'])) ? $userInterests['fav_book'] : ''}}" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm">
+                                        <input type="text" name="fav_book"
+                                               value="{{(isset($userInterests['fav_book'])) ? $userInterests['fav_book'] : ''}}"
+                                               class="form-control" aria-label="Small"
+                                               aria-describedby="inputGroup-sizing-sm">
 
                                     </div>
                                 </div>
@@ -437,9 +439,13 @@
                                 <div class="col-lg-12">
                                     <div class="input-group input-group-sm mb-3">
                                         <div class="input-group-prepend">
-                                            <span class="input-group-text" id="inputGroup-sizing-sm">Other Interest</span>
+                                            <span class="input-group-text"
+                                                  id="inputGroup-sizing-sm">Other Interest</span>
                                         </div>
-                                        <input type="text" name="other_interest" value="{{(isset($userInterests['other_interest'])) ? $userInterests['other_interest'] : ''}}" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm">
+                                        <input type="text" name="other_interest"
+                                               value="{{(isset($userInterests['other_interest'])) ? $userInterests['other_interest'] : ''}}"
+                                               class="form-control" aria-label="Small"
+                                               aria-describedby="inputGroup-sizing-sm">
 
                                     </div>
                                 </div>
@@ -452,8 +458,9 @@
 
                     <div class="tab-pane fade" id="social-tab-pane" role="tabpanel" aria-labelledby="social-tab"
                          tabindex="0">
-{{--                        @dd($userInterests)--}}
-                        <form action="{{route('user.my-profile.profile.social')}}" class="setting-form-wrapper profile-information" method="post">
+                        {{--                        @dd($userInterests)--}}
+                        <form action="{{route('user.my-profile.profile.social')}}"
+                              class="setting-form-wrapper profile-information" method="post">
                             @csrf
                             <h5 class="setting-title">Social Links</h5>
                             <div class="row">
@@ -463,7 +470,10 @@
                                         <div class="input-group-prepend">
                                             <span class="input-group-text" id="inputGroup-sizing-sm">Facebook</span>
                                         </div>
-                                        <input type="text" name="facebook" value="{{(isset($userSocial['facebook'])) ? $userSocial['facebook'] : ''}}" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm">
+                                        <input type="text" name="facebook"
+                                               value="{{(isset($userSocial['facebook'])) ? $userSocial['facebook'] : ''}}"
+                                               class="form-control" aria-label="Small"
+                                               aria-describedby="inputGroup-sizing-sm">
 
                                     </div>
                                 </div>
@@ -473,7 +483,10 @@
                                         <div class="input-group-prepend">
                                             <span class="input-group-text" id="inputGroup-sizing-sm">Twitter</span>
                                         </div>
-                                        <input type="text" name="twitter" value="{{(isset($userSocial['twitter'])) ? $userSocial['twitter'] : ''}}" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm">
+                                        <input type="text" name="twitter"
+                                               value="{{(isset($userSocial['twitter'])) ? $userSocial['twitter'] : ''}}"
+                                               class="form-control" aria-label="Small"
+                                               aria-describedby="inputGroup-sizing-sm">
 
                                     </div>
                                 </div>
@@ -483,7 +496,10 @@
                                         <div class="input-group-prepend">
                                             <span class="input-group-text" id="inputGroup-sizing-sm">Instagram</span>
                                         </div>
-                                        <input type="text" name="instagram" value="{{(isset($userSocial['instagram'])) ? $userSocial['instagram'] : ''}}" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm">
+                                        <input type="text" name="instagram"
+                                               value="{{(isset($userSocial['instagram'])) ? $userSocial['instagram'] : ''}}"
+                                               class="form-control" aria-label="Small"
+                                               aria-describedby="inputGroup-sizing-sm">
 
                                     </div>
                                 </div>
@@ -492,7 +508,10 @@
                                         <div class="input-group-prepend">
                                             <span class="input-group-text" id="inputGroup-sizing-sm">Linkedin</span>
                                         </div>
-                                        <input type="text" name="linkedin" value="{{(isset($userSocial['linkedin'])) ? $userSocial['linkedin'] : ''}}" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm">
+                                        <input type="text" name="linkedin"
+                                               value="{{(isset($userSocial['linkedin'])) ? $userSocial['linkedin'] : ''}}"
+                                               class="form-control" aria-label="Small"
+                                               aria-describedby="inputGroup-sizing-sm">
 
                                     </div>
                                 </div>
@@ -501,7 +520,10 @@
                                         <div class="input-group-prepend">
                                             <span class="input-group-text" id="inputGroup-sizing-sm">Pinterest</span>
                                         </div>
-                                        <input type="text" name="pinterest" value="{{(isset($userSocial['pinterest'])) ? $userSocial['pinterest'] : ''}}" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm">
+                                        <input type="text" name="pinterest"
+                                               value="{{(isset($userSocial['pinterest'])) ? $userSocial['pinterest'] : ''}}"
+                                               class="form-control" aria-label="Small"
+                                               aria-describedby="inputGroup-sizing-sm">
 
                                     </div>
                                 </div>
@@ -519,7 +541,8 @@
                             <div class="row">
                                 <div class="col-lg-6">
                                     <label for="recoveryMail">Recovery Email</label>
-                                    <input type="email" value="" id="recoveryMail" name="fname" placeholder="Recovery Email">
+                                    <input type="email" value="" id="recoveryMail" name="fname"
+                                           placeholder="Recovery Email">
                                 </div>
                                 <div class="col-lg-6">
                                     <label for="recoveryNumber">Recovery Phone</label>
@@ -645,7 +668,7 @@
                         <div class="setting-form-wrapper profile-information">
                             <div class="setting-title">
 
-{{--                                @dd($userInfo)--}}
+                                {{--                                @dd($userInfo)--}}
                                 Your Unique Link
                             </div>
 
@@ -662,7 +685,8 @@
                                     @csrf
 
                                     <div class="col-12">
-                                        <button type="submit" class="social-theme-btn save-btn">Generate your link</button>
+                                        <button type="submit" class="social-theme-btn save-btn">Generate your link
+                                        </button>
                                     </div>
                                 </form>
 
@@ -674,7 +698,8 @@
                                         <div class="col-lg-6">
                                             <label for="yourPassword">Your Link</label>
                                             {{--                                        @dd(dd(Auth::user()->role))--}}
-                                            <input type="text" name="userSlag" id="yourPassword" value="{{!empty($userInfo[0]) && isset($userInfo[0])?$userInfo[0]['users']['user_slug']:''}}">
+                                            <input type="text" name="userSlag" id="yourPassword"
+                                                   value="{{!empty($userInfo[0]) && isset($userInfo[0])?$userInfo[0]['users']['user_slug']:''}}">
                                         </div>
                                     </div>
 
@@ -684,7 +709,6 @@
                                 </form>
 
                             @endif
-
 
 
                         </div>
@@ -848,9 +872,15 @@
                 console.error(error);
             });
 
-    </script>
-    <script>
-        ClassicEditor.create(document.querySelector('#editor1'))
+
+        ClassicEditor.create(document.querySelector('.editor1'))
+            .then(editor => {
+                editor.ui.view.editable.element.style.height = '150px';
+            })
+            .catch(error => {
+                console.error(error);
+            });
+        ClassicEditor.create(document.querySelector('.editor2'))
             .then(editor => {
                 editor.ui.view.editable.element.style.height = '150px';
             })
@@ -859,12 +889,11 @@
             });
 
     </script>
-
     <script>
-        $(document).ready(function() {
+        $(document).ready(function () {
             $('.js-example-basic-multiple').select2();
 
-            $(document).on('change','.country-dropdown', function () {
+            $(document).on('change', '.country-dropdown', function () {
                 let country_id = this.value;
                 // console.log(country_id);
                 $(".state-dropdown").html('');
@@ -888,7 +917,7 @@
                 });
             });
 
-            $(document).on('change','.state-dropdown', function () {
+            $(document).on('change', '.state-dropdown', function () {
                 let state_id = this.value;
                 // console.log(country_id);
                 $(".city-dropdown1").html('');
@@ -898,7 +927,7 @@
                     type: "POST",
                     data: {
                         state_id: state_id,
-                        reqTyp:'getCity',
+                        reqTyp: 'getCity',
                         _token: '{{csrf_token()}}'
                     },
                     dataType: 'json',
@@ -920,7 +949,7 @@
         $(document).ready(function () {
             $('.js-example-basic-single').select2();
 
-            let country=$('.country-dropdown').val();
+            let country = $('.country-dropdown').val();
 
             $('.country-dropdown').select2().select2('val', country);
 

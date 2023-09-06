@@ -25,7 +25,9 @@ class UserProfileSettingController extends Controller
     {
 
         $data['allCountries'] = Country::all();
-        $data['userInfo'] = CommunityUserDetails::with('users')->where('user_id', '=', Auth::id())->get()->toArray();
+        $data['userInfo'] = User::leftJoin('community_user_details','community_user_details.user_id','=','users.id')
+            ->where('users.id','=',Auth::id())->first()->toArray();
+//            CommunityUserDetails::leftJoin('users','users.id','=','community_user_details.user_id')->where('users.id', '=', Auth::id())->get()->toArray();
         $data['userLanguage'] = User::with('languages')
             ->where('id', '=', Auth::id())
             ->first();
@@ -37,16 +39,22 @@ class UserProfileSettingController extends Controller
         $data['userSocial'] = CommunityUserProfileSocialink::where('user_id', '=', Auth::id())->pluck('link', 'name')
             ->toArray();
 
+        $data['userEducation']=CommunityUserProfileEducation::where('user_id','=',Auth::id())->where('type','=','e')->latest()->first();
+        $data['userWork']=CommunityUserProfileEducation::where('user_id','=',Auth::id())->where('type','=','w')->latest()->first();
 
 //        dd(1);
         return view('community-frontend.setting', $data);
     }
 
-    public function storePersonalInformation(Request $request)
+    public function storePersonalInformation(Request $request): \Illuminate\Http\RedirectResponse
     {
+//        dd($request->all());
 
-        $communityUserDetails = CommunityUserDetails::create([
+        $communityUserDetails = CommunityUserDetails::updateOrCreate([
+
             'user_id' => Auth::id(),
+
+        ],[
             'dob' => date('Y-m-d', strtotime($request->get('dob'))),
             'occupation' => $request->get('occupation'),
             'birthplace' => $request->get('address'),
@@ -59,9 +67,7 @@ class UserProfileSettingController extends Controller
             'city' => $request->get('city'),
             'state' => $request->get('state'),
             'country' => $request->get('country'),
-            'fname' => $request->get('fname'),
-            'lname' => $request->get('lname'),
-            'email' => $request->get('email'),
+            'backup_email' => $request->get('bmail'),
         ]);
 
 
@@ -82,10 +88,6 @@ class UserProfileSettingController extends Controller
 
     }
 
-    public function storeAccountInformation(Request $request)
-    {
-
-    }
 
     public function updatePassword(Request $request)
     {
@@ -137,12 +139,7 @@ class UserProfileSettingController extends Controller
     public function userSlag(Request $request)
     {
 
-
-//        dd($slug);
-
         $checkSlug = User::select('id', 'user_slug')->where('user_slug', '=', $request->get('userSlag'))->first();
-
-//        dd($checkSlug);
 
         if ($checkSlug === null) {
 //            dd($slug);
@@ -153,11 +150,8 @@ class UserProfileSettingController extends Controller
 //            dd('1');
             return redirect()->back()->with('error', 'Name is already taken');
         } else {
-//            dd('new create');
 
             $slug = '';
-//        dd($request->all());
-
 
             if (Auth::user()->role === ADMIN_ROLE) {
                 $slug = Carbon::now()->format('d-m-Y') . '-' . 'ADMIN' . '-' . Auth::user()->name;
@@ -189,7 +183,6 @@ class UserProfileSettingController extends Controller
 
     public function storeUserEducation(Request $request)
     {
-//        dd($request->all());
 
         if ($request->get('is_present') === 'on') {
             $storeEducation = CommunityUserProfileEducation::create([
@@ -223,7 +216,9 @@ class UserProfileSettingController extends Controller
     public function editUserEducation($id)
     {
 
-        $data['userInfo'] = CommunityUserDetails::all()->toArray();
+//        $data['userInfo'] = CommunityUserDetails::all()->toArray();
+        $data['userInfo'] = User::leftJoin('community_user_details','community_user_details.user_id','=','users.id')
+            ->where('users.id','=',Auth::id())->first()->toArray();
         $data['userLanguage'] = User::with('languages')
             ->where('id', '=', Auth::id())
             ->first();
@@ -233,6 +228,7 @@ class UserProfileSettingController extends Controller
             ->toArray();
 
         $data['userEducation'] = CommunityUserProfileEducation::find($id);
+        $data['allCountries'] = Country::all();
 
 
         return view('community-frontend.setting_education', $data);
@@ -275,6 +271,7 @@ class UserProfileSettingController extends Controller
 
     public function storeUserWork(Request $request)
     {
+//        dd($request->all());
         if ($request->get('is_present') === 'on') {
             $storeWork = CommunityUserProfileEducation::create([
                 'user_id' => Auth::id(),
@@ -286,7 +283,8 @@ class UserProfileSettingController extends Controller
                 'ending_date' => Carbon::parse($request->get('passingDate'))->format('Y-m-d'),
                 'is_present' => 1,
             ]);
-        } else {
+        }
+        else {
             $storeWork = CommunityUserProfileEducation::create([
                 'user_id' => Auth::id(),
                 'type' => 'w',
@@ -309,12 +307,13 @@ class UserProfileSettingController extends Controller
     public function editUserWork($id)
     {
 
-        $data['userInfo'] = CommunityUserDetails::all()->toArray();
+        $data['userInfo'] = User::leftJoin('community_user_details','community_user_details.user_id','=','users.id')
+            ->where('users.id','=',Auth::id())->first()->toArray();
         $data['userLanguage'] = User::with('languages')
             ->where('id', '=', Auth::id())
             ->first();
 //        dd($data);
-
+        $data['allCountries'] = Country::all();
         $data['userInterests'] = CommunityUserProfileInterest::where('user_id', '=', Auth::id())->pluck('interest_details', 'interest_name')
             ->toArray();
 
@@ -376,7 +375,6 @@ class UserProfileSettingController extends Controller
         }
 
     }
-
 
     public function storeSocialLinks(Request $request)
     {
