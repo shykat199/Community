@@ -298,39 +298,39 @@
                             <div class="row">
                                 <div class="col-lg-6">
                                     <label for="instituteName">Institute Name</label>
-                                    <input type="text" value=" {{$userEducation->institute}}" id="instituteName" name="instituteName"
+                                    <input type="text" value=" {{@$userEducation->institute}}" id="instituteName" name="instituteName"
                                            placeholder="Institute Name">
                                 </div>
                                 <div class="col-lg-6">
                                     <label for="degreeName">Degree Name</label>
-                                    <input type="text" value=" {{$userEducation->degree_name}}" id="degreeName" name="degreeName"
+                                    <input type="text" value=" {{@$userEducation->degree_name}}" id="degreeName" name="degreeName"
                                            placeholder="Degree Name">
                                 </div>
 
                                 <div class="col-lg-6">
                                     <label for="startingDate">Starting year</label>
                                     <input type="text" name="startingDate" class="form-control datepicker"
-                                           value=" {{$userEducation->starting_date}}"
+                                           value=" {{@$userEducation->starting_date}}"
                                            placeholder="">
 
                                 </div>
                                 <div class="col-lg-6">
                                     <label for="passingDate">Passing year</label>
                                     <input type="text" name="passingDate" class="form-control datepicker"
-                                           value=" {{$userEducation->ending_date}}"
+                                           value=" {{@$userEducation->ending_date}}"
                                            placeholder="">
 
                                 </div>
                                 <div class="col-lg-6">
                                     <label for="institute">About Institute</label>
                                     <textarea class="editor1" placeholder="Enter the Description"
-                                              name="institute">{!!$userEducation->description!!}</textarea>
+                                              name="institute">{!!@$userEducation->description!!}</textarea>
                                 </div>
 
                                 <div class="col-lg-6">
                                     <div class="form-check form-switch">
                                         <input class="form-check-input" name="is_present" type="checkbox"
-                                               id="flexSwitchCheckDefault" {{$userEducation->is_present===1?'checked':''}}>
+                                               id="flexSwitchCheckDefault" {{@$userEducation->is_present===1?'checked':''}}>
                                         <label class="form-check-label" for="flexSwitchCheckDefault">Is Present</label>
                                     </div>
 
@@ -348,7 +348,6 @@
                         <form class="setting-form-wrapper profile-information"
                               action="{{route('user.my-profile.profile.work')}}" method="post">
                             @csrf
-                            @dd($userWork)
                             <h5 class="setting-title">Work Information</h5>
                             <div class="row">
                                 <div class="col-lg-6">
